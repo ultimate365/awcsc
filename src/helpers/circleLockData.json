@@ -1,0 +1,74 @@
+[
+  {
+    "entryDate": 1708313683517,
+    "gp": "AMORAGORI",
+    "edit": false,
+    "entryStaredBy": "SK MAIDUL ISLAM",
+    "entryCloseddBy": "SK MAIDUL ISLAM",
+    "id": "0eb11c9f-ca67-4388-b4f6-61aa5b646d9b-0",
+    "closeDate": 1728288554977
+  },
+  {
+    "id": "0eb11c9f-ca67-4388-b4f6-61aa5b646d9b-1",
+    "closeDate": 1728288554978,
+    "edit": false,
+    "entryDate": 1708313683517,
+    "entryCloseddBy": "SK MAIDUL ISLAM",
+    "entryStaredBy": "SK MAIDUL ISLAM",
+    "gp": "BKBATI"
+  },
+  {
+    "id": "0eb11c9f-ca67-4388-b4f6-61aa5b646d9b-2",
+    "closeDate": 1728288554978,
+    "entryStaredBy": "SK MAIDUL ISLAM",
+    "entryDate": 1708313683517,
+    "entryCloseddBy": "SK MAIDUL ISLAM",
+    "gp": "GAZIPUR",
+    "edit": false
+  },
+  {
+    "closeDate": 1728288554978,
+    "edit": false,
+    "entryDate": 1708313683517,
+    "gp": "JHAMTIA",
+    "entryCloseddBy": "SK MAIDUL ISLAM",
+    "entryStaredBy": "SK MAIDUL ISLAM",
+    "id": "0eb11c9f-ca67-4388-b4f6-61aa5b646d9b-3"
+  },
+  {
+    "entryStaredBy": "SK MAIDUL ISLAM",
+    "closeDate": 1728288554978,
+    "edit": false,
+    "entryDate": 1708313683517,
+    "entryCloseddBy": "SK MAIDUL ISLAM",
+    "gp": "JHIKIRA",
+    "id": "0eb11c9f-ca67-4388-b4f6-61aa5b646d9b-4"
+  },
+  {
+    "entryDate": 1708313683517,
+    "entryCloseddBy": "SK MAIDUL ISLAM",
+    "edit": false,
+    "gp": "JOYPUR",
+    "closeDate": 1728288554978,
+    "id": "0eb11c9f-ca67-4388-b4f6-61aa5b646d9b-5",
+    "entryStaredBy": "SK MAIDUL ISLAM"
+  },
+  {
+    "entryCloseddBy": "SK MAIDUL ISLAM",
+    "edit": false,
+    "gp": "NOWPARA",
+    "entryDate": 1708313683517,
+    "entryStaredBy": "SK MAIDUL ISLAM",
+    "closeDate": 1728288554978,
+    "id": "0eb11c9f-ca67-4388-b4f6-61aa5b646d9b-6"
+  },
+  {
+    "closeDate": 1728288554978,
+    "entryDate": 1714710626934,
+    "edit": false,
+    "entryStaredBy": "SK MAIDUL ISLAM",
+    "entryCloseddBy": "SK MAIDUL ISLAM",
+    "id": "0eb11c9f-ca67-4388-b4f6-61aa5b646d9b-7",
+    "gp": "THALIA"
+  }
+]

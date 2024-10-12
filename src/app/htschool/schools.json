@@ -1,0 +1,583 @@
+[
+  {
+    "id": "school101",
+    "school": "AMORAGORI GIRLS PRIMARY SCHOOL",
+    "year": 2024,
+    "udise": "19160210302",
+    "gp": "AMORAGORI"
+  },
+  {
+    "gp": "AMORAGORI",
+    "year": 2024,
+    "id": "school102",
+    "school": "BANCHARAM ROY PRIMARY SCHOOL",
+    "udise": "19160210003"
+  },
+  {
+    "id": "school103",
+    "year": 2024,
+    "gp": "GAZIPUR",
+    "udise": "19160214202",
+    "school": "BAR GAZIPUR PRIMARY SCHOOL"
+  },
+  {
+    "year": 2024,
+    "school": "BER DHAIPUR PRIMARY SCHOOL",
+    "id": "school104",
+    "gp": "THALIA",
+    "udise": "19160213501"
+  },
+  {
+    "udise": "19160214902",
+    "year": 2024,
+    "gp": "NOWPARA",
+    "id": "school105",
+    "school": "BETAI PC PRIMARY SCHOOL"
+  },
+  {
+    "school": "BHATEGHORI PRIMARY SCHOOL",
+    "gp": "THALIA",
+    "id": "school106",
+    "udise": "19160212801",
+    "year": 2024
+  },
+  {
+    "udise": "19160212802",
+    "year": 2024,
+    "id": "school107",
+    "gp": "THALIA",
+    "school": "BHATEGHORI SIBTALA PRIMARY SCHOOL"
+  },
+  {
+    "id": "school108",
+    "year": 2024,
+    "udise": "19160209001",
+    "gp": "BKBATI",
+    "school": "BINOLA KRISHNABATI PRIMARY SCHOOL"
+  },
+  {
+    "udise": "19160209603",
+    "gp": "AMORAGORI",
+    "school": "BOALIA B PARA PRIMARY SCHOOL",
+    "id": "school109",
+    "year": 2024
+  },
+  {
+    "school": "BOALIA PRIMARY SCHOOL",
+    "id": "school110",
+    "gp": "AMORAGORI",
+    "udise": "19160209604",
+    "year": 2024
+  },
+  {
+    "udise": "19160210507",
+    "id": "school111",
+    "year": 2024,
+    "gp": "AMORAGORI",
+    "school": "CHAKJANARDAN PRIMARY SCHOOL"
+  },
+  {
+    "udise": "19160209804",
+    "year": 2024,
+    "id": "school112",
+    "gp": "AMORAGORI",
+    "school": "CHAKSALIKA PRIMARY SCHOOL"
+  },
+  {
+    "school": "CHAKSALIKA RAJBANSHIPARA PRIMARY SCHOOL",
+    "udise": "19160209803",
+    "year": 2024,
+    "gp": "AMORAGORI",
+    "id": "school113"
+  },
+  {
+    "gp": "NOWPARA",
+    "school": "CHARANOWPARA PRIMARY SCHOOL",
+    "id": "school114",
+    "year": 2024,
+    "udise": "19160215201"
+  },
+  {
+    "school": "CHINGRAJOLE NARAYANI GIRLS PRIMARY SCHOOL",
+    "gp": "JHIKIRA",
+    "year": 2024,
+    "udise": "19160211401",
+    "id": "school115"
+  },
+  {
+    "id": "school116",
+    "gp": "JHIKIRA",
+    "year": 2024,
+    "udise": "19160211502",
+    "school": "CHINGRAJOLE VIVEKANANDA PRIMARY SCHOOL"
+  },
+  {
+    "id": "school117",
+    "year": 2024,
+    "school": "DAKSHIN JOYPUR JR BASIC SCHOOL",
+    "gp": "JOYPUR",
+    "udise": "19160212601"
+  },
+  {
+    "udise": "19160213401",
+    "year": 2024,
+    "id": "school118",
+    "school": "DHAIPUR PRIMARY SCHOOL",
+    "gp": "THALIA"
+  },
+  {
+    "udise": "19160211602",
+    "gp": "JHIKIRA",
+    "id": "school119",
+    "school": "DURGAPUR JUNIOR BASIC SCHOOL",
+    "year": 2024
+  },
+  {
+    "school": "GAZIPUR THAKAMOYEE PRIMARY SCHOOL",
+    "udise": "19160214401",
+    "year": 2024,
+    "gp": "GAZIPUR",
+    "id": "school120"
+  },
+  {
+    "school": "GHANASHYAMCHAK PRIMARY SCHOOL",
+    "gp": "AMORAGORI",
+    "year": 2024,
+    "id": "school121",
+    "udise": "19160210506"
+  },
+  {
+    "udise": "19160211301",
+    "gp": "JHIKIRA",
+    "school": "GHARDUBRA MONIMOHAN PRIMARY SCHOOL",
+    "year": 2024,
+    "id": "school122"
+  },
+  {
+    "id": "school123",
+    "gp": "AMORAGORI",
+    "school": "GHOLEDWIPA PRIMARY SCHOOL",
+    "udise": "19160209501",
+    "year": 2024
+  },
+  {
+    "id": "school124",
+    "year": 2024,
+    "school": "HANIDHARA PRIMARY SCHOOL",
+    "udise": "19160208901",
+    "gp": "BKBATI"
+  },
+  {
+    "school": "HAZRABERIA PRIMARY SCHOOL",
+    "id": "school125",
+    "gp": "JHIKIRA",
+    "year": 2024,
+    "udise": "19160211501"
+  },
+  {
+    "school": "JAGALGORI PRIMARY SCHOOL",
+    "udise": "19160215002",
+    "year": 2024,
+    "gp": "NOWPARA",
+    "id": "school126"
+  },
+  {
+    "gp": "NOWPARA",
+    "udise": "19160215101",
+    "year": 2024,
+    "id": "school127",
+    "school": "JAYANTI PRIMARY SCHOOL"
+  },
+  {
+    "year": 2024,
+    "gp": "JHAMTIA",
+    "id": "school128",
+    "udise": "19160202702",
+    "school": "JHAMTIA DHARAMPOTA PRIMARY SCHOOL"
+  },
+  {
+    "gp": "JHAMTIA",
+    "year": 2024,
+    "udise": "19160202802",
+    "school": "JHAMTIA DHARAPARA PRIMARY SCHOOL",
+    "id": "school129"
+  },
+  {
+    "udise": "19160202601",
+    "school": "JHAMTIA PRIMARY SCHOOL",
+    "id": "school130",
+    "year": 2024,
+    "gp": "JHAMTIA"
+  },
+  {
+    "gp": "JHAMTIA",
+    "id": "school131",
+    "school": "JHAMTIA SELNAPARA PRIMARY SCHOOL",
+    "udise": "19160202801",
+    "year": 2024
+  },
+  {
+    "udise": "19160211105",
+    "school": "JHIKIRA HIGH ATT PRIMARY SCHOOL",
+    "gp": "JHIKIRA",
+    "id": "school132",
+    "year": 2024
+  },
+  {
+    "udise": "19160211001",
+    "school": "JHIKIRA MOTIMONI GIRLS PRIMARY SCHOOL",
+    "gp": "JHIKIRA",
+    "year": 2024,
+    "id": "school133"
+  },
+  {
+    "school": "JHIKIRA MUSLIMPARA PRIMARY SCHOOL",
+    "gp": "JHIKIRA",
+    "udise": "19160211101",
+    "year": 2024,
+    "id": "school134"
+  },
+  {
+    "id": "school135",
+    "gp": "JHIKIRA",
+    "school": "JHIKIRA SATISH CHANDRA JR BASIC SCHOOL",
+    "year": 2024,
+    "udise": "19160210901"
+  },
+  {
+    "id": "school136",
+    "school": "JOYPUR BAKULTALA PRIMARY SCHOOL",
+    "year": 2024,
+    "gp": "JOYPUR",
+    "udise": "19160212301"
+  },
+  {
+    "gp": "JOYPUR",
+    "udise": "19160212501",
+    "school": "JOYPUR JOYCHANDI TALA PRIMARY SCHOOL",
+    "id": "school137",
+    "year": 2024
+  },
+  {
+    "year": 2024,
+    "school": "JOYPUR FAKIRDAS HIGH ATT PRIMARY SCHOOL",
+    "udise": "19160212002",
+    "id": "school138",
+    "gp": "JOYPUR"
+  },
+  {
+    "udise": "19160212302",
+    "id": "school139",
+    "school": "JOYPUR RAJBANSHI PARA PRIMARY SCHOOL",
+    "year": 2024,
+    "gp": "JOYPUR"
+  },
+  {
+    "id": "school140",
+    "gp": "JOYPUR",
+    "school": "JOYPUR SANTRAPARA PRIMARY SCHOOL",
+    "year": 2024,
+    "udise": "19160212101"
+  },
+  {
+    "udise": "19160212102",
+    "school": "JOYPUR SURANGAMAYEE GIRLS PRIMARY SCHOOL",
+    "gp": "JOYPUR",
+    "year": 2024,
+    "id": "school141"
+  },
+  {
+    "year": 2024,
+    "id": "school142",
+    "school": "KALASHDIHI PRIMARY SCHOOL",
+    "udise": "19160202901",
+    "gp": "JHAMTIA"
+  },
+  {
+    "year": 2024,
+    "id": "school143",
+    "gp": "GAZIPUR",
+    "udise": "19160214102",
+    "school": "KALBANSH GAZENDRA PRIMARY SCHOOL"
+  },
+  {
+    "school": "KAMARGORIA PRIMARY SCHOOL",
+    "gp": "JHAMTIA",
+    "id": "school144",
+    "udise": "19160203401",
+    "year": 2024
+  },
+  {
+    "school": "KAMARKHOLA PRIMARY SCHOOL",
+    "id": "school145",
+    "gp": "JHAMTIA",
+    "udise": "19160202701",
+    "year": 2024
+  },
+  {
+    "udise": "19160209905",
+    "gp": "AMORAGORI",
+    "year": 2024,
+    "school": "KANKROLE PREMOMOYEE PRIMARY SCHOOL",
+    "id": "school146"
+  },
+  {
+    "school": "KHAJURDAHA PRIMARY SCHOOL",
+    "udise": "19160203001",
+    "gp": "JHAMTIA",
+    "id": "school147",
+    "year": 2024
+  },
+  {
+    "school": "KHORIOP HIGH ATT PRIMARY SCHOOL",
+    "year": 2024,
+    "gp": "GAZIPUR",
+    "id": "school148",
+    "udise": "19160213801"
+  },
+  {
+    "udise": "19160213902",
+    "school": "KHOROP SOUTH PRIMARY",
+    "gp": "GAZIPUR",
+    "id": "school149",
+    "year": 2024
+  },
+  {
+    "year": 2024,
+    "udise": "19160208701",
+    "id": "school150",
+    "gp": "BKBATI",
+    "school": "KUNDULIA TAPASILI PRIMARY SCHOOL"
+  },
+  {
+    "year": 2024,
+    "school": "MAHAKALPUR MC HIGH ATT PRIMARY SCHOOL",
+    "id": "school151",
+    "udise": "19160209401",
+    "gp": "AMORAGORI"
+  },
+  {
+    "gp": "THALIA",
+    "udise": "19160213602",
+    "school": "MAINAN PRIMARY SCHOOL",
+    "year": 2024,
+    "id": "school152"
+  },
+  {
+    "school": "MANUCHAK ORIENTED PRIMARY SCHOOL",
+    "year": 2024,
+    "udise": "19160209502",
+    "gp": "AMORAGORI",
+    "id": "school153"
+  },
+  {
+    "school": "MENOKA SMRITI VIDYAMANDIR JR BASIC",
+    "udise": "19160210502",
+    "id": "school154",
+    "year": 2024,
+    "gp": "AMORAGORI"
+  },
+  {
+    "gp": "AMORAGORI",
+    "school": "NAKUBAR PRIMARY SCHOOL",
+    "year": 2024,
+    "id": "school155",
+    "udise": "19160209703"
+  },
+  {
+    "udise": "19160209102",
+    "gp": "BKBATI",
+    "school": "NISCHINTAPUR PRIMARY SCHOOL",
+    "id": "school156",
+    "year": 2024
+  },
+  {
+    "school": "NOWPARA GAZIPUR PRIMARY SCHOOL",
+    "year": 2024,
+    "gp": "NOWPARA",
+    "id": "school157",
+    "udise": "19160215403"
+  },
+  {
+    "id": "school158",
+    "udise": "19160215301",
+    "gp": "NOWPARA",
+    "school": "NOWPARA JUNIOR BASIC SCHOOL",
+    "year": 2024
+  },
+  {
+    "year": 2024,
+    "udise": "19160210204",
+    "gp": "AMORAGORI",
+    "school": "NUTANGRAM PRIMARY SCHOOL",
+    "id": "school159"
+  },
+  {
+    "school": "PAIKBASA PRIMARY SCHOOL",
+    "gp": "JHIKIRA",
+    "year": 2024,
+    "id": "school160",
+    "udise": "19160211201"
+  },
+  {
+    "udise": "19160214504",
+    "gp": "GAZIPUR",
+    "school": "PASCHIM GAZIPUR II PRIMARY SCHOOL",
+    "year": 2024,
+    "id": "school161"
+  },
+  {
+    "gp": "NOWPARA",
+    "school": "PASCHIM NOWPARA PRIMARY SCHOOL",
+    "id": "school162",
+    "year": 2024,
+    "udise": "19160215503"
+  },
+  {
+    "gp": "JHAMTIA",
+    "udise": "19160203201",
+    "id": "school163",
+    "year": 2024,
+    "school": "PASCHIM SAURIA PRIMARY SCHOOL"
+  },
+  {
+    "year": 2024,
+    "school": "RANJOYBAR MUZAFFAR AHMED PRIMARY SCHOOL",
+    "udise": "19160208702",
+    "id": "school164",
+    "gp": "BKBATI"
+  },
+  {
+    "year": 2024,
+    "school": "RANJOYBAR PRIMARY SCHOOL",
+    "udise": "19160208801",
+    "id": "school165",
+    "gp": "BKBATI"
+  },
+  {
+    "gp": "AMORAGORI",
+    "school": "RAUTARA PRIMARY SCHOOL",
+    "id": "school166",
+    "year": 2024,
+    "udise": "19160210103"
+  },
+  {
+    "id": "school167",
+    "udise": "19160208501",
+    "year": 2024,
+    "gp": "BKBATI",
+    "school": "SAHARABERIA PRIMARY SCHOOL"
+  },
+  {
+    "gp": "BKBATI",
+    "school": "SAHARABERIA SUKANTA PRIMARY SCHOOL",
+    "udise": "19160208601",
+    "year": 2024,
+    "id": "school168"
+  },
+  {
+    "udise": "19160203101",
+    "school": "SANURIA ORIENTED PRIMARY SCHOOL",
+    "id": "school169",
+    "year": 2024,
+    "gp": "JHAMTIA"
+  },
+  {
+    "year": 2024,
+    "school": "SATPOTA PRIMARY SCHOOL",
+    "id": "school170",
+    "gp": "JHAMTIA",
+    "udise": "19160203202"
+  },
+  {
+    "school": "SEHAGORI PRIMARY SCHOOL",
+    "udise": "19160213301",
+    "id": "school171",
+    "year": 2024,
+    "gp": "THALIA"
+  },
+  {
+    "id": "school172",
+    "udise": "19160213302",
+    "year": 2024,
+    "gp": "THALIA",
+    "school": "SEHAGORI RAJBANSHIPARA PRIMARY SCHOOL"
+  },
+  {
+    "id": "school173",
+    "udise": "19160211802",
+    "gp": "JHIKIRA",
+    "year": 2024,
+    "school": "SHIBGACHIA PRIMARY SCHOOL"
+  },
+  {
+    "id": "school174",
+    "school": "SIBGACHIA HORIZON PRIMARY SCHOOL",
+    "udise": "19160211803",
+    "year": 2024,
+    "gp": "JHIKIRA"
+  },
+  {
+    "udise": "19160211702",
+    "id": "school175",
+    "gp": "JHIKIRA",
+    "year": 2024,
+    "school": "SOUTH SIBGACHIA PRIMARY SCHOOL"
+  },
+  {
+    "gp": "JHAMTIA",
+    "id": "school176",
+    "year": 2024,
+    "school": "TELIBERIA PRIMARY SCHOOL",
+    "udise": "19160202902"
+  },
+  {
+    "gp": "BKBATI",
+    "udise": "19160209002",
+    "id": "school177",
+    "school": "THALIA HARA CHAND PRIMARY SCHOOL",
+    "year": 2024
+  },
+  {
+    "udise": "19160213101",
+    "id": "school178",
+    "year": 2024,
+    "gp": "THALIA",
+    "school": "THALIA SIBTOLA PRIMARY SCHOOL"
+  },
+  {
+    "gp": "GAZIPUR",
+    "year": 2024,
+    "school": "UTTAR GAZIPUR PRIMARY SCHOOL",
+    "udise": "19160214603",
+    "id": "school179"
+  },
+  {
+    "school": "UTTAR JOYPUR PRIMARY SCHOOL",
+    "id": "school180",
+    "year": 2024,
+    "gp": "JOYPUR",
+    "udise": "19160212001"
+  },
+  {
+    "id": "school181",
+    "gp": "GAZIPUR",
+    "year": 2024,
+    "udise": "19160214101",
+    "school": "UTTAR KALBANSH KISHOR MOHAN PRIMARY SCHOOL"
+  },
+  {
+    "school": "UTTAR KANKROLE PRIMARY SCHOOL",
+    "year": 2024,
+    "udise": "19160209904",
+    "id": "school182",
+    "gp": "AMORAGORI"
+  },
+  {
+    "id": "school183",
+    "gp": "THALIA",
+    "school": "UTTAR SEHAGORI PRIMARY SCHOOL",
+    "udise": "19160213201",
+    "year": 2024
+  }
+]
