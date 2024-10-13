@@ -17,8 +17,11 @@ import bcrypt from "bcryptjs";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import { comparePassword } from "@/modules/calculatefunctions";
+import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
 const RegUsers = () => {
+  const { teachersState, setTeachersState, setTeacherUpdateTime } =
+    useGlobalContext();
   const navigate = useRouter();
   let teacherdetails = {
     tname: "",
@@ -367,6 +370,20 @@ const RegUsers = () => {
     try {
       await axios.post("/api/deluserteachers", { id: user.id });
       await deleteDoc(doc(firestore, "userteachers", user.id));
+      let x = teachersState.filter((item) => item.id !== user.id);
+      let y = teachersState.filter((item) => item.id === user.id)[0];
+      y.registered = false;
+      x = [...x, y].sort((a, b) => {
+        if (a?.school < b?.school) {
+          return -1;
+        }
+        if (a?.school > b?.school) {
+          return 1;
+        }
+        return a?.rank - b?.rank;
+      });
+      setTeachersState(x);
+      setTeacherUpdateTime(Date.now());
       const docRef = doc(firestore, "teachers", user.id);
       await updateDoc(docRef, {
         registered: false,

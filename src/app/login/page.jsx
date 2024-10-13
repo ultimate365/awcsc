@@ -178,10 +178,9 @@ const Login = () => {
             where("username", "==", inputField.username)
           );
           const querySnapshot2 = await getDocs(q2);
-          console.log(querySnapshot2.docs);
+
           if (querySnapshot2.docs.length > 0) {
             let fdata2 = querySnapshot2.docs[0].data();
-            console.log("School Found", fdata2);
 
             // if (fdata.password === inputField.password) {
             if (compare(inputField.password, fdata2.password)) {

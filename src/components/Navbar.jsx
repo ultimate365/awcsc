@@ -13,11 +13,9 @@ const Navbar = () => {
   const {
     state,
     setState,
-    gpLockState,
     setGpLockState,
     gpLockUpdateTime,
     setGpLockUpdateTime,
-    circleLockState,
     setCircleLockState,
     circleLockUpdateTime,
     setCircleLockUpdateTime,
@@ -36,7 +34,6 @@ const Navbar = () => {
   });
   const details = getCookie("tid");
   const schdetails = getCookie("schid");
-  const [showNav, setShowNav] = useState(false);
   const handleNavCollapse = () => {
     if (
       document
@@ -116,7 +113,7 @@ const Navbar = () => {
   }, []);
 
   const RenderMenu = () => {
-    if (type) {
+    if (type !== null) {
       if (type == "teacher") {
         if (access === "admin") {
           return (
@@ -539,7 +536,6 @@ const Navbar = () => {
         LOGGEDAT: Date.now(),
         TYPE: "teacher",
       });
-      setShowNav(true);
     } else if (schdetails) {
       const sch = decryptObjData("schid");
       setState({
@@ -549,14 +545,13 @@ const Navbar = () => {
         TYPE: "school",
       });
       setTeacherdetails(sch);
-      setShowNav(true);
     }
     //eslint-disable-next-line
   }, []);
   useEffect(() => {
     //eslint-disable-next-line
   }, [teacherdetails, user, type]);
-  return showNav ? (
+  return (
     <nav className="navbar align-items-end navbar-expand-lg bg-white px-lg-3 py-lg-2 shadow-sm sticky-top p-2 overflow-auto bg-body-tertiary noprint">
       <div className="container-fluid">
         <Link className="navbar-brand" href="/">
@@ -586,89 +581,6 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <RenderMenu />
-          </ul>
-        </div>
-      </div>
-    </nav>
-  ) : (
-    <nav className="navbar align-items-end navbar-expand-lg bg-white px-lg-3 py-lg-2 shadow-sm sticky-top p-2 overflow-auto bg-body-tertiary noprint">
-      <div className="container-fluid">
-        <Link className="navbar-brand" href="/">
-          <Image
-            src={require("../images/AWCSC.png")}
-            alt="LOGO"
-            width={0}
-            height={0}
-            style={{
-              width: 60,
-              height: "auto",
-            }}
-            className="App-logo"
-          />
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/"
-                  onClick={handleNavCollapse}
-                >
-                  Home
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/SetConvenors"
-                  onClick={handleNavCollapse}
-                >
-                  Convenors
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  href="/downloads"
-                  onClick={handleNavCollapse}
-                >
-                  Downloads
-                </Link>
-              </li>
-
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  href="/complain"
-                  onClick={handleNavCollapse}
-                >
-                  Complain or Suggest Us
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  href="/login"
-                  onClick={handleNavCollapse}
-                >
-                  Login
-                </Link>
-              </li>
-            </>
           </ul>
         </div>
       </div>

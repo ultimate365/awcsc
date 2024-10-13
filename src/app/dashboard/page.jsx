@@ -8,7 +8,7 @@ import Typed from "typed.js";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 
 const Dashboard = () => {
-  const { state } = useGlobalContext();
+  const { state, setState } = useGlobalContext();
   const user = state.USER;
   const navigate = useRouter();
   let details = getCookie("tid");

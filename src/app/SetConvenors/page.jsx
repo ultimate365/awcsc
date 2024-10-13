@@ -113,7 +113,15 @@ const SetConvenors = () => {
           ...doc.data(),
           // id: doc.id,
         }))
-        .sort((a, b) => a?.tname.localeCompare(b?.tname));
+        .sort((a, b) => {
+          if (a?.school < b?.school) {
+            return -1;
+          }
+          if (a?.school > b?.school) {
+            return 1;
+          }
+          return a?.rank - b?.rank;
+        });
       setTeachersState(data);
       setTeacherUpdateTime(Date.now());
       filterGPTeachers(data);

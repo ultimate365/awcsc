@@ -55,6 +55,16 @@ export const bengEventNames = {
   ],
 };
 
+export const gpEngNames = [
+  "AMORAGORI",
+  "BKBATI",
+  "GAZIPUR",
+  "JHAMTIA",
+  "JHIKIRA",
+  "JOYPUR",
+  "NOWPARA",
+  "THALIA",
+];
 export const gpNames = [
   {
     englishName: "AMORAGORI",
