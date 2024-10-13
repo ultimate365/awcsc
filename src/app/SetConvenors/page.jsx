@@ -124,7 +124,7 @@ const SetConvenors = () => {
         });
       setTeachersState(data);
       setTeacherUpdateTime(Date.now());
-      filterGPTeachers(data.sort((a, b) => a?.tname.localeCompare(b?.tname)));
+      filterGPTeachers(data.sort((a, b) => a?.tname?.localeCompare(b?.tname)));
     } catch (error) {
       await axios
         .post("/api/getTeacher")
@@ -141,7 +141,7 @@ const SetConvenors = () => {
           setTeachersState(data);
           setTeacherUpdateTime(Date.now());
           filterGPTeachers(
-            data.sort((a, b) => a?.tname.localeCompare(b?.tname))
+            data.sort((a, b) => a?.tname?.localeCompare(b?.tname))
           );
         })
         .catch((error) => {
@@ -165,12 +165,16 @@ const SetConvenors = () => {
   const delConvenor = async () => {
     data?.map(async (el) => {
       setLoader(true);
-      updateTeachersState(el?.id, "taw");
+      await updateTeachersState(el?.id, "taw");
       await updateDoc(doc(firestore, "teachers", el?.id), {
         convenor: "taw",
       })
         .then(async () => {
-          delFromConvenorsState(el?.id);
+          try {
+            await delConvenorMongoDB(id);
+          } catch (error) {
+            console.log(error);
+          }
           await deleteDoc(doc(firestore, "allconvenors", el?.id));
         })
         .catch((e) => console.log(e));
@@ -208,7 +212,6 @@ const SetConvenors = () => {
       // id: doc.id,
     }));
     let allIds = data1.map((doc) => doc.id);
-
     let newConvenors = filterArrayExtraItems(allConvenors, data);
     let delConvenors = filterArrayExtraItems(data, allConvenors);
 
@@ -236,12 +239,16 @@ const SetConvenors = () => {
     }
 
     let delConvenorUpdate = delConvenors.map(async (el) => {
-      updateTeachersState(el?.id, "taw");
+      await updateTeachersState(el?.id, "taw");
       await updateDoc(doc(firestore, "teachers", el?.id), {
         convenor: "taw",
       })
         .then(async () => {
-          delFromConvenorsState(el);
+          try {
+            await delConvenorMongoDB(id);
+          } catch (error) {
+            console.log(error);
+          }
           await deleteDoc(doc(firestore, "allconvenors", el?.id));
         })
         .catch((e) => console.log(e));
@@ -253,13 +260,7 @@ const SetConvenors = () => {
         await setDoc(doc(firestore, "allconvenors", el?.id), el).then(
           async () => {
             await addNewConvenorMongoDB(el);
-            const x = [...convenorsState, el].sort((a, b) =>
-              a?.gp.localeCompare(b?.gp)
-            );
-            setConvenorsState(x);
-            setData(x);
-            setConvenorsUpdateTime(Date.now());
-            updateTeachersState(el?.id, "admin");
+            await updateTeachersState(el?.id, "admin");
             const docRef = doc(firestore, "teachers", el?.id);
             await updateDoc(docRef, {
               convenor: "admin",
@@ -267,9 +268,11 @@ const SetConvenors = () => {
           }
         );
       });
+
       await Promise.all(newConvenorAdd).then(async () => {
-        // teacherData();
-        // getAllConvenors();
+        setConvenorsState(allConvenors);
+        setData(allConvenors);
+        setConvenorsUpdateTime(Date.now());
         setLoader(false);
         toast.success("All GP Convenor Created", {
           position: "top-right",
@@ -379,20 +382,29 @@ const SetConvenors = () => {
 
   const deleteConvenor = async (id) => {
     setLoader(true);
-    updateTeachersState(id, "taw");
+    await updateTeachersState(id, "taw");
     await updateDoc(doc(firestore, "teachers", id), {
       convenor: "taw",
     })
       .then(async () => {
         await deleteDoc(doc(firestore, "allconvenors", id))
           .then(async () => {
-            delFromConvenorsState(id);
+            try {
+              await delConvenorMongoDB(id);
+            } catch (error) {
+              console.log(error);
+            }
             try {
               await updateDoc(doc(firestore, "userteachers", id), {
                 convenor: "taw",
               }).then(() => {
-                // teacherData();
-                // getAllConvenors();
+                setConvenorsState(
+                  convenorsState.filter((convenor) => convenor.id !== id)
+                );
+                setData(
+                  convenorsState.filter((convenor) => convenor.id !== id)
+                );
+                setConvenorsUpdateTime(Date.now());
                 setLoader(false);
                 toast.success("GP Convenor Deleted", {
                   position: "top-right",
@@ -534,14 +546,9 @@ const SetConvenors = () => {
     await updTeacherMongoDB(id, access);
   };
 
-  const delFromConvenorsState = async (id) => {
-    let y = convenorsState.filter((item) => item.id !== id);
-    setConvenorsState(y);
-    setConvenorsUpdateTime(Date.now());
-    await delConvenorMongoDB(id);
-  };
   const delAllConvenorsState = async () => {
     setConvenorsState([]);
+    setData([]);
     setConvenorsUpdateTime(Date.now());
     await delAllConvenorMongoDB();
   };
@@ -637,8 +644,9 @@ const SetConvenors = () => {
     if (teachersState?.length === 0 || difference2 >= 1) {
       teacherData();
     } else {
-      setData(teachersState);
-      filterGPTeachers(teachersState);
+      filterGPTeachers(
+        teachersState.sort((a, b) => a?.tname?.localeCompare(b?.tname))
+      );
     }
     // eslint-disable-next-line
   }, []);
@@ -773,6 +781,11 @@ const SetConvenors = () => {
                   document.getElementById("joyAdmin1").value = "";
                   document.getElementById("nowAdmin1").value = "";
                   document.getElementById("thalAdmin1").value = "";
+                  filterGPTeachers(
+                    teachersState.sort((a, b) =>
+                      a?.tname?.localeCompare(b?.tname)
+                    )
+                  );
                 }}
               ></button>
             </div>
@@ -797,6 +810,9 @@ const SetConvenors = () => {
                         ...x,
                         e.target.value !== "" ? JSON.parse(e.target.value) : "",
                       ];
+                      setAmoragoriTeachers(
+                        amoragoriTeachers.filter((t) => t.id !== x[0].id)
+                      );
                       setAmoragoriConvenor(x[0]);
                       let teacher = {
                         convenor: "admin",
@@ -862,6 +878,11 @@ const SetConvenors = () => {
                               ) {
                                 document.getElementById("amoAdmin1").value = "";
                               }
+                              setAmoragoriTeachers(
+                                [...amoragoriTeachers, el].sort((a, b) =>
+                                  a?.tname?.localeCompare(b?.tname)
+                                )
+                              );
                             }}
                           >
                             Remove
@@ -884,6 +905,9 @@ const SetConvenors = () => {
                         ...x,
                         e.target.value !== "" ? JSON.parse(e.target.value) : "",
                       ];
+                      setBkbatiTeachers(
+                        bkbatiTeachers.filter((t) => t.id !== x[0].id)
+                      );
                       setBkbatiConvenor(x[0]);
                       let teacher = {
                         convenor: "admin",
@@ -942,6 +966,11 @@ const SetConvenors = () => {
                               (elem) => el?.id !== elem.id
                             );
                             setAllConvenors(x);
+                            setBkbatiTeachers(
+                              [...bkbatiTeachers, el].sort((a, b) =>
+                                a?.tname?.localeCompare(b?.tname)
+                              )
+                            );
                             if (
                               x.filter((el) => el?.gp === "BKBATI").length === 0
                             ) {
@@ -969,6 +998,9 @@ const SetConvenors = () => {
                         ...x,
                         e.target.value !== "" ? JSON.parse(e.target.value) : "",
                       ];
+                      setGazipurTeachers(
+                        gazipurTeachers.filter((t) => t.id !== x[0].id)
+                      );
                       setGazipurConvenor(x[0]);
                       let teacher = {
                         convenor: "admin",
@@ -1027,6 +1059,11 @@ const SetConvenors = () => {
                               (elem) => el?.id !== elem.id
                             );
                             setAllConvenors(x);
+                            setGazipurTeachers(
+                              [...gazipurTeachers, el].sort((a, b) =>
+                                a?.tname?.localeCompare(b?.tname)
+                              )
+                            );
                             if (
                               x.filter((el) => el?.gp === "GAZIPUR").length ===
                               0
@@ -1054,6 +1091,9 @@ const SetConvenors = () => {
                         ...x,
                         e.target.value !== "" ? JSON.parse(e.target.value) : "",
                       ];
+                      setJhamtiaTeachers(
+                        jhamtiaTeachers.filter((t) => t.id !== x[0].id)
+                      );
                       setJhamtiaConvenor(x[0]);
                       let teacher = {
                         convenor: "admin",
@@ -1112,6 +1152,11 @@ const SetConvenors = () => {
                               (elem) => el?.id !== elem.id
                             );
                             setAllConvenors(x);
+                            setJhamtiaTeachers(
+                              [...jhamtiaTeachers, el].sort((a, b) =>
+                                a?.tname?.localeCompare(b?.tname)
+                              )
+                            );
                             if (
                               x.filter((el) => el?.gp === "JHAMTIA").length ===
                               0
@@ -1139,6 +1184,9 @@ const SetConvenors = () => {
                         ...x,
                         e.target.value !== "" ? JSON.parse(e.target.value) : "",
                       ];
+                      setJhikiraTeachers(
+                        jhikiraTeachers.filter((t) => t.id !== x[0].id)
+                      );
                       setJhikiraConvenor(x[0]);
                       let teacher = {
                         convenor: "admin",
@@ -1197,6 +1245,11 @@ const SetConvenors = () => {
                               (elem) => el?.id !== elem.id
                             );
                             setAllConvenors(x);
+                            setJhikiraTeachers(
+                              [...jhikiraTeachers, el].sort((a, b) =>
+                                a?.tname?.localeCompare(b?.tname)
+                              )
+                            );
                             if (
                               x.filter((el) => el?.gp === "JHIKIRA").length ===
                               0
@@ -1224,6 +1277,9 @@ const SetConvenors = () => {
                         ...x,
                         e.target.value !== "" ? JSON.parse(e.target.value) : "",
                       ];
+                      setJoypurTeachers(
+                        joypurTeachers.filter((t) => t.id !== x[0].id)
+                      );
                       setJoypurConvenor(x[0]);
                       let teacher = {
                         convenor: "admin",
@@ -1282,6 +1338,11 @@ const SetConvenors = () => {
                               (elem) => el?.id !== elem.id
                             );
                             setAllConvenors(x);
+                            setJoypurTeachers(
+                              [...joypurTeachers, el].sort((a, b) =>
+                                a?.tname?.localeCompare(b?.tname)
+                              )
+                            );
                             if (
                               x.filter((el) => el?.gp === "JOYPUR").length === 0
                             ) {
@@ -1308,6 +1369,9 @@ const SetConvenors = () => {
                         ...x,
                         e.target.value !== "" ? JSON.parse(e.target.value) : "",
                       ];
+                      setNowparaTeachers(
+                        nowparaTeachers.filter((t) => t.id !== x[0].id)
+                      );
                       setNowparaConvenor(x[0]);
                       let teacher = {
                         convenor: "admin",
@@ -1366,6 +1430,11 @@ const SetConvenors = () => {
                               (elem) => el?.id !== elem.id
                             );
                             setAllConvenors(x);
+                            setNowparaTeachers(
+                              [...nowparaTeachers, el].sort((a, b) =>
+                                a?.tname?.localeCompare(b?.tname)
+                              )
+                            );
                             if (
                               x.filter((el) => el?.gp === "NOWPARA").length ===
                               0
@@ -1393,6 +1462,9 @@ const SetConvenors = () => {
                         ...x,
                         e.target.value !== "" ? JSON.parse(e.target.value) : "",
                       ];
+                      setThaliaTeachers(
+                        thaliaTeachers.filter((t) => t.id !== x[0].id)
+                      );
                       setThaliaConvenor(x[0]);
                       let teacher = {
                         convenor: "admin",
@@ -1451,6 +1523,11 @@ const SetConvenors = () => {
                               (elem) => el?.id !== elem.id
                             );
                             setAllConvenors(x);
+                            setThaliaTeachers(
+                              [...thaliaTeachers, el].sort((a, b) =>
+                                a?.tname?.localeCompare(b?.tname)
+                              )
+                            );
                             if (
                               x.filter((el) => el?.gp === "THALIA").length === 0
                             ) {
@@ -1519,6 +1596,11 @@ const SetConvenors = () => {
                   document.getElementById("joyAdmin1").value = "";
                   document.getElementById("nowAdmin1").value = "";
                   document.getElementById("thalAdmin1").value = "";
+                  filterGPTeachers(
+                    teachersState.sort((a, b) =>
+                      a?.tname?.localeCompare(b?.tname)
+                    )
+                  );
                 }}
               >
                 Cancel
