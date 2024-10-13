@@ -21,6 +21,7 @@ const CircleResultSection = () => {
     setAmtaWestCircleAllResultState,
     AmtaWestCircleAllResultUpdateTime,
     setAmtaWestCircleAllResultUpdateTime,
+    setStateObject,
   } = useGlobalContext();
   const data = myStateObject?.data?.sort((a, b) =>
     a?.school.localeCompare(b?.school)
@@ -33,7 +34,7 @@ const CircleResultSection = () => {
   const docId = uuid();
   const [allData, setAllData] = useState(data);
   const [gpSchools, setGpSchools] = useState(gpData);
-
+  const [allFirstResult, setAllFirstResult] = useState([]);
   const [thisGp, setThisGp] = useState("");
   const [loader, setLoader] = useState(false);
   let teacherdetails;
@@ -197,7 +198,30 @@ const CircleResultSection = () => {
       console.log(error);
     }
   };
-
+  const getAllCircleFirstResult = async () => {
+    try {
+      const querySnapshot = await getDocs(
+        query(collection(firestore, "AmtaWestCircleFirstResult"))
+      );
+      const data = querySnapshot.docs
+        .map((doc) => doc.data())
+        .sort((a, b) => a?.event1rank - b?.event1rank);
+      setAllFirstResult(data);
+    } catch (error) {
+      await axios
+        .post("/api/getAmtaWestCircleFirstResult")
+        .then((response) => {
+          const data = response.data.data.sort(
+            (a, b) => a?.event1rank - b?.event1rank
+          );
+          setAllFirstResult(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching lock data: ", error);
+        });
+      console.error("Error fetching lock data: ", error);
+    }
+  };
   const handleParticipantChange = (e) => {
     const value = e.target.value;
     setSelectedParticipant(value);
@@ -299,6 +323,7 @@ const CircleResultSection = () => {
         navigate.push("/logout");
       }
     }
+    getAllCircleFirstResult();
     // eslint-disable-next-line
   }, []);
 
@@ -359,6 +384,20 @@ const CircleResultSection = () => {
           subHeaderAlign="right"
         />
       </div>
+      {allFirstResult.length > 0 && (
+        <div className="my-2">
+          <button
+            type="button"
+            className="btn btn-success m-1 "
+            onClick={() => {
+              setStateObject(allFirstResult);
+              navigate.push(`/CircleGroupWiseResultPrint`);
+            }}
+          >
+            {`Go to Print All First Result`}
+          </button>
+        </div>
+      )}
       <div className="my-4">
         <h3 className="text-center text-primary">Select to Print Result</h3>
         <div className="row justify-content-center align-items-center">

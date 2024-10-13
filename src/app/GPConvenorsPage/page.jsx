@@ -25,7 +25,10 @@ import {
   mindob,
 } from "../../modules/constants";
 import bcrypt from "bcryptjs";
-import { removeDuplicates } from "../../modules/calculatefunctions";
+import {
+  createDownloadLink,
+  removeDuplicates,
+} from "../../modules/calculatefunctions";
 import axios from "axios";
 const GPConvenorsPage = () => {
   const {
@@ -882,6 +885,49 @@ const GPConvenorsPage = () => {
 
   return (
     <div className="container text-center my-5">
+      {teacherdetails.circle === "admin" && (
+        <div className="my-2">
+          <button
+            type="button"
+            className="btn btn-primary m-2"
+            onClick={() => {
+              createDownloadLink(gpStudentState, "gpSportsStudentData");
+            }}
+          >
+            Download All GP Student&#8217;s Data
+          </button>
+          <button
+            type="button"
+            className="btn btn-dark m-2"
+            onClick={() => {
+              createDownloadLink(allGPAssistantsState, "allGPAssistants");
+            }}
+          >
+            Download All GP Assistant&#8217;s Data
+          </button>
+          <button
+            type="button"
+            className="btn btn-success m-2"
+            onClick={() => {
+              createDownloadLink(
+                AmtaWestCircleAllResultState,
+                "AmtaWestCircleAllResult"
+              );
+            }}
+          >
+            Download All Circle All Result Data
+          </button>
+          <button
+            type="button"
+            className="btn btn-info m-2"
+            onClick={() => {
+              createDownloadLink(teachersState, "teachers");
+            }}
+          >
+            Download All Teacher&#8217;s Data
+          </button>
+        </div>
+      )}
       {(teacherdetails.circle === "admin" ||
         teacherdetails.convenor === "admin" ||
         teacherdetails.gpAssistant === "admin") &&

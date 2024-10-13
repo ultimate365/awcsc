@@ -18,6 +18,7 @@ import Loader from "../../components/Loader";
 import axios from "axios";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import {
+  createDownloadLink,
   filterArrayExtraItems,
   filterArraySameItems,
   removeDuplicates,
@@ -674,18 +675,6 @@ const SetConvenors = () => {
 
   return (
     <div className="container text-center my-5">
-      <ToastContainer
-        position="top-right"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       {loader ? <Loader /> : null}
       {teacherdetails.circle === "admin" && (
         <div className="container my-4 text-center">
@@ -703,6 +692,15 @@ const SetConvenors = () => {
             onClick={getAllConvenors}
           >
             Refresh Convenors
+          </button>
+          <button
+            type="button"
+            className="btn btn-info m-2"
+            onClick={() => {
+              createDownloadLink(convenorsState, "allconvenors");
+            }}
+          >
+            Download All Convenor&#8217;s Data
           </button>
           {data?.length > 0 && (
             <div>
