@@ -233,7 +233,7 @@ const RegUsers = () => {
     {
       name: "Reset Password",
       cell: (row) =>
-        comparePassword(row.empid.toLowerCase(), row.password) ? (
+        comparePassword(row.pan.toLowerCase(), row.password) ? (
           <button
             type="button"
             className="btn btn-sm btn-success"
@@ -243,7 +243,7 @@ const RegUsers = () => {
               alert(
                 `Password of ${
                   row.tname
-                } is EMPID in Lowercase i.e. ${row.empid.toLowerCase()}? `
+                } is PAN in Lowercase i.e. ${row.pan.toLowerCase()}? `
               );
             }}
           >
@@ -259,7 +259,7 @@ const RegUsers = () => {
               let message = confirm(
                 `Are You Sure To Reset Password of ${
                   row.tname
-                } to EMPID in Lowercase i.e. ${row.empid.toLowerCase()}? `
+                } to PAN in Lowercase i.e. ${row.pan.toLowerCase()}? `
               );
               message
                 ? resetPassword(row)
@@ -449,7 +449,7 @@ const RegUsers = () => {
   const resetPassword = async (user) => {
     setLoader(true);
     try {
-      const password = bcrypt.hashSync(user.empid.toLowerCase(), 10);
+      const password = bcrypt.hashSync(user.pan.toLowerCase(), 10);
       user.password = password;
       await axios.post("/api/updateuserteachers", user);
       const docRef = doc(firestore, "userteachers", user.id);
@@ -459,7 +459,7 @@ const RegUsers = () => {
         .then(() => {
           setLoader(false);
           toast.success(
-            `Congrats! User Password Reset to Employee ID in Lower Case i.e. ${user.empid.toLowerCase()} !`
+            `Congrats! User Password Reset to PAN in Lower Case i.e. ${user.pan.toLowerCase()} !`
           );
           userData();
         })

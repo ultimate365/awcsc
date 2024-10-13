@@ -349,7 +349,7 @@ const AllTeachers = () => {
               setTeacherUpdateTime(Date.now());
               setLoader(false);
               toast.success(
-                `Registered Successfully with username PAN in LowerCase i.e. ${el.pan.toLowerCase()} and Password EMPID in LowerCase i.e. ${el.empid.toLowerCase()}`,
+                `Registered Successfully with username Employee ID in LowerCase i.e. ${el.empid.toLowerCase()} and Password PAN in LowerCase i.e. ${el.pan.toLowerCase()}`,
                 {
                   position: "top-right",
                   autoClose: 2000,
@@ -384,7 +384,7 @@ const AllTeachers = () => {
     setLoader(true);
     const url = `/api/updateuserteachers`;
     try {
-      const password = bcrypt.hashSync(user.empid.toLowerCase(), 10);
+      const password = bcrypt.hashSync(user.pan.toLowerCase(), 10);
       user.password = password;
       const response = await axios.post(url, user);
       if (response.data.success) {
@@ -395,7 +395,7 @@ const AllTeachers = () => {
           .then(() => {
             setLoader(false);
             toast.success(
-              `Congrats! User Password Reset to Employee ID in Lower Case i.e. ${user.empid.toLowerCase()} !`,
+              `Congrats! User Password Reset to PAN in Lower Case i.e. ${user.pan.toLowerCase()} !`,
               {
                 position: "top-right",
                 autoClose: 1500,
