@@ -124,17 +124,25 @@ const SetConvenors = () => {
         });
       setTeachersState(data);
       setTeacherUpdateTime(Date.now());
-      filterGPTeachers(data);
+      filterGPTeachers(data.sort((a, b) => a?.tname.localeCompare(b?.tname)));
     } catch (error) {
       await axios
         .post("/api/getTeacher")
         .then((response) => {
-          const data = response.data.data.sort((a, b) =>
-            a?.tname.localeCompare(b?.tname)
-          );
+          const data = response.data.data.sort((a, b) => {
+            if (a?.school < b?.school) {
+              return -1;
+            }
+            if (a?.school > b?.school) {
+              return 1;
+            }
+            return a?.rank - b?.rank;
+          });
           setTeachersState(data);
           setTeacherUpdateTime(Date.now());
-          filterGPTeachers(data);
+          filterGPTeachers(
+            data.sort((a, b) => a?.tname.localeCompare(b?.tname))
+          );
         })
         .catch((error) => {
           console.error("Error fetching lock data: ", error);
