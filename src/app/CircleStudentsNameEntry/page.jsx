@@ -864,15 +864,18 @@ const CircleStudentsNameEntry = () => {
     <div className="container text-center my-5">
       {teacherdetails.circle === "admin" && (
         <div className="mx-auto">
-          <button
-            type="button"
-            className="btn btn-success m-2"
-            onClick={() => {
-              createDownloadLink(allGPFirstsState, "allGPFirsts");
-            }}
-          >
-            Download All GP First&#8217;s Result Data
-          </button>
+          {allGPFirstsState.length > 0 && (
+            <button
+              type="button"
+              className="btn btn-success m-2"
+              onClick={() => {
+                createDownloadLink(allGPFirstsState, "allGPFirsts");
+              }}
+            >
+              Download All GP First&#8217;s Result Data
+            </button>
+          )}
+
           <button
             type="button"
             className="btn p-4 btn-danger m-1 btn-sm"

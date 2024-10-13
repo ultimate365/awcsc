@@ -887,36 +887,42 @@ const GPConvenorsPage = () => {
     <div className="container text-center my-5">
       {teacherdetails.circle === "admin" && (
         <div className="my-2">
-          <button
-            type="button"
-            className="btn btn-primary m-2"
-            onClick={() => {
-              createDownloadLink(gpStudentState, "gpSportsStudentData");
-            }}
-          >
-            Download All GP Student&#8217;s Data
-          </button>
-          <button
-            type="button"
-            className="btn btn-dark m-2"
-            onClick={() => {
-              createDownloadLink(allGPAssistantsState, "allGPAssistants");
-            }}
-          >
-            Download All GP Assistant&#8217;s Data
-          </button>
-          <button
-            type="button"
-            className="btn btn-success m-2"
-            onClick={() => {
-              createDownloadLink(
-                AmtaWestCircleAllResultState,
-                "AmtaWestCircleAllResult"
-              );
-            }}
-          >
-            Download All Circle All Result Data
-          </button>
+          {gpStudentState.length > 0 && (
+            <button
+              type="button"
+              className="btn btn-primary m-2"
+              onClick={() => {
+                createDownloadLink(gpStudentState, "gpSportsStudentData");
+              }}
+            >
+              Download All GP Student&#8217;s Data
+            </button>
+          )}
+          {allGPAssistantsState.length > 0 && (
+            <button
+              type="button"
+              className="btn btn-dark m-2"
+              onClick={() => {
+                createDownloadLink(allGPAssistantsState, "allGPAssistants");
+              }}
+            >
+              Download All GP Assistant&#8217;s Data
+            </button>
+          )}
+          {AmtaWestCircleAllResultState.length > 0 && (
+            <button
+              type="button"
+              className="btn btn-success m-2"
+              onClick={() => {
+                createDownloadLink(
+                  AmtaWestCircleAllResultState,
+                  "AmtaWestCircleAllResult"
+                );
+              }}
+            >
+              Download All Circle All Result Data
+            </button>
+          )}
           <button
             type="button"
             className="btn btn-info m-2"

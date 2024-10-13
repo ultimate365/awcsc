@@ -7,7 +7,10 @@ import { firestore } from "../../context/FirbaseContext";
 import { collection, doc, getDocs, query, setDoc } from "firebase/firestore";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
-import { enToBnNumber } from "../../modules/calculatefunctions";
+import {
+  createDownloadLink,
+  enToBnNumber,
+} from "../../modules/calculatefunctions";
 import { circleBenName, gpNames } from "../../modules/constants";
 import { events } from "../../modules/constants";
 import { v4 as uuid } from "uuid";
@@ -388,10 +391,19 @@ const CircleResultSection = () => {
         <div className="my-2">
           <button
             type="button"
+            className="btn btn-success m-2"
+            onClick={() => {
+              createDownloadLink(allFirstResult, "AmtaWestCircleFirstResult");
+            }}
+          >
+            Download All Circle First&#8217;s Result Data
+          </button>
+          <button
+            type="button"
             className="btn btn-success m-1 "
             onClick={() => {
               setStateObject(allFirstResult);
-              navigate.push(`/CircleGroupWiseResultPrint`);
+              navigate.push(`/CircleAllFirstResultPrint`);
             }}
           >
             {`Go to Print All First Result`}
