@@ -276,16 +276,7 @@ const AllTeachers = () => {
         });
         setTeachersState(x);
         setTeacherUpdateTime(Date.now());
-        toast.success("Teacher Details Updated Successfully!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.success("Teacher Details Updated Successfully!");
 
         setShowModal(false);
         setLoader(false);

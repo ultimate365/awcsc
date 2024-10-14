@@ -1,6 +1,7 @@
 import dbConnect from "../../../lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import teachers from "../../../models/teachers";
+import userteachers from "../../../models/userteachers";
 
 dbConnect();
 export async function POST(request: NextRequest) {
@@ -28,6 +29,7 @@ export async function POST(request: NextRequest) {
     }: any = reqBody;
 
     let teachersData = await teachers.findOne({ id });
+    let userData = await userteachers.findOne({ id });
 
     if (teachersData) {
       teachersData.udise = udise;
@@ -49,6 +51,21 @@ export async function POST(request: NextRequest) {
       teachersData.circleAssistant = circleAssistant;
 
       await teachersData.save();
+      if (userData) {
+        userData.tname = tname;
+        userData.circle = school;
+        userData.circleAssistant = circleAssistant;
+        userData.udise = udise;
+        userData.pan = pan;
+        userData.desig = desig;
+        userData.school = school;
+        userData.empid = empid;
+        userData.gpAssistant = gpAssistant;
+        userData.gp = gp;
+        userData.convenor = convenor;
+
+        await userData.save();
+      }
       return NextResponse.json(
         {
           message: "teachers Data Updated Successfully",
