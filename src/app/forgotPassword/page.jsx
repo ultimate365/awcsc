@@ -9,14 +9,15 @@ const OtpForm = () => {
   const [otpform, showform] = useState(true);
   const [loader, setLoader] = useState(false);
   const emailRef = useRef();
-  const sendOtp = async () => {
+  const sendOtp = async (e) => {
+    e.preventDefault();
     try {
       setLoader(true);
-      let response = await axios.post("/api/forgotpassword", {
+      const response = await axios.post("/api/forgotpassword", {
         email: emailRef.current.value,
       });
-      let record = response.data;
-      if (response.status === 200) {
+      const record = response.data;
+      if (record.success) {
         toast.success(record.message, {
           position: "top-right",
           autoClose: 5000,
@@ -80,7 +81,7 @@ const OtpForm = () => {
             </div>
             <div className="mb-3">
               <button
-                type="button"
+                type="submit"
                 className="btn btn-primary m-1"
                 onClick={sendOtp}
               >

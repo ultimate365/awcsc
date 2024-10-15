@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import bcrypt from "bcryptjs";
 import { firestore } from "../context/FirbaseContext";
 import {
@@ -74,7 +74,7 @@ const PasswordForm = (props) => {
   };
 
   const submitBtn = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     // console.log(inputField);
     if (validForm()) {
       Object.assign(inputField, props);
@@ -102,16 +102,7 @@ const PasswordForm = (props) => {
           });
 
           setLoader(false);
-          toast.success("Congrats! You are Password Reset is Successfull!", {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          toast.success("Congrats! You are Password Reset is Successfull!");
 
           setTimeout(() => {
             router.push("/logout");
@@ -122,45 +113,16 @@ const PasswordForm = (props) => {
         }
       } catch (e) {
         setLoader(false);
-        toast.error(e, {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.error(e.message);
+        console.log(e);
       }
     } else {
-      toast.error("Form Is Invalid", {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("Form Is Invalid");
     }
   };
 
   return (
     <div className="container p-2">
-      <ToastContainer
-        position="top-right"
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss={false}
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       {loader ? <Loader /> : null}
       <div className="row m-auto login p-2">
         <form autoComplete="off" method="post">
@@ -221,7 +183,7 @@ const PasswordForm = (props) => {
           </div>
           <div>
             <button
-              type="button"
+              type="submit"
               className="btn btn-primary m-1"
               onClick={submitBtn}
             >
