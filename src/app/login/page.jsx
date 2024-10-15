@@ -6,6 +6,7 @@ import { firestore } from "../../context/FirbaseContext";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import bcrypt from "bcryptjs";
 import Loader from "../../components/Loader";
+import CustomInput from "../../components/CustomInput";
 import {
   decryptObjData,
   encryptObjData,
@@ -384,28 +385,22 @@ const Login = () => {
             )}
           </div>
           <div className="mb-3">
-            <label htmlFor="" className="form-label">
-              Password
-            </label>
-            <input
-              type={showPassword ? "text" : "password"}
-              className="form-control"
-              name="password"
-              id="password"
+            <CustomInput
+              title={"Password"}
+              type={"password"}
+              placeholder={"Enter Password"}
               value={inputField.password}
-              onChange={inputHandler}
+              onChange={(e) => {
+                setInputField({
+                  ...inputField,
+                  password: e.target.value,
+                });
+              }}
             />
             {errField.passwordErr.length > 0 && (
               <span className="error">{errField.passwordErr}</span>
             )}
           </div>
-          <button
-            type="button"
-            className="btn btn-warning btn-sm mt-2"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? "Hide Password" : "Show Password"}
-          </button>
 
           <div>
             <button
