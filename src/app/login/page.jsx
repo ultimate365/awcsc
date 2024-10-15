@@ -15,10 +15,10 @@ import {
 } from "../../modules/encryption";
 import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
+import Link from "next/link";
 const Login = () => {
   const { setState } = useGlobalContext();
   const [loader, setLoader] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [inputField, setInputField] = useState({
     username: "",
     password: "",
@@ -27,11 +27,7 @@ const Login = () => {
     usernameErr: "",
     passwordErr: "",
   });
-  const inputHandler = (e) => {
-    // console.log(e.target.name, "==", e.target.value);
-    setInputField({ ...inputField, [e.target.name]: e.target.value });
-    // console.log(inputField);
-  };
+
   useEffect(() => {
     document.title = "AMTA WEST SPORTS: Login Page";
     let loggedAt = getCookie("loggedAt");
@@ -401,7 +397,11 @@ const Login = () => {
               <span className="error">{errField.passwordErr}</span>
             )}
           </div>
-
+          <div className="mb-3">
+            <Link style={{ textDecoration: "none" }} href={"/forgotPassword"}>
+              Forgot Password?
+            </Link>
+          </div>
           <div>
             <button
               type="submit"
