@@ -9,54 +9,42 @@ const OtpForm = () => {
   const [otpform, showform] = useState(true);
   const [loader, setLoader] = useState(false);
   const emailRef = useRef();
+
   const sendOtp = async (e) => {
     e.preventDefault();
-    try {
-      setLoader(true);
-      const response = await axios.post("/api/forgotpassword", {
-        email: emailRef.current.value,
-      });
-      const record = response.data;
-      if (record.success) {
-        toast.success(record.message, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-
-          draggable: true,
-          progress: undefined,
-          theme: "light",
+    if (ValidateEmail(emailRef.current.value)) {
+      try {
+        setLoader(true);
+        const response = await axios.post("/api/forgotpassword", {
+          email: emailRef.current.value,
         });
-        showform(false);
+        const record = response.data;
+        if (record.success) {
+          toast.success(record.message);
+          showform(false);
+          setLoader(false);
+        } else {
+          setLoader(false);
+          toast.error(record.message);
+        }
+      } catch (e) {
         setLoader(false);
-      } else {
-        setLoader(false);
-        toast.error(record.message, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.error("Something Went Wrong!");
       }
-    } catch (e) {
-      setLoader(false);
-      toast.error("Something Went Wrong!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    } else {
+      toast.error("Please enter a valid email address.");
     }
   };
+
+  function ValidateEmail(mail) {
+    //eslint-disable-next-line
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(mail)) {
+      return true;
+    }
+    // alert("You have entered an invalid email address!");
+    return false;
+  }
+
   useEffect(() => {
     document.title = "AMTA WEST SPORTS:Forgot Password";
   }, []);
