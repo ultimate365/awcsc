@@ -38,6 +38,8 @@ export default function CustomInput({
                 if (showPassword === "password") {
                   setShowPassword("text");
                   setColor("danger");
+                } else if (showPassword === "number") {
+                  setShowPassword("number");
                 } else {
                   setShowPassword("password");
                   setColor("warning");

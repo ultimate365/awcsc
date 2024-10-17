@@ -17,7 +17,7 @@ import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
 import Link from "next/link";
 const Login = () => {
-  const { setState } = useGlobalContext();
+  const { setState, setStateObject } = useGlobalContext();
   const [loader, setLoader] = useState(false);
   const [inputField, setInputField] = useState({
     username: "",
@@ -30,10 +30,10 @@ const Login = () => {
 
   useEffect(() => {
     document.title = "AMTA WEST SPORTS: Login Page";
-    let loggedAt = getCookie("loggedAt");
+    const loggedAt = getCookie("loggedAt");
     const details = getCookie("tid");
     const schdetails = getCookie("schid");
-    if (loggedAt) {
+    if (loggedAt && details && schdetails) {
       navigate.push("/dashboard");
       if (details) {
         const teacherDetails = decryptObjData("tid");
@@ -113,16 +113,7 @@ const Login = () => {
           if (compare(inputField.password, fdata.password)) {
             if (!fdata.disabled) {
               setLoader(false);
-              toast.success("Congrats! You are Logined Successfully!", {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
+              toast.success("Congrats! You are Logined Successfully!");
               const collectionRef2 = collection(firestore, "teachers");
               const q2 = query(collectionRef2, where("pan", "==", fdata.pan));
               const querySnapshot2 = await getDocs(q2);
@@ -130,43 +121,27 @@ const Login = () => {
 
               let fdata2 = querySnapshot2.docs[0].data();
 
-              encryptObjData("uid", fdata, 10080);
-              encryptObjData("tid", fdata2, 10080);
+              // encryptObjData("uid", fdata, 10080);
+              // encryptObjData("tid", fdata2, 10080);
+              // setCookie("t", fdata2.tname, 10080);
+              // setCookie("loggedAt", Date.now(), 10080);
+              // setState({
+              //   USER: fdata,
+              //   ACCESS: fdata.circle,
+              //   LOGGEDAT: Date.now(),
+              //   TYPE: "teacher",
+              // });
+              encryptObjData("nonVerifiedUid", fdata, 10080);
+              encryptObjData("nonVerifiedTid", fdata2, 10080);
               setCookie("t", fdata2.tname, 10080);
-              setCookie("loggedAt", Date.now(), 10080);
-              setState({
-                USER: fdata,
-                ACCESS: fdata.circle,
-                LOGGEDAT: Date.now(),
-                TYPE: "teacher",
-              });
-
-              navigate.push("/dashboard");
+              navigate.push("/verifyLogin");
             } else {
               setLoader(false);
-              toast.error("Your Account is Disabled!", {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
+              toast.error("Your Account is Disabled!");
             }
           } else {
             setLoader(false);
-            toast.error("Wrong Password!", {
-              position: "top-right",
-              autoClose: 1500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
+            toast.error("Wrong Password!");
           }
         } else {
           const collectionRef2 = collection(firestore, "userschools");
@@ -182,51 +157,26 @@ const Login = () => {
             // if (fdata.password === inputField.password) {
             if (compare(inputField.password, fdata2.password)) {
               setLoader(false);
-              toast.success("Congrats! You are Logined Successfully!", {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
+              toast.success("Congrats! You are Logined Successfully!");
 
-              encryptObjData("schid", fdata2, 10080);
-              setCookie("loggedAt", Date.now(), 10080);
-              navigate.push("/dashboard");
-              setState({
-                USER: fdata2,
-                ACCESS: fdata2.convenor,
-                LOGGEDAT: Date.now(),
-                TYPE: "school",
-              });
+              // encryptObjData("schid", fdata2, 10080);
+              // setCookie("loggedAt", Date.now(), 10080);
+              // navigate.push("/verifyLogin");
+              // setState({
+              //   USER: fdata2,
+              //   ACCESS: fdata2.convenor,
+              //   LOGGEDAT: Date.now(),
+              //   TYPE: "school",
+              // });
+              encryptObjData("nonVerifiedSchId", fdata2, 10080);
+              navigate.push("/verifyLogin");
             } else {
               setLoader(false);
-              toast.error("Invalid Username or Password!", {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
+              toast.error("Invalid Username or Password!");
             }
           } else {
             setLoader(false);
-            toast.error("Invalid Username or Password!", {
-              position: "top-right",
-              autoClose: 1500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
+            toast.error("Invalid Username or Password!");
           }
         }
       } catch (error) {
@@ -242,88 +192,49 @@ const Login = () => {
               const userteacherData = record.userteacherData;
               const teacherData = record.teacherData;
               setLoader(false);
-              toast.success("Congrats! You are Logined Successfully!", {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-              encryptObjData("uid", userteacherData, 10080);
-              encryptObjData("tid", teacherData, 10080);
+              toast.success("Congrats! You are Logined Successfully!");
+              // encryptObjData("uid", userteacherData, 10080);
+              // encryptObjData("tid", teacherData, 10080);
+              // setCookie("t", teacherData.tname, 10080);
+              // setCookie("loggedAt", Date.now(), 10080);
+              // setState({
+              //   USER: userteacherData,
+              //   ACCESS: userteacherData.circle,
+              //   LOGGEDAT: Date.now(),
+              //   TYPE: "teacher",
+              // });
+              encryptObjData("nonVerifiedUid", userteacherData, 10080);
+              encryptObjData("nonVerifiedTid", teacherData, 10080);
               setCookie("t", teacherData.tname, 10080);
-              setCookie("loggedAt", Date.now(), 10080);
-              setState({
-                USER: userteacherData,
-                ACCESS: userteacherData.circle,
-                LOGGEDAT: Date.now(),
-                TYPE: "teacher",
-              });
-              navigate.push("/dashboard");
+
+              navigate.push("/verifyLogin");
             } else {
               const userSchoolData = record.userschoolData;
               setLoader(false);
-              toast.success("Congrats! You are Logined Successfully!", {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-              encryptObjData("schid", userSchoolData, 10080);
-              setCookie("loggedAt", Date.now(), 10080);
-              setState({
-                USER: userSchoolData,
-                ACCESS: userSchoolData.convenor,
-                LOGGEDAT: Date.now(),
-                TYPE: "school",
-              });
-              navigate.push("/dashboard");
+              toast.success("Congrats! You are Logined Successfully!");
+              // encryptObjData("schid", userSchoolData, 10080);
+              // setCookie("loggedAt", Date.now(), 10080);
+              // setState({
+              //   USER: userSchoolData,
+              //   ACCESS: userSchoolData.convenor,
+              //   LOGGEDAT: Date.now(),
+              //   TYPE: "school",
+              // });
+              encryptObjData("nonVerifiedSchId", userSchoolData, 10080);
+
+              navigate.push("/verifyLogin");
             }
           } else {
             setLoader(false);
-            toast.error("Invalid Username or Password!", {
-              position: "top-right",
-              autoClose: 1500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
+            toast.error("Invalid Username or Password!");
           }
         } catch (error) {
           setLoader(false);
-          toast.error("Error Occurred: " + error.message, {
-            position: "top-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          toast.error("Error Occurred: " + error.message);
         }
       }
     } else {
-      toast.error("Form Is Invalid", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("Form Is Invalid");
     }
   };
   // useEffect(() => {
