@@ -498,7 +498,7 @@ const AllTeachers = () => {
                 </h1>
                 <button
                   type="button"
-                  class="btn-close"
+                  className="btn-close"
                   aria-label="Close"
                   onClick={() => {
                     setShowModal(false);

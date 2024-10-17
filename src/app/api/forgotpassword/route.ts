@@ -1,6 +1,6 @@
 import dbConnect from "../../../lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-import sendEmail from "../../../lib/mailer";
+import sendEmail from "../../../lib/forgotPasswordMailer";
 import Otp from "../../../models/otp";
 import Userteachers from "../../../models/userteachers";
 dbConnect();

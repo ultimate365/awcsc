@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
-const sendEmail = async ({ email, code, name }: any) => {
+const verifyEmailMailer = async (email: any, emailOtp: number, name: any) => {
   try {
-    const mail = process.env.AWCSC_GMAIL_ID;
+    const mail = process.env.AWCSC_GMAIL_ID || "";
     const mailpassword = process.env.AWCSC_GMAIL_PASSWORD;
     const transport = nodemailer.createTransport({
       service: "gmail",
@@ -10,30 +10,6 @@ const sendEmail = async ({ email, code, name }: any) => {
         pass: mailpassword,
       },
     });
-
-    // const mailOptions = {
-    //   from: mail,
-    //   to: email,
-    //   subject: `Reset your Password: Mail no ${Math.floor(
-    //     Math.random() * 1000 + 1
-    //   )}`,
-    //   // text: `Your OTP is ${otp}`,
-    //   html: `<h1 style="text-align:center; color:blue; ">Hello Dear ${name}!</h1>
-    //     <h2 style="text-align:center; color:blue;">Your OTP is ${code}. Please use this OTP to reset your password.</h2>`,
-    // };
-    // const mailResponse = await transport.sendMail(
-    //   mailOptions,
-    //   function (error: any, info: any) {
-    //     if (error) {
-    //       console.log("error", error);
-    //     } else {
-    //       console.log("Email Sent: " + info.response);
-    //     }
-    //   }
-    // );
-
-    // return mailResponse;
-
     await new Promise((resolve, reject) => {
       // verify connection configuration
       transport.verify(function (error: any, success: any) {
@@ -59,7 +35,7 @@ const sendEmail = async ({ email, code, name }: any) => {
       )}`,
       text: `Hello Dear ${name}!`,
       html: `<h1 style="text-align:center; color:blue; ">Hello Dear ${name}!</h1>
-        <h2 style="text-align:center; color:blue;">Your OTP is ${code}. Please use this OTP to reset your password.</h2>`,
+        <h2 style="text-align:center; color:blue;">Your OTP is ${emailOtp}. Please use this OTP to Verify Your Email id.</h2>`,
     };
 
     await new Promise((resolve, reject) => {
@@ -80,4 +56,4 @@ const sendEmail = async ({ email, code, name }: any) => {
   }
 };
 
-export default sendEmail;
+export default verifyEmailMailer;

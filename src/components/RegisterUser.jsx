@@ -16,13 +16,14 @@ import {
 import bcrypt from "bcryptjs";
 import Loader from "./Loader";
 import axios from "axios";
+import CustomInput from "./CustomInput";
 
 const RegisterUser = ({ sata, setSignUpTrue }) => {
   const navigate = useRouter();
   const docId = sata.id;
   const [displayLoader, setDisplayLoader] = useState(false);
-
-  const [showPassword, setShowPassword] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showSubmitBtn, setShowSubmitBtn] = useState(false);
   const [inputField, setInputField] = useState({
     teachersID: sata.id,
     tname: sata.tname,
@@ -51,7 +52,8 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
     cpasswordErr: "",
     profilePhotoErr: "",
   });
-
+  const [mobileOTP, setMobileOTP] = useState("");
+  const [emailOTP, setEmailOTP] = useState("");
   const inputHandler = (e) => {
     // console.log(e.target.name, "==", e.target.value);
     setInputField({
@@ -61,7 +63,7 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
     // console.log(inputField);
   };
   const submitBtn = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     // console.log(inputField);
     if (validForm()) {
       setDisplayLoader(true);
@@ -150,6 +152,7 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
     } else {
       toast.error("Form Is Invalid");
     }
+    console.log(inputField);
   };
   const validForm = () => {
     let formIsValid = true;
@@ -212,6 +215,42 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
     return false;
   }
 
+  const sendVerificationOTP = async () => {
+    setDisplayLoader(true);
+    const res = await axios.post("/api/sendVerifyOTP", {
+      phone: inputField.phone,
+      email: inputField.email,
+      name: inputField.tname,
+    });
+    const record = res.data;
+    if (record.success) {
+      toast.success("OTP sent to your Email and Mobile Number!");
+      setShowModal(true);
+      setDisplayLoader(false);
+    } else {
+      toast.error("Failed to send OTP!");
+      setDisplayLoader(false);
+    }
+  };
+  const verifyOTP = async () => {
+    setDisplayLoader(true);
+    const res = await axios.post("/api/verifyEmailAndMobile", {
+      phone: inputField.phone,
+      email: inputField.email,
+      phoneCode: mobileOTP,
+      emailCode: emailOTP,
+    });
+    const record = res.data;
+    if (record.success) {
+      toast.success("Your Email and Mobile Number is successfully verified!");
+      setShowSubmitBtn(true);
+      setDisplayLoader(false);
+    } else {
+      toast.error("Failed to send OTP!");
+      setDisplayLoader(false);
+    }
+  };
+
   function removeSpaces(inputString) {
     // Use a regular expression to match all spaces (whitespace characters) and replace them with an empty string
     return inputString.replace(/\s/g, "");
@@ -222,137 +261,237 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
   }, [inputField]);
   return (
     <div className="container my-5">
+      {displayLoader ? <Loader /> : null}
       <div className="row login text-black m-auto col-md-6 p-2">
-        <h3 className="text-primary">
-          HELLO {sata.tname}, PLEASE COMPLETE YOUR REGISTRATION
+        <h3 className={`text-${showSubmitBtn ? "success" : "primary"} my-3`}>
+          HELLO {sata.tname},{" "}
+          {!showSubmitBtn
+            ? "PLEASE COMPLETE YOUR REGISTRATION"
+            : "YOUR EMAIL AND MOBILE NUMBER IS VERIFIED, PLEASE REGISTER YOURSELF NOW!"}
         </h3>
         <br />
 
-        {displayLoader ? <Loader /> : null}
         <form autoComplete="off" method="post">
-          <div className="mb-3">
-            <label htmlFor="" className="form-label">
-              User Name
-            </label>
-            <input
-              type="text"
-              name="username"
-              id="username"
-              placeholder="Enter Username"
-              className="form-control"
-              value={inputField.username}
-              onChange={(e) =>
-                setInputField({
-                  ...inputField,
-                  username: e.target.value.replace(/[^\w\s]/g, ""),
-                })
-              }
-            />
-            {errField.usernameErr.length > 0 && (
-              <span className="error">{errField.usernameErr}</span>
-            )}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="" className="form-label">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              placeholder="Enter Email"
-              className="form-control"
-              value={inputField.email}
-              onChange={inputHandler}
-            />
-            {errField.emailErr.length > 0 && (
-              <span className="error">{errField.emailErr}</span>
-            )}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="" className="form-label">
-              Phone
-            </label>
-            <input
-              type="text"
-              name="phone"
-              id="phone"
-              placeholder="Enter Mobile Number"
-              className="form-control"
-              value={inputField.phone}
-              onChange={inputHandler}
-            />
-            {errField.phoneErr.length > 0 && (
-              <span className="error">{errField.phoneErr}</span>
-            )}
-          </div>
-          <div className="mb-3">
-            <input
-              type={showPassword ? "text" : "password"}
-              className="form-control"
-              name="password"
-              id="password"
-              placeholder="Enter Password"
-              value={inputField.password}
-              onChange={(e) =>
-                setInputField({ ...inputField, password: e.target.value })
-              }
-            />
-            <button
-              type="button"
-              className="btn btn-warning btn-sm mt-2"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "Hide Password" : "Show Password"}
-            </button>
-            <br />
+          {!showSubmitBtn && (
+            <div>
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  User Name
+                </label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  placeholder="Enter Username"
+                  className="form-control"
+                  value={inputField.username}
+                  onChange={(e) =>
+                    setInputField({
+                      ...inputField,
+                      username: e.target.value.replace(/[^\w\s]/g, ""),
+                    })
+                  }
+                />
+                {errField.usernameErr.length > 0 && (
+                  <span className="error">{errField.usernameErr}</span>
+                )}
+              </div>
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Enter Email"
+                  className="form-control"
+                  value={inputField.email}
+                  onChange={inputHandler}
+                />
+                {errField.emailErr.length > 0 && (
+                  <span className="error">{errField.emailErr}</span>
+                )}
+              </div>
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  Phone
+                </label>
+                <input
+                  type="text"
+                  name="phone"
+                  id="phone"
+                  placeholder="Enter Mobile Number"
+                  className="form-control"
+                  value={inputField.phone}
+                  onChange={inputHandler}
+                />
+                {errField.phoneErr.length > 0 && (
+                  <span className="error">{errField.phoneErr}</span>
+                )}
+              </div>
+              <div className="mb-3">
+                <CustomInput
+                  title={"Password"}
+                  type={"password"}
+                  placeholder={"Enter Password"}
+                  value={inputField.password}
+                  onChange={(e) => {
+                    setInputField({
+                      ...inputField,
+                      password: e.target.value,
+                    });
+                  }}
+                />
 
-            {errField.passwordErr.length > 0 && (
-              <span className="error">{errField.passwordErr}</span>
-            )}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="" className="form-label">
-              Confirm Password
-            </label>
-            <input
-              type={showPassword ? "text" : "password"}
-              className="form-control"
-              name="cpassword"
-              id="cpassword"
-              placeholder="Confirm Password"
-              value={inputField.cpassword}
-              onChange={(e) =>
-                setInputField({
-                  ...inputField,
-                  cpassword: e.target.value,
-                })
-              }
-            />
-            {errField.cpasswordErr.length > 0 && (
-              <span className="error">{errField.cpasswordErr}</span>
-            )}
-          </div>
+                <br />
+
+                {errField.passwordErr.length > 0 && (
+                  <span className="error">{errField.passwordErr}</span>
+                )}
+              </div>
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  Confirm Password
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="cpassword"
+                  id="cpassword"
+                  placeholder="Confirm Password"
+                  value={inputField.cpassword}
+                  onChange={(e) =>
+                    setInputField({
+                      ...inputField,
+                      cpassword: e.target.value,
+                    })
+                  }
+                />
+                {errField.cpasswordErr.length > 0 && (
+                  <span className="error">{errField.cpasswordErr}</span>
+                )}
+              </div>
+            </div>
+          )}
 
           <div>
-            <button
-              type="button"
-              className="btn btn-primary m-1"
-              onClick={submitBtn}
-            >
-              Register <i className="bi bi-box-arrow-in-right"></i>
-            </button>
-
-            <button
-              type="button"
-              className="btn btn-danger m-1 px-4"
-              onClick={() => setSignUpTrue()}
-            >
-              Back
-            </button>
+            {!showSubmitBtn ? (
+              <button
+                type="submit"
+                className="btn btn-primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (validForm()) {
+                    sendVerificationOTP();
+                  } else {
+                    toast.error("Form is Invalid");
+                  }
+                }}
+              >
+                Verify Email and Mobile
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="btn btn-primary m-1"
+                onClick={submitBtn}
+              >
+                Register <i className="bi bi-box-arrow-in-right"></i>
+              </button>
+            )}
           </div>
         </form>
       </div>
+      {!showSubmitBtn && (
+        <button
+          type="button"
+          className="btn btn-danger m-1 px-4"
+          onClick={() => setSignUpTrue()}
+        >
+          Back
+        </button>
+      )}
+      {showModal && (
+        <div
+          className="modal fade show"
+          tabIndex="-1"
+          role="dialog"
+          style={{ display: "block" }}
+          aria-modal="true"
+        >
+          <div className="modal-dialog modal-xl">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="staticBackdropLabel">
+                  Verify Your Mobile Number
+                </h1>
+                <button
+                  type="button"
+                  className="btn-close"
+                  aria-label="Close"
+                  onClick={() => {
+                    setShowModal(false);
+                  }}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div className="mx-auto my-2">
+                  <div className="mb-3 mx-auto col-md-6">
+                    <div className="mb-3">
+                      <label htmlFor="" className="form-label">
+                        Enter Your Mobile OTP
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter Mobile OTP"
+                        className="form-control"
+                        value={mobileOTP}
+                        maxLength={6}
+                        onChange={(e) => setMobileOTP(e.target.value)}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="" className="form-label">
+                        Enter Your Email OTP
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter Email OTP"
+                        className="form-control"
+                        value={emailOTP}
+                        maxLength={6}
+                        onChange={(e) => setEmailOTP(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={() => {
+                    setShowModal(false);
+                    verifyOTP();
+                  }}
+                >
+                  Send OTP
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-dark"
+                  onClick={() => {
+                    setShowModal(false);
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

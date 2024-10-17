@@ -12,53 +12,36 @@ const SignUp = () => {
   const [showRegForm, setShowRegForm] = useState(false);
   const [teacherData, setTeacherData] = useState({});
   const [inputField, setInputField] = useState({
-    empid: "",
+    phone: "",
   });
   const [errField, setErrField] = useState({
-    empidErr: "",
+    phoneErr: "",
   });
   const inputHandler = (e) => {
     // console.log(e.target.name, "==", e.target.value);
     setInputField({
       ...inputField,
-      [e.target.name]: e.target.value.toUpperCase(),
+      [e.target.name]: e.target.value,
     });
     // console.log(inputField);
   };
   const setSignUpTrue = () => {
-    setInputField({ ...inputField, empid: "" });
+    setInputField({ ...inputField, phone: "" });
     setShowRegForm(false);
   };
-  useEffect(() => {
-    document.title = "AWC Sports App:Sign Up";
-    //eslint-disable-next-line
-  }, [inputField]);
+
   const submitBtn = async (e) => {
     e.preventDefault();
     // console.log(inputField);
     if (validForm()) {
       try {
         const collectionRef = collection(firestore, "userteachers");
-        const q = query(
-          collectionRef,
-          where("empid", "==", inputField.empid.toUpperCase())
-        );
+        const q = query(collectionRef, where("phone", "==", inputField.phone));
         const querySnapshot = await getDocs(q);
-        // console.log(querySnapshot.docs[0].data().pan);
         if (querySnapshot.docs.length > 0) {
           let fdata = querySnapshot.docs[0].data();
           toast.error(
-            `Dear ${fdata.tname}, ${fdata.desig} OF ${fdata.school}! You are Already Registered,Please Log In.`,
-            {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            }
+            `Dear ${fdata.tname}, ${fdata.desig} OF ${fdata.school}! You are Already Registered,Please Log In.`
           );
           setTimeout(() => {
             navigate.push("/login");
@@ -67,7 +50,7 @@ const SignUp = () => {
           const collectionRef2 = collection(firestore, "teachers");
           const q = query(
             collectionRef2,
-            where("empid", "==", inputField.empid.toUpperCase())
+            where("phone", "==", inputField.phone)
           );
           const querySnapshot = await getDocs(q);
           // console.log(querySnapshot.docs[0].data());
@@ -77,75 +60,40 @@ const SignUp = () => {
             let fdata2 = querySnapshot.docs[0].data();
 
             toast.success(
-              `Congrats! ${fdata2.tname}, ${fdata2.desig} OF ${fdata2.school}! Please Review And Register Yourself.`,
-              {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              }
+              `Congrats! ${fdata2.tname}, ${fdata2.desig} OF ${fdata2.school}! Please Review And Register Yourself.`
             );
             setTimeout(() => {
-              // navigate(`/register?data=${JSON.stringify(data)}`);
               setShowRegForm(true);
             }, 2000);
           } else {
-            toast.error("EMPID Not Found.", {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
+            toast.error("phone Not Found.");
           }
         }
       } catch (e) {
-        toast.error("Something Went Wrong.", {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.error("Something Went Wrong.");
       }
     } else {
-      toast.error("Form Is Invalid", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("Form Is Invalid");
     }
   };
   const validForm = () => {
     let formIsValid = true;
     setErrField({
-      empidErr: "",
+      phoneErr: "",
     });
-    if (inputField.empid === "") {
+    if (inputField.phone === "") {
       formIsValid = false;
       setErrField((prevState) => ({
         ...prevState,
-        empidErr: "Please Enter Employee ID",
+        phoneErr: "Please Enter Mobile Number",
       }));
     }
     return formIsValid;
   };
-
+  useEffect(() => {
+    document.title = "AWC Sports App:Sign Up";
+    //eslint-disable-next-line
+  }, [inputField]);
   return (
     <div className="container text-black p-2">
       {!showRegForm ? (
@@ -155,32 +103,34 @@ const SignUp = () => {
           <form autoComplete="off" onSubmit={submitBtn}>
             <div className="mb-3">
               <label htmlFor="" className="form-label">
-                Enter Employee ID
+                Enter Mobile Number
               </label>
               <input
                 type="text"
-                name="empid"
-                placeholder="Enter Employee ID"
+                name="phone"
+                placeholder="Enter Mobile Number"
                 className="form-control"
-                value={inputField.empid}
+                value={inputField.phone}
                 onChange={inputHandler}
-                maxLength={8}
+                maxLength={10}
               />
-              {errField.empidErr.length > 0 && (
-                <span className="error">{errField.empidErr}</span>
+              {errField.phoneErr.length > 0 && (
+                <span className="error">{errField.phoneErr}</span>
               )}
             </div>
           </form>
+
           <div>
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn m-3 btn-primary"
               onClick={submitBtn}
             >
               Check
             </button>
+
             <Link href="/login">
-              <button className="btn btn-danger m-1 px-4">Back</button>
+              <button className="btn btn-danger m-3 px-4">Back</button>
             </Link>
           </div>
         </div>
