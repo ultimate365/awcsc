@@ -321,10 +321,13 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
                   type="text"
                   name="phone"
                   id="phone"
+                  disabled
                   placeholder="Enter Mobile Number"
                   className="form-control"
                   value={inputField.phone}
-                  onChange={inputHandler}
+                  onChange={() => {
+                    toast.error("Can't change phone number");
+                  }}
                 />
                 {errField.phoneErr.length > 0 && (
                   <span className="error">{errField.phoneErr}</span>
