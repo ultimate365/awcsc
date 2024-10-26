@@ -16,16 +16,19 @@ export async function POST(request: NextRequest) {
     if (await sendOTPSMS(phone, mobileOtpdata)) {
       await mobileOtpdata.save();
       return NextResponse.json(
-        { message: "OTP sent successfully" },
+        { message: "OTP sent successfully", success: true },
         { status: 200 }
       );
     } else {
       return NextResponse.json(
-        { message: "Error sending OTP" },
+        { message: "Error sending OTP", success: false },
         { status: 200 }
       );
     }
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 200 });
+    return NextResponse.json(
+      { message: "Error sending OTP", success: false },
+      { status: 200 }
+    );
   }
 }
