@@ -12,6 +12,7 @@ import {
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import CustomInput from "../../components/CustomInput";
+import axios from "axios";
 export default function VerifyLogin() {
   const { setState } = useGlobalContext();
 
