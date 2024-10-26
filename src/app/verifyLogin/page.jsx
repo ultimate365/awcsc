@@ -18,22 +18,26 @@ export default function VerifyLogin() {
 
   const navigate = useRouter();
   const [phone, setPhone] = useState(null);
+  const [name, setName] = useState(null);
   const [displayLoader, setDisplayLoader] = useState(false);
   const [mobileOTP, setMobileOTP] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
   const [showRetryBtn, setShowRetryBtn] = useState(false);
   let nonVerifiedTid = getCookie("nonVerifiedTid");
   let nonVerifiedUid = getCookie("nonVerifiedUid");
   let nonVerifiedSchId = getCookie("nonVerifiedSchId");
 
-  const sendVerificationOTP = async (phone) => {
+  const sendVerificationOTP = async (phone, name) => {
     setDisplayLoader(true);
     const res = await axios.post("/api/sendMobileOTP", {
       phone,
+      name,
     });
     const record = res.data;
     if (record.success) {
       toast.success("OTP sent to your Mobile Number!");
       setDisplayLoader(false);
+      setOtpSent(true);
       setShowRetryBtn(false);
       setTimeout(() => {
         setShowRetryBtn(true);
@@ -99,26 +103,22 @@ export default function VerifyLogin() {
     }
   };
 
-  const afterLoad = async () => {
-    if (nonVerifiedSchId) {
-      const schoolData = decryptObjData("nonVerifiedSchId");
-      setPhone(schoolData.phone);
-      await sendVerificationOTP(schoolData.phone);
-    }
-    if (nonVerifiedTid) {
-      const teacherData = decryptObjData("nonVerifiedTid");
-      setPhone(teacherData.phone);
-      await sendVerificationOTP(teacherData.phone);
-    }
-  };
+
 
   useEffect(() => {
     if (!nonVerifiedTid && !nonVerifiedSchId) {
       navigate.push("/logout");
-    } else {
-      afterLoad();
+    } 
+    if (nonVerifiedSchId) {
+      const schoolData = decryptObjData("nonVerifiedSchId");
+      setPhone(schoolData.phone);
+      setName(schoolData.hoi);
     }
-
+    if (nonVerifiedTid) {
+      const teacherData = decryptObjData("nonVerifiedTid");
+      setPhone(teacherData.phone);
+      setName(teacherData.tname);
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -126,46 +126,58 @@ export default function VerifyLogin() {
     <div className="container">
       {displayLoader ? <Loader /> : null}
       <h3>Verify Login</h3>
-      <p>
-        Please check your phone +91-
-        {`${phone?.slice(0, 4)}XXXX${phone?.slice(8, 10)}`} for an OTP.
-      </p>
-      <div className="col-md-6 mx-auto">
-        <form action="" onSubmit={verifyOTP}>
-          <CustomInput
-            title={"Enter Your OTP"}
-            type={"number"}
-            placeholder={"Enter Your 6 digit OTP"}
-            value={mobileOTP}
-            onChange={(e) => {
-              const inputValue = e.target.value;
 
-              // Set a maxLength (e.g., 6 digits)
-              if (inputValue.length <= 6) {
-                setMobileOTP(inputValue);
-              }
-            }}
-          />
-        </form>
+      {!otpSent ? (
+        <button
+        type="button"
+        className="btn btn-primary m-1"
+        onClick={() => sendVerificationOTP(phone, name)}
+      >
+        Send Vrification OTP
+      </button>
+      ) : (
+        <div>
+          <p>
+            Please check your phone +91-
+            {`${phone?.slice(0, 4)}XXXX${phone?.slice(8, 10)}`} for an OTP.
+          </p>
+          <div className="col-md-6 mx-auto">
+            <form action="" onSubmit={verifyOTP}>
+              <CustomInput
+                title={"Enter Your OTP"}
+                type={"number"}
+                placeholder={"Enter Your 6 digit OTP"}
+                value={mobileOTP}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
 
-        {!showRetryBtn ? (
-          <button
-            type="submit"
-            className="btn btn-primary m-3"
-            onClick={verifyOTP}
-          >
-            Verify
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="btn btn-primary m-3"
-            onClick={() => sendVerificationOTP(phone)}
-          >
-            Resend OTP
-          </button>
-        )}
-      </div>
+                  // Set a maxLength (e.g., 6 digits)
+                  if (inputValue.length <= 6) {
+                    setMobileOTP(inputValue);
+                  }
+                }}
+              />
+            </form>
+
+            <button
+              type="submit"
+              className="btn btn-primary m-1"
+              onClick={verifyOTP}
+            >
+              Verify
+            </button>
+            {showRetryBtn && (
+              <button
+                type="button"
+                className="btn btn-primary m-1"
+                onClick={() => sendVerificationOTP(phone, name)}
+              >
+                Resend OTP
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

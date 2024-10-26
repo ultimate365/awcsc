@@ -15,11 +15,7 @@ export const sendOTPSMS = async (phone: string, mobileOtp: number) => {
         },
       }
     );
-    if (response.data.return === true) {
-      return true;
-    } else {
-      return false;
-    }
+    return response.data.return
   } catch (error) {
     return { success: false, message: "Failed to send OTP." };
   }
