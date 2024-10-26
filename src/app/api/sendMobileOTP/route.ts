@@ -13,16 +13,19 @@ export async function POST(request: NextRequest) {
       code: mobileOtp,
       expiresIn: new Date().getTime() + 300 * 1000,
     });
-    await sendOTPSMS(phone, mobileOtp);
-    await mobileOtpdata.save();
-    return NextResponse.json(
-      {
-        message: "OTP Sent, Please check your Mobile",
-        success: true,
-      },
-      { status: 200 }
-    );
+    if (await sendOTPSMS(phone, mobileOtpdata)) {
+      await mobileOtpdata.save();
+      return NextResponse.json(
+        { message: "OTP sent successfully" },
+        { status: 200 }
+      );
+    } else {
+      return NextResponse.json(
+        { message: "Error sending OTP" },
+        { status: 200 }
+      );
+    }
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 200 });
   }
 }
