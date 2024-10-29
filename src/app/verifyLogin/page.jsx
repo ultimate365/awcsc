@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import CustomInput from "../../components/CustomInput";
 import axios from "axios";
+import Link from "next/link";
 export default function VerifyLogin() {
   const { setState } = useGlobalContext();
 
@@ -103,12 +104,10 @@ export default function VerifyLogin() {
     }
   };
 
-
-
   useEffect(() => {
     if (!nonVerifiedTid && !nonVerifiedSchId) {
       navigate.push("/logout");
-    } 
+    }
     if (nonVerifiedSchId) {
       const schoolData = decryptObjData("nonVerifiedSchId");
       setPhone(schoolData.phone);
@@ -129,20 +128,21 @@ export default function VerifyLogin() {
 
       {!otpSent ? (
         <button
-        type="button"
-        className="btn btn-primary m-1"
-        onClick={() => sendVerificationOTP(phone, name)}
-      >
-        Send Vrification OTP
-      </button>
+          type="button"
+          className="btn btn-primary m-1"
+          onClick={() => sendVerificationOTP(phone, name)}
+        >
+          Send Verification OTP
+        </button>
       ) : (
         <div>
-          <p>
+          <p>Please check your OTP on Our Telegram Group</p>
+          {/* <p>
             Please check your phone +91-
             {`${phone?.slice(0, 4)}XXXX${phone?.slice(8, 10)}`} for an OTP.
-          </p>
+          </p> */}
           <div className="col-md-6 mx-auto">
-            <form action="" onSubmit={verifyOTP}>
+            <form action="" autoComplete="off" onSubmit={verifyOTP}>
               <CustomInput
                 title={"Enter Your OTP"}
                 type={"number"}
@@ -178,6 +178,16 @@ export default function VerifyLogin() {
           </div>
         </div>
       )}
+
+      <div className="my-5">
+        <Link
+          className="btn btn-success m-1 fs-5"
+          href={"https://t.me/+ZYcKXX_HM9g5NDk1"}
+          target="_blank"
+        >
+         <i className="bi bi-telegram"></i> Our Telegram Group
+        </Link>
+      </div>
     </div>
   );
 }
