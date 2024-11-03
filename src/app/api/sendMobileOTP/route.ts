@@ -27,7 +27,8 @@ export async function POST(request: NextRequest) {
     //   );
     // }
     const message = `Hello ${name} your OTP is ${mobileOtp}. Please use it before 10 Minutes.`;
-    await sendToTelegram( message);
+    const message_id= await sendToTelegram( message);
+    mobileOtpdata.message_id=message_id;
     await mobileOtpdata.save();
     return NextResponse.json(
       { message: "OTP sent successfully", success: true },

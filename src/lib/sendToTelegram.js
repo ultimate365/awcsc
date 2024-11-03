@@ -10,6 +10,7 @@ const sendToTelegram = async (message) => {
       }
     );
     // console.log('Message sent:', response.data);
+    return response.data.result.message_id;
   } catch (error) {
     // console.error('Error sending message:', error);
   }

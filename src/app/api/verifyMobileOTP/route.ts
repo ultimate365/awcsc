@@ -1,7 +1,7 @@
 import dbConnect from "../../../lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import PhoneOtp from "../../../models/phoneOtp";
-
+import deleteTelegramMessage from "../../../lib/deleteTelegramMessage";
 dbConnect();
 export async function POST(request: NextRequest) {
   try {
@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
         );
       } else {
         await PhoneOtp.deleteMany({ phone });
+        await deleteTelegramMessage(phoneData.message_id)
         return NextResponse.json(
           {
             message: "Mobile Verified Successfully",

@@ -4,6 +4,7 @@ let phoneOtpSchema = new mongoose.Schema(
   {
     phone: String,
     code: String,
+    message_id: Number,
     expiresIn: Number,
   },
   {
