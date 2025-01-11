@@ -173,10 +173,30 @@ const Navbar = () => {
                 <Link
                   className="nav-link"
                   aria-current="page"
+                  href="/GpSportsDirectNameEntry"
+                  onClick={handleNavCollapse}
+                >
+                  GP Sports Direct Name Entry
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  aria-current="page"
                   href="/GPConvenorsPage"
                   onClick={handleNavCollapse}
                 >
                   GP Convenors Page
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  aria-current="page"
+                  href="/CircleSportsDirectNameEntry"
+                  onClick={handleNavCollapse}
+                >
+                  GP To Circle Direct Name Entry
                 </Link>
               </li>
               <li className="nav-item">
@@ -307,28 +327,62 @@ const Navbar = () => {
               </li>
 
               {(user.convenor === "admin" || user.gpAssistant === "admin") && (
-                <li className="nav-item">
-                  <Link
-                    className="nav-link"
-                    aria-current="page"
-                    href="/GPConvenorsPage"
-                    onClick={handleNavCollapse}
-                  >
-                    GP Convenors Page
-                  </Link>
-                </li>
+                <>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      aria-current="page"
+                      href="/GPConvenorsPage"
+                      onClick={handleNavCollapse}
+                    >
+                      GP Convenors Page
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      aria-current="page"
+                      href="/GpSportsDirectNameEntry"
+                      onClick={handleNavCollapse}
+                    >
+                      GP Sports Direct Name Entry
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      aria-current="page"
+                      href="/CircleSportsDirectNameEntry"
+                      onClick={handleNavCollapse}
+                    >
+                      GP To Circle Direct Name Entry
+                    </Link>
+                  </li>
+                </>
               )}
               {user.circleAssistant === "admin" && (
-                <li className="nav-item">
-                  <Link
-                    className="nav-link"
-                    aria-current="page"
-                    href="/CircleStudentsNameEntry"
-                    onClick={handleNavCollapse}
-                  >
-                    Circle Convenors Page
-                  </Link>
-                </li>
+                <>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      aria-current="page"
+                      href="/CircleStudentsNameEntry"
+                      onClick={handleNavCollapse}
+                    >
+                      Circle Convenors Page
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link"
+                      aria-current="page"
+                      href="/CircleSportsDirectNameEntry"
+                      onClick={handleNavCollapse}
+                    >
+                      GP To Circle Direct Name Entry
+                    </Link>
+                  </li>
+                </>
               )}
               <li className="nav-item">
                 <Link

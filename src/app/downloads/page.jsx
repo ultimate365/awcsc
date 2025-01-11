@@ -267,7 +267,7 @@ const Downloads = () => {
               type="button"
               className="btn btn-success my-3"
               onClick={() => {
-                if (fileName !== "" && !findEmptyValues(file)) {
+                if (fileName !== "") {
                   uploadFiles();
                 } else {
                   toast.error("Please Enter File Name!", {
@@ -384,9 +384,17 @@ const Downloads = () => {
                           <button
                             type="button"
                             className="btn btn-danger "
-                            onClick={() =>
-                              deleteFile(el.originalFileName, el.id)
-                            }
+                            onClick={() => {
+                              // eslint-disable-next-line
+                              let conf = confirm(
+                                `Are you sure you want to Delete This File?`
+                              );
+                              if (conf) {
+                                deleteFile(el.originalFileName, el.id);
+                              } else {
+                                toast.success("File Not Deleted!!!");
+                              }
+                            }}
                           >
                             Delete Uploaded Files
                           </button>

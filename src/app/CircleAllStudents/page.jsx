@@ -12,8 +12,14 @@ import { bengEventNames, events } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
 const CircleAllStudents = () => {
-  const { stateObject, setYourStateObject, setMyStateObject } =
-    useGlobalContext();
+  const {
+    stateObject,
+    setYourStateObject,
+    setMyStateObject,
+    allGPFirstsState,
+    setAllGPFirstsState,
+    setAllGPFirstsStateUpdateTime,
+  } = useGlobalContext();
   const data = stateObject?.data?.sort((a, b) => a?.gp.localeCompare(b?.gp));
   const gpData = stateObject?.gp;
   const navigate = useRouter();
@@ -68,6 +74,18 @@ const CircleAllStudents = () => {
           chestNo,
         })
           .then(async () => {
+            const thisStudent = allGPFirstsState.filter(
+              (student) => student.id === el.id
+            )[0];
+            thisStudent.chestNo = chestNo;
+            const otherStudents = allGPFirstsState.filter(
+              (student) => student.id !== el.id
+            );
+            setAllGPFirstsState([...otherStudents, thisStudent]);
+            setFilteredData([...otherStudents, thisStudent]);
+            setAllGPFirstsStateUpdateTime(Date.now());
+
+
             console.log(`Participant ${el?.name} Alloted Chest No ${chestNo}`);
           })
           .catch((e) => {

@@ -3,7 +3,7 @@ export const circleEngName = "Amta West Circle";
 const thisYear = new Date().getFullYear();
 const dob = `${thisYear - 9}-01-01`;
 export const mindob = `${thisYear - 11}-01-01`;
-export const maxdob = `${thisYear - 6}-12-31`;
+export const maxdob = `${thisYear - 5}-12-31`;
 const day = new Date(dob).toLocaleString("en-US", {
   day: "2-digit",
 });
@@ -198,7 +198,29 @@ export const StdClass = [
     sclass: "CLASS V",
   },
 ];
-
+export const BUTTONCOLORS = [
+  "#FF3D00", // Red
+  "#3F51B5", // Blue
+  "#FFC107", // Amber
+  "#4CAF50", // Green
+  "#F44336", // Pink
+  "#2196F3", // Light Blue
+  "#9C27B0", // Purple
+  "#009688", // Teal
+  "#E91E63", // Pink
+  "#673AB7", // Indigo
+  "#795548", // Brown
+  "#FFEB3B", // Yellow
+  "#00BCD4", // Cyan
+  "#FF5722", // Deep Pink
+  "#9E9E9E", // Gray
+  "#607D8B", // Blue Grey
+  "#212121", // Black
+  "#FFFFFF", // White
+  "#000000", // Black
+  "#E0E0E0", // Grey Light
+  "#757575", // Grey Dark
+];
 export const GP_LOCK_DATA = [
   {
     entryDate: 1708313683517,

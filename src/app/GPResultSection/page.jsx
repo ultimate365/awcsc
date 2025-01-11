@@ -497,7 +497,7 @@ const GPResultSection = () => {
           </div>
         </div>
       </div>
-      {thisGPCircleLockState ? (
+      {!thisGPCircleLockState ? (
         <div>
           <div className="my-4 row">
             <h3 className="text-center text-primary">Submit Result</h3>
@@ -1008,9 +1008,7 @@ const GPResultSection = () => {
         </div>
       ) : (
         <h6 className="text-center text-danger my-4">
-          {thisGPCircleLockData?.gp} GP Circle Sports Student Entry & Edit
-          Closed By {thisGPCircleLockData?.entryCloseddBy} at{" "}
-          {DateValueToSring(thisGPCircleLockData?.closeDate)}
+          {thisGPCircleLockData?.gp} GP Circle Sports Student Entry is Still Open
         </h6>
       )}
       {loader && <Loader />}

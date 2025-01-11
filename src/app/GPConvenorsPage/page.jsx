@@ -554,14 +554,17 @@ const GPConvenorsPage = () => {
   };
   const deleteParticipant = async (participant) => {
     try {
-      await axios.post("api/delgpSportsStudentData", participant.id);
+      await axios.post("api/delgpSportsStudentData", { id: participant.id });
       setGpStudentState(
         gpStudentState.filter((item) => item.id !== participant.id)
       );
       setGpStudentStateUpdateTime(Date.now());
       await deleteDoc(doc(firestore, "gpSportsStudentData", participant.id))
         .then(() => {
-          console.log(participant.id);
+          const x = gpStudentState.filter((item) => item.id !== participant.id);
+          setGpStudentState(x);
+          setAllParticipants(x);
+          setFilteredGPData(x);
           // getAllParticipant();
           toast.success("Participant Deleted Successfully", {
             position: "top-right",
@@ -1889,7 +1892,7 @@ const GPConvenorsPage = () => {
                   className="w-25 form-control"
                   value={resultSearch}
                   onChange={(e) => {
-                    setSearch(e.target.value);
+                    setResultSearch(e.target.value);
                     if (e.target.value !== "") {
                       let x = allResult.filter((el) => {
                         return el?.name

@@ -1,17 +1,17 @@
 import dbConnect from "../../../lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-import AmtaWestCircleAllResult from "../../../models/AmtaWestCircleAllResult";
+import gpSportsStudentData from "../../../models/gpSportsStudentData";
 dbConnect();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
     const { id }: any = reqBody;
 
-    let response = await AmtaWestCircleAllResult.deleteOne({ id });
+    let response = await gpSportsStudentData.deleteOne({ id });
     if (response.acknowledged) {
       return NextResponse.json(
         {
-          message: "AmtaWestCircleAllResult deleted successfully",
+          message: "gpSportsStudentData deleted successfully",
           success: true,
         },
         { status: 200 }
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     } else {
       return NextResponse.json(
         {
-          message: "AmtaWestCircleAllResult not found",
+          message: "gpSportsStudentData not found",
           success: false,
         },
         { status: 400 }

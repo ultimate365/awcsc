@@ -94,7 +94,7 @@ const AllTeachers = () => {
     id: "",
   });
   const getTeacherData = async () => {
-    let data;
+    let data = [];
     try {
       const q = query(collection(firestore, "teachers"));
       const querySnapshot = await getDocs(q);
@@ -103,23 +103,28 @@ const AllTeachers = () => {
         ...doc.data(),
         id: doc.id,
       }));
-
-      setTeacherData(data);
-      setFilteredData(data);
-      setTeachersState(data);
-      setTeacherUpdateTime(Date.now());
-      setShowTable(true);
     } catch (error) {
       console.error("Error fetching teachers data: ", error);
       const url = `/api/getTeachers`;
       const response = await axios.post(url);
       data = response.data.data;
-      setTeacherData(data);
-      setFilteredData(data);
-      setTeachersState(data);
-      setTeacherUpdateTime(Date.now());
-      setShowTable(true);
     }
+    const newDatas = data.sort((a, b) => {
+      // First, compare the "school" keys
+      if (a.school < b.school) {
+        return -1;
+      }
+      if (a.school > b.school) {
+        return 1;
+      }
+      // If "school" keys are equal, compare the "rank" keys
+      return a.rank - b.rank;
+    });
+    setTeacherData(newDatas);
+    setFilteredData(newDatas);
+    setTeachersState(newDatas);
+    setTeacherUpdateTime(Date.now());
+    setShowTable(true);
   };
   const columns = [
     {

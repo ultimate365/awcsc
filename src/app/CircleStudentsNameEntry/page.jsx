@@ -228,12 +228,13 @@ const CircleStudentsNameEntry = () => {
   const deleteParticipant = async (participant) => {
     try {
       setLoader(true);
-      await axios.post("/api/delallGPFirsts", participant.id);
+      await axios.post("/api/delallGPFirsts", { id: participant.id });
       await deleteDoc(doc(firestore, "allGPFirsts", participant.id))
         .then(() => {
           setLoader(false);
           let x = allGPFirstsState.filter((item) => item.id !== participant.id);
           setAllGPFirstsState(x);
+          setFilteredGPData(x);
           setAllGPFirstsStateUpdateTime(Date.now());
           toast.success("Participant Deleted Successfully");
         })
@@ -950,7 +951,7 @@ const CircleStudentsNameEntry = () => {
         {lockData
           .filter((el) => el?.edit === true)
           .map((el, ind) => (
-            <h6 className="text-center text-danger " key={el}>
+            <h6 className="text-center text-danger " key={ind}>
               Currently {el?.gp} Student Entry & Edit is not Closed
             </h6>
           ))}
