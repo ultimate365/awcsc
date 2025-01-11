@@ -348,16 +348,6 @@ const Navbar = () => {
                       GP Sports Direct Name Entry
                     </Link>
                   </li>
-                  <li className="nav-item">
-                    <Link
-                      className="nav-link"
-                      aria-current="page"
-                      href="/CircleSportsDirectNameEntry"
-                      onClick={handleNavCollapse}
-                    >
-                      GP To Circle Direct Name Entry
-                    </Link>
-                  </li>
                 </>
               )}
               {user.circleAssistant === "admin" && (
