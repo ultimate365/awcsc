@@ -566,7 +566,7 @@ export default function CircleSportsDirectNameEntry() {
               setInpGrSelected(true);
               setEditClicked(true);
               setFirstEventSelected(true);
-              setFilteredSchools(SCHOOLS.filter((s) => s.gp === row.gp))
+              setFilteredSchools(SCHOOLS.filter((s) => s.gp === row.gp));
               const fdS = SCHOOLS.filter((s) => s.udise === row.udise)[0];
               setSelectedSchool(fdS);
               setTimeout(() => {
@@ -1340,9 +1340,7 @@ export default function CircleSportsDirectNameEntry() {
                                             el !== "SHUTTLE RACE" &&
                                             el !== "LONG JUMP"
                                           );
-                                        } else if (
-                                          inputField.event1 !== "YOGA"
-                                        ) {
+                                        } else {
                                           return el !== "YOGA";
                                         }
                                       })
@@ -1372,6 +1370,10 @@ export default function CircleSportsDirectNameEntry() {
                                             el !== "LONG JUMP" &&
                                             el !== "HIGH JUMP" &&
                                             el !== "YOGA"
+                                          );
+                                        } else {
+                                          return (
+                                            el !== "YOGA" && el !== "GYMNASTICS"
                                           );
                                         }
                                       })
@@ -1403,6 +1405,10 @@ export default function CircleSportsDirectNameEntry() {
                                             el !== "HIGH JUMP" &&
                                             el !== "FOOTBALL THROWING" &&
                                             el !== "YOGA"
+                                          );
+                                        } else {
+                                          return (
+                                            el !== "YOGA" && el !== "GYMNASTICS"
                                           );
                                         }
                                       })

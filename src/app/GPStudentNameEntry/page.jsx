@@ -1424,7 +1424,7 @@ const GPStudentNameEntry = () => {
                                   el !== "SHUTTLE RACE" &&
                                   el !== "LONG JUMP"
                                 );
-                              } else if (inputField.event1 !== "YOGA") {
+                              } else {
                                 return el !== "YOGA";
                               }
                             })
@@ -1453,6 +1453,8 @@ const GPStudentNameEntry = () => {
                                   el !== "HIGH JUMP" &&
                                   el !== "YOGA"
                                 );
+                              } else {
+                                return el !== "YOGA" && el !== "GYMNASTICS";
                               }
                             })
                             .map((el, ind) => (
@@ -1482,6 +1484,8 @@ const GPStudentNameEntry = () => {
                                   el !== "FOOTBALL THROWING" &&
                                   el !== "YOGA"
                                 );
+                              } else {
+                                return el !== "YOGA" && el !== "GYMNASTICS";
                               }
                             })
                             .map((el, ind) => (

@@ -494,7 +494,10 @@ export default function GpSportsDirectNameEntry() {
 
     // eslint-disable-next-line
   }, []);
-
+  useEffect(() => {
+    console.log(inputField);
+    //eslint-disable-next-line
+  }, [inputField]);
   return (
     <div className="container text-center my-2">
       {loader && <Loader />}
@@ -1111,7 +1114,7 @@ export default function GpSportsDirectNameEntry() {
                                           el !== "SHUTTLE RACE" &&
                                           el !== "LONG JUMP"
                                         );
-                                      } else if (inputField.event1 !== "YOGA") {
+                                      } else {
                                         return el !== "YOGA";
                                       }
                                     })
@@ -1141,6 +1144,10 @@ export default function GpSportsDirectNameEntry() {
                                           el !== "LONG JUMP" &&
                                           el !== "HIGH JUMP" &&
                                           el !== "YOGA"
+                                        );
+                                      } else {
+                                        return (
+                                          el !== "YOGA" && el !== "GYMNASTICS"
                                         );
                                       }
                                     })
@@ -1172,6 +1179,10 @@ export default function GpSportsDirectNameEntry() {
                                           el !== "HIGH JUMP" &&
                                           el !== "FOOTBALL THROWING" &&
                                           el !== "YOGA"
+                                        );
+                                      } else {
+                                        return (
+                                          el !== "YOGA" && el !== "GYMNASTICS"
                                         );
                                       }
                                     })

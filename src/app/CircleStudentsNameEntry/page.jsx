@@ -1667,6 +1667,17 @@ const CircleStudentsNameEntry = () => {
                   {inputField.group === "GROUP-A"
                     ? events.groupA
                         .filter((el) => el !== inputField.event1)
+                        .filter((el) => {
+                          if (inputField.event1 === "YOGA") {
+                            return (
+                              el !== "75 METER RUN" &&
+                              el !== "SHUTTLE RACE" &&
+                              el !== "LONG JUMP"
+                            );
+                          } else {
+                            return el !== "YOGA";
+                          }
+                        })
                         .map((el, ind) => (
                           <option value={el} key={ind}>
                             {el}
@@ -1675,6 +1686,27 @@ const CircleStudentsNameEntry = () => {
                     : inputField.group === "GROUP-B"
                     ? events.groupB
                         .filter((el) => el !== inputField.event1)
+                        .filter((el) => {
+                          if (inputField.event1 === "YOGA") {
+                            return (
+                              el !== "100 METER RUN" &&
+                              el !== "200 METER RUN" &&
+                              el !== "LONG JUMP" &&
+                              el !== "HIGH JUMP" &&
+                              el !== "GYMNASTICS"
+                            );
+                          } else if (inputField.event1 === "GYMNASTICS") {
+                            return (
+                              el !== "100 METER RUN" &&
+                              el !== "200 METER RUN" &&
+                              el !== "LONG JUMP" &&
+                              el !== "HIGH JUMP" &&
+                              el !== "YOGA"
+                            );
+                          } else {
+                            return el !== "YOGA" && el !== "GYMNASTICS";
+                          }
+                        })
                         .map((el, ind) => (
                           <option value={el} key={ind}>
                             {el}
@@ -1683,6 +1715,29 @@ const CircleStudentsNameEntry = () => {
                     : inputField.group === "GROUP-C"
                     ? events.groupC
                         .filter((el) => el !== inputField.event1)
+                        .filter((el) => {
+                          if (inputField.event1 === "YOGA") {
+                            return (
+                              el !== "100 METER RUN" &&
+                              el !== "200 METER RUN" &&
+                              el !== "LONG JUMP" &&
+                              el !== "HIGH JUMP" &&
+                              el !== "FOOTBALL THROWING" &&
+                              el !== "GYMNASTICS"
+                            );
+                          } else if (inputField.event1 === "GYMNASTICS") {
+                            return (
+                              el !== "100 METER RUN" &&
+                              el !== "200 METER RUN" &&
+                              el !== "LONG JUMP" &&
+                              el !== "HIGH JUMP" &&
+                              el !== "FOOTBALL THROWING" &&
+                              el !== "YOGA"
+                            );
+                          } else {
+                            return el !== "YOGA" && el !== "GYMNASTICS";
+                          }
+                        })
                         .map((el, ind) => (
                           <option value={el} key={ind}>
                             {el}
