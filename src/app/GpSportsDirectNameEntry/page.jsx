@@ -495,7 +495,6 @@ export default function GpSportsDirectNameEntry() {
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    console.log(inputField);
     //eslint-disable-next-line
   }, [inputField]);
   return (
