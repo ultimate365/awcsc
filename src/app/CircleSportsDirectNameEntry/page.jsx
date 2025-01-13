@@ -310,9 +310,10 @@ export default function CircleSportsDirectNameEntry() {
 
   const updateData = async () => {
     setLoader(true);
-    let x = allGPFirstsState.filter((item) => item.id !== inputField.id);
-    x = [...x, inputField];
-    setAllGPFirstsState(x);
+    const newData = allGPFirstsState.map((item) =>
+      item.id === inputField.id ? inputField : item
+    );
+    setAllGPFirstsState(newData);
     setAllGPFirstsStateUpdateTime(Date.now());
     await axios.post("/api/updateallGPFirsts", inputField);
     const docRef = doc(firestore, "allGPFirsts", inputField.id);

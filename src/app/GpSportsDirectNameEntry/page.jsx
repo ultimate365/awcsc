@@ -207,7 +207,7 @@ export default function GpSportsDirectNameEntry() {
                     element1.value = row.event1;
                     element2.value = row.event2;
                     element3.value = row.sclass;
-                    if(element4){
+                    if (element4) {
                       element4.value = JSON.stringify(fdS);
                     }
                   }
@@ -344,9 +344,6 @@ export default function GpSportsDirectNameEntry() {
   };
   const updateData = async () => {
     setLoader(true);
-    let filteredUpdatedResult = selectSchoolsParticipants.filter(
-      (student) => student.id !== inputField.id
-    );
 
     const updatedResult = {
       id: inputField.id,
@@ -410,6 +407,7 @@ export default function GpSportsDirectNameEntry() {
       item.id === inputField.id ? updatedResult : item
     );
     setGpStudentState(newData);
+    setFilteredData(newData);
     setGpStudentStateUpdateTime(Date.now());
     await axios.post("/api/updategpSportsStudentData", updatedResult);
     await updateDoc(
@@ -449,14 +447,12 @@ export default function GpSportsDirectNameEntry() {
       toast.success(
         `congratulation! Your Data Has Heen Saved to ${selectedGP} GP Sports Data`
       );
-      // getAllParticipant();
-      setFilteredData([...filteredUpdatedResult, updatedResult]);
     });
   };
   const deleteParticipant = async (participant) => {
     setLoader(true);
     try {
-      await axios.post("api/delgpSportsStudentData", {id: participant.id});
+      await axios.post("api/delgpSportsStudentData", { id: participant.id });
       await deleteDoc(
         doc(firestore, "gpSportsStudentData", participant.id)
       ).then(() => {
@@ -465,7 +461,9 @@ export default function GpSportsDirectNameEntry() {
           gpStudentState.filter((item) => item.id !== participant.id)
         );
         setGpStudentStateUpdateTime(Date.now());
-        setFilteredData(gpStudentState.filter((item) => item.id!== participant.id));
+        setFilteredData(
+          gpStudentState.filter((item) => item.id !== participant.id)
+        );
         toast.success("Participant Deleted Successfully");
       });
     } catch (e) {
