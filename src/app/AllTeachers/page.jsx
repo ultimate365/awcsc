@@ -194,7 +194,9 @@ const AllTeachers = () => {
             onClick={() => {
               // eslint-disable-next-line
               let message = confirm(
-                `Are You Sure To Create User Account of ${row.tname}`
+                `Are You Sure To Create User Account of ${
+                  row.tname
+                } with username Employee ID in LowerCase i.e. ${row.empid.toLowerCase()} and Password PAN in LowerCase i.e. ${row.pan.toLowerCase()}`
               );
               message
                 ? createUser(row)
