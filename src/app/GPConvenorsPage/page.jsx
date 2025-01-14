@@ -134,13 +134,15 @@ const GPConvenorsPage = () => {
   const [editClicked, setEditClicked] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [filteredGPData, setFilteredGPData] = useState([]);
-
+  const [schFilterClicked, setSchFilterClicked] = useState(false);
+  const [filteredSchData, setFilteredSchData] = useState([]);
   const getSchoolData = async () => {
     const querySnapshot = await getDocs(
       query(collection(firestore, "schools"))
     );
     const data = querySnapshot.docs.map((doc) => doc.data());
     setSchoolData(data);
+    setFilteredSchData(data);
     setConvenorsGPSchoolData(
       data?.filter((el) => el?.gp === teacherdetails.gp)
     );
@@ -711,7 +713,8 @@ const GPConvenorsPage = () => {
         <div>
           <button
             type="button"
-            className="btn btn-success m-1 btn-sm"
+            className="btn btn-success m-1"
+            style={{ width: "auto" }}
             onClick={() => {
               setEditClicked(true);
               setInputField(row);
@@ -738,7 +741,8 @@ const GPConvenorsPage = () => {
           </button>
           <button
             type="button"
-            className="btn btn-danger m-1 btn-sm"
+            className="btn btn-danger m-1"
+            style={{ width: "auto" }}
             onClick={() => {
               //eslint-disable-next-line
               let message = confirm(
@@ -835,6 +839,7 @@ const GPConvenorsPage = () => {
       getSchoolData();
     } else {
       setSchoolData(schoolState);
+      setFilteredSchData(schoolState);
       setConvenorsGPSchoolData(
         schoolState.filter((el) => el?.gp === teacherdetails.gp)
       );
@@ -943,7 +948,8 @@ const GPConvenorsPage = () => {
         allParticipants.length > 0 && (
           <button
             type="button"
-            className="btn p-4 btn-info m-1 btn-sm"
+            className="btn p-4 btn-info m-1"
+            style={{ width: "auto" }}
             onClick={() => {
               setYourStateObject({
                 data: allParticipants,
@@ -973,7 +979,8 @@ const GPConvenorsPage = () => {
                   </h6>
                   <button
                     type="button"
-                    className="btn btn-danger btn-sm"
+                    className="btn btn-danger"
+                    style={{ width: "auto" }}
                     onClick={() => {
                       // eslint-disable-next-line
                       let conf = confirm(
@@ -1051,7 +1058,8 @@ const GPConvenorsPage = () => {
                     </h6>
                     <button
                       type="button"
-                      className="btn btn-danger btn-sm"
+                      className="btn btn-danger"
+                      style={{ width: "auto" }}
                       onClick={() => {
                         let x = assistants.filter(
                           (elem) => el?.id !== elem?.id
@@ -1066,7 +1074,8 @@ const GPConvenorsPage = () => {
               </div>
               <button
                 type="button"
-                className="btn btn-success btn-sm"
+                className="btn btn-success"
+                style={{ width: "auto" }}
                 onClick={() => {
                   updateAssistantData();
                 }}
@@ -1085,6 +1094,7 @@ const GPConvenorsPage = () => {
               <button
                 type="button"
                 className="btn btn-success m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("AMORAGORI")}
               >
                 AMORAGORI
@@ -1092,6 +1102,7 @@ const GPConvenorsPage = () => {
               <button
                 type="button"
                 className="btn btn-primary m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("BKBATI")}
               >
                 BKBATI
@@ -1099,6 +1110,7 @@ const GPConvenorsPage = () => {
               <button
                 type="button"
                 className="btn btn-secondary m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("GAZIPUR")}
               >
                 GAZIPUR
@@ -1106,6 +1118,7 @@ const GPConvenorsPage = () => {
               <button
                 type="button"
                 className="btn btn-warning m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("JHAMTIA")}
               >
                 JHAMTIA
@@ -1113,6 +1126,7 @@ const GPConvenorsPage = () => {
               <button
                 type="button"
                 className="btn btn-info m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("JHIKIRA")}
               >
                 JHIKIRA
@@ -1120,6 +1134,7 @@ const GPConvenorsPage = () => {
               <button
                 type="button"
                 className="btn btn-success m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("JOYPUR")}
               >
                 JOYPUR
@@ -1127,6 +1142,7 @@ const GPConvenorsPage = () => {
               <button
                 type="button"
                 className="btn btn-primary m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("NOWPARA")}
               >
                 NOWPARA
@@ -1134,6 +1150,7 @@ const GPConvenorsPage = () => {
               <button
                 type="button"
                 className="btn btn-info m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("THALIA")}
               >
                 THALIA
@@ -1170,6 +1187,7 @@ const GPConvenorsPage = () => {
           <button
             type="button"
             className="btn btn-success m-1 col-md-1 btn-sm"
+            style={{ width: "auto" }}
             onClick={() => {
               setShowTable(!showTable);
               setBtnClickedGP("All School");
@@ -1185,19 +1203,181 @@ const GPConvenorsPage = () => {
         teacherdetails.convenor === "admin") &&
         !editClicked && (
           <div className="container ">
+            {teacherdetails.circle === "admin" && (
+              <div className="my-3">
+                <div className="my-1">
+                  <h6 className="text-primary">
+                    Select GP Name to Filter Participants
+                  </h6>
+                  <button
+                    type="button"
+                    className="btn btn-success m-1 col-md-1 btn-sm"
+                    style={{ width: "auto" }}
+                    onClick={() => {
+                      setSchFilterClicked(true);
+                      const GPSchools = schoolState.filter(
+                        (student) => student.gp === "AMORAGORI"
+                      );
+                      setFilteredSchData(GPSchools);
+                      const firstGPSchool = GPSchools[0];
+                      document.getElementById("schNames").value =
+                        JSON.stringify(firstGPSchool);
+                    }}
+                  >
+                    AMORAGORI
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary m-1 col-md-1 btn-sm"
+                    style={{ width: "auto" }}
+                    onClick={() => {
+                      setSchFilterClicked(true);
+                      const GPSchools = schoolState.filter(
+                        (student) => student.gp === "BKBATI"
+                      );
+                      setFilteredSchData(GPSchools);
+                      const firstGPSchool = GPSchools[0];
+                      document.getElementById("schNames").value =
+                        JSON.stringify(firstGPSchool);
+                    }}
+                  >
+                    BKBATI
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary m-1 col-md-1 btn-sm"
+                    style={{ width: "auto" }}
+                    onClick={() => {
+                      setSchFilterClicked(true);
+                      const GPSchools = schoolState.filter(
+                        (student) => student.gp === "GAZIPUR"
+                      );
+                      setFilteredSchData(GPSchools);
+                      const firstGPSchool = GPSchools[0];
+                      document.getElementById("schNames").value =
+                        JSON.stringify(firstGPSchool);
+                    }}
+                  >
+                    GAZIPUR
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-warning m-1 col-md-1 btn-sm"
+                    style={{ width: "auto" }}
+                    onClick={() => {
+                      setSchFilterClicked(true);
+                      const GPSchools = schoolState.filter(
+                        (student) => student.gp === "JHAMTIA"
+                      );
+                      setFilteredSchData(GPSchools);
+                      const firstGPSchool = GPSchools[0];
+                      document.getElementById("schNames").value =
+                        JSON.stringify(firstGPSchool);
+                    }}
+                  >
+                    JHAMTIA
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-info m-1 col-md-1 btn-sm"
+                    style={{ width: "auto" }}
+                    onClick={() => {
+                      setSchFilterClicked(true);
+                      const GPSchools = schoolState.filter(
+                        (student) => student.gp === "JHIKIRA"
+                      );
+                      setFilteredSchData(GPSchools);
+                      const firstGPSchool = GPSchools[0];
+                      document.getElementById("schNames").value =
+                        JSON.stringify(firstGPSchool);
+                    }}
+                  >
+                    JHIKIRA
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-success m-1 col-md-1 btn-sm"
+                    style={{ width: "auto" }}
+                    onClick={() => {
+                      setSchFilterClicked(true);
+                      const GPSchools = schoolState.filter(
+                        (student) => student.gp === "JOYPUR"
+                      );
+                      setFilteredSchData(GPSchools);
+                      const firstGPSchool = GPSchools[0];
+                      document.getElementById("schNames").value =
+                        JSON.stringify(firstGPSchool);
+                    }}
+                  >
+                    JOYPUR
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary m-1 col-md-1 btn-sm"
+                    style={{ width: "auto" }}
+                    onClick={() => {
+                      setSchFilterClicked(true);
+                      const GPSchools = schoolState.filter(
+                        (student) => student.gp === "NOWPARA"
+                      );
+                      setFilteredSchData(GPSchools);
+                      const firstGPSchool = GPSchools[0];
+                      document.getElementById("schNames").value =
+                        JSON.stringify(firstGPSchool);
+                    }}
+                  >
+                    NOWPARA
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-info m-1 col-md-1 btn-sm"
+                    style={{ width: "auto" }}
+                    onClick={() => {
+                      setSchFilterClicked(true);
+                      const GPSchools = schoolState.filter(
+                        (student) => student.gp === "THALIA"
+                      );
+                      setFilteredSchData(GPSchools);
+                      const firstGPSchool = GPSchools[0];
+                      document.getElementById("schNames").value =
+                        JSON.stringify(firstGPSchool);
+                    }}
+                  >
+                    THALIA
+                  </button>
+                </div>
+                {schFilterClicked && (
+                  <div className="my-1">
+                    <button
+                      type="button"
+                      className="btn btn-danger m-1 col-md-1 btn-sm"
+                      style={{ width: "auto" }}
+                      onClick={() => {
+                        setSchFilterClicked(false);
+                        setFilteredSchData(schoolState);
+                        document.getElementById("schNames").value = "";
+                      }}
+                    >
+                      Show All GP
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
             <div className="col-md-4 mx-auto mb-2">
               <h4 className="text-center text-primary text-wrap">
                 Select School to Show Participants of That School
               </h4>
               <select
                 className="form-select"
+                id="schNames"
                 defaultValue={""}
                 onChange={handleSchoolChange}
                 aria-label="Default select example"
               >
                 <option value="">Select School Name</option>
                 {teacherdetails.circle === "admin"
-                  ? schoolData?.map((el, ind) => {
+                  ? filteredSchData?.map((el, ind) => {
                       return (
                         <option value={JSON.stringify(el)} key={ind}>
                           {el?.school}
@@ -1226,7 +1406,8 @@ const GPConvenorsPage = () => {
                   </h4>
                   <button
                     type="button"
-                    className="btn btn-danger m-1 btn-sm"
+                    className="btn btn-danger m-1"
+                    style={{ width: "auto" }}
                     onClick={() => {
                       // eslint-disable-next-line
                       let confirmReset = confirm(
@@ -1256,7 +1437,8 @@ const GPConvenorsPage = () => {
                   {selectSchoolsParticipants.length > 0 && (
                     <button
                       type="button"
-                      className="btn btn-success m-1 btn-sm"
+                      className="btn btn-success m-1"
+                      style={{ width: "auto" }}
                       onClick={() => {
                         setStateArray(selectSchoolsParticipants);
                         navigate.push(`/GPSchoolWiseStudentList`);
@@ -1790,6 +1972,7 @@ const GPConvenorsPage = () => {
                 <button
                   type="button"
                   className="btn btn-success m-1 col-md-1 btn-sm"
+                  style={{ width: "auto" }}
                   onClick={() => {
                     if (
                       inputField.name !== "" &&
@@ -1837,6 +2020,7 @@ const GPConvenorsPage = () => {
                 <button
                   type="button"
                   className="btn btn-danger m-1 col-md-1 btn-sm"
+                  style={{ width: "auto" }}
                   onClick={() => {
                     setInputField({
                       name: "",
