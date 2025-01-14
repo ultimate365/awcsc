@@ -781,18 +781,21 @@ const AllTeachers = () => {
                       <label htmlFor="" className="form-label">
                         Teacher&#8217;s Access
                       </label>
-                      <input
-                        type="text"
-                        placeholder="Enter Teacher Name"
-                        className="form-control"
-                        value={inputField.circle}
-                        onChange={(e) =>
+                      <select
+                        className="form-select form-select-sm mb-3"
+                        aria-label=".form-select-lg example"
+                        value={inputField?.circle}
+                        onChange={(e) => {
                           setInputField({
                             ...inputField,
                             circle: e.target.value,
-                          })
-                        }
-                      />
+                          });
+                        }}
+                      >
+                        <option value="">Select Circle Convenor Access</option>
+                        <option value={"admin"}>Admin</option>
+                        <option value={"taw"}>No Access</option>
+                      </select>
                     </div>
                     <div className="mb-3">
                       <label htmlFor="" className="form-label">
