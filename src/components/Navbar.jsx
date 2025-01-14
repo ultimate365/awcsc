@@ -196,7 +196,7 @@ const Navbar = () => {
                   href="/CircleSportsDirectNameEntry"
                   onClick={handleNavCollapse}
                 >
-                  GP To Circle Direct Name Entry
+                  Circle Students Direct Name Entry
                 </Link>
               </li>
               <li className="nav-item">

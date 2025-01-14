@@ -85,7 +85,6 @@ const CircleAllStudents = () => {
             setFilteredData([...otherStudents, thisStudent]);
             setAllGPFirstsStateUpdateTime(Date.now());
 
-
             console.log(`Participant ${el?.name} Alloted Chest No ${chestNo}`);
           })
           .catch((e) => {
@@ -434,6 +433,20 @@ const CircleAllStudents = () => {
           subHeaderAlign="right"
         />
       </div>
+      {filteredData?.length > 0 && (
+        <button
+          type="button"
+          className="btn p-2 btn-success m-1 btn-sm"
+          onClick={async () => {
+            setYourStateObject({
+              data: filteredData,
+            });
+            navigate.push(`/CirclePrintTreeList`);
+          }}
+        >
+          Go To Print Tree List
+        </button>
+      )}
       {loader && <Loader />}
     </div>
   );

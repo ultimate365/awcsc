@@ -117,7 +117,7 @@ const GPSchoolWiseStudentList = () => {
         <div className="container-fluid my-2" style={{ zoom: 0.7 }}>
           <h3 className="text-center text-black my-2">
             {thisGp} গ্রাম-পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগীতা,-{" "}
-            {enToBnNumber(new Date().getFullYear() - 1)}
+            {enToBnNumber(new Date().getFullYear() )}
           </h3>
           <div className="container-fluid row justify-content-between align-items-center my-2 p-1">
             <div className="col-md-5 justify-content-center align-items-center">
@@ -268,7 +268,7 @@ const GPSchoolWiseStudentList = () => {
         <div className="container-fluid my-2" style={{ zoom: 0.7 }}>
           <h3 className="text-center text-black my-2">
             {thisGp} গ্রাম-পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগীতা,-{" "}
-            {enToBnNumber(new Date().getFullYear() - 1)}
+            {enToBnNumber(new Date().getFullYear() )}
           </h3>
           <div className="container-fluid row justify-content-between align-items-center my-2 p-1">
             <div className="col-md-5 justify-content-center align-items-center">

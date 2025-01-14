@@ -78,7 +78,7 @@ const GPAllStudents = () => {
 
   const allotChestNumber = async () => {
     setLoader(true);
-    data
+    const actions = data
       .filter((el) => el?.gp === teacherdetails.gp)
       .map(async (el, ind) => {
         const chestNo = parseInt(startingChestNo) + ind;
@@ -123,12 +123,63 @@ const GPAllStudents = () => {
             setLoader(false);
           });
       });
-    setTimeout(() => {
+    Promise.all(actions).then(() => {
       setLoader(false);
       navigate.back();
-    }, 6000);
+    });
   };
-
+  const removeChestNumber = async () => {
+    setLoader(true);
+    const actions = data
+      .filter((el) => el?.gp === teacherdetails.gp)
+      .map(async (el, ind) => {
+        const chestNo = "";
+        const docRef = doc(firestore, "gpSportsStudentData", el?.id);
+        const x = gpStudentState.filter((item) => item.id === el?.id)[0];
+        x.chestNo = chestNo;
+        let y = gpStudentState.filter((item) => item.id !== el?.id);
+        y = [...y, x];
+        setGpStudentState(y);
+        setGpStudentStateUpdateTime(Date.now());
+        try {
+          let n;
+          if (selectedGpStudentState.length > 0) {
+            let m = selectedGpStudentState.filter((item) => item.id === el?.id);
+            m.chestNo = chestNo;
+            n = selectedGpStudentState.filter((item) => item.id !== el?.id);
+            n = [...n, m];
+          } else {
+            let m = gpStudentState
+              .filter((entry) => entry.gp === el?.gp)
+              .filter((item) => item.id === el?.id);
+            m.chestNo = chestNo;
+            n = gpStudentState
+              .filter((entry) => entry.gp === el?.gp)
+              .filter((item) => item.id !== el?.id);
+            n = [...n, m];
+          }
+          setSelectedGpStudentState(n);
+          setSelectedGpStudentStateUpdateTime(Date.now());
+        } catch (error) {
+          console.log(error);
+        }
+        await axios.post(`/api/allowGPChestNo`, { id: el?.id, chestNo });
+        await updateDoc(docRef, {
+          chestNo: chestNo,
+        })
+          .then(async () => {
+            console.log(`Participant ${el?.name} Chest No Removed`);
+          })
+          .catch((e) => {
+            console.log(e);
+            setLoader(false);
+          });
+      });
+    Promise.all(actions).then(() => {
+      setLoader(false);
+      navigate.back();
+    });
+  };
   const columns = [
     {
       name: "Sl",
@@ -240,7 +291,6 @@ const GPAllStudents = () => {
                 if (startingChestNo > 0) {
                   allotChestNumber();
                 } else {
-                  console.log("first");
                   toast.error("Please Enter A Valid Number", {
                     position: "top-right",
                     autoClose: 1000,
@@ -256,6 +306,23 @@ const GPAllStudents = () => {
             >
               Submit
             </button>
+            <div>
+              <button
+                type="button"
+                className="btn btn-danger m-1 btn-sm"
+                onClick={async () => {
+                  //eslint-disable-next-line
+                  let message = confirm(
+                    `Are You Sure To Remove all Chest Numbers?`
+                  );
+                  message
+                    ? removeChestNumber()
+                    : toast.error("Chest Numbers Not Removed");
+                }}
+              >
+                Remove
+              </button>
+            </div>
           </div>
           <div className="mb-3">
             <button
@@ -273,7 +340,8 @@ const GPAllStudents = () => {
       ) : (
         <button
           type="button"
-          className="btn p-4 btn-info m-1 col-md-1 btn-sm"
+          className="btn btn-info m-1 col-md-1 btn-sm"
+          style={{ width: "auto" }}
           onClick={async () => {
             setShowChestNoDiv(true);
           }}
@@ -392,7 +460,7 @@ const GPAllStudents = () => {
                   eventName: `${inpgender} ${inpGroup}- ${inpeventBengName}`,
                   gender: engGenderName,
                   group: engGroupName,
-                  engEventName: engEventName
+                  engEventName: engEventName,
                 });
                 navigate.push(`/GPSportsEventWiseName`);
               }}
@@ -423,7 +491,7 @@ const GPAllStudents = () => {
         <h3 className="text-center text-primary">Enter Result</h3>
         <button
           type="button"
-          className="btn p-4 btn-success m-1 btn-sm"
+          className="btn p-2 btn-success m-1 btn-sm"
           onClick={async () => {
             setStateObject({
               data: filteredData,
@@ -458,6 +526,21 @@ const GPAllStudents = () => {
           }
           subHeaderAlign="right"
         />
+        {filteredData?.length > 0 && (
+          <button
+            type="button"
+            className="btn p-2 btn-success m-1 btn-sm"
+            onClick={async () => {
+              setStateObject({
+                data: filteredData,
+                gp: selectedGP,
+              });
+              navigate.push(`/GPPrintTreeList`);
+            }}
+          >
+            Go To Print Tree List
+          </button>
+        )}
       </div>
       {loader && <Loader />}
     </div>
