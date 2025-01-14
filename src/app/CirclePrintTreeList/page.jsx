@@ -85,7 +85,12 @@ export default function PrintTreeList() {
                   {getSubmitDateInput(el?.birthday)}
                 </td>
                 <td className="timesNewRoman">{el?.sclass}</td>
-                <td className="timesNewRoman">{el?.group}</td>
+                <td
+                  className="timesNewRoman"
+                  style={{ verticalAlign: "center", fontSize: 11 }}
+                >
+                  {el?.group}, ({el?.gender})
+                </td>
                 <td className="timesNewRoman">
                   {el?.event1}
                   {el?.event2 !== "" ? `, ${el?.event2}` : ""}

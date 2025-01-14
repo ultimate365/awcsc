@@ -13,7 +13,7 @@ export default function PrintTreeList() {
   const { stateObject } = useGlobalContext();
   const { data, gp } = stateObject;
   const navigate = useRouter();
-let teacherdetails;
+  let teacherdetails;
   let details = getCookie("tid");
   let schdetails = getCookie("schid");
   if (details) {
@@ -74,16 +74,59 @@ let teacherdetails;
           {data?.length > 0 &&
             data?.map((el, index) => (
               <tr key={index} className="nobreak">
-                <td className="timesNewRoman" style={{verticalAlign:"center",fontSize:11}}>{index + 1}</td>
-                <td className="timesNewRoman" style={{verticalAlign:"center",fontSize:11}}>{el?.chestNo}</td>
-                <td className="timesNewRoman" style={{verticalAlign:"center",fontSize:11}}>{el?.school}</td>
+                <td
+                  className="timesNewRoman"
+                  style={{ verticalAlign: "center", fontSize: 11 }}
+                >
+                  {index + 1}
+                </td>
+                <td
+                  className="timesNewRoman"
+                  style={{ verticalAlign: "center", fontSize: 11 }}
+                >
+                  {el?.chestNo}
+                </td>
+                <td
+                  className="timesNewRoman"
+                  style={{ verticalAlign: "center", fontSize: 11 }}
+                >
+                  {el?.school}
+                </td>
                 {/* <td style={{verticalAlign:"center",fontSize:11}}>{el?.school?.split(" ").map((e, i) => `${e.slice(0, 1)}. `)}</td> */}
-                <td className="timesNewRoman" style={{verticalAlign:"center",fontSize:11}}>{el?.name}</td>
-                <td className="timesNewRoman" style={{verticalAlign:"center",fontSize:11}}>{el?.gurdiansName}</td>
-                <td className="timesNewRoman" style={{verticalAlign:"center",fontSize:11}}>{getSubmitDateInput(el?.birthday)}</td>
-                <td className="timesNewRoman" style={{verticalAlign:"center",fontSize:11}}>{el?.sclass}</td>
-                <td className="timesNewRoman" style={{verticalAlign:"center",fontSize:11}}>{el?.group}</td>
-                <td className="timesNewRoman" style={{verticalAlign:"center",fontSize:11}}>
+                <td
+                  className="timesNewRoman"
+                  style={{ verticalAlign: "center", fontSize: 11 }}
+                >
+                  {el?.name}
+                </td>
+                <td
+                  className="timesNewRoman"
+                  style={{ verticalAlign: "center", fontSize: 11 }}
+                >
+                  {el?.gurdiansName}
+                </td>
+                <td
+                  className="timesNewRoman"
+                  style={{ verticalAlign: "center", fontSize: 11 }}
+                >
+                  {getSubmitDateInput(el?.birthday)}
+                </td>
+                <td
+                  className="timesNewRoman"
+                  style={{ verticalAlign: "center", fontSize: 11 }}
+                >
+                  {el?.sclass}
+                </td>
+                <td
+                  className="timesNewRoman"
+                  style={{ verticalAlign: "center", fontSize: 11 }}
+                >
+                  {el?.group}, ({el?.gender})
+                </td>
+                <td
+                  className="timesNewRoman"
+                  style={{ verticalAlign: "center", fontSize: 11 }}
+                >
                   {el?.event1}
                   {el?.event2 !== "" ? `, ${el?.event2}` : ""}
                 </td>
