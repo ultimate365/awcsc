@@ -392,6 +392,7 @@ const GPAllStudents = () => {
                   eventName: `${inpgender} ${inpGroup}- ${inpeventBengName}`,
                   gender: engGenderName,
                   group: engGroupName,
+                  engEventName: engEventName
                 });
                 navigate.push(`/GPSportsEventWiseName`);
               }}

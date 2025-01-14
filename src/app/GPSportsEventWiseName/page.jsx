@@ -18,10 +18,7 @@ const GPSportsEventWiseName = () => {
   const [gpSchools, setGpSchools] = useState(schoolData);
 
   const [thisGp, setThisGp] = useState("");
-  const [eventName, setEventName] = useState(myStateObject?.eventName);
-  const [gender, setGender] = useState(myStateObject?.gender);
-  const [group, setGroup] = useState(myStateObject?.group);
-  const [engEventName, setEngEventName] = useState(myStateObject?.engEventName);
+  const { eventName, gender, group,engEventName } = myStateObject;
   const [feildSheetsClicked, setFeildSheetsClicked] = useState(false);
   let teacherdetails;
   let details = getCookie("tid");
@@ -229,6 +226,7 @@ const GPSportsEventWiseName = () => {
             </>
           ) : null}
           {engEventName === "75 METER RUN" ||
+          engEventName === "SHUTTLE RACE" ||
           engEventName === "100 METER RUN" ||
           engEventName === "200 METER RUN" ? (
             <>
