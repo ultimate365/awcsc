@@ -494,6 +494,27 @@ const GPResultSection = () => {
                 </button>
               </div>
             )}
+            {groupresSelected && (
+              <div className="mb-3 col-md-3">
+                <button
+                  type="button"
+                  className="btn btn-success m-1 "
+                  onClick={() => {
+                    setYourStateObject({
+                      data: allResult
+                        .filter((el) => el.gender === genderres)
+                        .filter((el) => el.group === groupres),
+                      gp: thisGp,
+                      gender: genderres,
+                      group: groupres,
+                    });
+                    navigate.push(`/GPGroupWiseResultPrintBlank`);
+                  }}
+                >
+                  {`Go to Blank ${genderres} ${groupres} => Result`}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -465,6 +465,26 @@ const CircleResultSection = () => {
               </button>
             </div>
           )}
+          {groupresSelected && (
+            <div className="mb-3 col-md-3">
+              <button
+                type="button"
+                className="btn btn-success m-1 "
+                onClick={() => {
+                  setYourStateObject({
+                    data: allResult
+                      .filter((el) => el.gender === genderres)
+                      .filter((el) => el.group === groupres),
+                    gender: genderres,
+                    group: groupres,
+                  });
+                  navigate.push(`/CircleGroupWiseResultPrintBlank`);
+                }}
+              >
+                {`Go to ${genderres} ${groupres} => Result`}
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className="my-4 row">
