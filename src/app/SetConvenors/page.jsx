@@ -87,69 +87,23 @@ const SetConvenors = () => {
   const [loader, setLoader] = useState(false);
 
   const getAllConvenors = async () => {
-    setLoader(true);
-    const q = query(collection(firestore, "allconvenors"));
-    const querySnapshot = await getDocs(q);
-    const data = querySnapshot.docs
-      .map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        // id: doc.id,
-      }))
-      .sort((a, b) => a?.gp.localeCompare(b?.gp));
-
-    setData(data);
-    setConvenorsState(data);
-    setLoader(false);
+    const convenors = teachersState.filter(
+      (teacher) => teacher.convenor === "admin"
+    );
+    setData(convenors);
+    setConvenorsState(convenors);
   };
 
   const teacherData = async () => {
-    try {
-      const q = query(collection(firestore, "teachers"));
-
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs
-        .map((doc) => ({
-          // doc.data() is never undefined for query doc snapshots
-          ...doc.data(),
-          // id: doc.id,
-        }))
-        .sort((a, b) => {
-          if (a?.school < b?.school) {
-            return -1;
-          }
-          if (a?.school > b?.school) {
-            return 1;
-          }
-          return a?.rank - b?.rank;
-        });
-      setTeachersState(data);
-      setTeacherUpdateTime(Date.now());
-      filterGPTeachers(data.sort((a, b) => a?.tname?.localeCompare(b?.tname)));
-    } catch (error) {
-      await axios
-        .post("/api/getTeacher")
-        .then((response) => {
-          const data = response.data.data.sort((a, b) => {
-            if (a?.school < b?.school) {
-              return -1;
-            }
-            if (a?.school > b?.school) {
-              return 1;
-            }
-            return a?.rank - b?.rank;
-          });
-          setTeachersState(data);
-          setTeacherUpdateTime(Date.now());
-          filterGPTeachers(
-            data.sort((a, b) => a?.tname?.localeCompare(b?.tname))
-          );
-        })
-        .catch((error) => {
-          console.error("Error fetching lock data: ", error);
-        });
-      console.error("Error fetching lock data: ", error);
-    }
+    const convenors = teachersState.filter(
+      (teacher) => teacher.convenor === "admin"
+    );
+    setData(convenors);
+    setConvenorsState(convenors);
+    setTeacherUpdateTime(Date.now());
+    filterGPTeachers(
+      teachersState.sort((a, b) => a?.tname?.localeCompare(b?.tname))
+    );
   };
 
   const filterGPTeachers = (lists) => {
@@ -176,7 +130,6 @@ const SetConvenors = () => {
           } catch (error) {
             console.log(error);
           }
-          await deleteDoc(doc(firestore, "allconvenors", el?.id));
         })
         .catch((e) => console.log(e));
     });
@@ -250,7 +203,6 @@ const SetConvenors = () => {
           } catch (error) {
             console.log(error);
           }
-          await deleteDoc(doc(firestore, "allconvenors", el?.id));
         })
         .catch((e) => console.log(e));
     });
@@ -258,16 +210,14 @@ const SetConvenors = () => {
       let newConvenorAdd = newConvenors.map(async (el) => {
         el.convenor = "admin";
         el.gpAssistant = "admin";
-        await setDoc(doc(firestore, "allconvenors", el?.id), el).then(
-          async () => {
-            await addNewConvenorMongoDB(el);
-            await updateTeachersState(el?.id, "admin");
-            const docRef = doc(firestore, "teachers", el?.id);
-            await updateDoc(docRef, {
-              convenor: "admin",
-            });
-          }
-        );
+        async () => {
+          await addNewConvenorMongoDB(el);
+          await updateTeachersState(el?.id, "admin");
+          const docRef = doc(firestore, "teachers", el?.id);
+          await updateDoc(docRef, {
+            convenor: "admin",
+          });
+        };
       });
 
       await Promise.all(newConvenorAdd).then(async () => {
@@ -388,54 +338,48 @@ const SetConvenors = () => {
       convenor: "taw",
     })
       .then(async () => {
-        await deleteDoc(doc(firestore, "allconvenors", id))
-          .then(async () => {
-            try {
-              await delConvenorMongoDB(id);
-            } catch (error) {
-              console.log(error);
-            }
-            try {
-              await updateDoc(doc(firestore, "userteachers", id), {
-                convenor: "taw",
-              }).then(() => {
-                setConvenorsState(
-                  convenorsState.filter((convenor) => convenor.id !== id)
-                );
-                setData(
-                  convenorsState.filter((convenor) => convenor.id !== id)
-                );
-                setConvenorsUpdateTime(Date.now());
-                setLoader(false);
-                toast.success("GP Convenor Deleted", {
-                  position: "top-right",
-                  autoClose: 1000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: "light",
-                });
-              });
-            } catch (e) {
-              console.log(e);
-              // teacherData();
-              // getAllConvenors();
-              setLoader(false);
-              toast.success("GP Convenor Deleted", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-            }
-          })
-          .catch((e) => console.log(e));
+        try {
+          await delConvenorMongoDB(id);
+        } catch (error) {
+          console.log(error);
+        }
+        try {
+          await updateDoc(doc(firestore, "userteachers", id), {
+            convenor: "taw",
+          }).then(() => {
+            setConvenorsState(
+              convenorsState.filter((convenor) => convenor.id !== id)
+            );
+            setData(convenorsState.filter((convenor) => convenor.id !== id));
+            setConvenorsUpdateTime(Date.now());
+            setLoader(false);
+            toast.success("GP Convenor Deleted", {
+              position: "top-right",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          });
+        } catch (e) {
+          console.log(e);
+          // teacherData();
+          // getAllConvenors();
+          setLoader(false);
+          toast.success("GP Convenor Deleted", {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
       })
       .catch((e) => console.log(e));
   };
@@ -641,14 +585,9 @@ const SetConvenors = () => {
     } else {
       setData(convenorsState);
     }
-    const difference2 = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
-    if (teachersState?.length === 0 || difference2 >= 1) {
-      teacherData();
-    } else {
-      filterGPTeachers(
-        teachersState.sort((a, b) => a?.tname?.localeCompare(b?.tname))
-      );
-    }
+
+    teacherData();
+
     // eslint-disable-next-line
   }, []);
   useEffect(() => {

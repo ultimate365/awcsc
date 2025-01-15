@@ -105,7 +105,6 @@ const GPConvenorsPage = () => {
   const [convenorsGPSchoolData, setConvenorsGPSchoolData] = useState([]);
   const [allParticipants, setAllParticipants] = useState([]);
   const [loader, setLoader] = useState(false);
-  const [schoolData, setSchoolData] = useState([]);
   const [selectSchoolsParticipants, setSelectSchoolsParticipants] = useState(
     []
   );
@@ -141,72 +140,28 @@ const GPConvenorsPage = () => {
       query(collection(firestore, "schools"))
     );
     const data = querySnapshot.docs.map((doc) => doc.data());
-    setSchoolData(data);
     setFilteredSchData(data);
     setConvenorsGPSchoolData(
       data?.filter((el) => el?.gp === teacherdetails.gp)
     );
   };
   const getTeachersData = async () => {
-    try {
-      const querySnapshot = await getDocs(
-        query(collection(firestore, "teachers"))
-      );
-      const data = querySnapshot.docs
-        .map((doc) => doc.data())
-        .sort((a, b) => a?.tname.localeCompare(b?.tname));
-      setAllTeachers(data);
-      setTeachersState(data);
-      setTeacherUpdateTime(Date.now());
-    } catch (error) {
-      await axios
-        .post("/api/getTeacher")
-        .then((response) => {
-          const data = response.data.data.sort((a, b) =>
-            a?.tname.localeCompare(b?.tname)
-          );
-          setAllTeachers(data);
-          setTeachersState(data);
-          setTeacherUpdateTime(Date.now());
-        })
-        .catch((error) => {
-          console.error("Error fetching lock data: ", error);
-        });
-      console.error("Error fetching lock data: ", error);
-    }
+    setAllTeachers(teachersState);
+    setTeachersState(teachersState);
+    setTeacherUpdateTime(Date.now());
   };
 
   const getAllGPAssistantsData = async () => {
-    try {
-      const querySnapshot = await getDocs(
-        query(collection(firestore, "allGPAssistants"))
-      );
-      const data = querySnapshot.docs.map((doc) => doc.data());
-      setAllGPAssistantsState(data);
-      setAllGPAssistants(data);
-      setThisGpAssistance(
-        data
-          .filter((el) => el?.gp === teacherdetails.gp)
-          .filter((el) => el?.gpAssistant === "admin")
-      );
-    } catch (error) {
-      await axios
-        .post("/api/getallGPAssistants")
-        .then((response) => {
-          const data = response.data.data;
-          setAllGPAssistantsState(data);
-          setAllGPAssistants(data);
-          setThisGpAssistance(
-            data
-              .filter((el) => el?.gp === teacherdetails.gp)
-              .filter((el) => el?.gpAssistant === "admin")
-          );
-        })
-        .catch((error) => {
-          console.error("Error fetching lock data: ", error);
-        });
-      console.error("Error fetching lock data: ", error);
-    }
+    const gpAssistants = teachersState.filter(
+      (teacher) => teacher.gpAssistant === "admin"
+    );
+    setAllGPAssistantsState(gpAssistants);
+    setAllGPAssistants(gpAssistants);
+    setThisGpAssistance(
+      gpAssistants
+        .filter((el) => el?.gp === teacherdetails.gp)
+        .filter((el) => el?.gpAssistant === "admin")
+    );
   };
   const getAllResult = async () => {
     try {
@@ -246,7 +201,7 @@ const GPConvenorsPage = () => {
   const updateAssistantData = async () => {
     let all = allGPAssistantsState;
     setLoader(true);
-    let gpAssistantUpdateNteacherUpdate = allGPAssistants
+    const gpAssistantUpdateNteacherUpdate = allGPAssistants
       .filter((el) => el?.gp === teacherdetails.gp)
       .map(async (el) => {
         let x = teachersState.filter((item) => item.id === el?.id)[0];
@@ -254,6 +209,14 @@ const GPConvenorsPage = () => {
         let y = teachersState.filter((item) => item.id !== el?.id);
         y = [...y, x];
         setTeachersState(y);
+        let z = allGPAssistantsState.filter((item) => item.id !== el?.id);
+        setAllGPAssistantsState(z);
+        setAllGPAssistants(z);
+        setThisGpAssistance(
+          z
+            .filter((el) => el?.gp === teacherdetails.gp)
+            .filter((el) => el?.gpAssistant === "admin")
+        );
         await axios.post("/api/updTeacherConvenor", {
           id: el?.id,
           gpAssistant: "taw",
@@ -262,11 +225,6 @@ const GPConvenorsPage = () => {
           gpAssistant: "taw",
         })
           .then(async () => {
-            all = all.pop((item) => item.id === el?.id);
-            await deleteDoc(doc(firestore, "allGPAssistants", el?.id));
-            await axios.post("/api/delallGPAssistants", {
-              id: el?.id,
-            });
             try {
               await updateDoc(doc(firestore, "userteachers", el?.id), {
                 gpAssistant: "taw",
@@ -278,35 +236,31 @@ const GPConvenorsPage = () => {
           .catch((e) => console.log(e));
       });
     await Promise.all(gpAssistantUpdateNteacherUpdate).then(async () => {
-      let createGpAssistantNupdateTeacherData = assistants.map(
-        async (el, ind) =>
-          await setDoc(doc(firestore, "allGPAssistants", el?.id), el).then(
-            async () => {
-              await axios.post("/api/updTeacherConvenor", {
-                id: el?.id,
+      const createGpAssistantNupdateTeacherData = assistants.map(
+        async (el, ind) => {
+          await axios.post("/api/updTeacherConvenor", {
+            id: el?.id,
+            gpAssistant: "admin",
+          });
+          let x = teachersState.filter((item) => item.id === el?.id)[0];
+          x.gpAssistant = "admin";
+          let y = teachersState.filter((item) => item.id !== el?.id);
+          y = [...y, x];
+          setTeachersState(y);
+          all = [...all, x];
+          const docRef = doc(firestore, "teachers", el?.id);
+          await updateDoc(docRef, {
+            gpAssistant: "admin",
+          }).then(async () => {
+            try {
+              await updateDoc(doc(firestore, "userteachers", el?.id), {
                 gpAssistant: "admin",
               });
-              await axios.post("/api/addallGPAssistants", el);
-              let x = teachersState.filter((item) => item.id === el?.id)[0];
-              x.gpAssistant = "admin";
-              let y = teachersState.filter((item) => item.id !== el?.id);
-              y = [...y, x];
-              setTeachersState(y);
-              all = [...all, x];
-              const docRef = doc(firestore, "teachers", el?.id);
-              await updateDoc(docRef, {
-                gpAssistant: "admin",
-              }).then(async () => {
-                try {
-                  await updateDoc(doc(firestore, "userteachers", el?.id), {
-                    gpAssistant: "admin",
-                  });
-                } catch (e) {
-                  console.log(e);
-                }
-              });
+            } catch (e) {
+              console.log(e);
             }
-          )
+          });
+        }
       );
       await Promise.all(createGpAssistantNupdateTeacherData).then(async () => {
         setTeacherUpdateTime(Date.now());
@@ -339,9 +293,7 @@ const GPConvenorsPage = () => {
       id: el?.id,
       gpAssistant: "taw",
     });
-    await axios.post("/api/delallGPAssistants", {
-      id: el?.id,
-    });
+
     setAllGPAssistantsState(
       allGPAssistantsState.filter((item) => item?.id !== el?.id)
     );
@@ -349,13 +301,10 @@ const GPConvenorsPage = () => {
       gpAssistant: "taw",
     })
       .then(async () => {
-        await deleteDoc(doc(firestore, "allGPAssistants", el?.id));
         try {
           await updateDoc(doc(firestore, "userteachers", el?.id), {
             gpAssistant: "taw",
           }).then(() => {
-            // getTeachersData();
-            // getAllGPAssistantsData();
             setLoader(false);
             toast.success("Assistant Removed", {
               position: "top-right",
@@ -370,19 +319,8 @@ const GPConvenorsPage = () => {
           });
         } catch (e) {
           console.log(e);
-          // getTeachersData();
-          // getAllGPAssistantsData();
           setLoader(false);
-          toast.success("Assistant Removed", {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          toast.success("Assistant Removed");
         }
       })
       .catch((e) => console.log(e));
@@ -838,7 +776,6 @@ const GPConvenorsPage = () => {
     if (schoolState.length === 0) {
       getSchoolData();
     } else {
-      setSchoolData(schoolState);
       setFilteredSchData(schoolState);
       setConvenorsGPSchoolData(
         schoolState.filter((el) => el?.gp === teacherdetails.gp)
@@ -860,11 +797,9 @@ const GPConvenorsPage = () => {
       setGpConvenorsData(sorted.filter((el) => el?.gp === teacherdetails?.gp));
     }
     const difference2 = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
-    if (teachersState.length === 0 || difference2 >= 1) {
-      getTeachersData();
-    } else {
-      setAllTeachers(teachersState);
-    }
+
+    getTeachersData();
+
     const difference3 =
       (Date.now() - AmtaWestCircleAllResultUpdateTime) / 1000 / 60 / 15;
     if (AmtaWestCircleAllResultState.length === 0 || difference3 >= 1) {

@@ -9,6 +9,7 @@ import { useGlobalContext } from "../context/Store";
 import { firestore } from "../context/FirbaseContext";
 import axios from "axios";
 import { collection, getDocs, query } from "firebase/firestore";
+import Loader from "./Loader";
 const Navbar = () => {
   const {
     state,
@@ -19,11 +20,15 @@ const Navbar = () => {
     setCircleLockState,
     circleLockUpdateTime,
     setCircleLockUpdateTime,
+    setTeachersState,
+    setTeacherUpdateTime,
+    teachersState,
+    teacherUpdateTime,
   } = useGlobalContext();
   const type = state.TYPE;
   const access = state.ACCESS;
   const user = state.USER;
-
+  const [showLoader, setShowLoader] = useState(false);
   const [teacherdetails, setTeacherdetails] = useState({
     tname: "",
     school: "",
@@ -45,7 +50,39 @@ const Navbar = () => {
         .classList.remove("show");
     }
   };
+  const storeTeachersData = async () => {
+    setShowLoader(true);
+    let data = [];
+    try {
+      const q = query(collection(firestore, "teachers"));
+      const querySnapshot = await getDocs(q);
+      data = querySnapshot.docs.map((doc) => ({
+        // doc.data() is never undefined for query doc snapshots
+        ...doc.data(),
+        id: doc.id,
+      }));
+    } catch (error) {
+      console.error("Error fetching teachers data: ", error);
+      const url = `/api/getTeachers`;
+      const response = await axios.post(url);
+      data = response.data.data;
+    }
 
+    const newDatas = data.sort((a, b) => {
+      // First, compare the "school" keys
+      if (a.school < b.school) {
+        return -1;
+      }
+      if (a.school > b.school) {
+        return 1;
+      }
+      // If "school" keys are equal, compare the "rank" keys
+      return a.rank - b.rank;
+    });
+    setShowLoader(false);
+    setTeachersState(newDatas);
+    setTeacherUpdateTime(Date.now());
+  };
   const getLockData = async () => {
     try {
       const q = query(collection(firestore, "gpLockData"));
@@ -108,7 +145,10 @@ const Navbar = () => {
     if (difference2 >= 1) {
       getCircleLockData();
     }
-
+    const teacherDifference = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
+    if (teacherDifference >= 1 || teachersState.length === 0) {
+      storeTeachersData();
+    }
     //eslint-disable-next-line
   }, []);
 
@@ -628,6 +668,7 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
+      {showLoader && <Loader />}
     </nav>
   );
 };

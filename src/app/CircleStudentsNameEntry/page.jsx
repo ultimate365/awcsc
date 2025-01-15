@@ -118,17 +118,6 @@ const CircleStudentsNameEntry = () => {
   const [filteredGPData, setFilteredGPData] = useState([]);
   const [lockData, setLockData] = useState(gpLockState);
 
-  const getAllCircleAssistantsData = async () => {
-    const q = query(collection(firestore, "allCircleAssistants"));
-    const querySnapshot = await getDocs(q);
-    const data = querySnapshot.docs.map((doc) => ({
-      // doc.data() is never undefined for query doc snapshots
-      ...doc.data(),
-      // id: doc.id,
-    }));
-    setAllCircleAssistants(data);
-  };
-
   const getAllParticipant = async () => {
     setLoader(true);
     const q1 = query(collection(firestore, "allGPFirsts"));
@@ -151,34 +140,13 @@ const CircleStudentsNameEntry = () => {
     setLoader(false);
   };
   const getTeachersData = async () => {
-    try {
-      const querySnapshot = await getDocs(
-        query(collection(firestore, "teachers"))
-      );
-      const data = querySnapshot.docs
-        .map((doc) => doc.data())
-        .sort((a, b) => a?.tname.localeCompare(b?.tname));
-      setAllTeachers(data);
-      setTeachersState(data);
-      setTeacherUpdateTime(Date.now());
-    } catch (error) {
-      await axios
-        .post("/api/getTeacher")
-        .then((response) => {
-          const data = response.data?.data?.sort((a, b) =>
-            a?.tname.localeCompare(b?.tname)
-          );
-          setLoader(false);
-          setAllTeachers(data);
-          setTeachersState(data);
-          setTeacherUpdateTime(Date.now());
-        })
-        .catch((error) => {
-          setLoader(false);
-          console.error("Error fetching Result data: ", error);
-        });
-      console.log(error);
-    }
+    setAllTeachers(teachersState);
+    setTeachersState(teachersState);
+    const circleAssistants = teachersState.filter(
+      (teacher) => teacher.circleAssistant === "admin"
+    );
+    setAllCircleAssistants(circleAssistants);
+    setTeacherUpdateTime(Date.now());
   };
   const updateData = async () => {
     setLoader(true);
@@ -258,7 +226,7 @@ const CircleStudentsNameEntry = () => {
   const updateAssistantData = async () => {
     setLoader(true);
     let all = circleAssistantState;
-    let circleAssistantsUpdateNteacherUpdate = allCircleAssistants
+    const circleAssistantsUpdateNteacherUpdate = allCircleAssistants
       .filter((el) => el?.gp === teacherdetails.gp)
       .map(async (el) => {
         await axios.post("/api/updTeacherConvenor", {
@@ -274,11 +242,6 @@ const CircleStudentsNameEntry = () => {
           circleAssistant: "taw",
         })
           .then(async () => {
-            all = all.pop((item) => item.id === el?.id);
-            await axios.post("/api/delallCircleAssistants", {
-              id: el?.id,
-            });
-            await deleteDoc(doc(firestore, "allCircleAssistants", el?.id));
             try {
               await updateDoc(doc(firestore, "userteachers", el?.id), {
                 circleAssistant: "taw",
@@ -290,36 +253,33 @@ const CircleStudentsNameEntry = () => {
           .catch((e) => console.log(e));
       });
     await Promise.all(circleAssistantsUpdateNteacherUpdate).then(async () => {
-      let createCircleAssistantNupdateTeacherData = assistants.map(
-        async (el, ind) =>
-          await setDoc(doc(firestore, "allCircleAssistants", el?.id), el).then(
-            async () => {
-              await axios.post("/api/updTeacherConvenor", {
-                id: el?.id,
+      const createCircleAssistantNupdateTeacherData = assistants.map(
+        async (el, ind) => {
+          await axios.post("/api/updTeacherConvenor", {
+            id: el?.id,
+            circleAssistant: "admin",
+          });
+          let x = teachersState.filter((item) => item.id === el?.id)[0];
+          x.circleAssistant = "admin";
+          let y = teachersState.filter((item) => item.id !== el?.id);
+          y = [...y, x];
+          setTeachersState(y);
+          all = [...all, x];
+          const docRef = doc(firestore, "teachers", el?.id);
+          await updateDoc(docRef, {
+            circleAssistant: "admin",
+          }).then(async () => {
+            try {
+              await updateDoc(doc(firestore, "userteachers", el?.id), {
                 circleAssistant: "admin",
               });
-              await axios.post("/api/addallGPAssistants", el);
-              let x = teachersState.filter((item) => item.id === el?.id)[0];
-              x.circleAssistant = "admin";
-              let y = teachersState.filter((item) => item.id !== el?.id);
-              y = [...y, x];
-              setTeachersState(y);
-              all = [...all, x];
-              const docRef = doc(firestore, "teachers", el?.id);
-              await updateDoc(docRef, {
-                circleAssistant: "admin",
-              }).then(async () => {
-                try {
-                  await updateDoc(doc(firestore, "userteachers", el?.id), {
-                    circleAssistant: "admin",
-                  });
-                } catch (e) {
-                  console.log(e);
-                }
-              });
+            } catch (e) {
+              console.log(e);
             }
-          )
+          });
+        }
       );
+
       await Promise.all(createCircleAssistantNupdateTeacherData).then(
         async () => {
           setTeacherUpdateTime(Date.now());
@@ -344,9 +304,6 @@ const CircleStudentsNameEntry = () => {
       id: el?.id,
       circleAssistant: "taw",
     });
-    await axios.post("/api/delallCircleAssistants", {
-      id: el?.id,
-    });
     setCircleAssistantState(
       circleAssistantState.filter((item) => item?.id !== el?.id)
     );
@@ -354,20 +311,14 @@ const CircleStudentsNameEntry = () => {
       circleAssistant: "taw",
     })
       .then(async () => {
-        await deleteDoc(doc(firestore, "allCircleAssistants", el?.id));
         try {
           await updateDoc(doc(firestore, "userteachers", el?.id), {
             circleAssistant: "taw",
           }).then(() => {
-            // getTeachersData();
-            // getAllCircleAssistantsData();
             setLoader(false);
             toast.success("Assistant Removed");
           });
         } catch (e) {
-          // console.log(e);
-          // getTeachersData();
-          // getAllCircleAssistantsData();
           setLoader(false);
           toast.success("Assistant Removed");
         }
@@ -496,10 +447,7 @@ const CircleStudentsNameEntry = () => {
 
   const flushAllData = async () => {
     setLoader(true);
-    setCircleStudentState([]);
-    setGpStudentState([]);
-    setConvenorsState([]);
-    setConvenorsUpdateTime(Date.now());
+
     try {
       await deleteCollection("allGPFirsts");
       await deleteCollection("allconvenors");
@@ -512,65 +460,32 @@ const CircleStudentsNameEntry = () => {
       await deleteCollection("jhikiragpresult");
       await deleteCollection("nowparagpresult");
       await deleteCollection("thaliagpresult");
+      setCircleStudentState([]);
+      setGpStudentState([]);
     } catch (error) {
       console.log(error);
     }
-
-    // Flushing "allCircleAssistants" Database
-    try {
-      const querySnapshot1 = await getDocs(
-        query(collection(firestore, "allCircleAssistants"))
-      );
-      const data1 = querySnapshot1.docs.map((doc) => ({
-        ...doc.data(),
-      }));
-      data1.map(
-        async (el) =>
-          await deleteDoc(doc(firestore, "allCircleAssistants", el?.id))
-            .then(async () => {
-              await updateDoc(doc(firestore, "teachers", el?.id), {
-                circleAssistant: "taw",
-              })
-                .then(() => {
-                  // getAllCircleAssistantsData();
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
-            })
-            .catch((e) => {
-              console.log(e);
-            })
-      );
-    } catch (e) {
-      console.log(e);
-    }
-    // Flushing "allGPAssistants" Database
-    try {
-      const querySnapshot1 = await getDocs(
-        query(collection(firestore, "allGPAssistants"))
-      );
-      const data1 = querySnapshot1.docs.map((doc) => ({
-        ...doc.data(),
-      }));
-      data1.map(
-        async (el) =>
-          await deleteDoc(doc(firestore, "allGPAssistants", el?.id))
-            .then(async () => {
-              await updateDoc(doc(firestore, "teachers", el?.id), {
-                gpAssistant: "taw",
-              }).catch((e) => {
-                console.log(e);
-              });
-            })
-            .catch((e) => {
-              console.log(e);
-            })
-      );
-    } catch (e) {
-      console.log(e);
-    }
-
+    // Flushing "allCircleAssistants" and "allGPAssistants" Database
+    teachersState.map(async (el) => {
+      await updateDoc(doc(firestore, "teachers", el?.id), {
+        circleAssistant: "taw",
+      })
+        .then(async () => {
+          // Updating "userteachers" Database
+          try {
+            await updateDoc(doc(firestore, "userteachers", el?.id), {
+              gpAssistant: "taw",
+              circleAssistant: "taw",
+              convenor: "taw",
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    });
     // Updating "gpLockData" Database
     try {
       let x = [];
@@ -601,86 +516,8 @@ const CircleStudentsNameEntry = () => {
       setLoader(false);
       console.log(e);
     }
-    // Updating "userteachers" Database
-    try {
-      const querySnapshot1 = await getDocs(
-        query(collection(firestore, "userteachers"))
-      );
-      const data1 = querySnapshot1.docs.map((doc) => ({
-        ...doc.data(),
-      }));
-      data1.map(
-        async (el) =>
-          await updateDoc(doc(firestore, "userteachers", el?.id), {
-            gpAssistant: "taw",
-            circleAssistant: "taw",
-            convenor: "taw",
-          })
-            .then(() => {
-              setLoader(false);
-              toast.success("All Data Flushed", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-            })
-            .catch((e) => {
-              setLoader(false);
-              console.log(e);
-            })
-      );
-    } catch (e) {
-      setLoader(false);
-      console.log(e);
-    }
-    // Updating "convenors" Database
-    try {
-      let data1 = [];
-      if (convenorsState.length === 0) {
-        const querySnapshot1 = await getDocs(
-          query(collection(firestore, "allconvenors"))
-        );
-        data1 = querySnapshot1.docs.map((doc) => ({
-          ...doc.data(),
-        }));
-      } else {
-        data1 = convenorsState;
-      }
-      data1.map(
-        async (el) =>
-          await updateDoc(doc(firestore, "teachers", el?.id), {
-            gpAssistant: "taw",
-            circleAssistant: "taw",
-            convenor: "taw",
-          })
-            .then(() => {
-              setLoader(false);
 
-              toast.success("All Data Flushed", {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-            })
-            .catch((e) => {
-              setLoader(false);
-              console.log(e);
-            })
-      );
-    } catch (e) {
-      setLoader(false);
-      console.log(e);
-    }
+    // Updating "convenors" Database
 
     await waitForSomeTime();
     setConvenorsState([]);
@@ -838,13 +675,7 @@ const CircleStudentsNameEntry = () => {
     setConvenorsGPSchoolData(
       schoolState.filter((el) => el?.gp === teacherdetails.gp)
     );
-
-    const difference = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
-    if (difference >= 1 || teachersState.length === 0) {
-      getTeachersData();
-    } else {
-      setAllTeachers(teachersState);
-    }
+    getTeachersData();
     const AllParticipantdifference =
       (Date.now() - allGPFirstsStateUpdateTime) / 1000 / 60 / 10;
     if (AllParticipantdifference >= 1 || allGPFirstsState.length === 0) {
