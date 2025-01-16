@@ -316,8 +316,8 @@ const AllTeachers = () => {
       email: el?.email,
       phone: el?.phone,
       id: el?.id,
-      username: el?.pan.toLowerCase(),
-      password: bcrypt.hashSync(el?.empid?.toLowerCase(), 10),
+      username: el.empid.toLowerCase(),
+      password: bcrypt.hashSync(el?.pan?.toLowerCase(), 10),
       createdAt: Date.now(),
       disabled: false,
     };

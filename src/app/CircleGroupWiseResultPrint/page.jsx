@@ -40,7 +40,7 @@ const CircleGroupWiseResultPrint = () => {
 
   useEffect(() => {
     if (group === "GROUP-A") {
-      setBengGroupName("বিভাগ 'ক'");
+      setBengGroupName("{benGender} {bengGroupName}");
     } else if (group === "GROUP-B") {
       setBengGroupName("বিভাগ 'খ'");
     } else if (group === "GROUP-C") {
@@ -99,13 +99,13 @@ const CircleGroupWiseResultPrint = () => {
               <th colSpan={5} style={{ borderRight: 0 }}></th>
               <th style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-2 rounded-2">
-                  {`${bengGroupName} ${benGender}`}
+                  {benGender} {bengGroupName}
                 </h4>
               </th>
             </tr>
             <tr>
               <th className="ben" colSpan={6}>
-                বিভাগ 'ক' ৭৫ মিটার দৌড়
+                {benGender} {bengGroupName} ৭৫ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -138,7 +138,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                বিভাগ 'ক' দীর্ঘ লম্ফন
+                {benGender} {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
             <tr>
@@ -168,7 +168,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                বিভাগ 'ক' আলু দৌড় (SHUTTLE RACE)
+                {benGender} {bengGroupName} আলু দৌড় (SHUTTLE RACE)
               </th>
             </tr>
             <tr>
@@ -201,7 +201,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                বিভাগ 'ক' যোগা
+                {benGender} {bengGroupName} যোগা
               </th>
             </tr>
             <tr>
@@ -234,13 +234,13 @@ const CircleGroupWiseResultPrint = () => {
               <th colSpan={5} style={{ borderRight: 0 }}></th>
               <th style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-2 rounded-2">
-                  {`${bengGroupName} ${benGender}`}
+                  {benGender} {bengGroupName}
                 </h4>
               </th>
             </tr>
             <tr>
               <th className="ben" colSpan={6}>
-                {bengGroupName} ১০০ মিটার দৌড়
+                {benGender} {bengGroupName} ১০০ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -274,7 +274,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                {bengGroupName} ২০০ মিটার দৌড়
+                {benGender} {bengGroupName} ২০০ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -308,7 +308,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                {bengGroupName} দীর্ঘ লম্ফন
+                {benGender} {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
             <tr>
@@ -338,7 +338,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                {bengGroupName} উচ্চ লম্ফন
+                {benGender} {bengGroupName} উচ্চ লম্ফন
               </th>
             </tr>
             <tr>
@@ -369,7 +369,7 @@ const CircleGroupWiseResultPrint = () => {
 
             <tr>
               <th className="ben" colSpan={6}>
-                {bengGroupName} যোগা
+                {benGender} {bengGroupName} যোগা
               </th>
             </tr>
             <tr>
@@ -397,7 +397,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                {bengGroupName} জিম্‌নাস্টিক্‌স
+                {benGender} {bengGroupName} জিম্‌নাস্টিক্‌স
               </th>
             </tr>
             <tr>
@@ -432,7 +432,7 @@ const CircleGroupWiseResultPrint = () => {
               <>
                 <tr>
                   <th className="ben" colSpan={6}>
-                    {bengGroupName} ফুটবল ছোঁড়া
+                    {benGender} {bengGroupName} ফুটবল ছোঁড়া
                   </th>
                 </tr>
                 <tr>

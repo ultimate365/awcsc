@@ -79,6 +79,10 @@ const GlobalContext = createContext({
   setUserSchoolStateUpdateTime: () => "",
   circleAssistantState: [],
   setCircleAssistantState: () => [],
+  GPResultState: [],
+  setGPResultState: () => [],
+  circleResultState: [],
+  setCircleResultState: () => [],
 });
 export const GlobalContextProvider = ({ children }) => {
   const [state, setState] = useState({
@@ -138,6 +142,8 @@ export const GlobalContextProvider = ({ children }) => {
   const [circleLockUpdateTime, setCircleLockUpdateTime] = useState(
     Date.now() - 600000
   );
+  const [GPResultState, setGPResultState] = useState([]);
+  const [circleResultState, setCircleResultState] = useState([]);
 
   return (
     <GlobalContext.Provider
@@ -209,6 +215,10 @@ export const GlobalContextProvider = ({ children }) => {
         setCircleLockState,
         circleLockUpdateTime,
         setCircleLockUpdateTime,
+        GPResultState,
+        setGPResultState,
+        circleResultState,
+        setCircleResultState,
       }}
     >
       <FirebaseProvider>{children}</FirebaseProvider>

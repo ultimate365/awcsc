@@ -46,11 +46,11 @@ const GPGroupWiseResultPrint = () => {
 
   useEffect(() => {
     if (group === "GROUP-A") {
-      setBengGroupName("বিভাগ 'ক'");
+      setBengGroupName(`'ক' বিভাগ`);
     } else if (group === "GROUP-B") {
-      setBengGroupName("বিভাগ 'খ'");
+      setBengGroupName("'খ' বিভাগ");
     } else if (group === "GROUP-C") {
-      setBengGroupName("বিভাগ 'গ'");
+      setBengGroupName("'গ' বিভাগ");
     }
     if (gender === "BOYS") {
       setBenGender("বালক");
@@ -98,13 +98,13 @@ const GPGroupWiseResultPrint = () => {
               <th colSpan={4} style={{ borderRight: 0 }}></th>
               <th style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-2 rounded-2">
-                  {`${bengGroupName} ${benGender}`}
+                  {benGender} {bengGroupName}
                 </h4>
               </th>
             </tr>
             <tr>
               <th className="ben" colSpan={5}>
-                বিভাগ 'ক' ৭৫ মিটার দৌড়
+                {benGender} {bengGroupName} ৭৫ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -135,7 +135,7 @@ const GPGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={5}>
-                বিভাগ 'ক' দীর্ঘ লম্ফন
+                {benGender} {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
             <tr>
@@ -163,7 +163,7 @@ const GPGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={5}>
-                বিভাগ 'ক' আলু দৌড় (SHUTTLE RACE)
+                {benGender} {bengGroupName} আলু দৌড় (SHUTTLE RACE)
               </th>
             </tr>
             <tr>
@@ -194,7 +194,7 @@ const GPGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={5}>
-                বিভাগ 'ক' যোগা
+                {benGender} {bengGroupName} যোগা
               </th>
             </tr>
             <tr>
@@ -225,13 +225,13 @@ const GPGroupWiseResultPrint = () => {
               <th colSpan={4} style={{ borderRight: 0 }}></th>
               <th style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-2 rounded-2">
-                  {`${bengGroupName} ${benGender}`}
+                  {benGender} {bengGroupName}
                 </h4>
               </th>
             </tr>
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} ১০০ মিটার দৌড়
+                {benGender} {bengGroupName} ১০০ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -263,7 +263,7 @@ const GPGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} ২০০ মিটার দৌড়
+                {benGender} {bengGroupName} ২০০ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -295,7 +295,7 @@ const GPGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} দীর্ঘ লম্ফন
+                {benGender} {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
             <tr>
@@ -323,7 +323,7 @@ const GPGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} উচ্চ লম্ফন
+                {benGender} {bengGroupName} উচ্চ লম্ফন
               </th>
             </tr>
             <tr>
@@ -352,7 +352,7 @@ const GPGroupWiseResultPrint = () => {
 
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} যোগা
+                {benGender} {bengGroupName} যোগা
               </th>
             </tr>
             <tr>
@@ -378,7 +378,7 @@ const GPGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} জিম্‌নাস্টিক্‌স
+                {benGender} {bengGroupName} জিম্‌নাস্টিক্‌স
               </th>
             </tr>
             <tr>
@@ -411,7 +411,7 @@ const GPGroupWiseResultPrint = () => {
               <>
                 <tr>
                   <th className="ben" colSpan={5}>
-                    {bengGroupName} ফুটবল ছোঁড়া
+                    {benGender} {bengGroupName} ফুটবল ছোঁড়া
                   </th>
                 </tr>
                 <tr>

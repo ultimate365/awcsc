@@ -46,11 +46,11 @@ const GPGroupWiseResultPrint = () => {
 
   useEffect(() => {
     if (group === "GROUP-A") {
-      setBengGroupName("বিভাগ 'ক'");
+      setBengGroupName(`'ক' বিভাগ`);
     } else if (group === "GROUP-B") {
-      setBengGroupName("বিভাগ 'খ'");
+      setBengGroupName("'খ' বিভাগ");
     } else if (group === "GROUP-C") {
-      setBengGroupName("বিভাগ 'গ'");
+      setBengGroupName("'গ' বিভাগ");
     }
     if (gender === "BOYS") {
       setBenGender("বালক");
@@ -98,13 +98,13 @@ const GPGroupWiseResultPrint = () => {
               <th colSpan={3} style={{ borderRight: 0 }}></th>
               <th colSpan={2} style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-1 rounded-2">
-                  {`${bengGroupName} ${benGender}`}
+                  {benGender} {bengGroupName}
                 </h4>
               </th>
             </tr>
             <tr>
               <th className="ben" colSpan={5}>
-                বিভাগ 'ক' ৭৫ মিটার দৌড়
+                {benGender} {bengGroupName} ৭৫ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -116,19 +116,19 @@ const GPGroupWiseResultPrint = () => {
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
-                <th style={{width:"10%"}}>
+                <th style={{ width: "10%" }}>
                   {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
                 </th>
                 <th style={{ width: "30%" }}></th>
-                <th style={{width:"10%"}}></th>
-                <th style={{width:"30%"}}></th>
-                <th style={{width:"20%"}}></th>
+                <th style={{ width: "10%" }}></th>
+                <th style={{ width: "30%" }}></th>
+                <th style={{ width: "20%" }}></th>
               </tr>
             ))}
 
             <tr>
               <th className="ben" colSpan={5}>
-                বিভাগ 'ক' দীর্ঘ লম্ফন
+                {benGender} {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
             <tr>
@@ -140,18 +140,18 @@ const GPGroupWiseResultPrint = () => {
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
-                <th style={{width:"10%"}}>
+                <th style={{ width: "10%" }}>
                   {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
                 </th>
                 <th style={{ width: "30%" }}></th>
-                <th style={{width:"10%"}}></th>
-                <th style={{width:"30%"}}></th>
-                <th style={{width:"20%"}}></th>
+                <th style={{ width: "10%" }}></th>
+                <th style={{ width: "30%" }}></th>
+                <th style={{ width: "20%" }}></th>
               </tr>
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                বিভাগ 'ক' আলু দৌড় (SHUTTLE RACE)
+                {benGender} {bengGroupName} আলু দৌড় (SHUTTLE RACE)
               </th>
             </tr>
             <tr>
@@ -163,18 +163,18 @@ const GPGroupWiseResultPrint = () => {
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
-                <th style={{width:"10%"}}>
+                <th style={{ width: "10%" }}>
                   {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
                 </th>
                 <th style={{ width: "30%" }}></th>
-                <th style={{width:"10%"}}></th>
-                <th style={{width:"30%"}}></th>
-                <th style={{width:"20%"}}></th>
+                <th style={{ width: "10%" }}></th>
+                <th style={{ width: "30%" }}></th>
+                <th style={{ width: "20%" }}></th>
               </tr>
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                বিভাগ 'ক' যোগা
+                {benGender} {bengGroupName} যোগা
               </th>
             </tr>
             <tr>
@@ -186,29 +186,29 @@ const GPGroupWiseResultPrint = () => {
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
-                <th style={{width:"10%"}}>
+                <th style={{ width: "10%" }}>
                   {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
                 </th>
                 <th style={{ width: "30%" }}></th>
-                <th style={{width:"10%"}}></th>
-                <th style={{width:"30%"}}></th>
-                <th style={{width:"20%"}}></th>
+                <th style={{ width: "10%" }}></th>
+                <th style={{ width: "30%" }}></th>
+                <th style={{ width: "20%" }}></th>
               </tr>
             ))}
           </tbody>
         ) : (
           <tbody>
             <tr>
-            <th colSpan={3} style={{ borderRight: 0 }}></th>
+              <th colSpan={3} style={{ borderRight: 0 }}></th>
               <th colSpan={2} style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-1 rounded-2">
-                  {`${bengGroupName} ${benGender}`}
+                  {benGender} {bengGroupName}
                 </h4>
               </th>
             </tr>
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} ১০০ মিটার দৌড়
+                {benGender} {bengGroupName} ১০০ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -220,18 +220,18 @@ const GPGroupWiseResultPrint = () => {
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
-                <th style={{width:"10%"}}>
+                <th style={{ width: "10%" }}>
                   {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
                 </th>
                 <th style={{ width: "30%" }}></th>
-                <th style={{width:"10%"}}></th>
-                <th style={{width:"30%"}}></th>
-                <th style={{width:"20%"}}></th>
+                <th style={{ width: "10%" }}></th>
+                <th style={{ width: "30%" }}></th>
+                <th style={{ width: "20%" }}></th>
               </tr>
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} ২০০ মিটার দৌড়
+                {benGender} {bengGroupName} ২০০ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -243,18 +243,18 @@ const GPGroupWiseResultPrint = () => {
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
-                <th style={{width:"10%"}}>
+                <th style={{ width: "10%" }}>
                   {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
                 </th>
                 <th style={{ width: "30%" }}></th>
-                <th style={{width:"10%"}}></th>
-                <th style={{width:"30%"}}></th>
-                <th style={{width:"20%"}}></th>
+                <th style={{ width: "10%" }}></th>
+                <th style={{ width: "30%" }}></th>
+                <th style={{ width: "20%" }}></th>
               </tr>
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} দীর্ঘ লম্ফন
+                {benGender} {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
             <tr>
@@ -266,18 +266,18 @@ const GPGroupWiseResultPrint = () => {
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
-                <th style={{width:"10%"}}>
+                <th style={{ width: "10%" }}>
                   {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
                 </th>
                 <th style={{ width: "30%" }}></th>
-                <th style={{width:"10%"}}></th>
-                <th style={{width:"30%"}}></th>
-                <th style={{width:"20%"}}></th>
+                <th style={{ width: "10%" }}></th>
+                <th style={{ width: "30%" }}></th>
+                <th style={{ width: "20%" }}></th>
               </tr>
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} উচ্চ লম্ফন
+                {benGender} {bengGroupName} উচ্চ লম্ফন
               </th>
             </tr>
             <tr>
@@ -289,19 +289,19 @@ const GPGroupWiseResultPrint = () => {
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
-                <th style={{width:"10%"}}>
+                <th style={{ width: "10%" }}>
                   {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
                 </th>
                 <th style={{ width: "30%" }}></th>
-                <th style={{width:"10%"}}></th>
-                <th style={{width:"30%"}}></th>
-                <th style={{width:"20%"}}></th>
+                <th style={{ width: "10%" }}></th>
+                <th style={{ width: "30%" }}></th>
+                <th style={{ width: "20%" }}></th>
               </tr>
             ))}
 
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} যোগা
+                {benGender} {bengGroupName} যোগা
               </th>
             </tr>
             <tr>
@@ -313,18 +313,18 @@ const GPGroupWiseResultPrint = () => {
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
-                <th style={{width:"10%"}}>
+                <th style={{ width: "10%" }}>
                   {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
                 </th>
                 <th style={{ width: "30%" }}></th>
-                <th style={{width:"10%"}}></th>
-                <th style={{width:"30%"}}></th>
-                <th style={{width:"20%"}}></th>
+                <th style={{ width: "10%" }}></th>
+                <th style={{ width: "30%" }}></th>
+                <th style={{ width: "20%" }}></th>
               </tr>
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {bengGroupName} জিম্‌নাস্টিক্‌স
+                {benGender} {bengGroupName} জিম্‌নাস্টিক্‌স
               </th>
             </tr>
             <tr>
@@ -336,20 +336,20 @@ const GPGroupWiseResultPrint = () => {
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
-                <th style={{width:"10%"}}>
+                <th style={{ width: "10%" }}>
                   {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
                 </th>
                 <th style={{ width: "30%" }}></th>
-                <th style={{width:"10%"}}></th>
-                <th style={{width:"30%"}}></th>
-                <th style={{width:"20%"}}></th>
+                <th style={{ width: "10%" }}></th>
+                <th style={{ width: "30%" }}></th>
+                <th style={{ width: "20%" }}></th>
               </tr>
             ))}
             {group === "GROUP-C" && (
               <>
                 <tr>
                   <th className="ben" colSpan={5}>
-                    {bengGroupName} ফুটবল ছোঁড়া
+                    {benGender} {bengGroupName} ফুটবল ছোঁড়া
                   </th>
                 </tr>
                 <tr>
@@ -360,16 +360,16 @@ const GPGroupWiseResultPrint = () => {
                   <th>SCHOOL</th>
                 </tr>
                 {[1, 1, 1].map((el, i) => (
-              <tr style={{ height: 40 }} key={i}>
-                <th style={{width:"10%"}}>
-                  {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
-                </th>
-                <th style={{ width: "30%" }}></th>
-                <th style={{width:"10%"}}></th>
-                <th style={{width:"30%"}}></th>
-                <th style={{width:"20%"}}></th>
-              </tr>
-            ))}
+                  <tr style={{ height: 40 }} key={i}>
+                    <th style={{ width: "10%" }}>
+                      {i + 1 === 1 ? "FIRST" : i + 1 === 2 ? "SECOND" : "THIRD"}
+                    </th>
+                    <th style={{ width: "30%" }}></th>
+                    <th style={{ width: "10%" }}></th>
+                    <th style={{ width: "30%" }}></th>
+                    <th style={{ width: "20%" }}></th>
+                  </tr>
+                ))}
               </>
             )}
           </tbody>

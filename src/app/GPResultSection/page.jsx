@@ -23,8 +23,15 @@ import { events } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
 const GPResultSection = () => {
-  const { stateObject, setYourStateObject, circleLockState } =
-    useGlobalContext();
+  const {
+    stateObject,
+    setYourStateObject,
+    circleLockState,
+    GPResultState,
+    setGPResultState,
+    allGPFirstsState,
+    setAllGPFirstsState,
+  } = useGlobalContext();
   const data = stateObject?.data?.sort((a, b) =>
     a?.school.localeCompare(b?.school)
   );
@@ -115,7 +122,11 @@ const GPResultSection = () => {
       group: student.group,
       udise: student.udise,
     };
-    console.log(entry);
+    const newData = [...GPResultState, entry];
+    setAllResult(newData);
+    setFilteredData(newData);
+    setGPResultState(newData);
+
     await axios.post(
       `/api/add${teacherdetails.gp.toLowerCase()}gpresult`,
       entry
@@ -145,25 +156,16 @@ const GPResultSection = () => {
           group: student.group,
           udise: student.udise,
         };
+        setAllGPFirstsState([...allGPFirstsState, entry2]);
         await axios.post("/api/addallGPFirsts", entry2);
         await setDoc(doc(firestore, "allGPFirsts", student.id), entry2).then(
           async () => {
             setLoader(false);
             setTimeout(() => {
               navigate.back();
-            }, 2000);
+            }, 500);
             toast.success(
-              `Student Sucessfully Registerd in the Circle Sports Name & ${teacherdetails.gp.toLowerCase()} GP Result Database`,
-              {
-                position: "top-right",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              }
+              `Student Sucessfully Registerd in the Circle Sports Name & ${teacherdetails.gp.toLowerCase()} GP Result Database`
             );
           }
         );
@@ -171,22 +173,28 @@ const GPResultSection = () => {
         setLoader(false);
         setTimeout(() => {
           navigate.back();
-        }, 2000);
+        }, 500);
         toast.success(
-          `Student Sucessfully Registed in the ${teacherdetails.gp.toLowerCase()} GP Result Database`,
-          {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
+          `Student Sucessfully Registed in the ${teacherdetails.gp.toLowerCase()} GP Result Database`
         );
       }
     });
+    setEngGenderName("");
+    setEngGroupName("");
+    setEngEvent1Name("");
+    setGenderSelected(false);
+    setInpGrSelected(false);
+    setParticipantSelected(false);
+    setEvent1Selected(false);
+    setPositionSelected(false);
+    setEvent2Selected(false);
+    setPosition2Selected(false);
+    if (gender) {
+      gender.value = "";
+    }
+    if (event1Name) {
+      event1Name.value = "";
+    }
   };
   const getAllResult = async () => {
     setLoader(true);
@@ -201,6 +209,7 @@ const GPResultSection = () => {
         setLoader(false);
         setAllResult(data);
         setFilteredData(data);
+        setGPResultState(data);
       });
     } catch (error) {
       await axios
@@ -211,6 +220,7 @@ const GPResultSection = () => {
           );
           setAllResult(res);
           setFilteredData(res);
+          setGPResultState(res);
           setLoader(false);
         })
         .catch((e) => {
@@ -261,7 +271,10 @@ const GPResultSection = () => {
       toast.success(
         `Student Sucessfully Deleted from the ${teacherdetails.gp.toLowerCase()} GP Result Database`
       );
-      getAllResult();
+      const newData = GPResultState.filter((student) => student.id !== id);
+      setAllResult(newData);
+      setFilteredData(newData);
+      setGPResultState(newData);
     } catch (error) {
       console.error("Error deleting gpresult data: ", error);
       setLoader(false);
@@ -383,7 +396,12 @@ const GPResultSection = () => {
   }, []);
 
   useEffect(() => {
-    getAllResult();
+    if (GPResultState.length === 0) {
+      getAllResult();
+    } else {
+      setAllResult(GPResultState);
+      setFilteredData(GPResultState);
+    }
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -620,7 +638,7 @@ const GPResultSection = () => {
 
                     .map((el, ind) => (
                       <option value={JSON.stringify(el)} key={ind}>
-                        {el.name}
+                        {el.name} ({el.chestNo})
                       </option>
                     ))}
                 </select>
@@ -949,28 +967,29 @@ const GPResultSection = () => {
                 </select>
               </div>
             )}
+            {event2Selected && (
+              <div className="mb-3 col-md-3">
+                <label className="form-label">
+                  Select Second Event Position *
+                </label>
+                <select
+                  className="form-select"
+                  defaultValue={""}
+                  id="position2"
+                  onChange={(e) => {
+                    setPosition2(e.target.value);
+                  }}
+                  aria-label="Default select example"
+                >
+                  <option value="">Select Position</option>
+                  <option value="FIRST">FIRST</option>
+                  <option value="SECOND">SECOND</option>
+                  <option value="THIRD">THIRD</option>
+                </select>
+              </div>
+            )}
           </div>
-          {event2Selected && (
-            <div className="mb-3 col-md-3">
-              <label className="form-label">
-                Select Second Event Position *
-              </label>
-              <select
-                className="form-select"
-                defaultValue={""}
-                id="position2"
-                onChange={(e) => {
-                  setPosition2(e.target.value);
-                }}
-                aria-label="Default select example"
-              >
-                <option value="">Select Position</option>
-                <option value="FIRST">FIRST</option>
-                <option value="SECOND">SECOND</option>
-                <option value="THIRD">THIRD</option>
-              </select>
-            </div>
-          )}
+
           {positionSelected && (
             <>
               <button
@@ -1014,11 +1033,11 @@ const GPResultSection = () => {
                   setPositionSelected(false);
                   setEvent2Selected(false);
                   setPosition2Selected(false);
-                  if (event1Name) {
-                    event1Name.value = "";
-                  }
                   if (gender) {
                     gender.value = "";
+                  }
+                  if (event1Name) {
+                    event1Name.value = "";
                   }
                 }}
               >
@@ -1029,7 +1048,8 @@ const GPResultSection = () => {
         </div>
       ) : (
         <h6 className="text-center text-danger my-4">
-          {thisGPCircleLockData?.gp} GP Circle Sports Student Entry is Still Open
+          {thisGPCircleLockData?.gp} GP Circle Sports Student Entry is Still
+          Open
         </h6>
       )}
       {loader && <Loader />}
