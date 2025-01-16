@@ -421,16 +421,10 @@ const GPResultSection = () => {
     );
     // eslint-disable-next-line
   }, [allData, gpSchools, thisGp]);
-  useEffect(() => {
-    const result = allResult?.filter((el) => {
-      return el?.name?.toLowerCase().match(search.toLowerCase());
-    });
-    setFilteredData(result);
-    // eslint-disable-next-line
-  }, [search]);
+
   useEffect(() => {
     // eslint-disable-next-line
-  }, [selectedParticipant, genderres, groupres]);
+  }, [selectedParticipant, genderres, groupres, filteredData, allData]);
   return (
     <div className="container-fluid  my-4 bg-white">
       <div className="my-4">
@@ -451,7 +445,15 @@ const GPResultSection = () => {
               placeholder="Search"
               className="w-25 form-control"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                const result = allResult?.filter((el) => {
+                  return el?.name
+                    ?.toLowerCase()
+                    .match(e.target.value.toLowerCase());
+                });
+                setFilteredData(result);
+              }}
             />
           }
           subHeaderAlign="right"
