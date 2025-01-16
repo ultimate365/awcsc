@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import {
+  createDownloadLink,
   DateValueToSring,
   enToBnNumber,
 } from "../../modules/calculatefunctions";
@@ -427,6 +428,20 @@ const GPResultSection = () => {
   }, [selectedParticipant, genderres, groupres, filteredData, allData]);
   return (
     <div className="container-fluid  my-4 bg-white">
+      {GPResultState.length > 0 && (
+        <button
+          type="button"
+          className="btn btn-primary m-2"
+          onClick={() => {
+            createDownloadLink(
+              GPResultState,
+              `${teacherdetails.gp.toLowerCase()}gpresult`
+            );
+          }}
+        >
+          Download {teacherdetails.gp} GP Result Data
+        </button>
+      )}
       <div className="my-4">
         <h3 className="text-center ben text-primary">
           {thisGp} গ্রাম পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগীতা,{" "}

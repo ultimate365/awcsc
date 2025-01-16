@@ -7,7 +7,7 @@ import { firestore } from "../../context/FirbaseContext";
 import { doc, updateDoc } from "firebase/firestore";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
-import { getSubmitDateInput } from "../../modules/calculatefunctions";
+import { createDownloadLink, getSubmitDateInput } from "../../modules/calculatefunctions";
 import { bengEventNames, events } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
@@ -191,6 +191,17 @@ const CircleAllStudents = () => {
   }, [startingChestNo]);
   return (
     <div className="container-fluid timesfont my-4 bg-white">
+      {allData.length > 0 && (
+        <button
+          type="button"
+          className="btn btn-primary m-2"
+          onClick={() => {
+            createDownloadLink(allData, "allGPFirsts");
+          }}
+        >
+          Download Circle Participant Data
+        </button>
+      )}
       {showChestNoDiv ? (
         <div className="my-4 row justify-content-center align-items-center mx-auto">
           <div className="mb-3 col-md-3">

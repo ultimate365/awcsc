@@ -60,7 +60,7 @@ const GPGroupWiseResultPrint = () => {
     // eslint-disable-next-line
   }, [allData]);
   return (
-    <div className="container my-4 bg-white">
+    <div className="container my-1 bg-white">
       <div className="noprint my-1">
         <button
           type="button"
