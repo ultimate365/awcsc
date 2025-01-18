@@ -241,6 +241,10 @@ const CircleGPWiseStudentList = () => {
             </div>
           </div>
           <h6 className="text-center text-black mx-auto p-1">
+            Total Boys Participants:{" "}
+            {boysGrAData?.length + boysGrBData?.length + boysGrCData?.length}
+          </h6>
+          <h6 className="text-center text-black mx-auto p-1">
             গুরুত্বপূর্ণ নোট: * প্রতিযোগীর সমস্ত তথ্য ইংরাজী Capital Letter -এ
             পূরণ করবেন। ** সমস্ত প্রতিযোগীর জন্মপ্রমাণপত্রের/ জন্ম তারিখ
             প্রমাণকারী নথির জেরক্স কপি অবশ্যই এই কাগজটির সাথে সংযুক্ত করে দেবেন।
@@ -392,6 +396,10 @@ const CircleGPWiseStudentList = () => {
               </h6>
             </div>
           </div>
+          <h6 className="text-center text-black mx-auto p-1">
+            Total Girls Participants:{" "}
+            {girlsGrAData?.length + girlsGrBData?.length + girlsGrCData?.length}
+          </h6>
           <h6 className="text-center text-black mx-auto p-1">
             গুরুত্বপূর্ণ নোট: * প্রতিযোগীর সমস্ত তথ্য ইংরাজী Capital Letter -এ
             পূরণ করবেন। ** সমস্ত প্রতিযোগীর জন্মপ্রমাণপত্রের/ জন্ম তারিখ
