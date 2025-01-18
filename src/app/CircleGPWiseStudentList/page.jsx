@@ -144,7 +144,6 @@ const CircleGPWiseStudentList = () => {
                   <th>জন্মতারিখ</th>
                   <th>শ্রেনী</th>
                   <th>বিদ্যালয়ের নাম</th>
-                  <th>বিভাগ</th>
                   <th>প্রতিযোগিতার নাম</th>
                 </tr>
                 <tr>
@@ -164,7 +163,6 @@ const CircleGPWiseStudentList = () => {
                       <td>{getSubmitDateInput(el?.birthday)}</td>
                       <td>{el?.sclass}</td>
                       <td>{el?.school}</td>
-                      <td>{el?.group}</td>
                       <td>
                         {el?.event1}
                         {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -181,14 +179,13 @@ const CircleGPWiseStudentList = () => {
                   .sort((b, a) => b.event1rank - a.event1rank)
                   .map((el, index) => (
                     <tr key={index}>
-                      <td>{index + 4}</td>
+                      <td>{boysGrAData?.length + (index + 1)}</td>
                       <td>{el?.chestNo}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
                       <td>{el?.sclass}</td>
                       <td>{el?.school}</td>
-                      <td>{el?.group}</td>
                       <td>
                         {el?.event1}
                         {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -205,14 +202,17 @@ const CircleGPWiseStudentList = () => {
                   .sort((b, a) => b.event1rank - a.event1rank)
                   .map((el, index) => (
                     <tr key={index}>
-                      <td>{index + 10}</td>
+                      <td>
+                        {boysGrAData?.length +
+                          boysGrBData?.length +
+                          (index + 1)}
+                      </td>
                       <td>{el?.chestNo}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
                       <td>{el?.sclass}</td>
                       <td>{el?.school}</td>
-                      <td>{el?.group}</td>
                       <td>
                         {el?.event1}
                         {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -297,7 +297,6 @@ const CircleGPWiseStudentList = () => {
                 <th>জন্মতারিখ</th>
                 <th>শ্রেনী</th>
                 <th>বিদ্যালয়ের নাম</th>
-                <th>বিভাগ</th>
                 <th>প্রতিযোগিতার নাম</th>
               </tr>
               <tr>
@@ -317,7 +316,6 @@ const CircleGPWiseStudentList = () => {
                     <td>{getSubmitDateInput(el?.birthday)}</td>
                     <td>{el?.sclass}</td>
                     <td>{el?.school}</td>
-                    <td>{el?.group}</td>
                     <td>
                       {el?.event1}
                       {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -334,7 +332,7 @@ const CircleGPWiseStudentList = () => {
                 .sort((b, a) => b.event1rank - a.event1rank)
                 .map((el, index) => (
                   <tr key={index}>
-                    <td>{index + 4}</td>
+                    <td>{girlsGrAData?.length + (index + 1)}</td>
                     <td>{el?.chestNo}</td>
                     <td>{el?.name}</td>
                     <td>{el?.gurdiansName}</td>
@@ -358,14 +356,17 @@ const CircleGPWiseStudentList = () => {
                 .sort((b, a) => b.event1rank - a.event1rank)
                 .map((el, index) => (
                   <tr key={index}>
-                    <td>{index + 10}</td>
+                    <td>
+                      {girlsGrAData?.length +
+                        girlsGrBData?.length +
+                        (index + 1)}
+                    </td>
                     <td>{el?.chestNo}</td>
                     <td>{el?.name}</td>
                     <td>{el?.gurdiansName}</td>
                     <td>{getSubmitDateInput(el?.birthday)}</td>
                     <td>{el?.sclass}</td>
                     <td>{el?.school}</td>
-                    <td>{el?.group}</td>
                     <td>
                       {el?.event1}
                       {el?.event2 !== "" ? `, ${el?.event2}` : ""}
