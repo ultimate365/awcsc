@@ -319,6 +319,73 @@ export default function CircleSportsDirectNameEntry() {
     const docRef = doc(firestore, "allGPFirsts", inputField.id);
     await updateDoc(docRef, inputField)
       .then(async () => {
+        const upLoadedResult = {
+          id: inputField.id,
+          name: inputField.name,
+          gurdiansName: inputField.gurdiansName,
+          chestNo: inputField.chestNo,
+          birthday: inputField.birthday,
+          studentId: inputField.studentId,
+          sclass: inputField.sclass,
+          school: inputField.school,
+          gp: inputField.gp,
+          event1:
+            inputField.event2rank === "" || inputField.event2 === ""
+              ? inputField.event1
+              : inputField.event2rank === ""
+              ? inputField.event1
+              : inputField.event1rank < inputField.event2rank
+              ? inputField.event1
+              : inputField.event1rank > inputField.event2rank
+              ? inputField.event2
+              : inputField.event2,
+          event2:
+            inputField.event2 === ""
+              ? ""
+              : inputField.event2rank !== "" && inputField.event2 === ""
+              ? ""
+              : inputField.event1rank < inputField.event2rank
+              ? inputField.event2
+              : inputField.event1rank > inputField.event2rank
+              ? inputField.event1
+              : inputField.event1rank === ""
+              ? inputField.event1
+              : inputField.event2rank === ""
+              ? ""
+              : inputField.event1,
+          event1rank:
+            inputField.event2rank === "" || inputField.event2 === ""
+              ? inputField.event1rank
+              : inputField.event1rank < inputField.event2rank
+              ? inputField.event1rank
+              : inputField.event1rank > inputField.event2rank
+              ? inputField.event2rank
+              : inputField.event2rank,
+          event2rank:
+            inputField.event2rank === "" || inputField.event2 === ""
+              ? ""
+              : inputField.event1rank < inputField.event2rank
+              ? inputField.event2rank
+              : inputField.event1rank > inputField.event2rank
+              ? inputField.event1rank
+              : inputField.event1rank === ""
+              ? inputField.event1rank
+              : inputField.event2rank === ""
+              ? ""
+              : inputField.event1rank,
+          gender: inputField.gender,
+          group: inputField.group,
+          udise: inputField.udise,
+          entryBy: inputField.entryBy,
+          updatedBy: teacher.id,
+        };
+        const newData = allGPFirstsState.map((item) =>
+          item.id === inputField.id ? upLoadedResult : item
+        );
+        setAllGPFirstsState(newData);
+        setAllGPFirstsStateUpdateTime(Date.now());
+        setAllParticipants(newData);
+        setFilteredGPData(newData);
         setLoader(false);
         setInputField({
           id: docId,
@@ -362,10 +429,13 @@ export default function CircleSportsDirectNameEntry() {
       await deleteDoc(doc(firestore, "allGPFirsts", participant.id))
         .then(() => {
           setLoader(false);
-          let x = allGPFirstsState.filter((item) => item.id !== participant.id);
+          const x = allGPFirstsState.filter(
+            (item) => item.id !== participant.id
+          );
           setAllGPFirstsState(x);
           setFilteredGPData(x);
           setAllGPFirstsStateUpdateTime(Date.now());
+          setAllParticipants(x);
           toast.success("Participant Deleted Successfully");
         })
         .catch((e) => {

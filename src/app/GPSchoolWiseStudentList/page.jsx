@@ -117,7 +117,7 @@ const GPSchoolWiseStudentList = () => {
         <div className="container-fluid my-2" style={{ zoom: 0.7 }}>
           <h3 className="text-center text-black my-2">
             {thisGp} গ্রাম-পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগীতা,-{" "}
-            {enToBnNumber(new Date().getFullYear() )}
+            {enToBnNumber(new Date().getFullYear())}
           </h3>
           <div className="container-fluid row justify-content-between align-items-center my-2 p-1">
             <div className="col-md-5 justify-content-center align-items-center">
@@ -140,17 +140,17 @@ const GPSchoolWiseStudentList = () => {
                   <th>পিতার / অভিভাবকের নাম</th>
                   <th>জন্মতারিখ</th>
                   <th>শ্রেনী</th>
-                  <th>বিভাগ</th>
+                  <th>বিদ্যালয়ের নাম</th>
                   <th>প্রতিযোগিতার নাম</th>
                 </tr>
                 <tr>
-                  <th colSpan={8}>
+                  <th colSpan={9}>
                     বিভাগ 'ক' বালক (জন্মতারিখ{" "}
                     {`01-01-${new Date().getFullYear() - 7}`} বা তারপর)
                   </th>
                 </tr>
                 {boysGrAData
-                  ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                  .sort((b, a) => b.event1rank - a.event1rank)
                   .map((el, index) => (
                     <tr key={index}>
                       <td>{index + 1}</td>
@@ -159,7 +159,7 @@ const GPSchoolWiseStudentList = () => {
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
                       <td>{el?.sclass}</td>
-                      <td>{el?.group}</td>
+                      <td>{el?.school}</td>
                       <td>
                         {el?.event1}
                         {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -167,22 +167,22 @@ const GPSchoolWiseStudentList = () => {
                     </tr>
                   ))}
                 <tr>
-                  <th colSpan={8}>
+                  <th colSpan={9}>
                     বিভাগ 'খ' বালক (জন্মতারিখ{" "}
                     {`01-01-${new Date().getFullYear() - 9}`} বা তারপর)
                   </th>
                 </tr>
                 {boysGrBData
-                  ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                  .sort((b, a) => b.event1rank - a.event1rank)
                   .map((el, index) => (
                     <tr key={index}>
-                      <td>{index + 4}</td>
+                      <td>{boysGrAData?.length + (index + 1)}</td>
                       <td>{el?.chestNo}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
                       <td>{el?.sclass}</td>
-                      <td>{el?.group}</td>
+                      <td>{el?.school}</td>
                       <td>
                         {el?.event1}
                         {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -190,22 +190,26 @@ const GPSchoolWiseStudentList = () => {
                     </tr>
                   ))}
                 <tr>
-                  <th colSpan={8}>
+                  <th colSpan={9}>
                     বিভাগ 'গ' বালক (জন্মতারিখ{" "}
                     {`01-01-${new Date().getFullYear() - 11}`} বা তারপর)
                   </th>
                 </tr>
                 {boysGrCData
-                  ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                  .sort((b, a) => b.event1rank - a.event1rank)
                   .map((el, index) => (
                     <tr key={index}>
-                      <td>{index + 10}</td>
+                      <td>
+                        {boysGrAData?.length +
+                          boysGrBData?.length +
+                          (index + 1)}
+                      </td>
                       <td>{el?.chestNo}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
                       <td>{el?.sclass}</td>
-                      <td>{el?.group}</td>
+                      <td>{el?.school}</td>
                       <td>
                         {el?.event1}
                         {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -268,7 +272,7 @@ const GPSchoolWiseStudentList = () => {
         <div className="container-fluid my-2" style={{ zoom: 0.7 }}>
           <h3 className="text-center text-black my-2">
             {thisGp} গ্রাম-পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগীতা,-{" "}
-            {enToBnNumber(new Date().getFullYear() )}
+            {enToBnNumber(new Date().getFullYear())}
           </h3>
           <div className="container-fluid row justify-content-between align-items-center my-2 p-1">
             <div className="col-md-5 justify-content-center align-items-center">
@@ -289,17 +293,17 @@ const GPSchoolWiseStudentList = () => {
                 <th>পিতার / অভিভাবকের নাম</th>
                 <th>জন্মতারিখ</th>
                 <th>শ্রেনী</th>
-                <th>বিভাগ</th>
+                <th>বিদ্যালয়ের নাম</th>
                 <th>প্রতিযোগিতার নাম</th>
               </tr>
               <tr>
-                <th colSpan={8}>
+                <th colSpan={9}>
                   বিভাগ 'ক' বালিকা (জন্মতারিখ{" "}
                   {`01-01-${new Date().getFullYear() - 7}`} বা তারপর)
                 </th>
               </tr>
               {girlsGrAData
-                ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                .sort((b, a) => b.event1rank - a.event1rank)
                 .map((el, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
@@ -308,7 +312,7 @@ const GPSchoolWiseStudentList = () => {
                     <td>{el?.gurdiansName}</td>
                     <td>{getSubmitDateInput(el?.birthday)}</td>
                     <td>{el?.sclass}</td>
-                    <td>{el?.group}</td>
+                    <td>{el?.school}</td>
                     <td>
                       {el?.event1}
                       {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -316,22 +320,22 @@ const GPSchoolWiseStudentList = () => {
                   </tr>
                 ))}
               <tr>
-                <th colSpan={8}>
+                <th colSpan={9}>
                   বিভাগ 'খ' বালিকা (জন্মতারিখ{" "}
                   {`01-01-${new Date().getFullYear() - 9}`} বা তারপর)
                 </th>
               </tr>
               {girlsGrBData
-                ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                .sort((b, a) => b.event1rank - a.event1rank)
                 .map((el, index) => (
                   <tr key={index}>
-                    <td>{index + 4}</td>
+                    <td>{girlsGrAData?.length + (index + 1)}</td>
                     <td>{el?.chestNo}</td>
                     <td>{el?.name}</td>
                     <td>{el?.gurdiansName}</td>
                     <td>{getSubmitDateInput(el?.birthday)}</td>
                     <td>{el?.sclass}</td>
-                    <td>{el?.group}</td>
+                    <td>{el?.school}</td>
                     <td>
                       {el?.event1}
                       {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -339,22 +343,26 @@ const GPSchoolWiseStudentList = () => {
                   </tr>
                 ))}
               <tr>
-                <th colSpan={8}>
+                <th colSpan={9}>
                   বিভাগ 'গ' বালিকা (জন্মতারিখ{" "}
                   {`01-01-${new Date().getFullYear() - 11}`} বা তারপর)
                 </th>
               </tr>
               {girlsGrCData
-                ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                .sort((b, a) => b.event1rank - a.event1rank)
                 .map((el, index) => (
                   <tr key={index}>
-                    <td>{index + 10}</td>
+                    <td>
+                      {girlsGrAData?.length +
+                        girlsGrBData?.length +
+                        (index + 1)}
+                    </td>
                     <td>{el?.chestNo}</td>
                     <td>{el?.name}</td>
                     <td>{el?.gurdiansName}</td>
                     <td>{getSubmitDateInput(el?.birthday)}</td>
                     <td>{el?.sclass}</td>
-                    <td>{el?.group}</td>
+                    <td>{el?.school}</td>
                     <td>
                       {el?.event1}
                       {el?.event2 !== "" ? `, ${el?.event2}` : ""}

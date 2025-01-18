@@ -339,7 +339,6 @@ const CircleGPWiseStudentList = () => {
                     <td>{getSubmitDateInput(el?.birthday)}</td>
                     <td>{el?.sclass}</td>
                     <td>{el?.school}</td>
-                    <td>{el?.group}</td>
                     <td>
                       {el?.event1}
                       {el?.event2 !== "" ? `, ${el?.event2}` : ""}
