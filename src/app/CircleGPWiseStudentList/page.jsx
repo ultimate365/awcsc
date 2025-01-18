@@ -153,7 +153,7 @@ const CircleGPWiseStudentList = () => {
                   </th>
                 </tr>
                 {boysGrAData
-                  .sort((b, a) => b.event1rank - a.event1rank)
+                  .sort((b, a) => b?.chestNo - a?.chestNo)
                   .map((el, index) => (
                     <tr key={index}>
                       <td>{index + 1}</td>
@@ -176,7 +176,7 @@ const CircleGPWiseStudentList = () => {
                   </th>
                 </tr>
                 {boysGrBData
-                  .sort((b, a) => b.event1rank - a.event1rank)
+                  .sort((b, a) => b?.chestNo - a?.chestNo)
                   .map((el, index) => (
                     <tr key={index}>
                       <td>{boysGrAData?.length + (index + 1)}</td>
@@ -199,7 +199,7 @@ const CircleGPWiseStudentList = () => {
                   </th>
                 </tr>
                 {boysGrCData
-                  .sort((b, a) => b.event1rank - a.event1rank)
+                  .sort((b, a) => b?.chestNo - a?.chestNo)
                   .map((el, index) => (
                     <tr key={index}>
                       <td>
@@ -306,7 +306,7 @@ const CircleGPWiseStudentList = () => {
                 </th>
               </tr>
               {girlsGrAData
-                .sort((b, a) => b.event1rank - a.event1rank)
+                .sort((b, a) => b?.chestNo - a?.chestNo)
                 .map((el, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
@@ -329,7 +329,7 @@ const CircleGPWiseStudentList = () => {
                 </th>
               </tr>
               {girlsGrBData
-                .sort((b, a) => b.event1rank - a.event1rank)
+                .sort((b, a) => b?.chestNo - a?.chestNo)
                 .map((el, index) => (
                   <tr key={index}>
                     <td>{girlsGrAData?.length + (index + 1)}</td>
@@ -352,7 +352,7 @@ const CircleGPWiseStudentList = () => {
                 </th>
               </tr>
               {girlsGrCData
-                .sort((b, a) => b.event1rank - a.event1rank)
+                .sort((b, a) => b?.chestNo - a?.chestNo)
                 .map((el, index) => (
                   <tr key={index}>
                     <td>

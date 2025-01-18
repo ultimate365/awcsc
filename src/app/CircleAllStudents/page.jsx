@@ -23,7 +23,17 @@ const CircleAllStudents = () => {
     setAllGPFirstsState,
     setAllGPFirstsStateUpdateTime,
   } = useGlobalContext();
-  const data = stateObject?.data?.sort((a, b) => a?.gp.localeCompare(b?.gp));
+  const data = stateObject?.data?.sort((a, b) => {
+    if (a.gp < b.gp) return -1;
+    if (a.gp > b.gp) return 1;
+    if (a.gender < b.gender) return -1;
+    if (a.gender > b.gender) return 1;
+    if (a.group < b.group) return -1;
+    if (a.group > b.group) return 1;
+    if (a.school < b.school) return -1;
+    if (a.school > b.school) return 1;
+    return 0;
+  });
   const gpData = stateObject?.gp;
   const navigate = useRouter();
   const [allData, setAllData] = useState(data);
@@ -68,7 +78,17 @@ const CircleAllStudents = () => {
   const allotChestNumber = async () => {
     setLoader(true);
     data
-      .sort((a, b) => a?.gp.localeCompare(b?.gp))
+      .sort((a, b) => {
+        if (a.gp < b.gp) return -1;
+        if (a.gp > b.gp) return 1;
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.group < b.group) return -1;
+        if (a.group > b.group) return 1;
+        if (a.school < b.school) return -1;
+        if (a.school > b.school) return 1;
+        return 0;
+      })
       .map(async (el, ind) => {
         const chestNo = parseInt(startingChestNo) + ind;
         const docRef = doc(firestore, "allGPFirsts", el?.id);
