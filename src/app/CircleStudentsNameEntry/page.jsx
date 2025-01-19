@@ -58,7 +58,7 @@ const CircleStudentsNameEntry = () => {
     setCircleLockUpdateTime,
   } = useGlobalContext();
   const navigate = useRouter();
-  const [showTable, setShowTable] = useState(true);
+  const [showTable, setShowTable] = useState(false);
   let teacherdetails = {
     convenor: "",
     gp: "",
@@ -160,9 +160,12 @@ const CircleStudentsNameEntry = () => {
   };
   const updateData = async () => {
     setLoader(true);
-    let x = allGPFirstsState.filter((item) => item.id !== inputField.id);
-    x = [...x, inputField];
-    setAllGPFirstsState(x);
+    const newData = allGPFirstsState.map((item) =>
+      item.id === inputField.id ? inputField : item
+    );
+    setAllGPFirstsState(newData);
+    setAllParticipants(newData);
+    setFilteredGPData(newData);
     setAllGPFirstsStateUpdateTime(Date.now());
     await axios.post("/api/updateallGPFirsts", inputField);
     const docRef = doc(firestore, "allGPFirsts", inputField.id);
@@ -210,7 +213,7 @@ const CircleStudentsNameEntry = () => {
       await deleteDoc(doc(firestore, "allGPFirsts", participant.id))
         .then(() => {
           setLoader(false);
-          let x = allGPFirstsState.filter((item) => item.id !== participant.id);
+          const x = allGPFirstsState.filter((item) => item.id !== participant.id);
           setAllGPFirstsState(x);
           setFilteredGPData(x);
           setAllGPFirstsStateUpdateTime(Date.now());
@@ -541,6 +544,7 @@ const CircleStudentsNameEntry = () => {
   const filterData = (gp) => {
     setBtnClickedGP(`${gp}`);
     setFilteredGPData(allParticipants.filter((el) => el?.gp === gp));
+    setShowTable(true);
   };
 
   const lockColumns = [
@@ -951,7 +955,7 @@ const CircleStudentsNameEntry = () => {
           )}
         </div>
       )}
-      {allParticipants.length > 0 && showTable && (
+      {allParticipants.length > 0 && (
         <div className="my-4">
           {teacherdetails.circle === "admin" && (
             <div className=" my-2 ">
@@ -959,6 +963,7 @@ const CircleStudentsNameEntry = () => {
               <button
                 type="button"
                 className="btn btn-success m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("AMORAGORI")}
               >
                 AMORAGORI
@@ -966,6 +971,7 @@ const CircleStudentsNameEntry = () => {
               <button
                 type="button"
                 className="btn btn-primary m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("BKBATI")}
               >
                 BKBATI
@@ -973,6 +979,7 @@ const CircleStudentsNameEntry = () => {
               <button
                 type="button"
                 className="btn btn-secondary m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("GAZIPUR")}
               >
                 GAZIPUR
@@ -980,6 +987,7 @@ const CircleStudentsNameEntry = () => {
               <button
                 type="button"
                 className="btn btn-warning m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("JHAMTIA")}
               >
                 JHAMTIA
@@ -987,6 +995,7 @@ const CircleStudentsNameEntry = () => {
               <button
                 type="button"
                 className="btn btn-info m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("JHIKIRA")}
               >
                 JHIKIRA
@@ -994,6 +1003,7 @@ const CircleStudentsNameEntry = () => {
               <button
                 type="button"
                 className="btn btn-success m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("JOYPUR")}
               >
                 JOYPUR
@@ -1001,6 +1011,7 @@ const CircleStudentsNameEntry = () => {
               <button
                 type="button"
                 className="btn btn-primary m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("NOWPARA")}
               >
                 NOWPARA
@@ -1008,6 +1019,7 @@ const CircleStudentsNameEntry = () => {
               <button
                 type="button"
                 className="btn btn-info m-1 col-md-1 btn-sm"
+                style={{ width: "auto" }}
                 onClick={() => filterData("THALIA")}
               >
                 THALIA
@@ -1018,21 +1030,23 @@ const CircleStudentsNameEntry = () => {
             Displaying {btnClickedGP !== "" ? btnClickedGP : "All"} GP's
             Participants
           </h3>
-
-          <DataTable
-            columns={columns}
-            data={filteredGPData}
-            pagination
-            highlightOnHover
-            fixedHeader
-          />
         </div>
+      )}
+      {allParticipants.length > 0 && showTable && (
+        <DataTable
+          columns={columns}
+          data={filteredGPData}
+          pagination
+          highlightOnHover
+          fixedHeader
+        />
       )}
       {allParticipants.length > 0 && (
         <>
           <button
             type="button"
             className="btn btn-success m-1 col-md-1 btn-sm"
+            style={{ width: "auto" }}
             onClick={() => {
               setShowTable(!showTable);
               setBtnClickedGP("All School");
@@ -1594,6 +1608,7 @@ const CircleStudentsNameEntry = () => {
                 <button
                   type="button"
                   className="btn btn-success m-1 col-md-1 btn-sm"
+                  style={{ width: "auto" }}
                   onClick={() => {
                     if (
                       inputField.name !== "" &&
@@ -1637,6 +1652,7 @@ const CircleStudentsNameEntry = () => {
                 <button
                   type="button"
                   className="btn btn-danger m-1 col-md-1 btn-sm"
+                  style={{ width: "auto" }}
                   onClick={() => {
                     setInputField({
                       name: "",

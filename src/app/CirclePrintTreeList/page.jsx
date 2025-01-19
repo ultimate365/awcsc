@@ -26,7 +26,7 @@ export default function PrintTreeList() {
         navigate.push("/login");
       }
     }
-    document.title = `Amta West Circle Sports All Student List`;
+    document.title = `Amta West Circle Sports ${new Date().getFullYear()} All Student List`;
     // eslint-disable-next-line
   }, []);
   return (
@@ -49,9 +49,14 @@ export default function PrintTreeList() {
       </div>
       <h3 className="text-center m-2 text-black">
         আমতা পশ্চিম চক্র বার্ষিক ক্রীড়া প্রতিযোগীতা,-{" "}
-        {enToBnNumber(new Date().getFullYear() - 1)}
+        {enToBnNumber(new Date().getFullYear())}
       </h3>
-      <table className="table table-bordered border-black">
+      <table
+        className="table table-bordered border-black mx-auto"
+        style={{
+          width: "100%",
+        }}
+      >
         <thead>
           <tr>
             <th>ক্রমিক নং</th>
@@ -72,12 +77,10 @@ export default function PrintTreeList() {
               <tr key={index} className="nobreak">
                 <td className="timesNewRoman">{index + 1}</td>
                 <td className="timesNewRoman">{el?.chestNo}</td>
-                <td className="timesNewRoman" style={{ fontSize: 10 }}>
+                <td className="timesNewRoman" style={{ fontSize: 12 }}>
                   {el?.school}
                 </td>
-                <td className="timesNewRoman" style={{ fontSize: 10 }}>
-                  {el?.gp}
-                </td>
+                <td className="timesNewRoman">{el?.gp}</td>
                 {/* <td>{el?.school?.split(" ").map((e, i) => `${e.slice(0, 1)}. `)}</td> */}
                 <td className="timesNewRoman">{el?.name}</td>
                 <td className="timesNewRoman">{el?.gurdiansName}</td>
@@ -87,7 +90,7 @@ export default function PrintTreeList() {
                 <td className="timesNewRoman">{el?.sclass}</td>
                 <td
                   className="timesNewRoman"
-                  style={{ verticalAlign: "center", fontSize: 11 }}
+                  style={{ verticalAlign: "center", fontSize: 12 }}
                 >
                   {el?.group}, ({el?.gender})
                 </td>

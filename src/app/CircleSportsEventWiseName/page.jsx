@@ -227,6 +227,7 @@ const CircleSportsEventWiseName = () => {
             </>
           ) : null}
           {engEventName === "75 METER RUN" ||
+          engEventName === "SHUTTLE RACE" ||
           engEventName === "100 METER RUN" ||
           engEventName === "200 METER RUN" ? (
             <>
