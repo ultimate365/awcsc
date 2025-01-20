@@ -6,12 +6,13 @@ import {
   enToBnNumber,
   getSubmitDateInput,
 } from "../../modules/calculatefunctions";
-import { gpNames } from "../../modules/constants";
+import { BUTTONCOLORS, gpEngNames, gpNames } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
 
 export default function PrintTreeList() {
   const { yourStateObject } = useGlobalContext();
   const { data } = yourStateObject;
+  const [filteredData, setFilteredData] = useState(data);
   const navigate = useRouter();
   let teacherdetails;
   let details = getCookie("tid");
@@ -47,6 +48,43 @@ export default function PrintTreeList() {
           Print
         </button>
       </div>
+      <div className="my-2 noprint">
+        {gpEngNames.map((gpEngName, index) => (
+          <button
+            type="button"
+            className={`btn m-1 ${
+              data.length !== filteredData.length
+                ? gpEngName !== filteredData[0]?.gp
+                  ? "btn-sm"
+                  : ""
+                : ""
+            }`}
+            style={{
+              backgroundColor: BUTTONCOLORS[index],
+              color: "white",
+            }}
+            onClick={() => {
+              setFilteredData(data.filter((s) => s?.gp === gpEngName));
+            }}
+            key={index}
+          >
+            {gpEngName}
+          </button>
+        ))}
+        {data.length !== filteredData?.length && (
+          <button
+            type="button"
+            className="btn btn-primary m-1 col-md-1"
+            style={{
+              backgroundColor: BUTTONCOLORS[gpEngNames.length+1],
+              color: "white",
+            }}
+            onClick={() => setFilteredData(data)}
+          >
+            All
+          </button>
+        )}
+      </div>
       <h3 className="text-center m-2 text-black">
         আমতা পশ্চিম চক্র বার্ষিক ক্রীড়া প্রতিযোগীতা,-{" "}
         {enToBnNumber(new Date().getFullYear())}
@@ -72,8 +110,8 @@ export default function PrintTreeList() {
           </tr>
         </thead>
         <tbody>
-          {data?.length > 0 &&
-            data?.map((el, index) => (
+          {filteredData?.length > 0 &&
+            filteredData?.map((el, index) => (
               <tr key={index} className="nobreak">
                 <td className="timesNewRoman">{index + 1}</td>
                 <td className="timesNewRoman">{el?.chestNo}</td>
