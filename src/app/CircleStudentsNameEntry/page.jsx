@@ -21,6 +21,7 @@ import {
   gpNames,
   maxdob,
   mindob,
+  StdClass,
 } from "../../modules/constants";
 import {
   createDownloadLink,
@@ -117,7 +118,6 @@ const CircleStudentsNameEntry = () => {
   const [clicked, setClicked] = useState(false);
   const [filteredGPData, setFilteredGPData] = useState([]);
   const [lockData, setLockData] = useState(gpLockState);
-
   const getAllParticipant = async () => {
     setLoader(true);
     const q1 = query(collection(firestore, "allGPFirsts"));
@@ -190,6 +190,7 @@ const CircleStudentsNameEntry = () => {
           udise: "",
         });
         document.getElementById("gender").value = "";
+        document.getElementById("stdClass").value = "";
         document.getElementById("group").value = "";
         document.getElementById("event1").value = "";
         document.getElementById("event2").value = "";
@@ -213,7 +214,9 @@ const CircleStudentsNameEntry = () => {
       await deleteDoc(doc(firestore, "allGPFirsts", participant.id))
         .then(() => {
           setLoader(false);
-          const x = allGPFirstsState.filter((item) => item.id !== participant.id);
+          const x = allGPFirstsState.filter(
+            (item) => item.id !== participant.id
+          );
           setAllGPFirstsState(x);
           setFilteredGPData(x);
           setAllGPFirstsStateUpdateTime(Date.now());
@@ -413,11 +416,13 @@ const CircleStudentsNameEntry = () => {
               setTimeout(() => {
                 let gender = document.getElementById("gender");
                 let group = document.getElementById("group");
+                let stdClass = document.getElementById("stdClass");
                 let element1 = document.getElementById("event1");
                 let element2 = document.getElementById("event2");
                 if (gender) {
                   gender.value = row.gender;
                   group.value = row.group;
+                  stdClass.value = row.sclass;
                   element1.value = row.event1;
                   element2.value = row.event2;
                 }
@@ -707,7 +712,7 @@ const CircleStudentsNameEntry = () => {
   }, [inputField, allParticipants, filteredData, gpConvenorsData]);
 
   return (
-    <div className="container text-center my-5">
+    <div className="container-fluid text-center my-5">
       {teacherdetails.circle === "admin" && (
         <div className="mx-auto">
           {allGPFirstsState.length > 0 && (
@@ -792,7 +797,7 @@ const CircleStudentsNameEntry = () => {
           Go To Circle Sports All Student List
         </button>
       )}
-      <div className="my-4">
+      <div className="my-4 container">
         {lockData
           .filter((el) => el?.edit === true)
           .map((el, ind) => (
@@ -801,7 +806,7 @@ const CircleStudentsNameEntry = () => {
             </h6>
           ))}
       </div>
-      <div className="my-4">
+      <div className="my-4 container">
         {teacherdetails.circle === "admin" && (
           <div className=" my-2 ">
             <h3 className="text-center text-primary">
@@ -956,7 +961,7 @@ const CircleStudentsNameEntry = () => {
         </div>
       )}
       {allParticipants.length > 0 && (
-        <div className="my-4">
+        <div className="container-fluid my-4">
           {teacherdetails.circle === "admin" && (
             <div className=" my-2 ">
               <h3 className="text-center text-primary">Select GP Name</h3>
@@ -1059,7 +1064,7 @@ const CircleStudentsNameEntry = () => {
       )}
 
       {!editClicked && (
-        <div className="container ">
+        <div className="container">
           <div className="col-md-4 mx-auto mb-2">
             <h4 className="text-center text-primary text-wrap">
               Select GP to Show Participants of That GP
@@ -1089,7 +1094,7 @@ const CircleStudentsNameEntry = () => {
             </select>
           </div>
           {clicked && selectedGP !== "" && selectedGP !== undefined && (
-            <div className="container my-4">
+            <div className="container-fluid my-4">
               <h4 className="text-center text-primary">
                 Displaying {selectedGP} GP's Participants
               </h4>
@@ -1105,7 +1110,7 @@ const CircleStudentsNameEntry = () => {
                   Print List
                 </button>
               )}
-              <div className="my-4">
+              <div className="container-fluid my-4">
                 <DataTable
                   columns={columns}
                   data={filteredData}
@@ -1117,7 +1122,7 @@ const CircleStudentsNameEntry = () => {
                     <input
                       type="text"
                       placeholder="Search"
-                      className="w-25 form-control"
+                      className="w-75 form-control"
                       value={search}
                       onChange={(e) => {
                         setSearch(e.target.value);
@@ -1248,19 +1253,28 @@ const CircleStudentsNameEntry = () => {
             </div>
             <div className="mb-3 col-md-3">
               <label className="form-label">CLASS *</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="CLASS"
-                value={inputField.sclass}
+              <select
+                className="form-select"
+                id="stdClass"
+                defaultValue={""}
                 onChange={(e) => {
                   setInputField({
                     ...inputField,
-                    sclass: e.target.value.toUpperCase(),
+                    sclass: e.target.value,
                   });
                 }}
+                aria-label="Default select example"
                 required
-              />
+              >
+                <option value="">Select Class</option>
+                {StdClass.map((item, index) => {
+                  return (
+                    <option key={index} value={item.sclass}>
+                      {item.sclass}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <div className="mb-3 col-md-3">
               <label className="form-label">Select Group *</label>

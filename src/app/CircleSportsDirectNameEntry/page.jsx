@@ -144,7 +144,17 @@ export default function CircleSportsDirectNameEntry() {
         // id: doc.id,
       }))
 
-      .sort((a, b) => a.gp.localeCompare(b.gp));
+      .sort((a, b) => {
+        if (a.gp < b.gp) return -1;
+        if (a.gp > b.gp) return 1;
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.group < b.group) return -1;
+        if (a.group > b.group) return 1;
+        if (a.school < b.school) return -1;
+        if (a.school > b.school) return 1;
+        return 0;
+      });
 
     setAllParticipants(data1);
     setFilteredGPData(data1);

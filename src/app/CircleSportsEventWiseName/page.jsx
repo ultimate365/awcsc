@@ -40,6 +40,12 @@ const CircleSportsEventWiseName = () => {
     }
     // eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    document.title = `Amta West Circle Sports ${eventName} ${
+      feildSheetsClicked ? "FIELD SHEET" : "OFFICE SHEET"
+    }`;
+    // eslint-disable-next-line
+  }, [eventName, feildSheetsClicked]);
 
   useEffect(() => {
     // eslint-disable-next-line
@@ -235,261 +241,282 @@ const CircleSportsEventWiseName = () => {
                     <tr>
                       <th colSpan={5}>বিভাগ 'ক'</th>
                     </tr>
-                    <tr>
-                      <th colSpan={5}>৭৫ মিটার দৌড়</th>
-                    </tr>
-                    <tr>
-                      <th>বিভাগ 'ক' বালক</th>
-                      <th>চেস্ট নং</th>
-                      <th rowSpan={5}></th>
-                      <th>বিভাগ 'ক' বালিকা</th>
-                      <th>চেস্ট নং</th>
-                    </tr>
+                    {engEventName === "75 METER RUN" ? (
+                      <>
+                        <tr>
+                          <th colSpan={5}>৭৫ মিটার দৌড়</th>
+                        </tr>
+                        <tr>
+                          <th>বিভাগ 'ক' বালক</th>
+                          <th>চেস্ট নং</th>
+                          <th rowSpan={5}></th>
+                          <th>বিভাগ 'ক' বালিকা</th>
+                          <th>চেস্ট নং</th>
+                        </tr>
 
-                    <tr>
-                      <th>1ST</th>
-                      <th></th>
+                        <tr>
+                          <th>1ST</th>
+                          <th></th>
 
-                      <th>1ST</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>2ND</th>
-                      <th></th>
+                          <th>1ST</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>2ND</th>
+                          <th></th>
 
-                      <th>2ND</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>3RD</th>
-                      <th></th>
+                          <th>2ND</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>3RD</th>
+                          <th></th>
 
-                      <th>3RD</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>4TH</th>
-                      <th></th>
+                          <th>3RD</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>4TH</th>
+                          <th></th>
 
-                      <th>4TH</th>
-                      <th></th>
-                    </tr>
-                    <tr></tr>
-                    <tr></tr>
-                    <tr>
-                      <th colSpan={5}>সাটল দৌড় (আলু দৌড়)</th>
-                    </tr>
+                          <th>4TH</th>
+                          <th></th>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+                      </>
+                    ) : (
+                      <>
+                        <tr>
+                          <th colSpan={5}>সাটল দৌড় (আলু দৌড়)</th>
+                        </tr>
 
-                    <tr>
-                      <th>বিভাগ 'ক' বালক</th>
-                      <th>চেস্ট নং</th>
-                      <th rowSpan={5}></th>
-                      <th>বিভাগ 'ক' বালিকা</th>
-                      <th>চেস্ট নং</th>
-                    </tr>
+                        <tr>
+                          <th>বিভাগ 'ক' বালক</th>
+                          <th>চেস্ট নং</th>
+                          <th rowSpan={5}></th>
+                          <th>বিভাগ 'ক' বালিকা</th>
+                          <th>চেস্ট নং</th>
+                        </tr>
 
-                    <tr>
-                      <th>1ST</th>
-                      <th></th>
+                        <tr>
+                          <th>1ST</th>
+                          <th></th>
 
-                      <th>1ST</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>2ND</th>
-                      <th></th>
+                          <th>1ST</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>2ND</th>
+                          <th></th>
 
-                      <th>2ND</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>3RD</th>
-                      <th></th>
+                          <th>2ND</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>3RD</th>
+                          <th></th>
 
-                      <th>3RD</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>4TH</th>
-                      <th></th>
+                          <th>3RD</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>4TH</th>
+                          <th></th>
 
-                      <th>4TH</th>
-                      <th></th>
-                    </tr>
+                          <th>4TH</th>
+                          <th></th>
+                        </tr>
+                      </>
+                    )}
                   </thead>
                 ) : group === "GROUP-B" ? (
                   <thead>
                     <tr>
                       <th colSpan={5}>বিভাগ 'খ'</th>
                     </tr>
-                    <tr>
-                      <th colSpan={5}>১০০ মিটার দৌড়</th>
-                    </tr>
-                    <tr>
-                      <th>বিভাগ 'খ' বালক</th>
-                      <th>চেস্ট নং</th>
-                      <th rowSpan={5}></th>
-                      <th>বিভাগ 'খ' বালিকা</th>
-                      <th>চেস্ট নং</th>
-                    </tr>
+                    {engEventName === "100 METER RUN" ? (
+                      <>
+                        <tr>
+                          <th colSpan={5}>১০০ মিটার দৌড়</th>
+                        </tr>
+                        <tr>
+                          <th>বিভাগ 'খ' বালক</th>
+                          <th>চেস্ট নং</th>
+                          <th rowSpan={5}></th>
+                          <th>বিভাগ 'খ' বালিকা</th>
+                          <th>চেস্ট নং</th>
+                        </tr>
 
-                    <tr>
-                      <th>1ST</th>
-                      <th></th>
+                        <tr>
+                          <th>1ST</th>
+                          <th></th>
 
-                      <th>1ST</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>2ND</th>
-                      <th></th>
+                          <th>1ST</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>2ND</th>
+                          <th></th>
 
-                      <th>2ND</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>3RD</th>
-                      <th></th>
+                          <th>2ND</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>3RD</th>
+                          <th></th>
 
-                      <th>3RD</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>4TH</th>
-                      <th></th>
+                          <th>3RD</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>4TH</th>
+                          <th></th>
 
-                      <th>4TH</th>
-                      <th></th>
-                    </tr>
-                    <tr></tr>
-                    <tr></tr>
-                    <tr>
-                      <th colSpan={5}>২০০ মিটার দৌড়</th>
-                    </tr>
+                          <th>4TH</th>
+                          <th></th>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+                      </>
+                    ) : (
+                      <>
+                        <tr>
+                          <th colSpan={5}>২০০ মিটার দৌড়</th>
+                        </tr>
 
-                    <tr>
-                      <th>বিভাগ 'খ' বালক</th>
-                      <th>চেস্ট নং</th>
-                      <th rowSpan={5}></th>
-                      <th>বিভাগ 'খ' বালিকা</th>
-                      <th>চেস্ট নং</th>
-                    </tr>
+                        <tr>
+                          <th>বিভাগ 'খ' বালক</th>
+                          <th>চেস্ট নং</th>
+                          <th rowSpan={5}></th>
+                          <th>বিভাগ 'খ' বালিকা</th>
+                          <th>চেস্ট নং</th>
+                        </tr>
 
-                    <tr>
-                      <th>1ST</th>
-                      <th></th>
+                        <tr>
+                          <th>1ST</th>
+                          <th></th>
 
-                      <th>1ST</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>2ND</th>
-                      <th></th>
+                          <th>1ST</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>2ND</th>
+                          <th></th>
 
-                      <th>2ND</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>3RD</th>
-                      <th></th>
+                          <th>2ND</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>3RD</th>
+                          <th></th>
 
-                      <th>3RD</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>4TH</th>
-                      <th></th>
+                          <th>3RD</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>4TH</th>
+                          <th></th>
 
-                      <th>4TH</th>
-                      <th></th>
-                    </tr>
+                          <th>4TH</th>
+                          <th></th>
+                        </tr>
+                      </>
+                    )}
                   </thead>
                 ) : group === "GROUP-C" ? (
                   <thead>
                     <tr>
                       <th colSpan={5}>বিভাগ 'গ'</th>
                     </tr>
-                    <tr>
-                      <th colSpan={5}>১০০ মিটার দৌড়</th>
-                    </tr>
-                    <tr>
-                      <th>বিভাগ 'গ' বালক</th>
-                      <th>চেস্ট নং</th>
-                      <th rowSpan={5}></th>
-                      <th>বিভাগ 'গ' বালিকা</th>
-                      <th>চেস্ট নং</th>
-                    </tr>
+                    {engEventName === "200 METER RUN" ? (
+                      <>
+                        <tr>
+                          <th colSpan={5}>১০০ মিটার দৌড়</th>
+                        </tr>
+                        <tr>
+                          <th>বিভাগ 'গ' বালক</th>
+                          <th>চেস্ট নং</th>
+                          <th rowSpan={5}></th>
+                          <th>বিভাগ 'গ' বালিকা</th>
+                          <th>চেস্ট নং</th>
+                        </tr>
 
-                    <tr>
-                      <th>1ST</th>
-                      <th></th>
+                        <tr>
+                          <th>1ST</th>
+                          <th></th>
 
-                      <th>1ST</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>2ND</th>
-                      <th></th>
+                          <th>1ST</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>2ND</th>
+                          <th></th>
 
-                      <th>2ND</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>3RD</th>
-                      <th></th>
+                          <th>2ND</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>3RD</th>
+                          <th></th>
 
-                      <th>3RD</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>4TH</th>
-                      <th></th>
+                          <th>3RD</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>4TH</th>
+                          <th></th>
 
-                      <th>4TH</th>
-                      <th></th>
-                    </tr>
-                    <tr></tr>
-                    <tr></tr>
-                    <tr>
-                      <th colSpan={5}>২০০ মিটার দৌড়</th>
-                    </tr>
+                          <th>4TH</th>
+                          <th></th>
+                        </tr>
+                        <tr></tr>
+                        <tr></tr>
+                      </>
+                    ) : (
+                      <>
+                        <tr>
+                          <th colSpan={5}>২০০ মিটার দৌড়</th>
+                        </tr>
 
-                    <tr>
-                      <th>বিভাগ 'গ' বালক</th>
-                      <th>চেস্ট নং</th>
-                      <th rowSpan={5}></th>
-                      <th>বিভাগ 'গ' বালিকা</th>
-                      <th>চেস্ট নং</th>
-                    </tr>
+                        <tr>
+                          <th>বিভাগ 'গ' বালক</th>
+                          <th>চেস্ট নং</th>
+                          <th rowSpan={5}></th>
+                          <th>বিভাগ 'গ' বালিকা</th>
+                          <th>চেস্ট নং</th>
+                        </tr>
 
-                    <tr>
-                      <th>1ST</th>
-                      <th></th>
+                        <tr>
+                          <th>1ST</th>
+                          <th></th>
 
-                      <th>1ST</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>2ND</th>
-                      <th></th>
+                          <th>1ST</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>2ND</th>
+                          <th></th>
 
-                      <th>2ND</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>3RD</th>
-                      <th></th>
+                          <th>2ND</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>3RD</th>
+                          <th></th>
 
-                      <th>3RD</th>
-                      <th></th>
-                    </tr>
-                    <tr>
-                      <th>4TH</th>
-                      <th></th>
+                          <th>3RD</th>
+                          <th></th>
+                        </tr>
+                        <tr>
+                          <th>4TH</th>
+                          <th></th>
 
-                      <th>4TH</th>
-                      <th></th>
-                    </tr>
+                          <th>4TH</th>
+                          <th></th>
+                        </tr>
+                      </>
+                    )}
                   </thead>
                 ) : null}
                 <tbody>
