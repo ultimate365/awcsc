@@ -149,10 +149,8 @@ export default function CircleSportsDirectNameEntry() {
         if (a.gp > b.gp) return 1;
         if (a.gender < b.gender) return -1;
         if (a.gender > b.gender) return 1;
-        if (a.group < b.group) return -1;
-        if (a.group > b.group) return 1;
-        if (a.school < b.school) return -1;
-        if (a.school > b.school) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
         return 0;
       });
 

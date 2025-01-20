@@ -23,13 +23,15 @@ const GPAllStudents = () => {
     setSelectedGpStudentState,
     setSelectedGpStudentStateUpdateTime,
   } = useGlobalContext();
-  const data = yourStateObject?.data?.sort(
-    (a, b) =>
-      a?.school.localeCompare(b?.school) ||
-      a?.gender.localeCompare(b?.gender) ||
-      a?.group.localeCompare(b?.group) ||
-      a?.event1rank - b?.event1rank
-  );
+  const data = yourStateObject?.data?.sort((a, b) => {
+    if (a.gp < b.gp) return -1;
+    if (a.gp > b.gp) return 1;
+    if (a.gender < b.gender) return -1;
+    if (a.gender > b.gender) return 1;
+    if (a.event1rank < b.event1rank) return -1;
+    if (a.event1rank > b.event1rank) return 1;
+    return 0;
+  });
   const schoolData = yourStateObject?.school;
   const navigate = useRouter();
   const [allData, setAllData] = useState(data);
@@ -80,6 +82,15 @@ const GPAllStudents = () => {
     setLoader(true);
     const actions = data
       .filter((el) => el?.gp === teacherdetails.gp)
+      .sort((a, b) => {
+        if (a.gp < b.gp) return -1;
+        if (a.gp > b.gp) return 1;
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
+        return 0;
+      })
       .map(async (el, ind) => {
         const chestNo = parseInt(startingChestNo) + ind;
         const docRef = doc(firestore, "gpSportsStudentData", el?.id);

@@ -56,7 +56,7 @@ const CircleSportsEventWiseName = () => {
         <div className="container-fluid">
           <h3 className="text-center ben text-black">
             {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগীতা,{" "}
-            {enToBnNumber(new Date().getFullYear() - 1)}
+            {enToBnNumber(new Date().getFullYear())}
           </h3>
 
           {engEventName === "LONG JUMP" ||
@@ -432,7 +432,7 @@ const CircleSportsEventWiseName = () => {
                     {engEventName === "200 METER RUN" ? (
                       <>
                         <tr>
-                          <th colSpan={5}>১০০ মিটার দৌড়</th>
+                          <th colSpan={5}>২০০ মিটার দৌড়</th>
                         </tr>
                         <tr>
                           <th>বিভাগ 'গ' বালক</th>
@@ -476,7 +476,7 @@ const CircleSportsEventWiseName = () => {
                     ) : (
                       <>
                         <tr>
-                          <th colSpan={5}>২০০ মিটার দৌড়</th>
+                          <th colSpan={5}>১০০ মিটার দৌড়</th>
                         </tr>
 
                         <tr>
@@ -547,14 +547,26 @@ const CircleSportsEventWiseName = () => {
                     <th rowSpan={2}>চেস্ট নং</th>
                     <th rowSpan={2}>প্রতিযোগীর নাম</th>
                     <th rowSpan={2}>বিদ্যালয়ের নাম</th>
-                    <th colSpan={6}>
-                      GROUP 1 (২টি ধারন সময় ৩০ সেকেন্ড)(লটারি)
-                    </th>
-                    <th colSpan={6}>
-                      GROUP 2 (১টি ধারন সময় ২০ সেকেন্ড)(লটারি)
-                    </th>
+                    {group === "GROUP-A" ? (
+                      <>
+                        <th colSpan={6}>GROUP 1 (২টি ধারন সময় ২০ সেকেন্ড)</th>
+                        <th colSpan={6}>
+                          GROUP 2 (১টি ধারন সময় ১৫ সেকেন্ড)
+                        </th>
+                      </>
+                    ) : (
+                      <>
+                        <th colSpan={6}>
+                          GROUP 1 (২টি ধারন সময় ৩০ সেকেন্ড)(লটারি)
+                        </th>
+                        <th colSpan={6}>
+                          GROUP 2 (১টি ধারন সময় ২০ সেকেন্ড)(লটারি)
+                        </th>
+                      </>
+                    )}
+
                     <th colSpan={6}>GROUP 3 (১টি ধারন সময় ১০ সেকেন্ড)</th>
-                    <th rowSpan={2}>নিজ ইচ্ছামতো (১টি)</th>
+                    <th rowSpan={2}>নিজ ইচ্ছামতো <br/>  (১টি ধারন সময় ১০ সেকেন্ড)</th>
                     <th rowSpan={2}>TOTAL</th>
                   </tr>
 
@@ -610,7 +622,7 @@ const CircleSportsEventWiseName = () => {
                   <tr>
                     <td colSpan={24}>
                       <div className="mt-4">
-                        <div className="mt-4 justify-content-between align-items-end">
+                        <div className="my-5 justify-content-between align-items-end">
                           <h6 className=" text-end">SIGNATURE OF THE JUDGE</h6>
                         </div>
                       </div>

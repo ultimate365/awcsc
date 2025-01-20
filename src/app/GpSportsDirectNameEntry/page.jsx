@@ -125,7 +125,15 @@ export default function GpSportsDirectNameEntry() {
         ...doc.data(),
         // id: doc.id,
       }))
-      .sort((b, a) => b?.event1rank - a?.event1rank);
+      .sort((a, b) => {
+        if (a.gp < b.gp) return -1;
+        if (a.gp > b.gp) return 1;
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
+        return 0;
+      });
     setGpStudentState(data);
     setGpStudentStateUpdateTime(Date.now());
     setFilteredData(data);

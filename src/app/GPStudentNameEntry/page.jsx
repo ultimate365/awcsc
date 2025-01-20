@@ -243,7 +243,15 @@ const GPStudentNameEntry = () => {
         ...doc.data(),
         // id: doc.id,
       }))
-      .sort((b, a) => b?.event1rank - a?.event1rank);
+      .sort((a, b) => {
+        if (a.gp < b.gp) return -1;
+        if (a.gp > b.gp) return 1;
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
+        return 0;
+      });
     setSelectedGpStudentState(data);
     setSelectedGpStudentStateUpdateTime(Date.now());
     setSelectSchoolsParticipants(data);
@@ -281,7 +289,15 @@ const GPStudentNameEntry = () => {
         // id: doc.id,
       }))
 
-      .sort((a, b) => a.event1rank - b.event1rank);
+      .sort((a, b) => {
+        if (a.gp < b.gp) return -1;
+        if (a.gp > b.gp) return 1;
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
+        return 0;
+      });
     setLoader(false);
     setAllResult(data1);
     setFilteredResult(data1);
@@ -298,7 +314,15 @@ const GPStudentNameEntry = () => {
         // id: doc.id,
       }))
 
-      .sort((a, b) => a.event1rank - b.event1rank);
+      .sort((a, b) => {
+        if (a.gp < b.gp) return -1;
+        if (a.gp > b.gp) return 1;
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
+        return 0;
+      });
     setLoader(false);
     setAllCircleResult(data1);
     setresultFilteredData(data1);

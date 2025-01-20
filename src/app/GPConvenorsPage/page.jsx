@@ -171,7 +171,15 @@ const GPConvenorsPage = () => {
       );
       const data = querySnapshot.docs
         .map((doc) => doc.data())
-        .sort((a, b) => a?.event1rank - b?.event1rank);
+        .sort((a, b) => {
+          if (a.gp < b.gp) return -1;
+          if (a.gp > b.gp) return 1;
+          if (a.gender < b.gender) return -1;
+          if (a.gender > b.gender) return 1;
+          if (a.event1rank < b.event1rank) return -1;
+          if (a.event1rank > b.event1rank) return 1;
+          return 0;
+        });
       setLoader(false);
       setAmtaWestCircleAllResultState(data);
       setAmtaWestCircleAllResultUpdateTime(Date.now());
@@ -334,13 +342,15 @@ const GPConvenorsPage = () => {
       );
       const data = querySnapshot.docs
         .map((doc) => doc.data())
-        .sort(
-          (a, b) =>
-            a?.school.localeCompare(b?.school) ||
-            a?.gender.localeCompare(b?.gender) ||
-            a?.group.localeCompare(b?.group) ||
-            a?.event1rank - b?.event1rank
-        );
+        .sort((a, b) => {
+          if (a.gp < b.gp) return -1;
+          if (a.gp > b.gp) return 1;
+          if (a.gender < b.gender) return -1;
+          if (a.gender > b.gender) return 1;
+          if (a.event1rank < b.event1rank) return -1;
+          if (a.event1rank > b.event1rank) return 1;
+          return 0;
+        });
       setGpStudentState(data);
       setGpStudentStateUpdateTime(Date.now());
       setAllParticipants(data);
@@ -351,13 +361,15 @@ const GPConvenorsPage = () => {
       await axios
         .post("/api/getgpSportsStudentData")
         .then((response) => {
-          const data = response.data.data.sort(
-            (a, b) =>
-              a?.school.localeCompare(b?.school) ||
-              a?.gender.localeCompare(b?.gender) ||
-              a?.group.localeCompare(b?.group) ||
-              a?.event1rank - b?.event1rank
-          );
+          const data = response.data.data.sort((a, b) => {
+            if (a.gp < b.gp) return -1;
+            if (a.gp > b.gp) return 1;
+            if (a.gender < b.gender) return -1;
+            if (a.gender > b.gender) return 1;
+            if (a.event1rank < b.event1rank) return -1;
+            if (a.event1rank > b.event1rank) return 1;
+            return 0;
+          });
           setGpStudentState(data);
           setGpStudentStateUpdateTime(Date.now());
           setAllParticipants(data);
