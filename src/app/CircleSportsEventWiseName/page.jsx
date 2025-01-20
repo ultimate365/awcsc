@@ -189,7 +189,6 @@ const CircleSportsEventWiseName = () => {
                       </>
                     )}
                     <td>Total</td>
-                    <td>Position</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -199,7 +198,6 @@ const CircleSportsEventWiseName = () => {
                       <td>{el?.name}</td>
                       <td>{el?.gp}</td>
                       <td>{el?.school}</td>
-                      <td></td>
                       <td></td>
                       <td></td>
                       <td></td>
@@ -531,7 +529,6 @@ const CircleSportsEventWiseName = () => {
                     <th colSpan={6}>GROUP 3 (১টি ধারন সময় ১০ সেকেন্ড)</th>
                     <th rowSpan={2}>নিজ ইচ্ছামতো (১টি)</th>
                     <th rowSpan={2}>TOTAL</th>
-                    <th rowSpan={2}>স্থান</th>
                   </tr>
 
                   <tr className="ben">
@@ -562,8 +559,6 @@ const CircleSportsEventWiseName = () => {
                       <td>{el?.name}</td>
                       <td>{el?.gp}</td>
                       <td>{el?.school}</td>
-                      <td></td>
-                      <td></td>
                       <td></td>
                       <td></td>
                       <td></td>

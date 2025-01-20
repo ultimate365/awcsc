@@ -401,6 +401,7 @@ const CircleAllStudents = () => {
                   eventName: `${inpgender} ${inpGroup}- ${inpeventBengName}`,
                   gender: engGenderName,
                   group: engGroupName,
+                  engEventName: engEventName,
                 });
                 navigate.push(`/CircleSportsEventWiseName`);
               }}
