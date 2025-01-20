@@ -53,7 +53,7 @@ export default function PrintTreeList() {
           <button
             type="button"
             className={`btn m-1 ${
-              data.length !== filteredData.length
+              data?.length !== filteredData?.length
                 ? gpEngName !== filteredData[0]?.gp
                   ? "btn-sm"
                   : ""
@@ -71,7 +71,7 @@ export default function PrintTreeList() {
             {gpEngName}
           </button>
         ))}
-        {data.length !== filteredData?.length && (
+        {data?.length !== filteredData?.length && (
           <button
             type="button"
             className="btn btn-primary m-1 col-md-1"
