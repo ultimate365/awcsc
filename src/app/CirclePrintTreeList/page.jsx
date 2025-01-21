@@ -76,7 +76,7 @@ export default function PrintTreeList() {
             type="button"
             className="btn btn-primary m-1 col-md-1"
             style={{
-              backgroundColor: BUTTONCOLORS[gpEngNames.length+1],
+              backgroundColor: BUTTONCOLORS[gpEngNames.length + 1],
               color: "white",
             }}
             onClick={() => setFilteredData(data)}
@@ -89,6 +89,11 @@ export default function PrintTreeList() {
         আমতা পশ্চিম চক্র বার্ষিক ক্রীড়া প্রতিযোগীতা,-{" "}
         {enToBnNumber(new Date().getFullYear())}
       </h3>
+      {data?.length !== filteredData?.length && (
+        <h5 className="text-center m-2 text-black">
+          GP: {filteredData[0]?.gp}
+        </h5>
+      )}
       <table
         className="table table-bordered border-black mx-auto"
         style={{
