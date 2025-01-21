@@ -7,13 +7,15 @@ import { enToBnNumber } from "../../modules/calculatefunctions";
 import { circleBenName, gpNames } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
 const CircleSportsEventWiseName = () => {
-  const { yourStateObject } = useGlobalContext();
+  const { yourStateObject, myStateObject } = useGlobalContext();
   const data = yourStateObject?.data?.sort((a, b) =>
     a?.gp.localeCompare(b?.gp)
   );
+  const data2 = myStateObject?.data?.sort((a, b) => a?.gp.localeCompare(b?.gp));
 
   const navigate = useRouter();
   const [allData, setAllData] = useState(data);
+  const [secondData, setSecondData] = useState(data2);
 
   const [eventName, setEventName] = useState(yourStateObject?.eventName);
   const [gender, setGender] = useState(yourStateObject?.gender);
@@ -235,6 +237,59 @@ const CircleSportsEventWiseName = () => {
           engEventName === "100 METER RUN" ||
           engEventName === "200 METER RUN" ? (
             <>
+              <h3 className="text-center ben text-black">{group}</h3>
+              <div className="row">
+                <div className="col-md-6">
+                  <table
+                    className="table table-bordered border-black"
+                    style={{ zoom: 0.7 }}
+                  >
+                    <thead>
+                      <tr className="ben">
+                        <th>চেস্ট নং</th>
+                        <th>প্রতিযোগীর নাম</th>
+                        <th>গ্রাম-পঞ্চায়েতের নাম</th>
+                        <th>বিদ্যালয়ের নাম</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {allData?.map((el, ind) => (
+                        <tr key={ind} className="timesfont">
+                          <td>{el?.chestNo}</td>
+                          <td>{el?.name}</td>
+                          <td>{el?.gp}</td>
+                          <td>{el?.school}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="col-md-6">
+                  <table
+                    className="table table-bordered border-black"
+                    style={{ zoom: 0.7 }}
+                  >
+                    <thead>
+                      <tr className="ben">
+                        <th>চেস্ট নং</th>
+                        <th>প্রতিযোগীর নাম</th>
+                        <th>গ্রাম-পঞ্চায়েতের নাম</th>
+                        <th>বিদ্যালয়ের নাম</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {secondData?.map((el, ind) => (
+                        <tr key={ind} className="timesfont">
+                          <td>{el?.chestNo}</td>
+                          <td>{el?.name}</td>
+                          <td>{el?.gp}</td>
+                          <td>{el?.school}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
               <table className="container ben table table-bordered border-black">
                 {group === "GROUP-A" ? (
                   <thead>
@@ -333,47 +388,57 @@ const CircleSportsEventWiseName = () => {
                 ) : group === "GROUP-B" ? (
                   <thead>
                     <tr>
-                      <th colSpan={5}>বিভাগ 'খ'</th>
+                      <th colSpan={7}>বিভাগ 'খ'</th>
                     </tr>
                     {engEventName === "100 METER RUN" ? (
                       <>
                         <tr>
-                          <th colSpan={5}>১০০ মিটার দৌড়</th>
+                          <th colSpan={7}>১০০ মিটার দৌড়</th>
                         </tr>
                         <tr>
                           <th>বিভাগ 'খ' বালক</th>
                           <th>চেস্ট নং</th>
+                          <th>Time / Distance</th>
                           <th rowSpan={5}></th>
                           <th>বিভাগ 'খ' বালিকা</th>
                           <th>চেস্ট নং</th>
+                          <th>Time / Distance</th>
                         </tr>
 
                         <tr>
                           <th>1ST</th>
                           <th></th>
+                          <th></th>
 
                           <th>1ST</th>
                           <th></th>
+                          <th></th>
                         </tr>
                         <tr>
                           <th>2ND</th>
                           <th></th>
+                          <th></th>
 
                           <th>2ND</th>
+                          <th></th>
                           <th></th>
                         </tr>
                         <tr>
                           <th>3RD</th>
                           <th></th>
+                          <th></th>
 
                           <th>3RD</th>
+                          <th></th>
                           <th></th>
                         </tr>
                         <tr>
                           <th>4TH</th>
                           <th></th>
+                          <th></th>
 
                           <th>4TH</th>
+                          <th></th>
                           <th></th>
                         </tr>
                         <tr></tr>
@@ -382,92 +447,114 @@ const CircleSportsEventWiseName = () => {
                     ) : (
                       <>
                         <tr>
-                          <th colSpan={5}>২০০ মিটার দৌড়</th>
+                          <th colSpan={7}>২০০ মিটার দৌড়</th>
                         </tr>
 
                         <tr>
                           <th>বিভাগ 'খ' বালক</th>
                           <th>চেস্ট নং</th>
+                          <th>Time / Distance</th>
                           <th rowSpan={5}></th>
                           <th>বিভাগ 'খ' বালিকা</th>
                           <th>চেস্ট নং</th>
+                          <th>Time / Distance</th>
                         </tr>
 
                         <tr>
                           <th>1ST</th>
                           <th></th>
+                          <th></th>
 
                           <th>1ST</th>
                           <th></th>
+                          <th></th>
                         </tr>
                         <tr>
                           <th>2ND</th>
                           <th></th>
+                          <th></th>
 
                           <th>2ND</th>
+                          <th></th>
                           <th></th>
                         </tr>
                         <tr>
                           <th>3RD</th>
                           <th></th>
+                          <th></th>
 
                           <th>3RD</th>
+                          <th></th>
                           <th></th>
                         </tr>
                         <tr>
                           <th>4TH</th>
                           <th></th>
+                          <th></th>
 
                           <th>4TH</th>
                           <th></th>
+                          <th></th>
                         </tr>
+                        <tr></tr>
+                        <tr></tr>
                       </>
                     )}
                   </thead>
                 ) : group === "GROUP-C" ? (
                   <thead>
                     <tr>
-                      <th colSpan={5}>বিভাগ 'গ'</th>
+                      <th colSpan={7}>বিভাগ 'গ'</th>
                     </tr>
                     {engEventName === "200 METER RUN" ? (
                       <>
                         <tr>
-                          <th colSpan={5}>২০০ মিটার দৌড়</th>
+                          <th colSpan={7}>২০০ মিটার দৌড়</th>
                         </tr>
                         <tr>
                           <th>বিভাগ 'গ' বালক</th>
                           <th>চেস্ট নং</th>
+                          <th>Time / Distance</th>
                           <th rowSpan={5}></th>
                           <th>বিভাগ 'গ' বালিকা</th>
                           <th>চেস্ট নং</th>
+                          <th>Time / Distance</th>
                         </tr>
 
                         <tr>
                           <th>1ST</th>
                           <th></th>
+                          <th></th>
 
                           <th>1ST</th>
                           <th></th>
+                          <th></th>
                         </tr>
                         <tr>
                           <th>2ND</th>
                           <th></th>
+                          <th></th>
 
                           <th>2ND</th>
+                          <th></th>
                           <th></th>
                         </tr>
                         <tr>
                           <th>3RD</th>
                           <th></th>
+                          <th></th>
 
                           <th>3RD</th>
+                          <th></th>
                           <th></th>
                         </tr>
                         <tr>
                           <th>4TH</th>
                           <th></th>
+                          <th></th>
 
                           <th>4TH</th>
+                          <th></th>
                           <th></th>
                         </tr>
                         <tr></tr>
@@ -476,52 +563,64 @@ const CircleSportsEventWiseName = () => {
                     ) : (
                       <>
                         <tr>
-                          <th colSpan={5}>১০০ মিটার দৌড়</th>
+                          <th colSpan={7}>১০০ মিটার দৌড়</th>
                         </tr>
 
                         <tr>
                           <th>বিভাগ 'গ' বালক</th>
                           <th>চেস্ট নং</th>
+                          <th>Time / Distance</th>
                           <th rowSpan={5}></th>
                           <th>বিভাগ 'গ' বালিকা</th>
                           <th>চেস্ট নং</th>
+                          <th>Time / Distance</th>
                         </tr>
 
                         <tr>
                           <th>1ST</th>
                           <th></th>
+                          <th></th>
 
                           <th>1ST</th>
                           <th></th>
+                          <th></th>
                         </tr>
                         <tr>
                           <th>2ND</th>
                           <th></th>
+                          <th></th>
 
                           <th>2ND</th>
+                          <th></th>
                           <th></th>
                         </tr>
                         <tr>
                           <th>3RD</th>
                           <th></th>
+                          <th></th>
 
                           <th>3RD</th>
+                          <th></th>
                           <th></th>
                         </tr>
                         <tr>
                           <th>4TH</th>
                           <th></th>
+                          <th></th>
 
                           <th>4TH</th>
                           <th></th>
+                          <th></th>
                         </tr>
+                        <tr></tr>
+                        <tr></tr>
                       </>
                     )}
                   </thead>
                 ) : null}
                 <tbody>
                   <tr>
-                    <td colSpan={5}>
+                    <td colSpan={7}>
                       <div className="mt-4">
                         <div className="mt-4 p-4 justify-content-between align-items-end">
                           <h6 className=" p-4 text-end">
@@ -550,9 +649,7 @@ const CircleSportsEventWiseName = () => {
                     {group === "GROUP-A" ? (
                       <>
                         <th colSpan={6}>GROUP 1 (২টি ধারন সময় ২০ সেকেন্ড)</th>
-                        <th colSpan={6}>
-                          GROUP 2 (১টি ধারন সময় ১৫ সেকেন্ড)
-                        </th>
+                        <th colSpan={6}>GROUP 2 (১টি ধারন সময় ১৫ সেকেন্ড)</th>
                       </>
                     ) : (
                       <>
@@ -566,7 +663,9 @@ const CircleSportsEventWiseName = () => {
                     )}
 
                     <th colSpan={6}>GROUP 3 (১টি ধারন সময় ১০ সেকেন্ড)</th>
-                    <th rowSpan={2}>নিজ ইচ্ছামতো <br/>  (১টি ধারন সময় ১০ সেকেন্ড)</th>
+                    <th rowSpan={2}>
+                      নিজ ইচ্ছামতো <br /> (১টি ধারন সময় ১০ সেকেন্ড)
+                    </th>
                     <th rowSpan={2}>TOTAL</th>
                   </tr>
 

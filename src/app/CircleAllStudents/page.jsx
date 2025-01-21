@@ -399,6 +399,25 @@ const CircleAllStudents = () => {
                   group: engGroupName,
                   engEventName: engEventName,
                 });
+                setMyStateObject({
+                  data: filteredData
+                    .filter(
+                      (el) =>
+                        el?.gender ===
+                        (engGenderName === "BOYS" ? "GIRLS" : "BOYS")
+                    )
+                    .filter((el) => el?.group === engGroupName)
+                    .filter(
+                      (el) =>
+                        el?.event1 === engEventName ||
+                        el?.event2 === engEventName
+                    ),
+                  school: gpData,
+                  eventName: `${inpgender} ${inpGroup}- ${inpeventBengName}`,
+                  gender: engGenderName,
+                  group: engGroupName,
+                  engEventName: engEventName,
+                });
                 navigate.push(`/CircleSportsEventWiseName`);
               }}
             >
