@@ -115,6 +115,7 @@ export default function VerifyLogin() {
     }
     if (nonVerifiedTid) {
       const teacherData = decryptObjData("nonVerifiedTid");
+      console.log(teacherData);
       setPhone(teacherData.phone);
       setName(teacherData.tname);
     }
