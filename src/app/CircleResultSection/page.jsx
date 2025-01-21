@@ -481,7 +481,7 @@ const CircleResultSection = () => {
                   navigate.push(`/CircleGroupWiseResultPrintBlank`);
                 }}
               >
-                {`Go to ${genderres} ${groupres} => Result`}
+                {`Go to Blank ${genderres} ${groupres} => Result`}
               </button>
             </div>
           )}

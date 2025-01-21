@@ -39,19 +39,25 @@ const CircleGroupWiseResultPrint = () => {
   }, []);
 
   useEffect(() => {
-    if (group === "GROUP-A") {
-      setBengGroupName("{benGender} {bengGroupName}");
-    } else if (group === "GROUP-B") {
-      setBengGroupName("বিভাগ 'খ'");
-    } else if (group === "GROUP-C") {
-      setBengGroupName("বিভাগ 'গ'");
-    }
     if (gender === "BOYS") {
       setBenGender("বালক");
+      if (group === "GROUP-A") {
+        setBengGroupName(`বালক 'ক' বিভাগ`);
+      } else if (group === "GROUP-B") {
+        setBengGroupName(`বালক 'খ' বিভাগ`);
+      } else if (group === "GROUP-C") {
+        setBengGroupName(`বালক 'গ' বিভাগ`);
+      }
     } else if (gender === "GIRLS") {
       setBenGender("বালিকা");
+      if (group === "GROUP-A") {
+        setBengGroupName(`বালিকা 'ক' বিভাগ`);
+      } else if (group === "GROUP-B") {
+        setBengGroupName(`বালিকা 'খ' বিভাগ`);
+      } else if (group === "GROUP-C") {
+        setBengGroupName(`বালিকা 'গ' বিভাগ`);
+      }
     }
-
     // eslint-disable-next-line
   }, [allData]);
   useEffect(() => {
@@ -99,13 +105,13 @@ const CircleGroupWiseResultPrint = () => {
               <th colSpan={5} style={{ borderRight: 0 }}></th>
               <th style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-2 rounded-2">
-                  {benGender} {bengGroupName}
+                  {bengGroupName}
                 </h4>
               </th>
             </tr>
             <tr>
               <th className="ben" colSpan={6}>
-                {benGender} {bengGroupName} ৭৫ মিটার দৌড়
+                {bengGroupName} ৭৫ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -138,7 +144,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                {benGender} {bengGroupName} দীর্ঘ লম্ফন
+                {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
             <tr>
@@ -168,7 +174,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                {benGender} {bengGroupName} আলু দৌড় (SHUTTLE RACE)
+                {bengGroupName} আলু দৌড় (SHUTTLE RACE)
               </th>
             </tr>
             <tr>
@@ -201,7 +207,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                {benGender} {bengGroupName} যোগা
+                {bengGroupName} যোগা
               </th>
             </tr>
             <tr>
@@ -234,13 +240,13 @@ const CircleGroupWiseResultPrint = () => {
               <th colSpan={5} style={{ borderRight: 0 }}></th>
               <th style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-2 rounded-2">
-                  {benGender} {bengGroupName}
+                  {bengGroupName}
                 </h4>
               </th>
             </tr>
             <tr>
               <th className="ben" colSpan={6}>
-                {benGender} {bengGroupName} ১০০ মিটার দৌড়
+                {bengGroupName} ১০০ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -274,7 +280,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                {benGender} {bengGroupName} ২০০ মিটার দৌড়
+                {bengGroupName} ২০০ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -308,7 +314,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                {benGender} {bengGroupName} দীর্ঘ লম্ফন
+                {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
             <tr>
@@ -338,7 +344,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                {benGender} {bengGroupName} উচ্চ লম্ফন
+                {bengGroupName} উচ্চ লম্ফন
               </th>
             </tr>
             <tr>
@@ -369,7 +375,7 @@ const CircleGroupWiseResultPrint = () => {
 
             <tr>
               <th className="ben" colSpan={6}>
-                {benGender} {bengGroupName} যোগা
+                {bengGroupName} যোগা
               </th>
             </tr>
             <tr>
@@ -397,7 +403,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
             <tr>
               <th className="ben" colSpan={6}>
-                {benGender} {bengGroupName} জিম্‌নাস্টিক্‌স
+                {bengGroupName} জিম্‌নাস্টিক্‌স
               </th>
             </tr>
             <tr>
@@ -432,7 +438,7 @@ const CircleGroupWiseResultPrint = () => {
               <>
                 <tr>
                   <th className="ben" colSpan={6}>
-                    {benGender} {bengGroupName} ফুটবল ছোঁড়া
+                    {bengGroupName} ফুটবল ছোঁড়া
                   </th>
                 </tr>
                 <tr>

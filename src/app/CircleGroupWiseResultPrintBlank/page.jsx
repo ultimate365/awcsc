@@ -34,24 +34,30 @@ const CircleGroupWiseResultPrint = () => {
         navigate.push("/login");
       }
     }
-    document.title = `${circleEngName} Annual Sports ${group} Result Sheet`;
+    document.title = `${circleEngName} Annual Sports ${gender} ${group} Result Sheet`;
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    if (group === "GROUP-A") {
-      setBengGroupName("{benGender} {bengGroupName}");
-    } else if (group === "GROUP-B") {
-      setBengGroupName("বিভাগ 'খ'");
-    } else if (group === "GROUP-C") {
-      setBengGroupName("বিভাগ 'গ'");
-    }
     if (gender === "BOYS") {
       setBenGender("বালক");
+      if (group === "GROUP-A") {
+        setBengGroupName(`বালক 'ক' বিভাগ`);
+      } else if (group === "GROUP-B") {
+        setBengGroupName(`বালক 'খ' বিভাগ`);
+      } else if (group === "GROUP-C") {
+        setBengGroupName(`বালক 'গ' বিভাগ`);
+      }
     } else if (gender === "GIRLS") {
       setBenGender("বালিকা");
+      if (group === "GROUP-A") {
+        setBengGroupName(`বালিকা 'ক' বিভাগ`);
+      } else if (group === "GROUP-B") {
+        setBengGroupName(`বালিকা 'খ' বিভাগ`);
+      } else if (group === "GROUP-C") {
+        setBengGroupName(`বালিকা 'গ' বিভাগ`);
+      }
     }
-
     // eslint-disable-next-line
   }, [allData]);
   useEffect(() => {
@@ -82,7 +88,7 @@ const CircleGroupWiseResultPrint = () => {
           Print
         </button>
       </div>
-      <table className="table table-bordered boder-black border-4">
+      <table className="table table-bordered boder-black border-4" style={{border:2,borderColor:"black"}}>
         <thead>
           <tr>
             <th colSpan={6}>
@@ -99,13 +105,13 @@ const CircleGroupWiseResultPrint = () => {
               <th colSpan={3} style={{ borderRight: 0 }}></th>
               <th colSpan={2} style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-1 rounded-2">
-                  {benGender} {bengGroupName}
+                  {bengGroupName}
                 </h4>
               </th>
             </tr>
             <tr>
               <th className="ben" colSpan={5}>
-                {benGender} {bengGroupName} ৭৫ মিটার দৌড়
+                {bengGroupName} ৭৫ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -129,7 +135,7 @@ const CircleGroupWiseResultPrint = () => {
 
             <tr>
               <th className="ben" colSpan={5}>
-                {benGender} {bengGroupName} দীর্ঘ লম্ফন
+                {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
             <tr>
@@ -152,7 +158,7 @@ const CircleGroupWiseResultPrint = () => {
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {benGender} {bengGroupName} আলু দৌড় (SHUTTLE RACE)
+                {bengGroupName} আলু দৌড় (SHUTTLE RACE)
               </th>
             </tr>
             <tr>
@@ -175,7 +181,7 @@ const CircleGroupWiseResultPrint = () => {
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {benGender} {bengGroupName} যোগা
+                {bengGroupName} যোগা
               </th>
             </tr>
             <tr>
@@ -203,13 +209,13 @@ const CircleGroupWiseResultPrint = () => {
               <th colSpan={3} style={{ borderRight: 0 }}></th>
               <th colSpan={2} style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-1 rounded-2">
-                  {benGender} {bengGroupName}
+                  {bengGroupName}
                 </h4>
               </th>
             </tr>
             <tr>
               <th className="ben" colSpan={5}>
-                {benGender} {bengGroupName} ১০০ মিটার দৌড়
+                {bengGroupName} ১০০ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -232,7 +238,7 @@ const CircleGroupWiseResultPrint = () => {
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {benGender} {bengGroupName} ২০০ মিটার দৌড়
+                {bengGroupName} ২০০ মিটার দৌড়
               </th>
             </tr>
             <tr>
@@ -255,7 +261,7 @@ const CircleGroupWiseResultPrint = () => {
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {benGender} {bengGroupName} দীর্ঘ লম্ফন
+                {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
             <tr>
@@ -278,7 +284,7 @@ const CircleGroupWiseResultPrint = () => {
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {benGender} {bengGroupName} উচ্চ লম্ফন
+                {bengGroupName} উচ্চ লম্ফন
               </th>
             </tr>
             <tr>
@@ -302,7 +308,7 @@ const CircleGroupWiseResultPrint = () => {
 
             <tr>
               <th className="ben" colSpan={5}>
-                {benGender} {bengGroupName} যোগা
+                {bengGroupName} যোগা
               </th>
             </tr>
             <tr>
@@ -325,7 +331,7 @@ const CircleGroupWiseResultPrint = () => {
             ))}
             <tr>
               <th className="ben" colSpan={5}>
-                {benGender} {bengGroupName} জিম্‌নাস্টিক্‌স
+                {bengGroupName} জিম্‌নাস্টিক্‌স
               </th>
             </tr>
             <tr>
@@ -350,7 +356,7 @@ const CircleGroupWiseResultPrint = () => {
               <>
                 <tr>
                   <th className="ben" colSpan={5}>
-                    {benGender} {bengGroupName} ফুটবল ছোঁড়া
+                    {bengGroupName} ফুটবল ছোঁড়া
                   </th>
                 </tr>
                 <tr>
@@ -384,6 +390,26 @@ const CircleGroupWiseResultPrint = () => {
         className="position-absolute top-50 start-50 translate-middle"
         style={{ opacity: 0.4, width: 420, height: "auto" }}
       />
+      <div className="noprint my-1">
+        <button
+          type="button"
+          className="btn btn-warning m-1 col-md-1 btn-sm"
+          onClick={() => navigate.back()}
+        >
+          Go Back
+        </button>
+        <button
+          type="button"
+          className="btn btn-info m-1 col-md-1 btn-sm"
+          onClick={() => {
+            if (typeof window !== undefined) {
+              window.print();
+            }
+          }}
+        >
+          Print
+        </button>
+      </div>
     </div>
   );
 };
