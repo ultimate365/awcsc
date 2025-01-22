@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
-import { enToBnNumber } from "../../modules/calculatefunctions";
+import { enToBnNumber, todayInString } from "../../modules/calculatefunctions";
 import { circleBenName, gpNames } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
 const CircleSportsEventWiseName = () => {
@@ -69,7 +69,7 @@ const CircleSportsEventWiseName = () => {
                     <h5 className="text-start text-black">Sl No.: </h5>
                   </div>
                   <div className="col-md-4">
-                    <h5 className="text-center text-black">Date:</h5>
+                    <h5 className="text-center text-black">Date: {todayInString()}</h5>
                   </div>
                 </div>
                 <h5 className="text-start ben text-black ml-4">
@@ -214,7 +214,7 @@ const CircleSportsEventWiseName = () => {
                     <h5 className="text-start text-black">Sl No.: </h5>
                   </div>
                   <div className="col-md-4">
-                    <h5 className="text-center text-black">Date:</h5>
+                    <h5 className="text-center text-black">Date: {todayInString()}</h5>
                   </div>
                 </div>
                 <h5 className="text-start ben text-black m-0 p-0">
@@ -384,7 +384,7 @@ const CircleSportsEventWiseName = () => {
                     <h5 className="text-start text-black">Sl No.: </h5>
                   </div>
                   <div className="col-md-4">
-                    <h5 className="text-center text-black">Date:</h5>
+                    <h5 className="text-center text-black">Date: {todayInString()}</h5>
                   </div>
                 </div>
                 <h5 className="text-start ben text-black m-0 p-0">
@@ -487,7 +487,7 @@ const CircleSportsEventWiseName = () => {
                     <h5 className="text-start text-black">Sl No.: </h5>
                   </div>
                   <div className="col-md-4">
-                    <h5 className="text-center text-black">Date:</h5>
+                    <h5 className="text-center text-black">Date: {todayInString()}</h5>
                   </div>
                 </div>
                 <h5 className="text-start ben text-black m-0 p-0">
