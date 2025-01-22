@@ -533,7 +533,6 @@ const CircleSportsEventWiseName = () => {
                     <th>চেস্ট নং</th>
                     <th>প্রতিযোগীর নাম</th>
                     <th>গ্রাম পঞ্চায়েতের নাম</th>
-                    <th>বিদ্যালয়ের নাম</th>
                     {group === "GROUP-A" ? (
                       <>
                         <th colSpan={2}>GROUP 1 (২টি ধারন সময় ২০ সেকেন্ড)</th>
@@ -563,7 +562,6 @@ const CircleSportsEventWiseName = () => {
                       <td>{el?.chestNo}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gp}</td>
-                      <td>{el?.school}</td>
 
                       <td></td>
                       <td></td>
