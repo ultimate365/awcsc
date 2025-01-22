@@ -7,15 +7,13 @@ import { enToBnNumber } from "../../modules/calculatefunctions";
 import { circleBenName, gpNames } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
 const CircleSportsEventWiseName = () => {
-  const { yourStateObject, myStateObject } = useGlobalContext();
+  const { yourStateObject } = useGlobalContext();
   const data = yourStateObject?.data?.sort((a, b) =>
     a?.gp.localeCompare(b?.gp)
   );
-  const data2 = myStateObject?.data?.sort((a, b) => a?.gp.localeCompare(b?.gp));
 
   const navigate = useRouter();
   const [allData, setAllData] = useState(data);
-  const [secondData, setSecondData] = useState(data2);
 
   const [eventName, setEventName] = useState(yourStateObject?.eventName);
   const [gender, setGender] = useState(yourStateObject?.gender);
@@ -43,7 +41,7 @@ const CircleSportsEventWiseName = () => {
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    document.title = `Amta West Circle Sports ${eventName} ${
+    document.title = `${eventName} ${
       feildSheetsClicked ? "FIELD SHEET" : "OFFICE SHEET"
     }`;
     // eslint-disable-next-line
@@ -65,14 +63,41 @@ const CircleSportsEventWiseName = () => {
           engEventName === "FOOTBALL THROWING" ||
           engEventName === "HIGH JUMP" ? (
             <>
-              <h3 className="text-center ben text-black">{eventName}</h3>
-              <table className="table table-bordered border-black">
+              <div className="my-3">
+                <div className="row ben justify-content-between align-items-center w-100">
+                  <div className="col-md-2">
+                    <h5 className="text-start text-black">Sl No.: </h5>
+                  </div>
+                  <div className="col-md-4">
+                    <h5 className="text-center text-black">Date:</h5>
+                  </div>
+                </div>
+                <h5 className="text-start ben text-black ml-4">
+                  Gender:- {gender}
+                </h5>
+                <h5 className="text-start ben text-black ml-4">
+                  Event Name:- {engEventName}
+                </h5>
+                <h5 className="text-start ben text-black ml-4">
+                  Age Group:- {group}
+                </h5>
+                <h5 className="text-start ben text-black ml-4">
+                  Total Participants:- {allData?.length}
+                </h5>
+              </div>
+              <div className="my-2">
+                <h4 className="text-center ben text-black ml-4">{eventName}</h4>
+                <h4 className="text-center ben text-black ml-4">
+                  অংশগ্রহনকারী {gender === "BOYS" ? "প্রতিযোগী" : "প্রতিযোগীনি"}{" "}
+                  গণ
+                </h4>
+              </div>
+              <table className="table table-bordered border-black ben">
                 <thead>
                   <tr className="ben">
                     <th>চেস্ট নং</th>
                     <th>প্রতিযোগীর নাম</th>
                     <th>গ্রাম-পঞ্চায়েতের নাম</th>
-                    <th>বিদ্যালয়ের নাম</th>
                     {engEventName === "LONG JUMP" ||
                     engEventName === "FOOTBALL THROWING" ? (
                       <>
@@ -102,7 +127,6 @@ const CircleSportsEventWiseName = () => {
                         <td>{el?.chestNo}</td>
                         <td>{el?.name}</td>
                         <td>{el?.gp}</td>
-                        <td>{el?.school}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -113,7 +137,6 @@ const CircleSportsEventWiseName = () => {
                         <td>{el?.chestNo}</td>
                         <td>{el?.name}</td>
                         <td>{el?.gp}</td>
-                        <td>{el?.school}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -133,21 +156,96 @@ const CircleSportsEventWiseName = () => {
                   )}
                 </tbody>
               </table>
+
+              <div className="my-2">
+                <h3 className="text-center ben text-black ml-4">
+                  Result (For use Finishing Judge)
+                </h3>
+              </div>
+              <table className="ben table table-bordered border-black">
+                <thead>
+                  <tr>
+                    <th>Position</th>
+                    <th>চেস্ট নং</th>
+                    <th>Time / Distance</th>
+                  </tr>
+
+                  <tr>
+                    <th>1ST</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>2ND</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>3RD</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>4TH</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colSpan={3}>
+                      <div className="mt-3">
+                        <div className="mt-2 p-2 justify-content-between align-items-end">
+                          <h6 className=" p-2 text-end">
+                            SIGNATURE OF THE JUDGE
+                          </h6>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </>
           ) : engEventName === "GYMNASTICS" ? (
             <>
-              <h3 className="text-center ben text-black">{eventName}</h3>
-              <table
-                className="table table-bordered border-black align-middle"
-                style={{ zoom: 0.6 }}
-              >
+              <div className="my-1">
+                <div className="row ben justify-content-between align-items-center w-100">
+                  <div className="col-md-2">
+                    <h5 className="text-start text-black">Sl No.: </h5>
+                  </div>
+                  <div className="col-md-4">
+                    <h5 className="text-center text-black">Date:</h5>
+                  </div>
+                </div>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Gender:- {gender}
+                </h5>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Event Name:- {engEventName}
+                </h5>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Age Group:- {group}
+                </h5>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Total Participants:- {allData?.length}
+                </h5>
+              </div>
+              <div className="my-1">
+                <h4 className="text-center ben text-black m-0 p-0">
+                  {eventName}
+                </h4>
+                <h4 className="text-center ben text-black m-0 p-0">
+                  অংশগ্রহনকারী {gender === "BOYS" ? "প্রতিযোগী" : "প্রতিযোগীনি"}{" "}
+                  গণ
+                </h4>
+              </div>
+              <table className="table table-bordered border-black align-middle ben">
                 <thead>
                   <tr className="ben">
                     <td>চেস্ট নং</td>
                     <td>প্রতিযোগীর নাম</td>
                     <td>গ্রাম-পঞ্চায়েতের নাম</td>
-                    <td>বিদ্যালয়ের নাম</td>
-                    <td className="text-wrap">
+                    {/* <td className="text-wrap">
                       ১) কোণে দাঁড়ানো, ২-৩টি স্টেপে এক পায়ে হ্যান্ডস্প্রিং (B)
                       থেকে রাউন্ড অফ (A) ব্যাকফ্লিপ (C)
                     </td>
@@ -195,7 +293,15 @@ const CircleSportsEventWiseName = () => {
                           ব্যাকওয়ার্ড স্যাল্টো (টাক পজিসান)
                         </td>
                       </>
-                    )}
+                    )} */}
+                    <td style={{ width: "8%" }}></td>
+                    <td style={{ width: "8%" }}></td>
+                    <td style={{ width: "8%" }}></td>
+                    <td style={{ width: "8%" }}></td>
+                    <td style={{ width: "8%" }}></td>
+                    <td style={{ width: "8%" }}></td>
+                    <td style={{ width: "8%" }}></td>
+                    <td style={{ width: "8%" }}></td>
                     <td>Total</td>
                   </tr>
                 </thead>
@@ -205,8 +311,6 @@ const CircleSportsEventWiseName = () => {
                       <td>{el?.chestNo}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gp}</td>
-                      <td>{el?.school}</td>
-                      <td></td>
                       <td></td>
                       <td></td>
                       <td></td>
@@ -219,12 +323,49 @@ const CircleSportsEventWiseName = () => {
                     </tr>
                   ))}
 
-                  <tr>
+                  {/* <tr>
                     <td colSpan={15}>
                       <div className="mt-4">
                         <div className="mt-4  justify-content-between align-items-end">
                           <h6 className="  text-end">SIGNATURE OF THE JUDGE</h6>
                         </div>
+                      </div>
+                    </td>
+                  </tr> */}
+                </tbody>
+              </table>
+              <div className="my-2">
+                <h5 className="text-center ben text-black">
+                  Result (For use Finishing Judge)
+                </h5>
+              </div>
+              <table className="ben table table-bordered border-black">
+                <thead>
+                  <tr>
+                    <th>Position</th>
+                    <th>চেস্ট নং</th>
+                  </tr>
+
+                  <tr>
+                    <th>1ST</th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>2ND</th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>3RD</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colSpan={3}>
+                      <div className="justify-content-between align-items-end">
+                        <h6 className="my-2 text-end">
+                          SIGNATURE OF THE JUDGE
+                        </h6>
                       </div>
                     </td>
                   </tr>
@@ -237,393 +378,97 @@ const CircleSportsEventWiseName = () => {
           engEventName === "100 METER RUN" ||
           engEventName === "200 METER RUN" ? (
             <>
-              <h3 className="text-center ben text-black">{group}</h3>
-              <div className="row">
-                <div className="col-md-6">
-                  <table
-                    className="table table-bordered border-black"
-                    style={{ zoom: 0.7 }}
-                  >
-                    <thead>
-                      <tr className="ben">
-                        <th>চেস্ট নং</th>
-                        <th>প্রতিযোগীর নাম</th>
-                        <th>গ্রাম-পঞ্চায়েতের নাম</th>
-                        <th>বিদ্যালয়ের নাম</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {allData?.map((el, ind) => (
-                        <tr key={ind} className="timesfont">
-                          <td>{el?.chestNo}</td>
-                          <td>{el?.name}</td>
-                          <td>{el?.gp}</td>
-                          <td>{el?.school}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+              <div className="my-1">
+                <div className="row ben justify-content-between align-items-center w-100">
+                  <div className="col-md-2">
+                    <h5 className="text-start text-black">Sl No.: </h5>
+                  </div>
+                  <div className="col-md-4">
+                    <h5 className="text-center text-black">Date:</h5>
+                  </div>
                 </div>
-                <div className="col-md-6">
-                  <table
-                    className="table table-bordered border-black"
-                    style={{ zoom: 0.7 }}
-                  >
-                    <thead>
-                      <tr className="ben">
-                        <th>চেস্ট নং</th>
-                        <th>প্রতিযোগীর নাম</th>
-                        <th>গ্রাম-পঞ্চায়েতের নাম</th>
-                        <th>বিদ্যালয়ের নাম</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {secondData?.map((el, ind) => (
-                        <tr key={ind} className="timesfont">
-                          <td>{el?.chestNo}</td>
-                          <td>{el?.name}</td>
-                          <td>{el?.gp}</td>
-                          <td>{el?.school}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Gender:- {gender}
+                </h5>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Event Name:- {engEventName}
+                </h5>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Age Group:- {group}
+                </h5>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Total Participants:- {allData?.length}
+                </h5>
               </div>
-              <table className="container ben table table-bordered border-black">
-                {group === "GROUP-A" ? (
-                  <thead>
-                    <tr>
-                      <th colSpan={5}>বিভাগ 'ক'</th>
+              <div className="">
+                <h5 className="text-center ben text-black m-0 p-0">
+                  {eventName}
+                </h5>
+                <h5 className="text-center ben text-black m-0 p-0">
+                  অংশগ্রহনকারী {gender === "BOYS" ? "প্রতিযোগী" : "প্রতিযোগীনি"}{" "}
+                  গণ
+                </h5>
+              </div>
+              <table className="table table-bordered border-black ben">
+                <thead>
+                  <tr className="ben">
+                    <th>চেস্ট নং</th>
+                    <th>প্রতিযোগীর নাম</th>
+                    <th>গ্রাম-পঞ্চায়েতের নাম</th>
+                    <th>বিদ্যালয়ের নাম</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {allData?.map((el, ind) => (
+                    <tr key={ind} className="timesfont">
+                      <td>{el?.chestNo}</td>
+                      <td>{el?.name}</td>
+                      <td>{el?.gp}</td>
+                      <td>{el?.school}</td>
                     </tr>
-                    {engEventName === "75 METER RUN" ? (
-                      <>
-                        <tr>
-                          <th colSpan={5}>৭৫ মিটার দৌড়</th>
-                        </tr>
-                        <tr>
-                          <th>বিভাগ 'ক' বালক</th>
-                          <th>চেস্ট নং</th>
-                          <th rowSpan={5}></th>
-                          <th>বিভাগ 'ক' বালিকা</th>
-                          <th>চেস্ট নং</th>
-                        </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="my-2">
+                <h5 className="text-center ben text-black ml-4">
+                  Result (For use Finishing Judge)
+                </h5>
+              </div>
+              <table className="ben table table-bordered border-black">
+                <thead>
+                  <tr>
+                    <th>Position</th>
+                    <th>চেস্ট নং</th>
+                    <th>Time / Distance</th>
+                  </tr>
 
-                        <tr>
-                          <th>1ST</th>
-                          <th></th>
-
-                          <th>1ST</th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>2ND</th>
-                          <th></th>
-
-                          <th>2ND</th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>3RD</th>
-                          <th></th>
-
-                          <th>3RD</th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>4TH</th>
-                          <th></th>
-
-                          <th>4TH</th>
-                          <th></th>
-                        </tr>
-                        <tr></tr>
-                        <tr></tr>
-                      </>
-                    ) : (
-                      <>
-                        <tr>
-                          <th colSpan={5}>সাটল দৌড় (আলু দৌড়)</th>
-                        </tr>
-
-                        <tr>
-                          <th>বিভাগ 'ক' বালক</th>
-                          <th>চেস্ট নং</th>
-                          <th rowSpan={5}></th>
-                          <th>বিভাগ 'ক' বালিকা</th>
-                          <th>চেস্ট নং</th>
-                        </tr>
-
-                        <tr>
-                          <th>1ST</th>
-                          <th></th>
-
-                          <th>1ST</th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>2ND</th>
-                          <th></th>
-
-                          <th>2ND</th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>3RD</th>
-                          <th></th>
-
-                          <th>3RD</th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>4TH</th>
-                          <th></th>
-
-                          <th>4TH</th>
-                          <th></th>
-                        </tr>
-                      </>
-                    )}
-                  </thead>
-                ) : group === "GROUP-B" ? (
-                  <thead>
-                    <tr>
-                      <th colSpan={7}>বিভাগ 'খ'</th>
-                    </tr>
-                    {engEventName === "100 METER RUN" ? (
-                      <>
-                        <tr>
-                          <th colSpan={7}>১০০ মিটার দৌড়</th>
-                        </tr>
-                        <tr>
-                          <th>বিভাগ 'খ' বালক</th>
-                          <th>চেস্ট নং</th>
-                          <th>Time / Distance</th>
-                          <th rowSpan={5}></th>
-                          <th>বিভাগ 'খ' বালিকা</th>
-                          <th>চেস্ট নং</th>
-                          <th>Time / Distance</th>
-                        </tr>
-
-                        <tr>
-                          <th>1ST</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>1ST</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>2ND</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>2ND</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>3RD</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>3RD</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>4TH</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>4TH</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr></tr>
-                        <tr></tr>
-                      </>
-                    ) : (
-                      <>
-                        <tr>
-                          <th colSpan={7}>২০০ মিটার দৌড়</th>
-                        </tr>
-
-                        <tr>
-                          <th>বিভাগ 'খ' বালক</th>
-                          <th>চেস্ট নং</th>
-                          <th>Time / Distance</th>
-                          <th rowSpan={5}></th>
-                          <th>বিভাগ 'খ' বালিকা</th>
-                          <th>চেস্ট নং</th>
-                          <th>Time / Distance</th>
-                        </tr>
-
-                        <tr>
-                          <th>1ST</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>1ST</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>2ND</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>2ND</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>3RD</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>3RD</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>4TH</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>4TH</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr></tr>
-                        <tr></tr>
-                      </>
-                    )}
-                  </thead>
-                ) : group === "GROUP-C" ? (
-                  <thead>
-                    <tr>
-                      <th colSpan={7}>বিভাগ 'গ'</th>
-                    </tr>
-                    {engEventName === "200 METER RUN" ? (
-                      <>
-                        <tr>
-                          <th colSpan={7}>২০০ মিটার দৌড়</th>
-                        </tr>
-                        <tr>
-                          <th>বিভাগ 'গ' বালক</th>
-                          <th>চেস্ট নং</th>
-                          <th>Time / Distance</th>
-                          <th rowSpan={5}></th>
-                          <th>বিভাগ 'গ' বালিকা</th>
-                          <th>চেস্ট নং</th>
-                          <th>Time / Distance</th>
-                        </tr>
-
-                        <tr>
-                          <th>1ST</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>1ST</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>2ND</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>2ND</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>3RD</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>3RD</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>4TH</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>4TH</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr></tr>
-                        <tr></tr>
-                      </>
-                    ) : (
-                      <>
-                        <tr>
-                          <th colSpan={7}>১০০ মিটার দৌড়</th>
-                        </tr>
-
-                        <tr>
-                          <th>বিভাগ 'গ' বালক</th>
-                          <th>চেস্ট নং</th>
-                          <th>Time / Distance</th>
-                          <th rowSpan={5}></th>
-                          <th>বিভাগ 'গ' বালিকা</th>
-                          <th>চেস্ট নং</th>
-                          <th>Time / Distance</th>
-                        </tr>
-
-                        <tr>
-                          <th>1ST</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>1ST</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>2ND</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>2ND</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>3RD</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>3RD</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr>
-                          <th>4TH</th>
-                          <th></th>
-                          <th></th>
-
-                          <th>4TH</th>
-                          <th></th>
-                          <th></th>
-                        </tr>
-                        <tr></tr>
-                        <tr></tr>
-                      </>
-                    )}
-                  </thead>
-                ) : null}
+                  <tr>
+                    <th>1ST</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>2ND</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>3RD</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>4TH</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
                 <tbody>
                   <tr>
-                    <td colSpan={7}>
-                      <div className="mt-4">
-                        <div className="mt-4 p-4 justify-content-between align-items-end">
-                          <h6 className=" p-4 text-end">
+                    <td colSpan={3}>
+                      <div className="mt-2">
+                        <div className="mt-2 p-2 justify-content-between align-items-end">
+                          <h6 className=" p-2 text-end">
                             SIGNATURE OF THE JUDGE
                           </h6>
                         </div>
@@ -636,80 +481,75 @@ const CircleSportsEventWiseName = () => {
           ) : null}
           {engEventName === "YOGA" && (
             <>
-              <h3 className="text-center ben text-black">{eventName}</h3>
-              <table
-                className="table table-bordered border-black"
-                style={{ zoom: 0.8 }}
-              >
+              <div className="my-1">
+                <div className="row ben justify-content-between align-items-center w-100">
+                  <div className="col-md-2">
+                    <h5 className="text-start text-black">Sl No.: </h5>
+                  </div>
+                  <div className="col-md-4">
+                    <h5 className="text-center text-black">Date:</h5>
+                  </div>
+                </div>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Gender:- {gender}
+                </h5>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Event Name:- {engEventName}
+                </h5>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Age Group:- {group}
+                </h5>
+                <h5 className="text-start ben text-black m-0 p-0">
+                  Total Participants:- {allData?.length}
+                </h5>
+              </div>
+              <div className="">
+                <h5 className="text-center ben text-black m-0 p-0">
+                  {eventName}
+                </h5>
+                <h5 className="text-center ben text-black m-0 p-0">
+                  অংশগ্রহনকারী {gender === "BOYS" ? "প্রতিযোগী" : "প্রতিযোগীনি"}{" "}
+                  গণ
+                </h5>
+              </div>
+              <table className="table table-bordered border-black ben" style={{ zoom: 0.75 }}>
                 <thead>
                   <tr className="ben">
-                    <th rowSpan={2}>চেস্ট নং</th>
-                    <th rowSpan={2}>প্রতিযোগীর নাম</th>
-                    <th rowSpan={2}>বিদ্যালয়ের নাম</th>
+                    <th>চেস্ট নং</th>
+                    <th>প্রতিযোগীর নাম</th>
+                    <th>গ্রাম পঞ্চায়েতের নাম</th>
+                    <th>বিদ্যালয়ের নাম</th>
                     {group === "GROUP-A" ? (
                       <>
-                        <th colSpan={6}>GROUP 1 (২টি ধারন সময় ২০ সেকেন্ড)</th>
-                        <th colSpan={6}>GROUP 2 (১টি ধারন সময় ১৫ সেকেন্ড)</th>
+                        <th colSpan={2}>GROUP 1 (২টি ধারন সময় ২০ সেকেন্ড)</th>
+                        <th>GROUP 2 (১টি ধারন সময় ১৫ সেকেন্ড)</th>
                       </>
                     ) : (
                       <>
-                        <th colSpan={6}>
+                        <th colSpan={2}>
                           GROUP 1 (২টি ধারন সময় ৩০ সেকেন্ড)(লটারি)
                         </th>
-                        <th colSpan={6}>
+                        <th colSpan={2}>
                           GROUP 2 (১টি ধারন সময় ২০ সেকেন্ড)(লটারি)
                         </th>
                       </>
                     )}
 
-                    <th colSpan={6}>GROUP 3 (১টি ধারন সময় ১০ সেকেন্ড)</th>
-                    <th rowSpan={2}>
+                    <th>GROUP 3 (১টি ধারন সময় ১০ সেকেন্ড)</th>
+                    <th>
                       নিজ ইচ্ছামতো <br /> (১টি ধারন সময় ১০ সেকেন্ড)
                     </th>
-                    <th rowSpan={2}>TOTAL</th>
-                  </tr>
-
-                  <tr className="ben">
-                    <th>পদ্মাসন</th>
-                    <th>অর্ধকূর্মাসন</th>
-                    <th>পশ্চিমত্তাসন</th>
-                    <th>সুপ্তবজ্রাসন</th>
-                    <th>ভূমাসন</th>
-                    <th>অর্ধমৎসেন্দ্রাসন</th>
-                    <th>ভূজঙ্গাসন</th>
-                    <th>উস্ট্রাসন</th>
-                    <th>চক্রাসন</th>
-                    <th>ধনুরাসন</th>
-                    <th>গর্ভাসন</th>
-                    <th>একপদশিরাসন</th>
-                    <th>বৃক্ষাসন</th>
-                    <th>উৎকটাসন</th>
-                    <th>বীরভদ্রাসন</th>
-                    <th>ত্রিকোণাসন</th>
-                    <th>সর্বাঙ্গাসন</th>
-                    <th>উথ্থানপদাসন</th>
+                    <th>TOTAL</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody style={{borderWidth:1}}>
                   {allData?.map((el, ind) => (
                     <tr key={ind} className="timesfont">
                       <td>{el?.chestNo}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gp}</td>
                       <td>{el?.school}</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
+
                       <td></td>
                       <td></td>
                       <td></td>
@@ -718,12 +558,40 @@ const CircleSportsEventWiseName = () => {
                       <td></td>
                     </tr>
                   ))}
+                </tbody>
+              </table>
+              <div className="my-2">
+                <h5 className="text-center ben text-black">
+                  Result (For use Finishing Judge)
+                </h5>
+              </div>
+              <table className="ben table table-bordered border-black">
+                <thead>
                   <tr>
-                    <td colSpan={24}>
-                      <div className="mt-4">
-                        <div className="my-5 justify-content-between align-items-end">
-                          <h6 className=" text-end">SIGNATURE OF THE JUDGE</h6>
-                        </div>
+                    <th>Position</th>
+                    <th>চেস্ট নং</th>
+                  </tr>
+
+                  <tr>
+                    <th>1ST</th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>2ND</th>
+                    <th></th>
+                  </tr>
+                  <tr>
+                    <th>3RD</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colSpan={3}>
+                      <div className="justify-content-between align-items-end">
+                        <h6 className="my-2 text-end">
+                          SIGNATURE OF THE JUDGE
+                        </h6>
                       </div>
                     </td>
                   </tr>
@@ -739,7 +607,7 @@ const CircleSportsEventWiseName = () => {
             {enToBnNumber(new Date().getFullYear())}
           </h3>
           <h3 className="text-center ben text-black">{eventName}</h3>
-          <table className="table table-bordered border-black">
+          <table className="table table-bordered border-black ben">
             <thead>
               <tr className="ben">
                 <th>চেস্ট নং</th>
