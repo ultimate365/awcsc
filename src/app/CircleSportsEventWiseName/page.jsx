@@ -554,6 +554,7 @@ const CircleSportsEventWiseName = () => {
                       নিজ ইচ্ছামতো <br /> (১টি ধারন সময় ১০ সেকেন্ড)
                     </th>
                     <th>TOTAL</th>
+                    <th>REMARKS</th>
                   </tr>
                 </thead>
                 <tbody style={{ borderWidth: 1 }}>
@@ -562,7 +563,7 @@ const CircleSportsEventWiseName = () => {
                       <td>{el?.chestNo}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gp}</td>
-
+                      <td></td>
                       <td></td>
                       <td></td>
                       <td></td>
