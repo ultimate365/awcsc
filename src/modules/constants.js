@@ -295,3 +295,5 @@ export const GP_LOCK_DATA = [
     gp: "THALIA",
   },
 ];
+
+export const CIRCLE_SPORTS_DATE="24-01-2025"
