@@ -311,6 +311,7 @@ const CircleSportsEventWiseName = () => {
                     <td style={{ width: "8%" }}></td>
                     <td style={{ width: "8%" }}></td>
                     <td>Total</td>
+                    <td>Remarks</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -319,6 +320,7 @@ const CircleSportsEventWiseName = () => {
                       <td>{el?.chestNo}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gp}</td>
+                      <td></td>
                       <td></td>
                       <td></td>
                       <td></td>
