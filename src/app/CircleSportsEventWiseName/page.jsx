@@ -62,7 +62,33 @@ const CircleSportsEventWiseName = () => {
             {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগীতা,{" "}
             {enToBnNumber(new Date().getFullYear())}
           </h3>
-
+          <div className="noprint my-2">
+            <button
+              type="button"
+              className="btn btn-primary m-1 col-md-1 btn-sm"
+              onClick={() => setFeildSheetsClicked(!feildSheetsClicked)}
+            >
+              {feildSheetsClicked ? "Office Sheet" : "Field Sheet"}
+            </button>
+            <button
+              type="button"
+              className="btn btn-warning m-1 col-md-1 btn-sm"
+              onClick={() => navigate.back()}
+            >
+              Go Back
+            </button>
+            <button
+              type="button"
+              className="btn btn-info m-1 col-md-1 btn-sm"
+              onClick={() => {
+                if (typeof window !== undefined) {
+                  window.print();
+                }
+              }}
+            >
+              Print
+            </button>
+          </div>
           {engEventName === "LONG JUMP" ||
           engEventName === "FOOTBALL THROWING" ||
           engEventName === "HIGH JUMP" ? (
