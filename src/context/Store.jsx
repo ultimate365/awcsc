@@ -83,6 +83,10 @@ const GlobalContext = createContext({
   setGPResultState: () => [],
   circleResultState: [],
   setCircleResultState: () => [],
+  circleFirstResultState: [],
+  setCircleFirstResultState: () => [],
+  circleFirstUpdateTime: Date.now() - 60000,
+  setCircleFirstUpdateTime: () => Date.now() - 60000,
 });
 export const GlobalContextProvider = ({ children }) => {
   const [state, setState] = useState({
@@ -144,6 +148,10 @@ export const GlobalContextProvider = ({ children }) => {
   );
   const [GPResultState, setGPResultState] = useState([]);
   const [circleResultState, setCircleResultState] = useState([]);
+  const [circleFirstResultState, setCircleFirstResultState] = useState([]);
+  const [circleFirstUpdateTime, setCircleFirstUpdateTime] = useState(
+    Date.now() - 60000
+  );
 
   return (
     <GlobalContext.Provider
@@ -219,6 +227,10 @@ export const GlobalContextProvider = ({ children }) => {
         setGPResultState,
         circleResultState,
         setCircleResultState,
+        circleFirstResultState,
+        setCircleFirstResultState,
+        circleFirstUpdateTime,
+        setCircleFirstUpdateTime,
       }}
     >
       <FirebaseProvider>{children}</FirebaseProvider>

@@ -86,7 +86,7 @@ const GPGroupWiseResultPrint = () => {
           <tr>
             <th colSpan={5}>
               <h3 className="text-center ben text-black">
-                {gp} গ্রাম পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগীতা, রেজাল্ট শিট{" "}
+                {gp} গ্রাম পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগিতা, রেজাল্ট শিট{" "}
                 {enToBnNumber(new Date().getFullYear())}
               </h3>
             </th>

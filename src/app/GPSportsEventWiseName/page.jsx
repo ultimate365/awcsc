@@ -54,7 +54,7 @@ const GPSportsEventWiseName = () => {
       {feildSheetsClicked ? (
         <div className="container-fluid">
           <h3 className="text-center ben text-black">
-            {thisGp} গ্রাম পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগীতা,{" "}
+            {thisGp} গ্রাম পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগিতা,{" "}
             {enToBnNumber(new Date().getFullYear())}
           </h3>
 
@@ -600,7 +600,7 @@ const GPSportsEventWiseName = () => {
       ) : (
         <div className="container">
           <h3 className="text-center ben text-black">
-            {thisGp} গ্রাম পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগীতা,{" "}
+            {thisGp} গ্রাম পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগিতা,{" "}
             {enToBnNumber(new Date().getFullYear())}
           </h3>
           <h3 className="text-center ben text-black">{eventName}</h3>

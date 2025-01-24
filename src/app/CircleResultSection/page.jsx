@@ -4,14 +4,28 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import DataTable from "react-data-table-component";
 import { firestore } from "../../context/FirbaseContext";
-import { collection, doc, getDocs, query, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import {
   createDownloadLink,
   enToBnNumber,
 } from "../../modules/calculatefunctions";
-import { circleBenName, gpNames } from "../../modules/constants";
+import {
+  birthday,
+  circleBenName,
+  gpNames,
+  maxdob,
+  mindob,
+  StdClass,
+} from "../../modules/constants";
 import { events } from "../../modules/constants";
 import { v4 as uuid } from "uuid";
 import { useGlobalContext } from "../../context/Store";
@@ -24,15 +38,30 @@ const CircleResultSection = () => {
     setAmtaWestCircleAllResultState,
     AmtaWestCircleAllResultUpdateTime,
     setAmtaWestCircleAllResultUpdateTime,
-    setStateObject,
+    setStateArray,
+    circleFirstResultState,
+    setCircleFirstResultState,
+    circleFirstUpdateTime,
+    setCircleFirstUpdateTime,
   } = useGlobalContext();
-  const data = myStateObject?.data?.sort((a, b) =>
-    a?.school.localeCompare(b?.school)
-  );
-  const gpData = myStateObject?.gp?.sort((a, b) =>
-    a?.school.localeCompare(b?.school)
-  );
-
+  const data = myStateObject?.data?.sort((a, b) => {
+    if (a.gp < b.gp) return -1;
+    if (a.gp > b.gp) return 1;
+    if (a.gender < b.gender) return -1;
+    if (a.gender > b.gender) return 1;
+    if (a.event1rank > b.event1rank) return 1;
+    if (a.event1rank < b.event1rank) return -1;
+    return 0;
+  });
+  const gpData = myStateObject?.gp?.sort((a, b) => {
+    if (a.gp < b.gp) return -1;
+    if (a.gp > b.gp) return 1;
+    if (a.gender < b.gender) return -1;
+    if (a.gender > b.gender) return 1;
+    if (a.event1rank > b.event1rank) return 1;
+    if (a.event1rank < b.event1rank) return -1;
+    return 0;
+  });
   const navigate = useRouter();
   const docId = uuid();
   const [allData, setAllData] = useState(data);
@@ -80,11 +109,27 @@ const CircleResultSection = () => {
   const [allResult, setAllResult] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [search, setSearch] = useState("");
-
   const [genderres, setGenderres] = useState("");
   const [groupres, setGroupres] = useState("");
   const [groupresSelected, setGroupresSelected] = useState(false);
-
+  const [editClicked, setEditClicked] = useState(false);
+  const [inputField, setInputField] = useState({
+    name: "",
+    gurdiansName: "",
+    chestNo: "",
+    birthday: birthday,
+    studentId: "",
+    sclass: "",
+    school: "",
+    gp: "",
+    event1: "",
+    event2: "",
+    event1rank: "",
+    event2rank: "",
+    gender: "",
+    group: "",
+    udise: "",
+  });
   if (details) {
     teacherdetails = decryptObjData("tid");
   }
@@ -116,7 +161,16 @@ const CircleResultSection = () => {
       udise: student.udise,
     };
     await axios.post("/api/addAmtaWestCircleAllResult", entry);
-    setAmtaWestCircleAllResultState([...AmtaWestCircleAllResultState, entry]);
+    const onlyFirstResult = [...AmtaWestCircleAllResultState, entry];
+    const sortedOnlyFirstResult = onlyFirstResult.sort((a, b) => {
+      if (a.gender < b.gender) return -1;
+      if (a.gender > b.gender) return 1;
+      if (a.event1rank < b.event1rank) return -1;
+      if (a.event1rank > b.event1rank) return 1;
+      return 0;
+    });
+    setAmtaWestCircleAllResultState(sortedOnlyFirstResult);
+    setFilteredData(sortedOnlyFirstResult);
     setAmtaWestCircleAllResultUpdateTime(Date.now());
     await setDoc(
       doc(firestore, `AmtaWestCircleAllResult`, student.id),
@@ -129,7 +183,7 @@ const CircleResultSection = () => {
           name: student.name,
           gurdiansName: student.gurdiansName,
           chestNo: "",
-          gpchestNo: student.chestNo,
+          circleChestNo: student.chestNo,
           birthday: student.birthday,
           studentId: student.studentId,
           sclass: student.sclass,
@@ -148,10 +202,20 @@ const CircleResultSection = () => {
           doc(firestore, "AmtaWestCircleFirstResult", student.id),
           entry2
         ).then(async () => {
+          const firstResult = [...circleFirstResultState, entry2];
+          const sortedFirstResult = firstResult.sort((a, b) => {
+            if (a.gender < b.gender) return -1;
+            if (a.gender > b.gender) return 1;
+            if (a.event1rank < b.event1rank) return -1;
+            if (a.event1rank > b.event1rank) return 1;
+            return 0;
+          });
+          setCircleFirstResultState(sortedFirstResult);
+          setCircleFirstUpdateTime(Date.now());
           setLoader(false);
           setTimeout(() => {
             navigate.back();
-          }, 2000);
+          }, 500);
           toast.success(
             `Student Sucessfully Registerd in the Circle Sports First & All Result Database`
           );
@@ -160,12 +224,84 @@ const CircleResultSection = () => {
         setLoader(false);
         setTimeout(() => {
           navigate.back();
-        }, 2000);
+        }, 500);
         toast.success(
           `Student Sucessfully Registed in the Circle All Result Database`
         );
       }
     });
+  };
+  const updateData = async () => {
+    setLoader(true);
+    const newData = AmtaWestCircleAllResultState.map((item) =>
+      item.id === inputField.id ? inputField : item
+    );
+    setAmtaWestCircleAllResultState(newData);
+    setAllResult(newData);
+    setAmtaWestCircleAllResultUpdateTime(Date.now());
+    await axios.post("/api/updateallGPFirsts", inputField);
+    const docRef = doc(firestore, "allGPFirsts", inputField.id);
+    const docRef2 = doc(firestore, "AmtaWestCircleAllResult", inputField.id);
+    await updateDoc(docRef, inputField);
+    await updateDoc(docRef2, inputField)
+      .then(async () => {
+        const checkFirst = circleFirstResultState.filter(
+          (el) => el.id === inputField.id
+        );
+        console.log(checkFirst);
+        if (checkFirst.length > 0) {
+          const studentSelected = checkFirst[0];
+          await axios.post("/api/updateAmtaWestCircleFirstResult", {
+            id: studentSelected.id,
+          });
+          const docRef3 = doc(
+            firestore,
+            "AmtaWestCircleFirstResult",
+            inputField.id
+          );
+          await updateDoc(docRef3, inputField);
+          const newData = circleFirstResultState.map((item) =>
+            item.id === inputField.id ? inputField : item
+          );
+          setCircleFirstResultState(newData);
+          setCircleFirstUpdateTime(Date.now());
+        }
+        setLoader(false);
+        setInputField({
+          name: "",
+          gurdiansName: "",
+          chestNo: "",
+          birthday: birthday,
+          studentId: "",
+          sclass: "",
+          school: "",
+          gp: "",
+          event1: "",
+          event2: "",
+          event1rank: "",
+          event2rank: "",
+          gender: "",
+          group: "",
+          udise: "",
+        });
+        let stdClass = document.getElementById("stdClass");
+        let birthdayField = document.getElementById("birthday");
+        if (stdClass) {
+          stdClass.value = "";
+        }
+        if (birthdayField) {
+          birthdayField.value = birthday;
+        }
+        setEditClicked(false);
+        setInpGrSelected(false);
+        toast.success(
+          `congratulation! Your Data Has Heen Saved to Circle Sports Data`
+        );
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoader(false);
+      });
   };
   const getAllResult = async () => {
     setLoader(true);
@@ -175,7 +311,13 @@ const CircleResultSection = () => {
       );
       const data = querySnapshot.docs
         .map((doc) => doc.data())
-        .sort((a, b) => a?.event1rank - b?.event1rank);
+        .sort((a, b) => {
+          if (a.gender < b.gender) return -1;
+          if (a.gender > b.gender) return 1;
+          if (a.event1rank < b.event1rank) return -1;
+          if (a.event1rank > b.event1rank) return 1;
+          return 0;
+        });
       setLoader(false);
       setAmtaWestCircleAllResultState(data);
       setAmtaWestCircleAllResultUpdateTime(Date.now());
@@ -185,9 +327,13 @@ const CircleResultSection = () => {
       await axios
         .post("/api/getAmtaWestCircleAllResult")
         .then((response) => {
-          const data = response.data?.data?.sort(
-            (a, b) => a?.event1rank - b?.event1rank
-          );
+          const data = response.data?.data?.sort((a, b) => {
+            if (a.gender < b.gender) return -1;
+            if (a.gender > b.gender) return 1;
+            if (a.event1rank < b.event1rank) return -1;
+            if (a.event1rank > b.event1rank) return 1;
+            return 0;
+          });
           setLoader(false);
           setAmtaWestCircleAllResultState(data);
           setAmtaWestCircleAllResultUpdateTime(Date.now());
@@ -208,16 +354,24 @@ const CircleResultSection = () => {
       );
       const data = querySnapshot.docs
         .map((doc) => doc.data())
-        .sort((a, b) => a?.event1rank - b?.event1rank);
+        .sort((a, b) => a?.position1 - b?.position1);
       setAllFirstResult(data);
+      setCircleFirstUpdateTime(Date.now());
+      setCircleFirstResultState(data);
     } catch (error) {
       await axios
         .post("/api/getAmtaWestCircleFirstResult")
         .then((response) => {
-          const data = response.data.data.sort(
-            (a, b) => a?.event1rank - b?.event1rank
-          );
+          const data = response.data.data.sort((a, b) => {
+            if (a.gender < b.gender) return -1;
+            if (a.gender > b.gender) return 1;
+            if (a.event1rank < b.event1rank) return -1;
+            if (a.event1rank > b.event1rank) return 1;
+            return 0;
+          });
           setAllFirstResult(data);
+          setCircleFirstUpdateTime(Date.now());
+          setCircleFirstResultState(data);
         })
         .catch((error) => {
           console.error("Error fetching lock data: ", error);
@@ -247,7 +401,6 @@ const CircleResultSection = () => {
     setPositionSelected(false);
     console.log(value);
   };
-
   const columns = [
     {
       name: "Sl",
@@ -315,6 +468,34 @@ const CircleResultSection = () => {
       center: +true,
       wrap: true,
     },
+    {
+      name: "Actions",
+      selector: (row) => (
+        <div>
+          <button
+            type="button"
+            className="btn btn-success m-1 btn-sm"
+            onClick={() => {
+              setEditClicked(true);
+              setInputField(row);
+              setInpGrSelected(true);
+              console.log(circleFirstResultState);
+              setTimeout(() => {
+                let stdClass = document.getElementById("stdClass");
+                if (stdClass) {
+                  stdClass.value = row.sclass;
+                }
+              }, 100);
+            }}
+          >
+            Edit
+          </button>
+        </div>
+      ),
+      sortable: +true,
+      center: +true,
+      wrap: true,
+    },
   ];
 
   useEffect(() => {
@@ -326,7 +507,7 @@ const CircleResultSection = () => {
         navigate.push("/logout");
       }
     }
-    getAllCircleFirstResult();
+
     // eslint-disable-next-line
   }, []);
 
@@ -336,11 +517,39 @@ const CircleResultSection = () => {
     if (difference >= 1 || AmtaWestCircleAllResultState.length === 0) {
       getAllResult();
     } else {
-      const rdata = AmtaWestCircleAllResultState.sort(
-        (a, b) => a?.event1rank - b?.event1rank
+      setAllResult(
+        AmtaWestCircleAllResultState.sort((a, b) => {
+          if (a.gender < b.gender) return -1;
+          if (a.gender > b.gender) return 1;
+          if (a.event1rank < b.event1rank) return -1;
+          if (a.event1rank > b.event1rank) return 1;
+          return 0;
+        })
       );
-      setAllResult(rdata);
-      setFilteredData(rdata);
+      setFilteredData(
+        AmtaWestCircleAllResultState.sort((a, b) => {
+          if (a.gender < b.gender) return -1;
+          if (a.gender > b.gender) return 1;
+          if (a.event1rank < b.event1rank) return -1;
+          if (a.event1rank > b.event1rank) return 1;
+          return 0;
+        })
+      );
+    }
+
+    const firstDifference =
+      (Date.now() - circleFirstUpdateTime) / 1000 / 60 / 5;
+    if (firstDifference >= 1 || circleFirstResultState.length === 0) {
+      getAllCircleFirstResult();
+    } else {
+      const rdata = circleFirstResultState.sort((a, b) => {
+        if (a.event1 < b.event1) return -1;
+        if (a.event1 > b.event1) return 1;
+        if (a.position1 < b.position1) return -1;
+        if (a.position1 > b.position1) return 1;
+        return 0;
+      });
+      setAllFirstResult(rdata);
     }
     // eslint-disable-next-line
   }, []);
@@ -351,13 +560,7 @@ const CircleResultSection = () => {
     );
     // eslint-disable-next-line
   }, [allData, gpSchools, thisGp]);
-  useEffect(() => {
-    const result = allResult.filter((el) => {
-      return el.name.toLowerCase().match(search.toLowerCase());
-    });
-    setFilteredData(result);
-    // eslint-disable-next-line
-  }, [search]);
+
   useEffect(() => {
     // eslint-disable-next-line
   }, [selectedParticipant]);
@@ -365,7 +568,7 @@ const CircleResultSection = () => {
     <div className="container-fluid  my-4 bg-white">
       <div className="my-4">
         <h3 className="text-center ben text-primary">
-          {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগীতা,{" "}
+          {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগিতা,{" "}
           {enToBnNumber(new Date().getFullYear() - 1)} রেজাল্ট
         </h3>
         <DataTable
@@ -381,12 +584,182 @@ const CircleResultSection = () => {
               placeholder="Search"
               className="w-25 form-control"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => {
+                setFilteredData(
+                  allResult.filter((el) => {
+                    return el.name
+                      .toLowerCase()
+                      .match(e.target.value.toLowerCase());
+                  })
+                );
+                setSearch(e.target.value);
+              }}
             />
           }
           subHeaderAlign="right"
         />
       </div>
+      <div className="my-4">
+        {editClicked && (
+          <div className="container">
+            <p className="text-center text-danger">
+              (*) Marked Fields are Compulsary.
+            </p>
+            <h4 className="text-center text-primary text-wrap">
+              Edit Details of {inputField.name} of {inputField.school}
+            </h4>
+            <div className="row align-items-end my-4">
+              <div className="mb-3 col-md-3">
+                <label className="form-label">Participant Name *</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Participant Name"
+                  value={inputField.name}
+                  onChange={(e) => {
+                    setInputField({
+                      ...inputField,
+                      name: e.target.value.toUpperCase(),
+                    });
+                  }}
+                  required
+                />
+              </div>
+              <div className="mb-3 col-md-3">
+                <label className="form-label">Gurdian's Name *</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Gurdian's Name"
+                  value={inputField.gurdiansName}
+                  onChange={(e) => {
+                    setInputField({
+                      ...inputField,
+                      gurdiansName: e.target.value.toUpperCase(),
+                    });
+                  }}
+                  required
+                />
+              </div>
+
+              <div className="mb-3 col-md-3">
+                <label className="form-label">BSP Student ID</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="BSP Student ID"
+                  value={inputField.studentId}
+                  onChange={(e) => {
+                    setInputField({
+                      ...inputField,
+                      studentId: e.target.value,
+                    });
+                  }}
+                  maxLength={14}
+                  required
+                />
+              </div>
+              <div className="mb-3 col-md-3">
+                <label className="form-label">Date Of Birth: *</label>
+
+                <input
+                  type="date"
+                  className="form-control"
+                  id="birthday"
+                  value={inputField.birthday}
+                  onChange={(e) => {
+                    setInputField({
+                      ...inputField,
+                      birthday: e.target.value,
+                    });
+                  }}
+                  min={mindob}
+                  max={maxdob}
+                  required
+                />
+              </div>
+              <div className="mb-3 col-md-3">
+                <label className="form-label">CLASS *</label>
+                <select
+                  className="form-select"
+                  id="stdClass"
+                  defaultValue={""}
+                  onChange={(e) => {
+                    setInputField({
+                      ...inputField,
+                      sclass: e.target.value,
+                    });
+                  }}
+                  aria-label="Default select example"
+                  required
+                >
+                  <option value="">Select Class</option>
+                  {StdClass.map((item, index) => {
+                    return (
+                      <option key={index} value={item.sclass}>
+                        {item.sclass}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-success m-1 col-md-1 btn-sm"
+                  style={{ width: "auto" }}
+                  onClick={() => {
+                    updateData();
+                  }}
+                >
+                  Submit
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger m-1 col-md-1 btn-sm"
+                  style={{ width: "auto" }}
+                  onClick={() => {
+                    setInputField({
+                      name: "",
+                      gurdiansName: "",
+                      chestNo: "",
+                      birthday: birthday,
+                      studentId: "",
+                      sclass: "",
+                      school: "",
+                      gp: "",
+                      event1: "",
+                      event2: "",
+                      event1rank: "",
+                      event2rank: "",
+                      gender: "",
+                      group: "",
+                      udise: "",
+                    });
+                    setEditClicked(false);
+                    setInpGrSelected(false);
+                    document.getElementById("birthday").value = birthday;
+                  }}
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+      {allResult.length > 0 && (
+        <button
+          type="button"
+          className="btn btn-info m-2"
+          onClick={() => {
+            createDownloadLink(allResult, "AmtaWestCircleAllResult");
+          }}
+        >
+          Download Whole Circle Result Data
+        </button>
+      )}
       {allFirstResult.length > 0 && (
         <div className="my-2">
           <button
@@ -398,15 +771,26 @@ const CircleResultSection = () => {
           >
             Download All Circle First&#8217;s Result Data
           </button>
+
           <button
             type="button"
-            className="btn btn-success m-1 "
+            className="btn btn-primary m-1 "
             onClick={() => {
-              setStateObject(allFirstResult);
+              setStateArray(allFirstResult);
               navigate.push(`/CircleAllFirstResultPrint`);
             }}
           >
             {`Go to Print All First Result`}
+          </button>
+          <button
+            type="button"
+            className="btn btn-dark m-1 "
+            onClick={() => {
+              setStateArray(allResult);
+              navigate.push(`/CircleGPWiseResult`);
+            }}
+          >
+            {`Go to GP Wise Results`}
           </button>
         </div>
       )}
@@ -587,7 +971,7 @@ const CircleResultSection = () => {
 
                 .map((el, ind) => (
                   <option value={JSON.stringify(el)} key={ind}>
-                    {el.name}
+                    {`${el.name} (${el.chestNo})`}
                   </option>
                 ))}
             </select>
@@ -914,26 +1298,26 @@ const CircleResultSection = () => {
             </select>
           </div>
         )}
+        {event2Selected && (
+          <div className="mb-3 col-md-3">
+            <label className="form-label">Select Second Event Position *</label>
+            <select
+              className="form-select"
+              defaultValue={""}
+              id="position2"
+              onChange={(e) => {
+                setPosition2(e.target.value);
+              }}
+              aria-label="Default select example"
+            >
+              <option value="">Select Position</option>
+              <option value="FIRST">FIRST</option>
+              <option value="SECOND">SECOND</option>
+              <option value="THIRD">THIRD</option>
+            </select>
+          </div>
+        )}
       </div>
-      {event2Selected && (
-        <div className="mb-3 col-md-3">
-          <label className="form-label">Select Second Event Position *</label>
-          <select
-            className="form-select"
-            defaultValue={""}
-            id="position2"
-            onChange={(e) => {
-              setPosition2(e.target.value);
-            }}
-            aria-label="Default select example"
-          >
-            <option value="">Select Position</option>
-            <option value="FIRST">FIRST</option>
-            <option value="SECOND">SECOND</option>
-            <option value="THIRD">THIRD</option>
-          </select>
-        </div>
-      )}
       {positionSelected && (
         <>
           <button
@@ -989,6 +1373,7 @@ const CircleResultSection = () => {
           </button>
         </>
       )}
+
       {loader && <Loader />}
     </div>
   );

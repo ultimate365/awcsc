@@ -86,7 +86,7 @@ export default function PrintTreeList() {
         )}
       </div>
       <h3 className="text-center m-2 text-black">
-        আমতা পশ্চিম চক্র বার্ষিক ক্রীড়া প্রতিযোগীতা,-{" "}
+        আমতা পশ্চিম চক্র বার্ষিক ক্রীড়া প্রতিযোগিতা,-{" "}
         {enToBnNumber(new Date().getFullYear())}
       </h3>
       {data?.length !== filteredData?.length && (

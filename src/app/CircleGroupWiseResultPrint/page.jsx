@@ -88,29 +88,32 @@ const CircleGroupWiseResultPrint = () => {
           Print
         </button>
       </div>
-      <table className="table table-bordered boder-black border-4">
+      <table
+        style={{ fontSize: 12 }}
+        className="table table-bordered boder-black border-4 ben"
+      >
         <thead>
           <tr>
-            <th colSpan={6}>
-              <h3 className="text-center ben text-black">
-                {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগীতা, রেজাল্ট শিট{" "}
-                {enToBnNumber(new Date().getFullYear())}
-              </h3>
+            <th className="text-center ben text-black fs-5" colSpan={6}>
+              {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগিতা, রেজাল্ট শিট{" "}
+              {enToBnNumber(new Date().getFullYear())}
             </th>
           </tr>
         </thead>
         {group === "GROUP-A" ? (
           <tbody>
             <tr>
-              <th colSpan={5} style={{ borderRight: 0 }}></th>
-              <th style={{ borderLeft: 0 }}>
-                <h4 className="text-center ben text-white bg-black p-2 rounded-2">
-                  {bengGroupName}
-                </h4>
+              <th colSpan={4} style={{ borderRight: 0 }}></th>
+              <th
+                className="text-center ben text-white bg-black p-2 rounded-2 fs-6"
+                colSpan={2}
+                style={{ borderLeft: 0 }}
+              >
+                {bengGroupName}
               </th>
             </tr>
             <tr>
-              <th className="ben" colSpan={6}>
+              <th className="ben fs-6" colSpan={6}>
                 {bengGroupName} ৭৫ মিটার দৌড়
               </th>
             </tr>
@@ -143,7 +146,7 @@ const CircleGroupWiseResultPrint = () => {
                 </tr>
               ))}
             <tr>
-              <th className="ben" colSpan={6}>
+              <th className="ben fs-6" colSpan={6}>
                 {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
@@ -173,7 +176,7 @@ const CircleGroupWiseResultPrint = () => {
                 </tr>
               ))}
             <tr>
-              <th className="ben" colSpan={6}>
+              <th className="ben fs-6" colSpan={6}>
                 {bengGroupName} আলু দৌড় (SHUTTLE RACE)
               </th>
             </tr>
@@ -206,7 +209,7 @@ const CircleGroupWiseResultPrint = () => {
                 </tr>
               ))}
             <tr>
-              <th className="ben" colSpan={6}>
+              <th className="ben fs-6" colSpan={6}>
                 {bengGroupName} যোগা
               </th>
             </tr>
@@ -237,15 +240,17 @@ const CircleGroupWiseResultPrint = () => {
         ) : (
           <tbody>
             <tr>
-              <th colSpan={5} style={{ borderRight: 0 }}></th>
-              <th style={{ borderLeft: 0 }}>
-                <h4 className="text-center ben text-white bg-black p-2 rounded-2">
-                  {bengGroupName}
-                </h4>
+              <th colSpan={4} style={{ borderRight: 0 }}></th>
+              <th
+                className="text-center ben text-white bg-black p-2 rounded-2 fs-6"
+                colSpan={2}
+                style={{ borderLeft: 0 }}
+              >
+                {bengGroupName}
               </th>
             </tr>
             <tr>
-              <th className="ben" colSpan={6}>
+              <th className="ben fs-6" colSpan={6}>
                 {bengGroupName} ১০০ মিটার দৌড়
               </th>
             </tr>
@@ -279,7 +284,7 @@ const CircleGroupWiseResultPrint = () => {
                 </tr>
               ))}
             <tr>
-              <th className="ben" colSpan={6}>
+              <th className="ben fs-6" colSpan={6}>
                 {bengGroupName} ২০০ মিটার দৌড়
               </th>
             </tr>
@@ -313,7 +318,7 @@ const CircleGroupWiseResultPrint = () => {
                 </tr>
               ))}
             <tr>
-              <th className="ben" colSpan={6}>
+              <th className="ben fs-6" colSpan={6}>
                 {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
@@ -343,7 +348,7 @@ const CircleGroupWiseResultPrint = () => {
                 </tr>
               ))}
             <tr>
-              <th className="ben" colSpan={6}>
+              <th className="ben fs-6" colSpan={6}>
                 {bengGroupName} উচ্চ লম্ফন
               </th>
             </tr>
@@ -374,7 +379,7 @@ const CircleGroupWiseResultPrint = () => {
               ))}
 
             <tr>
-              <th className="ben" colSpan={6}>
+              <th className="ben fs-6" colSpan={6}>
                 {bengGroupName} যোগা
               </th>
             </tr>
@@ -402,7 +407,7 @@ const CircleGroupWiseResultPrint = () => {
                 </tr>
               ))}
             <tr>
-              <th className="ben" colSpan={6}>
+              <th className="ben fs-6" colSpan={6}>
                 {bengGroupName} জিম্‌নাস্টিক্‌স
               </th>
             </tr>
@@ -437,7 +442,7 @@ const CircleGroupWiseResultPrint = () => {
             {group === "GROUP-C" && (
               <>
                 <tr>
-                  <th className="ben" colSpan={6}>
+                  <th className="ben fs-6" colSpan={6}>
                     {bengGroupName} ফুটবল ছোঁড়া
                   </th>
                 </tr>
@@ -483,6 +488,26 @@ const CircleGroupWiseResultPrint = () => {
         className="position-absolute top-50 start-50 translate-middle"
         style={{ opacity: 0.4, width: 420, height: "auto" }}
       />
+      <div className="noprint my-1">
+        <button
+          type="button"
+          className="btn btn-warning m-1 col-md-1 btn-sm"
+          onClick={() => navigate.back()}
+        >
+          Go Back
+        </button>
+        <button
+          type="button"
+          className="btn btn-info m-1 col-md-1 btn-sm"
+          onClick={() => {
+            if (typeof window !== undefined) {
+              window.print();
+            }
+          }}
+        >
+          Print
+        </button>
+      </div>
     </div>
   );
 };

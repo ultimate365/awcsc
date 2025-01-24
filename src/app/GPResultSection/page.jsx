@@ -444,7 +444,7 @@ const GPResultSection = () => {
       )}
       <div className="my-4">
         <h3 className="text-center ben text-primary">
-          {thisGp} গ্রাম পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগীতা,{" "}
+          {thisGp} গ্রাম পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগিতা,{" "}
           {enToBnNumber(new Date().getFullYear())} রেজাল্ট
         </h3>
         <DataTable

@@ -324,12 +324,12 @@ table#team-list tr:nth-child(n + 1) td:first-child::before {
   }
 }
 
-.watermark {
+/* .watermark {
   position: fixed;
   bottom: 10px;
   right: 10px;
   opacity: 0.2;
-}
+} */
 @media print {
   .watermark {
     display: block;

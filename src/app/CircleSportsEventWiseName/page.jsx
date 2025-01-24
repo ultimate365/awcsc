@@ -59,7 +59,7 @@ const CircleSportsEventWiseName = () => {
       {feildSheetsClicked ? (
         <div className="container-fluid">
           <h3 className="text-center ben text-black">
-            {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগীতা,{" "}
+            {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগিতা,{" "}
             {enToBnNumber(new Date().getFullYear())}
           </h3>
           <div className="noprint my-2">
@@ -645,7 +645,7 @@ const CircleSportsEventWiseName = () => {
       ) : (
         <div className="container">
           <h3 className="text-center ben text-black">
-            {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগীতা,{" "}
+            {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগিতা,{" "}
             {enToBnNumber(new Date().getFullYear())}
           </h3>
           <h3 className="text-center ben text-black">{eventName}</h3>

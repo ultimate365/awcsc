@@ -93,7 +93,7 @@ const CircleGroupWiseResultPrint = () => {
           <tr>
             <th colSpan={6}>
               <h3 className="text-center ben text-black">
-                {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগীতা, রেজাল্ট শিট{" "}
+                {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগিতা, রেজাল্ট শিট{" "}
                 {enToBnNumber(new Date().getFullYear())}
               </h3>
             </th>
