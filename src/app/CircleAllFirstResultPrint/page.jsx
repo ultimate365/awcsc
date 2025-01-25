@@ -156,7 +156,7 @@ const GPSchoolWiseStudentList = () => {
                         <td>{index + 1}</td>
                         <td>{el?.circleChestNo}</td>
                         <td>{el?.gp}</td>
-                        <td style={{ fontSize: 11 }}>{el?.school}</td>
+                        <td >{el?.school}</td>
                         <td>{el?.name}</td>
                         <td>{el?.gurdiansName}</td>
                         <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -185,7 +185,7 @@ const GPSchoolWiseStudentList = () => {
                         <td>{boysGrAData.length + index + 1}</td>
                         <td>{el?.circleChestNo}</td>
                         <td>{el?.gp}</td>
-                        <td style={{ fontSize: 11 }}>{el?.school}</td>
+                        <td >{el?.school}</td>
                         <td>{el?.name}</td>
                         <td>{el?.gurdiansName}</td>
                         <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -216,7 +216,7 @@ const GPSchoolWiseStudentList = () => {
                         </td>
                         <td>{el?.circleChestNo}</td>
                         <td>{el?.gp}</td>
-                        <td style={{ fontSize: 11 }}>{el?.school}</td>
+                        <td >{el?.school}</td>
                         <td>{el?.name}</td>
                         <td>{el?.gurdiansName}</td>
                         <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -327,7 +327,7 @@ const GPSchoolWiseStudentList = () => {
                       <td>{index + 1}</td>
                       <td>{el?.circleChestNo}</td>
                       <td>{el?.gp}</td>
-                      <td style={{ fontSize: 11 }}>{el?.school}</td>
+                      <td >{el?.school}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -356,7 +356,7 @@ const GPSchoolWiseStudentList = () => {
                       <td>{girlsGrAData.length + index + 1}</td>
                       <td>{el?.circleChestNo}</td>
                       <td>{el?.gp}</td>
-                      <td style={{ fontSize: 11 }}>{el?.school}</td>
+                      <td >{el?.school}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -387,7 +387,7 @@ const GPSchoolWiseStudentList = () => {
                       </td>
                       <td>{el?.circleChestNo}</td>
                       <td>{el?.gp}</td>
-                      <td style={{ fontSize: 11 }}>{el?.school}</td>
+                      <td >{el?.school}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
