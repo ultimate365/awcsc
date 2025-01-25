@@ -134,7 +134,10 @@ const CircleGPWiseStudentList = () => {
           </div>
           <div className="container-fluid">
             {" "}
-            <table className="table table-bordered border-black">
+            <table
+              className="table table-bordered border-black"
+              style={{ border: 2, borderColor: "black" }}
+            >
               <thead>
                 <tr>
                   <th>ক্রমিক নং</th>
@@ -291,7 +294,10 @@ const CircleGPWiseStudentList = () => {
               <h6 className="text-center text-white m-0 p-1">GIRLS</h6>
             </div>
           </div>
-          <table className="table table-bordered border-black">
+          <table
+            className="table table-bordered border-black"
+            style={{ border: 2, borderColor: "black" }}
+          >
             <thead>
               <tr>
                 <th>ক্রমিক নং</th>

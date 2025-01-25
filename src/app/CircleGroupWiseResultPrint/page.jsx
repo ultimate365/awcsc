@@ -89,7 +89,7 @@ const CircleGroupWiseResultPrint = () => {
         </button>
       </div>
       <table
-        style={{ fontSize: 12 }}
+        style={{ fontSize: 12, border: 2, borderColor: "black" }}
         className="table table-bordered boder-black border-4 ben"
       >
         <thead>

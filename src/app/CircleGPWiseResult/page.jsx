@@ -38,7 +38,7 @@ export default function Page() {
       </h3>
       <table
         className="table table-bordered border-black"
-        style={{ verticalAlign: "middle" }}
+        style={{ verticalAlign: "middle", border: 2, borderColor: "black" }}
       >
         <thead>
           <tr>
