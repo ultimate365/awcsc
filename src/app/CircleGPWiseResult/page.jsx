@@ -119,9 +119,9 @@ export default function Page() {
                   )
                   .map((s, r) => (
                     <p key={r}>
-                      {`${r + 1}) ${s?.name}- ${s?.event1} ${
-                        s?.event2 ? `, ${s?.event2}` : ""
-                      }`}
+                      {`${r + 1}) ${s?.name}- ${s?.group}, ${s?.gender}, ${
+                        s?.event1
+                      }, ${s?.event2 ? `, ${s?.event2}` : ""}`}
                       {", "}
                       <br /> <p style={{ fontSize: 13 }}>{s?.school}</p>
                     </p>
@@ -142,9 +142,9 @@ export default function Page() {
                   )
                   .map((s, r) => (
                     <p key={r}>
-                      {`${r + 1}) ${s?.name}- ${s?.event1} ${
-                        s?.event2 ? `, ${s?.event2}` : ""
-                      }`}
+                      {`${r + 1}) ${s?.name}- ${s?.group}, ${s?.gender}, ${
+                        s?.event1
+                      } ${s?.event2 ? `, ${s?.event2}` : ""}`}
                       {", "}
                       <br /> <p style={{ fontSize: 13 }}>{s?.school}</p>
                     </p>
@@ -165,9 +165,9 @@ export default function Page() {
                   )
                   .map((s, r) => (
                     <p key={r}>
-                      {`${r + 1}) ${s?.name}- ${s?.event1} ${
-                        s?.event2 ? `, ${s?.event2}` : ""
-                      }`}
+                      {`${r + 1}) ${s?.name}- ${s?.group}, ${s?.gender}, ${
+                        s?.event1
+                      } ${s?.event2 ? `, ${s?.event2}` : ""}`}
                       {", "}
                       <br /> <p style={{ fontSize: 13 }}>{s?.school}</p>
                     </p>
