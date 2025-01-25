@@ -67,7 +67,7 @@ const CircleGroupWiseResultPrint = () => {
     // eslint-disable-next-line
   }, [gender, group]);
   return (
-    <div className="container my-4 bg-white">
+    <div className="container-fluid my-4 bg-white">
       <div className="noprint my-1">
         <button
           type="button"
