@@ -156,7 +156,7 @@ const GPSchoolWiseStudentList = () => {
                         <td>{index + 1}</td>
                         <td>{el?.circleChestNo}</td>
                         <td>{el?.gp}</td>
-                        <td style={{fontSize:11}}>{el?.school}</td>
+                        <td style={{ fontSize: 11 }}>{el?.school}</td>
                         <td>{el?.name}</td>
                         <td>{el?.gurdiansName}</td>
                         <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -182,10 +182,10 @@ const GPSchoolWiseStudentList = () => {
                     ?.sort((b, a) => b?.event1rank - a?.event1rank)
                     .map((el, index) => (
                       <tr key={index}>
-                        <td>{index + 4}</td>
+                        <td>{boysGrAData.length + index + 1}</td>
                         <td>{el?.circleChestNo}</td>
                         <td>{el?.gp}</td>
-                        <td style={{fontSize:11}}>{el?.school}</td>
+                        <td style={{ fontSize: 11 }}>{el?.school}</td>
                         <td>{el?.name}</td>
                         <td>{el?.gurdiansName}</td>
                         <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -211,10 +211,12 @@ const GPSchoolWiseStudentList = () => {
                     ?.sort((b, a) => b?.event1rank - a?.event1rank)
                     .map((el, index) => (
                       <tr key={index}>
-                        <td>{index + 10}</td>
+                        <td>
+                          {boysGrAData.length + boysGrBData.length + index + 1}
+                        </td>
                         <td>{el?.circleChestNo}</td>
                         <td>{el?.gp}</td>
-                        <td style={{fontSize:11}}>{el?.school}</td>
+                        <td style={{ fontSize: 11 }}>{el?.school}</td>
                         <td>{el?.name}</td>
                         <td>{el?.gurdiansName}</td>
                         <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -325,7 +327,7 @@ const GPSchoolWiseStudentList = () => {
                       <td>{index + 1}</td>
                       <td>{el?.circleChestNo}</td>
                       <td>{el?.gp}</td>
-                      <td style={{fontSize:11}}>{el?.school}</td>
+                      <td style={{ fontSize: 11 }}>{el?.school}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -351,10 +353,10 @@ const GPSchoolWiseStudentList = () => {
                   ?.sort((b, a) => b?.event1rank - a?.event1rank)
                   .map((el, index) => (
                     <tr key={index}>
-                      <td>{index + 4}</td>
+                      <td>{girlsGrAData.length + index + 1}</td>
                       <td>{el?.circleChestNo}</td>
                       <td>{el?.gp}</td>
-                      <td style={{fontSize:11}}>{el?.school}</td>
+                      <td style={{ fontSize: 11 }}>{el?.school}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -380,10 +382,12 @@ const GPSchoolWiseStudentList = () => {
                   ?.sort((b, a) => b?.event1rank - a?.event1rank)
                   .map((el, index) => (
                     <tr key={index}>
-                      <td>{index + 10}</td>
+                      <td>
+                        {girlsGrAData.length + girlsGrBData.length + index + 1}
+                      </td>
                       <td>{el?.circleChestNo}</td>
                       <td>{el?.gp}</td>
-                      <td style={{fontSize:11}}>{el?.school}</td>
+                      <td style={{ fontSize: 11 }}>{el?.school}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
