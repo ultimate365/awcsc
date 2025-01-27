@@ -47,9 +47,9 @@ const CircleAllStudents = () => {
     teacherdetails = decryptObjData("tid");
   }
 
-  let gender = document.getElementById("gender");
-  let group = document.getElementById("group");
-  let eventName = document.getElementById("eventName");
+  let gender;
+  let group;
+  let eventName;
   const isDev = process.env.NODE_ENV === "development";
   const [inpgender, setInpGender] = useState("");
   const [inpGroup, setInpGroup] = useState("");
@@ -63,6 +63,9 @@ const CircleAllStudents = () => {
   const [engEventName, setEngEventName] = useState("");
 
   useEffect(() => {
+    gender = document.getElementById("gender");
+    group = document.getElementById("group");
+    eventName = document.getElementById("eventName");
     if (teacherdetails.circle !== "admin") {
       if (teacherdetails.circleAssistant !== "admin") {
         navigate.push("/login");
@@ -377,6 +380,9 @@ const CircleAllStudents = () => {
               id="gender"
               defaultValue={""}
               onChange={(e) => {
+                gender = document.getElementById("gender");
+                group = document.getElementById("group");
+                eventName = document.getElementById("eventName");
                 if (group) {
                   group.value = "";
                 }
@@ -402,6 +408,9 @@ const CircleAllStudents = () => {
                 defaultValue={""}
                 id="group"
                 onChange={(e) => {
+                  gender = document.getElementById("gender");
+                  group = document.getElementById("group");
+                  eventName = document.getElementById("eventName");
                   if (eventName) {
                     eventName.value = "";
                   }
@@ -486,6 +495,9 @@ const CircleAllStudents = () => {
               type="button"
               className="btn btn-danger m-1 btn-sm"
               onClick={async () => {
+                gender = document.getElementById("gender");
+                group = document.getElementById("group");
+                eventName = document.getElementById("eventName");
                 if (gender) gender.value = "";
                 if (group) group.value = "";
                 if (eventName) eventName.value = "";

@@ -22,10 +22,10 @@ export default function CircleOfficeChestNoSheet() {
   const GirlsList = data?.filter((el) => el?.gender === "GIRLS");
   const GroupABoys = BoysList?.filter((p) => p?.group === "GROUP-A");
   const Boys75MRun = GroupABoys?.filter(
-    (p) => p.event1 === "75 METER RUN" || p.event2 === "75 METER RUN"
+    (p) => p?.event1 === "75 METER RUN" || p?.event2 === "75 METER RUN"
   );
   const BoysLONGJUMP = GroupABoys?.filter(
-    (p) => p.event1 === "LONG JUMP" || p.event2 === "LONG JUMP"
+    (p) => p?.event1 === "LONG JUMP" || p?.event2 === "LONG JUMP"
   );
   const navigate = useRouter();
   let teacherdetails;
