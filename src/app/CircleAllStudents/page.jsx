@@ -47,9 +47,10 @@ const CircleAllStudents = () => {
     teacherdetails = decryptObjData("tid");
   }
 
-  let gender;
-  let group;
-  let eventName;
+  let gender = document.getElementById("gender");
+  let group = document.getElementById("group");
+  let eventName = document.getElementById("eventName");
+  const isDev = process.env.NODE_ENV === "development";
   const [inpgender, setInpGender] = useState("");
   const [inpGroup, setInpGroup] = useState("");
   const [inpeventBengName, setInpEventBengName] = useState("");
@@ -67,15 +68,12 @@ const CircleAllStudents = () => {
         navigate.push("/login");
       }
     }
-    gender = document.getElementById("gender");
-    group = document.getElementById("group");
-    eventName = document.getElementById("eventName");
     // eslint-disable-next-line
   }, []);
 
   const allotChestNumber = async () => {
     setLoader(true);
-    data
+    const alloted = await data
       .sort((a, b) => {
         if (a.gp < b.gp) return -1;
         if (a.gp > b.gp) return 1;
@@ -88,7 +86,9 @@ const CircleAllStudents = () => {
       .map(async (el, ind) => {
         const chestNo = parseInt(startingChestNo) + ind;
         const docRef = doc(firestore, "allGPFirsts", el?.id);
-        await axios.post("/api/updateallGPFirsts", { id: el?.id, chestNo });
+        if (isDev) {
+          await axios.post("/api/updateallGPFirsts", { id: el?.id, chestNo });
+        }
         await updateDoc(docRef, {
           chestNo,
         })
@@ -111,10 +111,65 @@ const CircleAllStudents = () => {
             setLoader(false);
           });
       });
-    setTimeout(() => {
-      setLoader(false);
-      navigate.back();
-    }, 6000);
+    await Promise.all(alloted)
+      .then(() => {
+        setLoader(false);
+        navigate.back();
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoader(false);
+      });
+  };
+  const removeChestNumber = async () => {
+    setLoader(true);
+    const alloted = await data
+      .sort((a, b) => {
+        if (a.gp < b.gp) return -1;
+        if (a.gp > b.gp) return 1;
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
+        return 0;
+      })
+      .map(async (el, ind) => {
+        const chestNo = "";
+        const docRef = doc(firestore, "allGPFirsts", el?.id);
+        if (isDev) {
+          await axios.post("/api/updateallGPFirsts", { id: el?.id, chestNo });
+        }
+        await updateDoc(docRef, {
+          chestNo,
+        })
+          .then(async () => {
+            const thisStudent = allGPFirstsState.filter(
+              (student) => student.id === el.id
+            )[0];
+            thisStudent.chestNo = chestNo;
+            const otherStudents = allGPFirstsState.filter(
+              (student) => student.id !== el.id
+            );
+            setAllGPFirstsState([...otherStudents, thisStudent]);
+            setFilteredData([...otherStudents, thisStudent]);
+            setAllGPFirstsStateUpdateTime(Date.now());
+
+            console.log(`Participant ${el?.name}'s Alloted Chest No Removed`);
+          })
+          .catch((e) => {
+            console.log(e);
+            setLoader(false);
+          });
+      });
+    await Promise.all(alloted)
+      .then(() => {
+        setLoader(false);
+        navigate.back();
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoader(false);
+      });
   };
 
   const columns = [
@@ -243,7 +298,13 @@ const CircleAllStudents = () => {
               className="btn btn-success m-1 col-md-1 btn-sm"
               onClick={() => {
                 if (startingChestNo > 0) {
-                  allotChestNumber();
+                  //eslint-disable-next-line
+                  let message = confirm(
+                    `Are You Sure To Allot all Chest Numbers?`
+                  );
+                  message
+                    ? allotChestNumber()
+                    : toast.error("Chest Numbers Not Alloted");
                 } else {
                   console.log("first");
                   toast.error("Please Enter A Valid Number", {
@@ -260,6 +321,23 @@ const CircleAllStudents = () => {
               }}
             >
               Submit
+            </button>
+          </div>
+          <div>
+            <button
+              type="button"
+              className="btn btn-danger m-1 btn-sm"
+              onClick={async () => {
+                //eslint-disable-next-line
+                let message = confirm(
+                  `Are You Sure To Remove all Chest Numbers?`
+                );
+                message
+                  ? removeChestNumber()
+                  : toast.error("Chest Numbers Not Removed");
+              }}
+            >
+              Remove
             </button>
           </div>
           <div className="mb-3">
@@ -385,7 +463,7 @@ const CircleAllStudents = () => {
               className="btn btn-primary m-1 btn-sm"
               onClick={async () => {
                 setYourStateObject({
-                  data: filteredData
+                  data: data
                     .filter((el) => el?.gender === engGenderName)
                     .filter((el) => el?.group === engGroupName)
                     .filter(
@@ -408,15 +486,17 @@ const CircleAllStudents = () => {
               type="button"
               className="btn btn-danger m-1 btn-sm"
               onClick={async () => {
-                setInpGender("");
-                setInpGroup("");
-                setInpEventBengName("");
-                setGenderSelected(false);
-                setInpGrSelected(false);
-                setEventSelected(false);
-                gender.value = "";
-                group.value = "";
-                eventName.value = "";
+                if (gender) gender.value = "";
+                if (group) group.value = "";
+                if (eventName) eventName.value = "";
+                setTimeout(() => {
+                  setInpGender("");
+                  setInpGroup("");
+                  setInpEventBengName("");
+                  setGenderSelected(false);
+                  setInpGrSelected(false);
+                  setEventSelected(false);
+                }, 200);
               }}
             >
               Reset
@@ -431,7 +511,7 @@ const CircleAllStudents = () => {
           className="btn btn-success m-1 btn-sm"
           onClick={async () => {
             setMyStateObject({
-              data: filteredData,
+              data: data,
               gp: gpData,
             });
             navigate.push(`/CircleResultSection`);
@@ -464,18 +544,32 @@ const CircleAllStudents = () => {
           subHeaderAlign="right"
         />
       </div>
-      {filteredData?.length > 0 && (
+      {data?.length > 0 && (
         <button
           type="button"
           className="btn p-2 btn-success m-1 btn-sm"
           onClick={async () => {
             setYourStateObject({
-              data: filteredData,
+              data: data,
             });
             navigate.push(`/CirclePrintTreeList`);
           }}
         >
           Go To Print Tree List
+        </button>
+      )}
+      {data?.length > 0 && (
+        <button
+          type="button"
+          className="btn p-2 btn-dark m-1 btn-sm"
+          onClick={async () => {
+            setYourStateObject({
+              data: data,
+            });
+            navigate.push(`/CircleOfficeChestNoSheet`);
+          }}
+        >
+          Go To Print Circle Office Chest No Sheet
         </button>
       )}
       {loader && <Loader />}

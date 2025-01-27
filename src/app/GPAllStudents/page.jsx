@@ -53,6 +53,7 @@ const GPAllStudents = () => {
   let gender;
   let group;
   let eventName;
+  const isDev = process.env.NODE_ENV === "development";
   const [inpgender, setInpGender] = useState("");
   const [inpGroup, setInpGroup] = useState("");
   const [inpeventBengName, setInpEventBengName] = useState("");
@@ -122,7 +123,9 @@ const GPAllStudents = () => {
         } catch (error) {
           console.log(error);
         }
-        await axios.post(`/api/allowGPChestNo`, { id: el?.id, chestNo });
+        if (isDev) {
+          await axios.post(`/api/allowGPChestNo`, { id: el?.id, chestNo });
+        }
         await updateDoc(docRef, {
           chestNo: chestNo,
         })
@@ -174,7 +177,9 @@ const GPAllStudents = () => {
         } catch (error) {
           console.log(error);
         }
-        await axios.post(`/api/allowGPChestNo`, { id: el?.id, chestNo });
+        if (isDev) {
+          await axios.post(`/api/allowGPChestNo`, { id: el?.id, chestNo });
+        }
         await updateDoc(docRef, {
           chestNo: chestNo,
         })
@@ -300,7 +305,13 @@ const GPAllStudents = () => {
               className="btn btn-success m-1 col-md-1 btn-sm"
               onClick={() => {
                 if (startingChestNo > 0) {
-                  allotChestNumber();
+                  //eslint-disable-next-line
+                  let message = confirm(
+                    `Are You Sure To Allot all Chest Numbers?`
+                  );
+                  message
+                    ? allotChestNumber()
+                    : toast.error("Chest Numbers Not Alloted");
                 } else {
                   toast.error("Please Enter A Valid Number", {
                     position: "top-right",

@@ -569,7 +569,7 @@ const CircleResultSection = () => {
       <div className="my-4">
         <h3 className="text-center ben text-primary">
           {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগিতা,{" "}
-          {enToBnNumber(new Date().getFullYear() - 1)} রেজাল্ট
+          {enToBnNumber(new Date().getFullYear() )} রেজাল্ট
         </h3>
         <DataTable
           columns={columns}
