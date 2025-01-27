@@ -20,11 +20,28 @@ import { useGlobalContext } from "../../context/Store";
 export default function CircleOfficeChestNoSheet() {
   const { stateObject, schoolState } = useGlobalContext();
   const { data, gp } = stateObject;
+  const newData = data?.sort((a, b) => {
+    if (a.gp < b.gp) return -1;
+    if (a.gp > b.gp) return 1;
+    if (a.gender < b.gender) return -1;
+    if (a.gender > b.gender) return 1;
+    if (a.school < b.school) return -1;
+    if (a.school > b.school) return 1;
+    if (a.event1rank < b.event1rank) return -1;
+    if (a.event1rank > b.event1rank) return 1;
+    return 0;
+  });
   const navigate = useRouter();
-  const [isBoys, setIsBoys] = useState(false);
-  const BoysData = data?.filter((el) => el?.gender === "BOYS");
-  const GirlsData = data?.filter((el) => el?.gender === "GIRLS");
-  const GPSchools = schoolState?.filter((el) => el?.gp === gp);
+  const [isBoys, setIsBoys] = useState(true);
+  const BoysData = newData?.filter((el) => el?.gender === "BOYS");
+  const GirlsData = newData?.filter((el) => el?.gender === "GIRLS");
+  const GPSchools = schoolState
+    ?.filter((el) => el?.gp === gp)
+    .sort((a, b) => {
+      if (a.school < b.school) return -1;
+      if (a.school > b.school) return 1;
+      return 0;
+    });
   let teacherdetails;
   let details = getCookie("tid");
 
@@ -33,7 +50,6 @@ export default function CircleOfficeChestNoSheet() {
   }
 
   useEffect(() => {
-    console.log(gp);
     if (teacherdetails.circle !== "admin") {
       if (teacherdetails.circleAssistant !== "admin") {
         navigate.push("/login");
@@ -70,8 +86,9 @@ export default function CircleOfficeChestNoSheet() {
         </button>
       </div>
       <h4 className="my-1">
-        Amta West Circle Sports {new Date().getFullYear()} Eventwise All Chest
-        No.
+        {gpNames.filter((el) => el?.englishName === gp)[0]?.bengaliName} গ্রাম
+        পঞ্চায়েত বার্ষিক ক্রীড়া প্রতিযোগিতা{" - "}
+        {enToBnNumber(new Date().getFullYear())}, Eventwise All Chest No.
       </h4>
       {isBoys ? (
         <div>
@@ -90,7 +107,7 @@ export default function CircleOfficeChestNoSheet() {
                 <th>EVENT</th>
                 {GPSchools.map((schoolName, index) => (
                   <th style={{ fontSize: 10 }} key={index}>
-                    {schoolName.school}
+                    {schoolName?.school}
                   </th>
                 ))}
               </tr>
@@ -98,16 +115,24 @@ export default function CircleOfficeChestNoSheet() {
             <tbody>
               {BOYS_ALL_EVENTS.map((e, i) => (
                 <tr key={i}>
-                  <td style={{ fontSize: 13 }}>{e}</td>
-                  {BoysData?.filter(
-                    (el) =>
-                      `${el?.gender} ${el?.group} ${el?.event1}` === e ||
-                      `${el?.gender} ${el?.group} ${el?.event2}` === e
-                  )?.map((b, index) => (
-                    <td key={index}>
-                      {b?.udise === GPSchools[index].udise ? b?.chestNo : ""}
-                    </td>
-                  ))}
+                  <td style={{ fontSize: 10 }}>{e}</td>
+                  {GPSchools?.map((b, index) => {
+                    return (
+                      <td key={index}>
+                        {
+                          BoysData?.filter(
+                            (el) =>
+                              (`${el?.gender} ${el?.group} ${el?.event1}` ===
+                                e &&
+                                el?.udise === b?.udise) ||
+                              (`${el?.gender} ${el?.group} ${el?.event2}` ===
+                                e &&
+                                el?.udise === b?.udise)
+                          )[0]?.chestNo
+                        }
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -130,7 +155,7 @@ export default function CircleOfficeChestNoSheet() {
                 <th>EVENT</th>
                 {GPSchools.map((schoolName, index) => (
                   <th style={{ fontSize: 10 }} key={index}>
-                    {schoolName.school}
+                    {schoolName?.school}
                   </th>
                 ))}
               </tr>
@@ -138,16 +163,24 @@ export default function CircleOfficeChestNoSheet() {
             <tbody>
               {GIRLS_ALL_EVENTS.map((e, i) => (
                 <tr key={i}>
-                  <td style={{ fontSize: 13 }}>{e}</td>
-                  {GirlsData?.filter(
-                    (el) =>
-                      `${el?.gender} ${el?.group} ${el?.event1}` === e ||
-                      `${el?.gender} ${el?.group} ${el?.event2}` === e
-                  )?.map((b, index) => (
-                    <td key={index}>
-                      {b?.udise === GPSchools[index].udise ? b?.chestNo : ""}
-                    </td>
-                  ))}
+                  <td style={{ fontSize: 10 }}>{e}</td>
+                  {GPSchools?.map((b, index) => {
+                    return (
+                      <td key={index}>
+                        {
+                          GirlsData?.filter(
+                            (el) =>
+                              (`${el?.gender} ${el?.group} ${el?.event1}` ===
+                                e &&
+                                el?.udise === b?.udise) ||
+                              (`${el?.gender} ${el?.group} ${el?.event2}` ===
+                                e &&
+                                el?.udise === b?.udise)
+                          )[0]?.chestNo
+                        }
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>

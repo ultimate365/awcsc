@@ -21,7 +21,7 @@ export default function CircleOfficeChestNoSheet() {
   const { yourStateObject } = useGlobalContext();
   const { data } = yourStateObject;
   const navigate = useRouter();
-  const [isBoys, setIsBoys] = useState(false);
+  const [isBoys, setIsBoys] = useState(true);
   const BoysData = data?.filter((el) => el?.gender === "BOYS");
   const GirlsData = data?.filter((el) => el?.gender === "GIRLS");
   let teacherdetails;
