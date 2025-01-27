@@ -18,12 +18,13 @@ import {
 import { useGlobalContext } from "../../context/Store";
 
 export default function CircleOfficeChestNoSheet() {
-  const { yourStateObject } = useGlobalContext();
-  const { data } = yourStateObject;
+  const { stateObject, schoolState } = useGlobalContext();
+  const { data, gp } = stateObject;
   const navigate = useRouter();
   const [isBoys, setIsBoys] = useState(false);
   const BoysData = data?.filter((el) => el?.gender === "BOYS");
   const GirlsData = data?.filter((el) => el?.gender === "GIRLS");
+  const GPSchools = schoolState?.filter((el) => el?.gp === gp);
   let teacherdetails;
   let details = getCookie("tid");
 
@@ -32,6 +33,7 @@ export default function CircleOfficeChestNoSheet() {
   }
 
   useEffect(() => {
+    console.log(gp);
     if (teacherdetails.circle !== "admin") {
       if (teacherdetails.circleAssistant !== "admin") {
         navigate.push("/login");
@@ -64,7 +66,7 @@ export default function CircleOfficeChestNoSheet() {
           className="btn btn-success m-1 col-md-1 btn-sm"
           onClick={() => setIsBoys(!isBoys)}
         >
-          {isBoys ?   "Girls List":"Boys List"}
+          {isBoys ? "Girls List" : "Boys List"}
         </button>
       </div>
       <h4 className="my-1">
@@ -72,7 +74,7 @@ export default function CircleOfficeChestNoSheet() {
         No.
       </h4>
       {isBoys ? (
-        <div >
+        <div>
           <h4>BOYS</h4>
           <table
             className="table table-bordered border-black mx-auto"
@@ -86,21 +88,25 @@ export default function CircleOfficeChestNoSheet() {
             <thead>
               <tr>
                 <th>EVENT</th>
-                {gpEngNames.map((gpEngName, index) => (
-                  <th style={{fontSize:10}} key={index}>{gpEngName}</th>
+                {GPSchools.map((schoolName, index) => (
+                  <th style={{ fontSize: 10 }} key={index}>
+                    {schoolName.school}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {BOYS_ALL_EVENTS.map((e, i) => (
                 <tr key={i}>
-                  <td style={{fontSize:13}}>{e}</td>
+                  <td style={{ fontSize: 13 }}>{e}</td>
                   {BoysData?.filter(
                     (el) =>
                       `${el?.gender} ${el?.group} ${el?.event1}` === e ||
                       `${el?.gender} ${el?.group} ${el?.event2}` === e
                   )?.map((b, index) => (
-                    <td key={index}>{b?.chestNo}</td>
+                    <td key={index}>
+                      {b?.udise === GPSchools[index].udise ? b?.chestNo : ""}
+                    </td>
                   ))}
                 </tr>
               ))}
@@ -108,7 +114,7 @@ export default function CircleOfficeChestNoSheet() {
           </table>
         </div>
       ) : (
-        <div >
+        <div>
           <h4>GIRLS</h4>
           <table
             className="table table-bordered border-black mx-auto"
@@ -122,21 +128,25 @@ export default function CircleOfficeChestNoSheet() {
             <thead>
               <tr>
                 <th>EVENT</th>
-                {gpEngNames.map((gpEngName, index) => (
-                  <th style={{fontSize:10}}>{gpEngName}</th>
+                {GPSchools.map((schoolName, index) => (
+                  <th style={{ fontSize: 10 }} key={index}>
+                    {schoolName.school}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {GIRLS_ALL_EVENTS.map((e, i) => (
                 <tr key={i}>
-                  <td style={{fontSize:13}}>{e}</td>
+                  <td style={{ fontSize: 13 }}>{e}</td>
                   {GirlsData?.filter(
                     (el) =>
                       `${el?.gender} ${el?.group} ${el?.event1}` === e ||
                       `${el?.gender} ${el?.group} ${el?.event2}` === e
                   )?.map((b, index) => (
-                    <td key={index}>{b?.chestNo}</td>
+                    <td key={index}>
+                      {b?.udise === GPSchools[index].udise ? b?.chestNo : ""}
+                    </td>
                   ))}
                 </tr>
               ))}

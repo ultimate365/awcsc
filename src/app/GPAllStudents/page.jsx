@@ -563,6 +563,21 @@ const GPAllStudents = () => {
             Go To Print Tree List
           </button>
         )}
+        {filteredData?.length > 0 && (
+          <button
+            type="button"
+            className="btn p-2 btn-dark m-1 btn-sm"
+            onClick={async () => {
+              setStateObject({
+                data: filteredData,
+                gp: selectedGP,
+              });
+              navigate.push(`/GPOfficeChestNoSheet`);
+            }}
+          >
+            Go To Print GP Office Chest No Sheet
+          </button>
+        )}
       </div>
       {loader && <Loader />}
     </div>
