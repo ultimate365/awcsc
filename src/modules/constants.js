@@ -142,34 +142,42 @@ export const gpNames = [
   {
     englishName: "AMORAGORI",
     bengaliName: "অমরাগড়ী",
+    date: `16-01-${new Date().getFullYear()}`,
   },
   {
     englishName: "BKBATI",
     bengaliName: "বিনলা কৃষ্ণবাটি",
+    date: `16-01-${new Date().getFullYear()}`,
   },
   {
     englishName: "GAZIPUR",
     bengaliName: "গাজীপুর",
+    date: `16-01-${new Date().getFullYear()}`,
   },
   {
     englishName: "JHAMTIA",
     bengaliName: "ঝামটিয়া",
+    date: `16-01-${new Date().getFullYear()}`,
   },
   {
     englishName: "JHIKIRA",
     bengaliName: "ঝিখিরা",
+    date: `16-01-${new Date().getFullYear()}`,
   },
   {
     englishName: "JOYPUR",
     bengaliName: "জয়পুর",
+    date: `16-01-${new Date().getFullYear()}`,
   },
   {
     englishName: "NOWPARA",
     bengaliName: "নওপাড়া",
+    date: `16-01-${new Date().getFullYear()}`,
   },
   {
     englishName: "THALIA",
     bengaliName: "থলিয়া",
+    date: `16-01-${new Date().getFullYear()}`,
   },
 ];
 

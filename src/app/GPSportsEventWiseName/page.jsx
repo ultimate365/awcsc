@@ -50,7 +50,7 @@ const GPSportsEventWiseName = () => {
   }, [allData, gpSchools, thisGp]);
   useEffect(() => {}, []);
   return (
-    <div className="container-fluid  my-4 bg-white">
+    <div className="container-fluid  my-4 bg-white ben">
       {feildSheetsClicked ? (
         <div className="container-fluid">
           <h3 className="text-center ben text-black">
@@ -652,6 +652,8 @@ const GPSportsEventWiseName = () => {
           Print
         </button>
       </div>
+
+
     </div>
   );
 };

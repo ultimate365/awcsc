@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^3.4.4",
     "@rooks/use-window-size": "^4.11.2",
     "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
