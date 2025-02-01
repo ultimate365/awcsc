@@ -5,7 +5,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "react-toastify/dist/ReactToastify.css";
 import BootstrapClient from "../components/BootstrapClient";
-import { Tiro_Bangla, Roboto } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 import Navbar from "../components/Navbar";
 import Header from "../components/Header";
@@ -27,21 +26,23 @@ const dejaVuCondensed = localFont({
   ],
   variable: "--font-dejaVuCondensed",
 });
-const tiro_bangla = Tiro_Bangla({
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-  preload: true,
+const tiro_bangla = localFont({
+  src: [
+    {
+      path: "./fonts/Tiro.ttf",
+    },
+  ],
   variable: "--font-tiro",
 });
 
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-  preload: true,
+const roboto = localFont({
+  src: [
+    {
+      path: "./fonts/times.ttf",
+    },
+  ],
   variable: "--font-roboto",
-});
+})
 export const metadata: Metadata = {
   title: "AWC Sports App",
   description: "Welcome To Amta West Circle's Sports Committee's Website.",
