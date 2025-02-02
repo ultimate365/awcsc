@@ -929,7 +929,10 @@ export default function CircleEventList({ myData }) {
               >
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -939,18 +942,45 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     justifyContent: "center",
                     alignItems: "center",
+                    borderRightWidth:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? 0
+                        : 1,
                   }}
                 >
                   <Text style={styles.text}>Chest No.</Text>
                 </View>
+                {(engEventName === "LONG JUMP" ||
+                  engEventName === "FOOTBALL THROWING" ||
+                  engEventName === "HIGH JUMP" ||
+                  engEventName === "75 METER RUN" ||
+                  engEventName === "100 METER RUN" ||
+                  engEventName === "200 METER RUN" ||
+                  engEventName === "SHUTTLE RACE") && (
+                  <View
+                    style={{
+                      width: "33%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={styles.text}>Time / Distance</Text>
+                  </View>
+                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -961,17 +991,42 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     justifyContent: "center",
                     alignItems: "center",
+                    borderRightWidth:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? 0
+                        : 1,
                     height: 35,
                   }}
                 ></View>
+                {(engEventName === "LONG JUMP" ||
+                  engEventName === "FOOTBALL THROWING" ||
+                  engEventName === "HIGH JUMP" ||
+                  engEventName === "75 METER RUN" ||
+                  engEventName === "100 METER RUN" ||
+                  engEventName === "200 METER RUN" ||
+                  engEventName === "SHUTTLE RACE") && (
+                  <View
+                    style={{
+                      width: "33%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  ></View>
+                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -982,17 +1037,42 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     justifyContent: "center",
                     alignItems: "center",
+                    borderRightWidth:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? 0
+                        : 1,
                     height: 35,
                   }}
                 ></View>
+                {(engEventName === "LONG JUMP" ||
+                  engEventName === "FOOTBALL THROWING" ||
+                  engEventName === "HIGH JUMP" ||
+                  engEventName === "75 METER RUN" ||
+                  engEventName === "100 METER RUN" ||
+                  engEventName === "200 METER RUN" ||
+                  engEventName === "SHUTTLE RACE") && (
+                  <View
+                    style={{
+                      width: "33%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  ></View>
+                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -1003,17 +1083,42 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     justifyContent: "center",
                     alignItems: "center",
+                    borderRightWidth:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? 0
+                        : 1,
                     height: 35,
                   }}
                 ></View>
+                {(engEventName === "LONG JUMP" ||
+                  engEventName === "FOOTBALL THROWING" ||
+                  engEventName === "HIGH JUMP" ||
+                  engEventName === "75 METER RUN" ||
+                  engEventName === "100 METER RUN" ||
+                  engEventName === "200 METER RUN" ||
+                  engEventName === "SHUTTLE RACE") && (
+                  <View
+                    style={{
+                      width: "33%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  ></View>
+                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -1024,12 +1129,34 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     justifyContent: "center",
                     alignItems: "center",
+                    borderRightWidth:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? 0
+                        : 1,
                     height: 35,
                   }}
                 ></View>
+                {(engEventName === "LONG JUMP" ||
+                  engEventName === "FOOTBALL THROWING" ||
+                  engEventName === "HIGH JUMP" ||
+                  engEventName === "75 METER RUN" ||
+                  engEventName === "100 METER RUN" ||
+                  engEventName === "200 METER RUN" ||
+                  engEventName === "SHUTTLE RACE") && (
+                  <View
+                    style={{
+                      width: "33%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  ></View>
+                )}
               </View>
               <View style={[styles.rowStartView, { borderBottomWidth: 0 }]}>
                 <View
@@ -1704,7 +1831,10 @@ export default function CircleEventList({ myData }) {
               >
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -1714,18 +1844,45 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     justifyContent: "center",
                     alignItems: "center",
+                    borderRightWidth:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? 0
+                        : 1,
                   }}
                 >
                   <Text style={styles.text}>Chest No.</Text>
                 </View>
+                {(engEventName === "LONG JUMP" ||
+                  engEventName === "FOOTBALL THROWING" ||
+                  engEventName === "HIGH JUMP" ||
+                  engEventName === "75 METER RUN" ||
+                  engEventName === "100 METER RUN" ||
+                  engEventName === "200 METER RUN" ||
+                  engEventName === "SHUTTLE RACE") && (
+                  <View
+                    style={{
+                      width: "33%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={styles.text}>Time / Distance</Text>
+                  </View>
+                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -1736,17 +1893,42 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     justifyContent: "center",
                     alignItems: "center",
+                    borderRightWidth:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? 0
+                        : 1,
                     height: 35,
                   }}
                 ></View>
+                {(engEventName === "LONG JUMP" ||
+                  engEventName === "FOOTBALL THROWING" ||
+                  engEventName === "HIGH JUMP" ||
+                  engEventName === "75 METER RUN" ||
+                  engEventName === "100 METER RUN" ||
+                  engEventName === "200 METER RUN" ||
+                  engEventName === "SHUTTLE RACE") && (
+                  <View
+                    style={{
+                      width: "33%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  ></View>
+                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -1757,17 +1939,42 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     justifyContent: "center",
                     alignItems: "center",
+                    borderRightWidth:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? 0
+                        : 1,
                     height: 35,
                   }}
                 ></View>
+                {(engEventName === "LONG JUMP" ||
+                  engEventName === "FOOTBALL THROWING" ||
+                  engEventName === "HIGH JUMP" ||
+                  engEventName === "75 METER RUN" ||
+                  engEventName === "100 METER RUN" ||
+                  engEventName === "200 METER RUN" ||
+                  engEventName === "SHUTTLE RACE") && (
+                  <View
+                    style={{
+                      width: "33%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  ></View>
+                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -1778,17 +1985,42 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     justifyContent: "center",
                     alignItems: "center",
+                    borderRightWidth:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? 0
+                        : 1,
                     height: 35,
                   }}
                 ></View>
+                {(engEventName === "LONG JUMP" ||
+                  engEventName === "FOOTBALL THROWING" ||
+                  engEventName === "HIGH JUMP" ||
+                  engEventName === "75 METER RUN" ||
+                  engEventName === "100 METER RUN" ||
+                  engEventName === "200 METER RUN" ||
+                  engEventName === "SHUTTLE RACE") && (
+                  <View
+                    style={{
+                      width: "33%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  ></View>
+                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -1799,12 +2031,34 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width: "50%",
+                    width:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? "50%"
+                        : "33%",
                     justifyContent: "center",
                     alignItems: "center",
+                    borderRightWidth:
+                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
+                        ? 0
+                        : 1,
                     height: 35,
                   }}
                 ></View>
+                {(engEventName === "LONG JUMP" ||
+                  engEventName === "FOOTBALL THROWING" ||
+                  engEventName === "HIGH JUMP" ||
+                  engEventName === "75 METER RUN" ||
+                  engEventName === "100 METER RUN" ||
+                  engEventName === "200 METER RUN" ||
+                  engEventName === "SHUTTLE RACE") && (
+                  <View
+                    style={{
+                      width: "33%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  ></View>
+                )}
               </View>
               <View style={[styles.rowStartView, { borderBottomWidth: 0 }]}>
                 <View

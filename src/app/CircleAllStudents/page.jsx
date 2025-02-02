@@ -61,10 +61,7 @@ const CircleAllStudents = () => {
   const [engGenderName, setEngGenderName] = useState("");
   const [engGroupName, setEngGroupName] = useState("");
   const [engEventName, setEngEventName] = useState("");
-  const [dldGrSelected, setDldGrSelected] = useState(false);
-  const [dldInpGroup, setDldInpGroup] = useState("");
-  const [dldEventName, setDldEventName] = useState("");
-  const [dldEventSelected, setDldEventSelected] = useState(false);
+  
   useEffect(() => {
     gender = document.getElementById("gender");
     group = document.getElementById("group");
@@ -520,107 +517,16 @@ const CircleAllStudents = () => {
         )}
       </div>
       <div className="container my-3 mx-auto">
-        <h3 className="text-center text-primary">Download Event Sheets</h3>
-        <div className="row">
-          <div className="mb-3 col-md-3">
-            <label className="form-label">Select Group *</label>
-            <select
-              className="form-select ben"
-              defaultValue={""}
-              id="group"
-              onChange={(e) => {
-                eventName = document.getElementById("eventName");
-                if (eventName) {
-                  eventName.value = "";
-                }
-                setDldGrSelected(true);
-                setDldInpGroup(e.target.value);
-              }}
-              aria-label="Default select example"
-            >
-              <option value="">Select Group</option>
-              <option value="GROUP-A">'ক' বিভাগ</option>
-              <option value="GROUP-B">'খ' বিভাগ</option>
-              <option value="GROUP-C">'গ' বিভাগ</option>
-            </select>
-          </div>
-          {dldGrSelected && (
-            <div className="mb-3 col-md-3">
-              <label className="form-label">Select Event Name *</label>
-              <select
-                className="form-select ben"
-                defaultValue={""}
-                id="eventName"
-                onChange={(e) => {
-                  setDldEventSelected(true);
-                  setDldEventName(e.target.value);
-                }}
-                aria-label="Default select example"
-              >
-                <option value="">Select Event Name</option>
-                {dldInpGroup === "GROUP-A"
-                  ? events.groupA.map((el, ind) => (
-                      <option value={el} key={ind}>
-                        {el}
-                      </option>
-                    ))
-                  : dldInpGroup === "GROUP-B"
-                  ? events.groupB.map((el, ind) => (
-                      <option value={el} key={ind}>
-                        {el}
-                      </option>
-                    ))
-                  : dldInpGroup === "GROUP-C"
-                  ? events.groupC.map((el, ind) => (
-                      <option value={el} key={ind}>
-                        {el}
-                      </option>
-                    ))
-                  : ""}
-              </select>
-            </div>
-          )}
-          {dldEventSelected && (
-            <div>
-              <button
-                type="button"
-                className="btn btn-primary m-1 "
-                onClick={async () => {
-                  setMyStateObject({
-                    data: filteredData
-                      .filter((el) => el?.group === dldInpGroup)
-                      .filter(
-                        (el) =>
-                          el?.event1 === dldEventName ||
-                          el?.event2 === dldEventName
-                      ),
-                    group: dldInpGroup,
-                    engEventName: dldEventName,
-                  });
-                  navigate.push(`/CircleDownloadEventSheets`);
-                }}
-              >
-                {`Go To Download=> ${dldInpGroup}- ${dldEventName} Event Sheet`}
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger m-1 btn-sm"
-                onClick={async () => {
-                  group = document.getElementById("group");
-                  eventName = document.getElementById("eventName");
-                  setDldInpGroup("");
-                  setDldEventName("");
-                  setDldGrSelected(false);
-                  setDldEventSelected(false);
-                  if (group) group.value = "";
-                  if (eventName) eventName.value = "";
-                }}
-              >
-                Reset
-              </button>
-            </div>
-          )}
-        </div>
+      <h3 className="text-center text-primary">Download Event Sheets</h3>
+        <button
+          type="button"
+          className="btn btn-primary m-1 "
+          onClick={async () => {
+            navigate.push(`/CircleDownloadEventSheets`);
+          }}
+        >
+          Download Event Sheet
+        </button>
       </div>
       <div className="container my-3 mx-auto">
         <h3 className="text-center text-primary">Enter Result</h3>
