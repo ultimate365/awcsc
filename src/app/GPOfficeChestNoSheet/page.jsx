@@ -2,22 +2,23 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { decryptObjData, getCookie } from "../../modules/encryption";
+import { enToBnNumber } from "../../modules/calculatefunctions";
 import {
-  enToBnNumber,
-  getSubmitDateInput,
-} from "../../modules/calculatefunctions";
-import {
-  BUTTONCOLORS,
-  gpEngNames,
   gpNames,
-  events,
   BOYS_ALL_EVENTS,
   GIRLS_ALL_EVENTS,
-  EVENTS_GROUPS,
 } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
-
+import GPChestNoSheet from "../../pdf/GPChestNoSheet";
+import dynamic from "next/dynamic";
 export default function CircleOfficeChestNoSheet() {
+  const PDFDownloadLink = dynamic(
+    () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+    {
+      ssr: false,
+      loading: () => <p>Loading...</p>,
+    }
+  );
   const { stateObject, schoolState } = useGlobalContext();
   const { data, gp } = stateObject;
   const newData = data?.sort((a, b) => {
@@ -64,7 +65,7 @@ export default function CircleOfficeChestNoSheet() {
         <button
           type="button"
           className="btn btn-warning m-1 col-md-1 btn-sm"
-          onClick={() => navigate.back()}
+          onClick={() => navigate.push("/GPAllStudents")}
         >
           Go Back
         </button>
@@ -75,6 +76,34 @@ export default function CircleOfficeChestNoSheet() {
         >
           Print
         </button>
+      </div>
+      <div className="noprint my-3">
+        <PDFDownloadLink
+          document={
+            <GPChestNoSheet
+              BoysData={BoysData}
+              GirlsData={GirlsData}
+              gp={gp}
+              GPSchools={GPSchools}
+            />
+          }
+          fileName={`${
+            gpNames.filter((el) => el?.englishName === gp)[0]?.englishName
+          } GP ANNUAL SPORTS -${new Date().getFullYear()}, Eventwise All Chest No`}
+          style={{
+            textDecoration: "none",
+            padding: "10px",
+            color: "#fff",
+            backgroundColor: "navy",
+            border: "1px solid #4a4a4a",
+            width: "40%",
+            borderRadius: 10,
+          }}
+        >
+          {({ blob, url, loading, error }) =>
+            loading ? "Loading..." : "Download All Chest No. Sheet"
+          }
+        </PDFDownloadLink>
       </div>
       <div className="noprint">
         <button

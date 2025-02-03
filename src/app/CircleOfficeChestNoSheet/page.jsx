@@ -3,21 +3,21 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import {
-  enToBnNumber,
-  getSubmitDateInput,
-} from "../../modules/calculatefunctions";
-import {
-  BUTTONCOLORS,
   gpEngNames,
-  gpNames,
-  events,
   BOYS_ALL_EVENTS,
   GIRLS_ALL_EVENTS,
-  EVENTS_GROUPS,
 } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
-
+import CircleChestNoSheet from "../../pdf/CircleChestNoSheet";
+import dynamic from "next/dynamic";
 export default function CircleOfficeChestNoSheet() {
+  const PDFDownloadLink = dynamic(
+    () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+    {
+      ssr: false,
+      loading: () => <p>Loading...</p>,
+    }
+  );
   const { yourStateObject } = useGlobalContext();
   const { data } = yourStateObject;
   const navigate = useRouter();
@@ -58,13 +58,34 @@ export default function CircleOfficeChestNoSheet() {
           Print
         </button>
       </div>
-      <div className="noprint">
+      <div className="noprint my-3">
+        <PDFDownloadLink
+          document={
+            <CircleChestNoSheet BoysData={BoysData} GirlsData={GirlsData} />
+          }
+          fileName={`Amta West Circle Sports ${new Date().getFullYear()} Eventwise All Chest No`}
+          style={{
+            textDecoration: "none",
+            padding: "10px",
+            color: "#fff",
+            backgroundColor: "navy",
+            border: "1px solid #4a4a4a",
+            width: "40%",
+            borderRadius: 10,
+          }}
+        >
+          {({ blob, url, loading, error }) =>
+            loading ? "Loading..." : "Download All Chest No. Sheet"
+          }
+        </PDFDownloadLink>
+      </div>
+      <div className="noprint my-3">
         <button
           type="button"
           className="btn btn-success m-1 col-md-1 btn-sm"
           onClick={() => setIsBoys(!isBoys)}
         >
-          {isBoys ?   "Girls List":"Boys List"}
+          {isBoys ? "Girls List" : "Boys List"}
         </button>
       </div>
       <h4 className="my-1">
@@ -72,7 +93,7 @@ export default function CircleOfficeChestNoSheet() {
         No.
       </h4>
       {isBoys ? (
-        <div >
+        <div>
           <h4>BOYS</h4>
           <table
             className="table table-bordered border-black mx-auto"
@@ -87,14 +108,16 @@ export default function CircleOfficeChestNoSheet() {
               <tr>
                 <th>EVENT</th>
                 {gpEngNames.map((gpEngName, index) => (
-                  <th style={{fontSize:10}} key={index}>{gpEngName}</th>
+                  <th style={{ fontSize: 10 }} key={index}>
+                    {gpEngName}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {BOYS_ALL_EVENTS.map((e, i) => (
                 <tr key={i}>
-                  <td style={{fontSize:13}}>{e}</td>
+                  <td style={{ fontSize: 13 }}>{e}</td>
                   {BoysData?.filter(
                     (el) =>
                       `${el?.gender} ${el?.group} ${el?.event1}` === e ||
@@ -108,7 +131,7 @@ export default function CircleOfficeChestNoSheet() {
           </table>
         </div>
       ) : (
-        <div >
+        <div>
           <h4>GIRLS</h4>
           <table
             className="table table-bordered border-black mx-auto"
@@ -123,14 +146,14 @@ export default function CircleOfficeChestNoSheet() {
               <tr>
                 <th>EVENT</th>
                 {gpEngNames.map((gpEngName, index) => (
-                  <th style={{fontSize:10}}>{gpEngName}</th>
+                  <th style={{ fontSize: 10 }}>{gpEngName}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {GIRLS_ALL_EVENTS.map((e, i) => (
                 <tr key={i}>
-                  <td style={{fontSize:13}}>{e}</td>
+                  <td style={{ fontSize: 13 }}>{e}</td>
                   {GirlsData?.filter(
                     (el) =>
                       `${el?.gender} ${el?.group} ${el?.event1}` === e ||
