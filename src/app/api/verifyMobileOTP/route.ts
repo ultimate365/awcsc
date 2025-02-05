@@ -22,8 +22,11 @@ export async function POST(request: NextRequest) {
           { status: 200 }
         );
       } else {
+        const sameUserMessages = await PhoneOtp.find({ phone });
+        sameUserMessages.map(async (message) => {
+          await deleteTelegramMessage(message.message_id);
+        });
         await PhoneOtp.deleteMany({ phone });
-        await deleteTelegramMessage(phoneData.message_id)
         return NextResponse.json(
           {
             message: "Mobile Verified Successfully",
