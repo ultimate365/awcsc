@@ -274,6 +274,7 @@ const Login = () => {
               username
             </label>
             <input
+              ref={(input) => input && input.focus()}
               type="text"
               name="username"
               id="username"

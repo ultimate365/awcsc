@@ -144,7 +144,9 @@ export default function VerifyLogin() {
           </p> */}
           <div className="col-md-6 mx-auto">
             <form action="" autoComplete="off" onSubmit={verifyOTP}>
-              <CustomInput
+              <input
+                className="form-control mb-3"
+                ref={(input) => input && input.focus()}
                 title={"Enter Your OTP"}
                 type={"number"}
                 placeholder={"Enter Your 6 digit OTP"}
@@ -180,7 +182,7 @@ export default function VerifyLogin() {
         </div>
       )}
 
-      <div className="my-5">
+      {/* <div className="my-5">
         <Link
           className="btn btn-success m-1 fs-5"
           href={"https://t.me/+ZYcKXX_HM9g5NDk1"}
@@ -188,7 +190,7 @@ export default function VerifyLogin() {
         >
          <i className="bi bi-telegram"></i> Our Telegram Group
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 }
