@@ -67,7 +67,7 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
     // console.log(inputField);
     if (validForm()) {
       setDisplayLoader(true);
-      const collectionRef = collection(firestore, "userteachers");
+      const collectionRef = collection(firestore, "sportsUsers");
       const q = query(
         collectionRef,
         where("username", "==", inputField.username)
@@ -117,7 +117,7 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
           const response = await axios.post(url, entry);
           const record = response.data;
           if (record.success) {
-            await setDoc(doc(firestore, "userteachers", docId), entry).catch(
+            await setDoc(doc(firestore, "sportsUsers", docId), entry).catch(
               (e) => console.log(e)
             );
 

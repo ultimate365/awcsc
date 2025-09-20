@@ -157,7 +157,7 @@ const DisplayComplain = () => {
       solvedOn: Date.now(),
       remarks: remark,
     };
-    await axios.post("/api/updateComplain", x);
+    // await axios.post("/api/updateComplain", x);
     const docRef = doc(firestore, "complains", complainId);
     await updateDoc(docRef, entry);
     toast.success("Complain Noticed!");
@@ -177,17 +177,19 @@ const DisplayComplain = () => {
       setData(data);
       setShowTable(true);
     } catch (error) {
-      await axios.post("/api/getComplains").then((data) => {
-        const res = data.data.data;
-        setData(res);
-        setShowTable(true);
-      });
+      // await axios.post("/api/getComplains").then((data) => {
+      //   const res = data.data.data;
+      //   setData(res);
+      //   setShowTable(true);
+      // });
+      toast.error("Something went Wrong");
+      console.log(error);
     }
   };
 
   const deleteComplain = async (id) => {
     setShowTable(false);
-    await axios.post("/api/delComplain", { id });
+    // await axios.post("/api/delComplain", { id });
     await deleteDoc(doc(firestore, "complains", id));
     toast.success("Complain Deleted Successfully!");
     getComplains();

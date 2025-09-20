@@ -133,7 +133,7 @@ const SetConvenors = () => {
         })
         .catch((e) => console.log(e));
     });
-    const q1 = query(collection(firestore, "userteachers"));
+    const q1 = query(collection(firestore, "sportsUsers"));
     const querySnapshot1 = await getDocs(q1);
     const data1 = querySnapshot1.docs.map((doc) => ({
       // doc.data() is never undefined for query doc snapshots
@@ -144,7 +144,7 @@ const SetConvenors = () => {
     let delConvenorIds = data?.map((convenor) => convenor.id);
     let delUserExists = filterArraySameItems(delConvenorIds, allIds);
     let flush = delUserExists.map(async (id) => {
-      await updateDoc(doc(firestore, "userteachers", id), {
+      await updateDoc(doc(firestore, "sportsUsers", id), {
         convenor: "taw",
       });
     });
@@ -158,7 +158,7 @@ const SetConvenors = () => {
 
   const updateConvenorData = async () => {
     setLoader(true);
-    const q1 = query(collection(firestore, "userteachers"));
+    const q1 = query(collection(firestore, "sportsUsers"));
     const querySnapshot1 = await getDocs(q1);
     const data1 = querySnapshot1.docs.map((doc) => ({
       // doc.data() is never undefined for query doc snapshots
@@ -178,7 +178,7 @@ const SetConvenors = () => {
     if (newUserExists.length > 0) {
       newUserExists.map(
         async (id) =>
-          await updateDoc(doc(firestore, "userteachers", id), {
+          await updateDoc(doc(firestore, "sportsUsers", id), {
             convenor: "admin",
           })
       );
@@ -186,7 +186,7 @@ const SetConvenors = () => {
     if (delUserExists.length > 0) {
       delUserExists.map(
         async (id) =>
-          await updateDoc(doc(firestore, "userteachers", id), {
+          await updateDoc(doc(firestore, "sportsUsers", id), {
             convenor: "taw",
           })
       );
@@ -344,7 +344,7 @@ const SetConvenors = () => {
           console.log(error);
         }
         try {
-          await updateDoc(doc(firestore, "userteachers", id), {
+          await updateDoc(doc(firestore, "sportsUsers", id), {
             convenor: "taw",
           }).then(() => {
             setConvenorsState(

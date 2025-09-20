@@ -225,16 +225,16 @@ const GPConvenorsPage = () => {
             .filter((el) => el?.gp === teacherdetails.gp)
             .filter((el) => el?.gpAssistant === "admin")
         );
-        await axios.post("/api/updTeacherConvenor", {
-          id: el?.id,
-          gpAssistant: "taw",
-        });
+        // await axios.post("/api/updTeacherConvenor", {
+        //   id: el?.id,
+        //   gpAssistant: "taw",
+        // });
         await updateDoc(doc(firestore, "teachers", el?.id), {
           gpAssistant: "taw",
         })
           .then(async () => {
             try {
-              await updateDoc(doc(firestore, "userteachers", el?.id), {
+              await updateDoc(doc(firestore, "sportsUsers", el?.id), {
                 gpAssistant: "taw",
               });
             } catch (e) {
@@ -246,10 +246,10 @@ const GPConvenorsPage = () => {
     await Promise.all(gpAssistantUpdateNteacherUpdate).then(async () => {
       const createGpAssistantNupdateTeacherData = assistants.map(
         async (el, ind) => {
-          await axios.post("/api/updTeacherConvenor", {
-            id: el?.id,
-            gpAssistant: "admin",
-          });
+          // await axios.post("/api/updTeacherConvenor", {
+          //   id: el?.id,
+          //   gpAssistant: "admin",
+          // });
           let x = teachersState.filter((item) => item.id === el?.id)[0];
           x.gpAssistant = "admin";
           let y = teachersState.filter((item) => item.id !== el?.id);
@@ -261,7 +261,7 @@ const GPConvenorsPage = () => {
             gpAssistant: "admin",
           }).then(async () => {
             try {
-              await updateDoc(doc(firestore, "userteachers", el?.id), {
+              await updateDoc(doc(firestore, "sportsUsers", el?.id), {
                 gpAssistant: "admin",
               });
             } catch (e) {
@@ -297,10 +297,10 @@ const GPConvenorsPage = () => {
     y = [...y, x];
     setTeachersState(y);
     setTeacherUpdateTime(Date.now());
-    await axios.post("/api/updTeacherConvenor", {
-      id: el?.id,
-      gpAssistant: "taw",
-    });
+    // await axios.post("/api/updTeacherConvenor", {
+    //   id: el?.id,
+    //   gpAssistant: "taw",
+    // });
 
     setAllGPAssistantsState(
       allGPAssistantsState.filter((item) => item?.id !== el?.id)
@@ -310,7 +310,7 @@ const GPConvenorsPage = () => {
     })
       .then(async () => {
         try {
-          await updateDoc(doc(firestore, "userteachers", el?.id), {
+          await updateDoc(doc(firestore, "sportsUsers", el?.id), {
             gpAssistant: "taw",
           }).then(() => {
             setLoader(false);
@@ -449,7 +449,7 @@ const GPConvenorsPage = () => {
     setGpStudentState(x);
     setGpStudentStateUpdateTime(Date.now());
 
-    await axios.post("/api/updategpSportsStudentData", entry);
+    // await axios.post("/api/updategpSportsStudentData", entry);
     const docRef = doc(firestore, "gpSportsStudentData", inputField.id);
 
     await updateDoc(docRef, entry)
@@ -734,7 +734,7 @@ const GPConvenorsPage = () => {
     );
     let x = selectedSchool;
     x.password = password;
-    await axios.post("/api/updateuserschools", x);
+    // await axios.post("/api/updateuserschools", x);
     if (userSchoolState.length > 0) {
       let us = userSchoolState.filter((el) => el.id !== selectedSchool.id);
       setUserSchoolState([...us, x]);

@@ -330,7 +330,7 @@ const AllTeachers = () => {
           await updateDoc(docRef, {
             registered: true,
           });
-          await setDoc(doc(firestore, "userteachers", el.id), entry)
+          await setDoc(doc(firestore, "sportsUsers", el.id), entry)
             .then(() => {
               el.registered = true;
               let x = teachersState.filter((item) => item.id !== el.id);
@@ -386,7 +386,7 @@ const AllTeachers = () => {
       user.password = password;
       const response = await axios.post(url, user);
       if (response.data.success) {
-        const docRef = doc(firestore, "userteachers", user.id);
+        const docRef = doc(firestore, "sportsUsers", user.id);
         await updateDoc(docRef, {
           password,
         })

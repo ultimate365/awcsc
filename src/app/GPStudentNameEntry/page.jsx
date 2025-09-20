@@ -393,7 +393,7 @@ const GPStudentNameEntry = () => {
     };
     setSelectedGpStudentState([...selectedGpStudentState, upLoadedResult]);
     setSelectedGpStudentStateUpdateTime(Date.now());
-    await axios.post("/api/addgpSportsStudentData", upLoadedResult);
+    // await axios.post("/api/addgpSportsStudentData", upLoadedResult);
     await setDoc(
       doc(firestore, "gpSportsStudentData", inputField.id),
       upLoadedResult
@@ -506,7 +506,7 @@ const GPStudentNameEntry = () => {
     x = [...x, updatedResult];
     setSelectedGpStudentState(x);
     setSelectedGpStudentStateUpdateTime(Date.now());
-    await axios.post("/api/updategpSportsStudentData", updatedResult);
+    // await axios.post("/api/updategpSportsStudentData", updatedResult);
     await updateDoc(
       doc(firestore, "gpSportsStudentData", inputField.id),
       updatedResult

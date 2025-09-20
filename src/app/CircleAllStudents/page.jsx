@@ -61,7 +61,7 @@ const CircleAllStudents = () => {
   const [engGenderName, setEngGenderName] = useState("");
   const [engGroupName, setEngGroupName] = useState("");
   const [engEventName, setEngEventName] = useState("");
-  
+
   useEffect(() => {
     gender = document.getElementById("gender");
     group = document.getElementById("group");
@@ -89,9 +89,9 @@ const CircleAllStudents = () => {
       .map(async (el, ind) => {
         const chestNo = parseInt(startingChestNo) + ind;
         const docRef = doc(firestore, "allGPFirsts", el?.id);
-        if (isDev) {
-          await axios.post("/api/updateallGPFirsts", { id: el?.id, chestNo });
-        }
+        // if (isDev) {
+        //   await axios.post("/api/updateallGPFirsts", { id: el?.id, chestNo });
+        // }
         await updateDoc(docRef, {
           chestNo,
         })
@@ -139,9 +139,9 @@ const CircleAllStudents = () => {
       .map(async (el, ind) => {
         const chestNo = "";
         const docRef = doc(firestore, "allGPFirsts", el?.id);
-        if (isDev) {
-          await axios.post("/api/updateallGPFirsts", { id: el?.id, chestNo });
-        }
+        // if (isDev) {
+        //   await axios.post("/api/updateallGPFirsts", { id: el?.id, chestNo });
+        // }
         await updateDoc(docRef, {
           chestNo,
         })
@@ -517,7 +517,7 @@ const CircleAllStudents = () => {
         )}
       </div>
       <div className="container my-3 mx-auto">
-      <h3 className="text-center text-primary">Download Event Sheets</h3>
+        <h3 className="text-center text-primary">Download Event Sheets</h3>
         <button
           type="button"
           className="btn btn-primary m-1 "

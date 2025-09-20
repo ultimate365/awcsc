@@ -35,7 +35,7 @@ const SignUp = () => {
     // console.log(inputField);
     if (validForm()) {
       try {
-        const collectionRef = collection(firestore, "userteachers");
+        const collectionRef = collection(firestore, "sportsUsers");
         const q = query(collectionRef, where("phone", "==", inputField.phone));
         const querySnapshot = await getDocs(q);
         if (querySnapshot.docs.length > 0) {

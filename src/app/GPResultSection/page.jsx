@@ -158,7 +158,7 @@ const GPResultSection = () => {
           udise: student.udise,
         };
         setAllGPFirstsState([...allGPFirstsState, entry2]);
-        await axios.post("/api/addallGPFirsts", entry2);
+        // await axios.post("/api/addallGPFirsts", entry2);
         await setDoc(doc(firestore, "allGPFirsts", student.id), entry2).then(
           async () => {
             setLoader(false);

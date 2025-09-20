@@ -276,7 +276,7 @@ export default function CircleSportsDirectNameEntry() {
         (el) => el?.gp === teacherdetails.gp
       )
     );
-    await axios.post("/api/addallGPFirsts", upLoadedResult);
+    // await axios.post("/api/addallGPFirsts", upLoadedResult);
     await setDoc(
       doc(firestore, "allGPFirsts", inputField.id),
       upLoadedResult
@@ -323,7 +323,7 @@ export default function CircleSportsDirectNameEntry() {
     );
     setAllGPFirstsState(newData);
     setAllGPFirstsStateUpdateTime(Date.now());
-    await axios.post("/api/updateallGPFirsts", inputField);
+    // await axios.post("/api/updateallGPFirsts", inputField);
     const docRef = doc(firestore, "allGPFirsts", inputField.id);
     await updateDoc(docRef, inputField)
       .then(async () => {
@@ -433,7 +433,7 @@ export default function CircleSportsDirectNameEntry() {
   const deleteParticipant = async (participant) => {
     try {
       setLoader(true);
-      await axios.post("/api/delallGPFirsts", { id: participant.id });
+      // await axios.post("/api/delallGPFirsts", { id: participant.id });
       await deleteDoc(doc(firestore, "allGPFirsts", participant.id))
         .then(() => {
           setLoader(false);
@@ -469,10 +469,10 @@ export default function CircleSportsDirectNameEntry() {
     let circleAssistantsUpdateNteacherUpdate = allCircleAssistants
       .filter((el) => el?.gp === teacherdetails.gp)
       .map(async (el) => {
-        await axios.post("/api/updTeacherConvenor", {
-          id: el?.id,
-          circleAssistant: "taw",
-        });
+        // await axios.post("/api/updTeacherConvenor", {
+        //   id: el?.id,
+        //   circleAssistant: "taw",
+        // });
         let x = teachersState.filter((item) => item.id === el?.id)[0];
         x.circleAssistant = "taw";
         let y = teachersState.filter((item) => item.id !== el?.id);
@@ -483,12 +483,12 @@ export default function CircleSportsDirectNameEntry() {
         })
           .then(async () => {
             all = all.pop((item) => item.id === el?.id);
-            await axios.post("/api/delallCircleAssistants", {
-              id: el?.id,
-            });
+            // await axios.post("/api/delallCircleAssistants", {
+            //   id: el?.id,
+            // });
             await deleteDoc(doc(firestore, "allCircleAssistants", el?.id));
             try {
-              await updateDoc(doc(firestore, "userteachers", el?.id), {
+              await updateDoc(doc(firestore, "sportsUsers", el?.id), {
                 circleAssistant: "taw",
               });
             } catch (e) {
@@ -502,11 +502,11 @@ export default function CircleSportsDirectNameEntry() {
         async (el, ind) =>
           await setDoc(doc(firestore, "allCircleAssistants", el?.id), el).then(
             async () => {
-              await axios.post("/api/updTeacherConvenor", {
-                id: el?.id,
-                circleAssistant: "admin",
-              });
-              await axios.post("/api/addallGPAssistants", el);
+              // await axios.post("/api/updTeacherConvenor", {
+              //   id: el?.id,
+              //   circleAssistant: "admin",
+              // });
+              // await axios.post("/api/addallGPAssistants", el);
               let x = teachersState.filter((item) => item.id === el?.id)[0];
               x.circleAssistant = "admin";
               let y = teachersState.filter((item) => item.id !== el?.id);
@@ -518,7 +518,7 @@ export default function CircleSportsDirectNameEntry() {
                 circleAssistant: "admin",
               }).then(async () => {
                 try {
-                  await updateDoc(doc(firestore, "userteachers", el?.id), {
+                  await updateDoc(doc(firestore, "sportsUsers", el?.id), {
                     circleAssistant: "admin",
                   });
                 } catch (e) {
@@ -548,13 +548,13 @@ export default function CircleSportsDirectNameEntry() {
     y = [...y, x];
     setTeachersState(y);
     setTeacherUpdateTime(Date.now());
-    await axios.post("/api/updTeacherConvenor", {
-      id: el?.id,
-      circleAssistant: "taw",
-    });
-    await axios.post("/api/delallCircleAssistants", {
-      id: el?.id,
-    });
+    // await axios.post("/api/updTeacherConvenor", {
+    //   id: el?.id,
+    //   circleAssistant: "taw",
+    // });
+    // await axios.post("/api/delallCircleAssistants", {
+    //   id: el?.id,
+    // });
     setCircleAssistantState(
       circleAssistantState.filter((item) => item?.id !== el?.id)
     );
@@ -564,7 +564,7 @@ export default function CircleSportsDirectNameEntry() {
       .then(async () => {
         await deleteDoc(doc(firestore, "allCircleAssistants", el?.id));
         try {
-          await updateDoc(doc(firestore, "userteachers", el?.id), {
+          await updateDoc(doc(firestore, "sportsUsers", el?.id), {
             circleAssistant: "taw",
           }).then(() => {
             // getTeachersData();

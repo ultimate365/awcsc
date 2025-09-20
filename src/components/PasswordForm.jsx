@@ -90,13 +90,13 @@ const PasswordForm = (props) => {
         const record = response.data;
         if (record.success) {
           const q = query(
-            collection(firestore, "userteachers"),
+            collection(firestore, "sportsUsers"),
             where("email", "==", inputField.email)
           );
           const querySnapshot = await getDocs(q);
           // console.log(querySnapshot.docs[0].data().id);
           let id = querySnapshot.docs[0].data().id;
-          const docRef = doc(firestore, "userteachers", id);
+          const docRef = doc(firestore, "sportsUsers", id);
           await updateDoc(docRef, {
             password: bcrypt.hashSync(inputField.password, 10),
           });

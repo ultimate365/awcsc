@@ -134,7 +134,7 @@ const Complain = () => {
       try {
         setLoader(true);
         await setDoc(doc(firestore, "complains", docId), inputField);
-        await axios.post("/api/addcomplains", inputField);
+        // await axios.post("/api/addcomplains", inputField);
         // console.log(result.id);
         setLoader(false);
         toast.success("Congrats! Request Has Been Registered Successfully!", {

@@ -165,7 +165,7 @@ const CircleStudentsNameEntry = () => {
     setAllParticipants(newData);
     setFilteredGPData(newData);
     setAllGPFirstsStateUpdateTime(Date.now());
-    await axios.post("/api/updateallGPFirsts", inputField);
+    // await axios.post("/api/updateallGPFirsts", inputField);
     const docRef = doc(firestore, "allGPFirsts", inputField.id);
     await updateDoc(docRef, inputField)
       .then(async () => {
@@ -208,7 +208,7 @@ const CircleStudentsNameEntry = () => {
   const deleteParticipant = async (participant) => {
     try {
       setLoader(true);
-      await axios.post("/api/delallGPFirsts", { id: participant.id });
+      // await axios.post("/api/delallGPFirsts", { id: participant.id });
       await deleteDoc(doc(firestore, "allGPFirsts", participant.id))
         .then(() => {
           setLoader(false);
@@ -243,10 +243,10 @@ const CircleStudentsNameEntry = () => {
     const circleAssistantsUpdateNteacherUpdate = allCircleAssistants
       .filter((el) => el?.gp === teacherdetails.gp)
       .map(async (el) => {
-        await axios.post("/api/updTeacherConvenor", {
-          id: el?.id,
-          circleAssistant: "taw",
-        });
+        // await axios.post("/api/updTeacherConvenor", {
+        //   id: el?.id,
+        //   circleAssistant: "taw",
+        // });
         let x = teachersState.filter((item) => item.id === el?.id)[0];
         x.circleAssistant = "taw";
         let y = teachersState.filter((item) => item.id !== el?.id);
@@ -257,7 +257,7 @@ const CircleStudentsNameEntry = () => {
         })
           .then(async () => {
             try {
-              await updateDoc(doc(firestore, "userteachers", el?.id), {
+              await updateDoc(doc(firestore, "sportsUsers", el?.id), {
                 circleAssistant: "taw",
               });
             } catch (e) {
@@ -269,10 +269,10 @@ const CircleStudentsNameEntry = () => {
     await Promise.all(circleAssistantsUpdateNteacherUpdate).then(async () => {
       const createCircleAssistantNupdateTeacherData = assistants.map(
         async (el, ind) => {
-          await axios.post("/api/updTeacherConvenor", {
-            id: el?.id,
-            circleAssistant: "admin",
-          });
+          // await axios.post("/api/updTeacherConvenor", {
+          //   id: el?.id,
+          //   circleAssistant: "admin",
+          // });
           let x = teachersState.filter((item) => item.id === el?.id)[0];
           x.circleAssistant = "admin";
           let y = teachersState.filter((item) => item.id !== el?.id);
@@ -284,7 +284,7 @@ const CircleStudentsNameEntry = () => {
             circleAssistant: "admin",
           }).then(async () => {
             try {
-              await updateDoc(doc(firestore, "userteachers", el?.id), {
+              await updateDoc(doc(firestore, "sportsUsers", el?.id), {
                 circleAssistant: "admin",
               });
             } catch (e) {
@@ -314,10 +314,10 @@ const CircleStudentsNameEntry = () => {
     y = [...y, x];
     setTeachersState(y);
     setTeacherUpdateTime(Date.now());
-    await axios.post("/api/updTeacherConvenor", {
-      id: el?.id,
-      circleAssistant: "taw",
-    });
+    // await axios.post("/api/updTeacherConvenor", {
+    //   id: el?.id,
+    //   circleAssistant: "taw",
+    // });
     setCircleAssistantState(
       circleAssistantState.filter((item) => item?.id !== el?.id)
     );
@@ -326,7 +326,7 @@ const CircleStudentsNameEntry = () => {
     })
       .then(async () => {
         try {
-          await updateDoc(doc(firestore, "userteachers", el?.id), {
+          await updateDoc(doc(firestore, "sportsUsers", el?.id), {
             circleAssistant: "taw",
           }).then(() => {
             setLoader(false);
@@ -489,7 +489,7 @@ const CircleStudentsNameEntry = () => {
         .then(async () => {
           // Updating "userteachers" Database
           try {
-            await updateDoc(doc(firestore, "userteachers", el?.id), {
+            await updateDoc(doc(firestore, "sportsUsers", el?.id), {
               gpAssistant: "taw",
               circleAssistant: "taw",
               convenor: "taw",
@@ -611,11 +611,11 @@ const CircleStudentsNameEntry = () => {
       selectedGPLock.entryCloseddBy = teacherdetails.tname;
       selectedGPLock.closeDate = Date.now();
     }
-    try {
-      await axios.post("/api/updatecircleLockData", selectedGPLock);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   await axios.post("/api/updatecircleLockData", selectedGPLock);
+    // } catch (error) {
+    //   console.log(error);
+    // }
     try {
       await updateDoc(
         doc(firestore, "circleLockData", selectedGPLock?.id),
@@ -650,11 +650,11 @@ const CircleStudentsNameEntry = () => {
         selectedGPLock.entryCloseddBy = teacherdetails.tname;
         selectedGPLock.closeDate = Date.now();
       }
-      try {
-        await axios.post("/api/updatecircleLockData", selectedGPLock);
-      } catch (error) {
-        console.log(error);
-      }
+      // try {
+      //   await axios.post("/api/updatecircleLockData", selectedGPLock);
+      // } catch (error) {
+      //   console.log(error);
+      // }
       try {
         await updateDoc(
           doc(firestore, "circleLockData", selectedGPLock?.id),

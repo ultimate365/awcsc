@@ -160,7 +160,7 @@ const CircleResultSection = () => {
       group: student.group,
       udise: student.udise,
     };
-    await axios.post("/api/addAmtaWestCircleAllResult", entry);
+    // await axios.post("/api/addAmtaWestCircleAllResult", entry);
     const onlyFirstResult = [...AmtaWestCircleAllResultState, entry];
     const sortedOnlyFirstResult = onlyFirstResult.sort((a, b) => {
       if (a.gender < b.gender) return -1;
@@ -197,7 +197,7 @@ const CircleResultSection = () => {
           group: student.group,
           udise: student.udise,
         };
-        await axios.post("/api/addAmtaWestCircleFirstResult", entry2);
+        // await axios.post("/api/addAmtaWestCircleFirstResult", entry2);
         await setDoc(
           doc(firestore, "AmtaWestCircleFirstResult", student.id),
           entry2
@@ -239,7 +239,7 @@ const CircleResultSection = () => {
     setAmtaWestCircleAllResultState(newData);
     setAllResult(newData);
     setAmtaWestCircleAllResultUpdateTime(Date.now());
-    await axios.post("/api/updateallGPFirsts", inputField);
+    // await axios.post("/api/updateallGPFirsts", inputField);
     const docRef = doc(firestore, "allGPFirsts", inputField.id);
     const docRef2 = doc(firestore, "AmtaWestCircleAllResult", inputField.id);
     await updateDoc(docRef, inputField);
@@ -251,9 +251,9 @@ const CircleResultSection = () => {
         console.log(checkFirst);
         if (checkFirst.length > 0) {
           const studentSelected = checkFirst[0];
-          await axios.post("/api/updateAmtaWestCircleFirstResult", {
-            id: studentSelected.id,
-          });
+          // await axios.post("/api/updateAmtaWestCircleFirstResult", {
+          //   id: studentSelected.id,
+          // });
           const docRef3 = doc(
             firestore,
             "AmtaWestCircleFirstResult",
@@ -569,7 +569,7 @@ const CircleResultSection = () => {
       <div className="my-4">
         <h3 className="text-center ben text-primary">
           {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগিতা,{" "}
-          {enToBnNumber(new Date().getFullYear() )} রেজাল্ট
+          {enToBnNumber(new Date().getFullYear())} রেজাল্ট
         </h3>
         <DataTable
           columns={columns}

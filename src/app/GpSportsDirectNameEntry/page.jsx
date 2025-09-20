@@ -310,7 +310,7 @@ export default function GpSportsDirectNameEntry() {
     };
     setGpStudentState([...gpStudentState, upLoadedResult]);
     setGpStudentStateUpdateTime(Date.now());
-    await axios.post("/api/addgpSportsStudentData", upLoadedResult);
+    // await axios.post("/api/addgpSportsStudentData", upLoadedResult);
     await setDoc(
       doc(firestore, "gpSportsStudentData", inputField.id),
       upLoadedResult
@@ -417,7 +417,7 @@ export default function GpSportsDirectNameEntry() {
     setGpStudentState(newData);
     setFilteredData(newData);
     setGpStudentStateUpdateTime(Date.now());
-    await axios.post("/api/updategpSportsStudentData", updatedResult);
+    // await axios.post("/api/updategpSportsStudentData", updatedResult);
     await updateDoc(
       doc(firestore, "gpSportsStudentData", inputField.id),
       updatedResult

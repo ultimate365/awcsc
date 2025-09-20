@@ -51,7 +51,7 @@ const RegUsers = () => {
   const [loader, setLoader] = useState(false);
   const userData = async () => {
     try {
-      const q = query(collection(firestore, "userteachers"));
+      const q = query(collection(firestore, "sportsUsers"));
 
       const querySnapshot = await getDocs(q);
       const data = querySnapshot.docs.map((doc) => ({
@@ -369,7 +369,7 @@ const RegUsers = () => {
     setLoader(true);
     try {
       await axios.post("/api/deluserteachers", { id: user.id });
-      await deleteDoc(doc(firestore, "userteachers", user.id));
+      await deleteDoc(doc(firestore, "sportsUsers", user.id));
       let x = teachersState.filter((item) => item.id !== user.id);
       let y = teachersState.filter((item) => item.id === user.id)[0];
       y.registered = false;
@@ -405,7 +405,7 @@ const RegUsers = () => {
     setLoader(true);
     try {
       await axios.post("/api/endisuserteachers", { id: id, disabled: true });
-      const docRef = doc(firestore, "userteachers", id);
+      const docRef = doc(firestore, "sportsUsers", id);
       await updateDoc(docRef, {
         disabled: true,
       })
@@ -426,7 +426,7 @@ const RegUsers = () => {
     setLoader(true);
     try {
       await axios.post("/api/endisuserteachers", { id: id, disabled: false });
-      const docRef = doc(firestore, "userteachers", id);
+      const docRef = doc(firestore, "sportsUsers", id);
       await updateDoc(docRef, {
         disabled: false,
       })
@@ -452,7 +452,7 @@ const RegUsers = () => {
       const password = bcrypt.hashSync(user.pan.toLowerCase(), 10);
       user.password = password;
       await axios.post("/api/updateuserteachers", user);
-      const docRef = doc(firestore, "userteachers", user.id);
+      const docRef = doc(firestore, "sportsUsers", user.id);
       await updateDoc(docRef, {
         password: password,
       })

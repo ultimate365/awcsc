@@ -99,7 +99,7 @@ const Login = () => {
     if (validForm()) {
       try {
         setLoader(true);
-        const collectionRef = collection(firestore, "userteachers");
+        const collectionRef = collection(firestore, "sportsUsers");
         const q = query(
           collectionRef,
           where("username", "==", inputField.username.toLowerCase())

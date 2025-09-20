@@ -123,7 +123,7 @@ const UpdateUP = () => {
     setLoader(true);
     if (isTeacher) {
       if (inputField.username !== "") {
-        const collectionRef = collection(firestore, "userteachers");
+        const collectionRef = collection(firestore, "sportsUsers");
         const q = query(
           collectionRef,
           where("username", "==", inputField.username.toLowerCase())
@@ -143,7 +143,7 @@ const UpdateUP = () => {
             theme: "light",
           });
         } else {
-          const docRef = doc(firestore, "userteachers", id);
+          const docRef = doc(firestore, "sportsUsers", id);
           await updateDoc(docRef, {
             username: inputField.username.toLowerCase(),
           }).then(() => {
@@ -216,7 +216,7 @@ const UpdateUP = () => {
       setLoader(true);
       if (isTeacher) {
         try {
-          const docRef = doc(firestore, "userteachers", id);
+          const docRef = doc(firestore, "sportsUsers", id);
           await updateDoc(docRef, {
             password: bcrypt.hashSync(inputField.password, 10),
           }).then(() => {
