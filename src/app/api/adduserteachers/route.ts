@@ -30,28 +30,52 @@ export async function POST(request: NextRequest) {
     }: any = reqBody;
     const teacherData = await teachers.findOne({ empid });
     if (teacherData) {
-      const newuserteachers = new userteachers({
-        disabled,
-        createdAt,
-        tname,
-        email,
-        circle,
-        circleAssistant,
-        password,
-        username,
-        udise,
-        pan,
-        desig,
-        convenor,
-        school,
-        empid,
-        teachersID,
-        id,
-        phone,
-        gpAssistant,
-        gp,
-      });
-      await newuserteachers.save();
+      const userData = await userteachers.findOne({ empid });
+      if (userData) {
+        userData.tname = tname;
+        userData.email = email;
+        userData.circle = circle;
+        userData.circleAssistant = circleAssistant;
+        userData.password = password;
+        userData.username = username;
+        userData.udise = udise;
+        userData.pan = pan;
+        userData.desig = desig;
+        userData.convenor = convenor;
+        userData.school = school;
+        userData.empid = empid;
+        userData.teachersID = teachersID;
+        userData.id = id;
+        userData.phone = phone;
+        userData.gpAssistant = gpAssistant;
+        userData.gp = gp;
+        userData.disabled = disabled;
+        userData.createdAt = createdAt;
+        await userData.save();
+      } else {
+        const newuserteachers = new userteachers({
+          disabled,
+          createdAt,
+          tname,
+          email,
+          circle,
+          circleAssistant,
+          password,
+          username,
+          udise,
+          pan,
+          desig,
+          convenor,
+          school,
+          empid,
+          teachersID,
+          id,
+          phone,
+          gpAssistant,
+          gp,
+        });
+        await newuserteachers.save();
+      }
       teacherData.registered = true;
       await teacherData.save();
       return NextResponse.json(

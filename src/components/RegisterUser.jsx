@@ -33,7 +33,7 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
     udise: sata.udise,
     circle: sata.circle,
     empid: sata.empid,
-    convenor: sata.convenor,
+    convenor: sata.circle,
     gpAssistant: sata.gpAssistant,
     gp: sata.gp,
     email: sata.email,
@@ -102,8 +102,8 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
           udise: inputField.udise,
           circle: inputField.circle,
           empid: inputField.empid,
-          convenor: inputField.convenor,
-          gpAssistant: inputField.gpAssistant,
+          convenor: inputField.circle,
+          gpAssistant: inputField.circle,
           gp: inputField.gp,
           email: inputField.email,
           phone: inputField.phone,
@@ -217,7 +217,7 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
 
   const sendVerificationOTP = async () => {
     setDisplayLoader(true);
-    const res = await axios.post("/api/sendVerifyOTP", {
+    const res = await axios.post("/api/sendMobileOTP", {
       phone: inputField.phone,
       email: inputField.email,
       name: inputField.tname,
@@ -443,7 +443,7 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
                   <div className="mb-3 mx-auto col-md-6">
                     <div className="mb-3">
                       <label htmlFor="" className="form-label">
-                        Enter Your Mobile OTP
+                        Enter Your Mobile OTP Received on Telegram
                       </label>
                       <input
                         type="text"
@@ -479,7 +479,7 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
                     verifyOTP();
                   }}
                 >
-                  Send OTP
+                  Verify OTP
                 </button>
                 <button
                   type="button"

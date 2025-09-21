@@ -1,9 +1,10 @@
 import dbConnect from "../../../lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import PhoneOtp from "../../../models/phoneOtp";
+import EmailOtp from "../../../models/emailOtp";
 import { TelegramClient } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
-
+import verifyEmailMailer from "../../../lib/verifyEmailMailer";
 const apiId = Number(process.env.TELEGRAM_API_ID);
 const apiHash = process.env.TELEGRAM_API_HASH || "";
 const stringSession = new StringSession(process.env.TELEGRAM_SESSION || "");
@@ -11,15 +12,21 @@ dbConnect();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { phone, name }: any = reqBody;
+    const { phone, email, name }: any = reqBody;
     const client = new TelegramClient(stringSession, apiId, apiHash, {
       connectionRetries: 5,
     });
 
     const mobileOtp = Math.floor(100000 + Math.random() * 900000);
+    const emailOtp = Math.floor(100000 + Math.random() * 900000);
     let mobileOtpdata = new PhoneOtp({
       phone: phone,
       code: mobileOtp,
+      expiresIn: new Date().getTime() + 300 * 1000,
+    });
+    let emailOtpdata = new EmailOtp({
+      email: email,
+      code: emailOtp,
       expiresIn: new Date().getTime() + 300 * 1000,
     });
     const message = `Hello ${name} your OTP is ${mobileOtp}. Please use it before 10 Minutes.`;
@@ -36,7 +43,9 @@ export async function POST(request: NextRequest) {
 
     // const message_id = await sendToTelegram(message);
     // mobileOtpdata.message_id = message_id;
+    await verifyEmailMailer(email, emailOtp, name);
     await mobileOtpdata.save();
+    await emailOtpdata.save();
     return NextResponse.json(
       { message: "OTP sent successfully", success: true },
       { status: 200 }

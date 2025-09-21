@@ -396,21 +396,21 @@ const SetConvenors = () => {
         name: "GP",
         selector: (row) => row.gp,
         sortable: true,
-        wrap: true,
+        wrap: +true,
         center: +true,
       },
       {
         name: "Teacher Name",
         selector: (row) => row.tname,
 
-        wrap: true,
+        wrap: +true,
         center: +true,
       },
       {
         name: "School Name",
         selector: (row) => row.school,
 
-        wrap: true,
+        wrap: +true,
         center: +true,
       },
       {
@@ -426,7 +426,7 @@ const SetConvenors = () => {
           </a>
         ),
 
-        wrap: true,
+        wrap: +true,
         center: +true,
       },
       {
@@ -461,7 +461,7 @@ const SetConvenors = () => {
             </button>
           ) : null,
 
-        wrap: true,
+        wrap: +true,
         center: +true,
         omit: !isAdmin,
       },

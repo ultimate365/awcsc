@@ -158,7 +158,7 @@ const DisplayComplain = () => {
       remarks: remark,
     };
     // await axios.post("/api/updateComplain", x);
-    const docRef = doc(firestore, "complains", complainId);
+    const docRef = doc(firestore, "sportscomplains", complainId);
     await updateDoc(docRef, entry);
     toast.success("Complain Noticed!");
     getComplains();
@@ -166,7 +166,7 @@ const DisplayComplain = () => {
 
   const getComplains = async () => {
     try {
-      const q = query(collection(firestore, "complains"));
+      const q = query(collection(firestore, "sportscomplains"));
 
       const querySnapshot = await getDocs(q);
       const data = querySnapshot.docs.map((doc) => ({
@@ -190,7 +190,7 @@ const DisplayComplain = () => {
   const deleteComplain = async (id) => {
     setShowTable(false);
     // await axios.post("/api/delComplain", { id });
-    await deleteDoc(doc(firestore, "complains", id));
+    await deleteDoc(doc(firestore, "sportscomplains", id));
     toast.success("Complain Deleted Successfully!");
     getComplains();
     setShowTable(true);

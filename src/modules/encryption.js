@@ -1,6 +1,6 @@
 import CryptoJS from "crypto-js";
 
-export const secretKey = process.env.NEXT_PUBLIC_APP_SECRETKEY;
+export const secretKey = process.env.NEXT_PUBLIC_AUTHKEY;
 export const encryptObjData = (name, value, minutes) => {
   let encJsonObj = CryptoJS.AES.encrypt(
     JSON.stringify(value),

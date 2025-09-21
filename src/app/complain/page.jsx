@@ -133,7 +133,7 @@ const Complain = () => {
     if (validForm()) {
       try {
         setLoader(true);
-        await setDoc(doc(firestore, "complains", docId), inputField);
+        await setDoc(doc(firestore, "sportscomplains", docId), inputField);
         // await axios.post("/api/addcomplains", inputField);
         // console.log(result.id);
         setLoader(false);
@@ -184,7 +184,7 @@ const Complain = () => {
     setLoader(true);
     let data;
     try {
-      const collectionRef = collection(firestore, "complains");
+      const collectionRef = collection(firestore, "sportscomplains");
       const q = query(collectionRef, where("id", "==", search));
       const querySnapshot = await getDocs(q);
       if (querySnapshot.docs.length > 0) {

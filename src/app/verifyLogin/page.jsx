@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { useGlobalContext } from "../../context/Store";
@@ -16,7 +16,7 @@ import axios from "axios";
 import Link from "next/link";
 export default function VerifyLogin() {
   const { setState } = useGlobalContext();
-
+  const formRef = useRef(null);
   const navigate = useRouter();
   const [phone, setPhone] = useState(null);
   const [name, setName] = useState(null);
@@ -115,13 +115,16 @@ export default function VerifyLogin() {
     }
     if (nonVerifiedTid) {
       const teacherData = decryptObjData("nonVerifiedTid");
-      console.log(teacherData);
       setPhone(teacherData.phone);
       setName(teacherData.tname);
     }
     // eslint-disable-next-line
   }, []);
-
+  useEffect(() => {
+    if (mobileOTP.length === 6) {
+      formRef.current?.requestSubmit();
+    }
+  }, [mobileOTP]);
   return (
     <div className="container">
       {displayLoader ? <Loader /> : null}
@@ -137,13 +140,13 @@ export default function VerifyLogin() {
         </button>
       ) : (
         <div>
-          <p>Please check your OTP on Our Telegram Group</p>
-          {/* <p>
-            Please check your phone +91-
+          {/* <p>Please check your OTP on Our Telegram Group</p> */}
+          <p>
+            Please check your Telegram App on +91-
             {`${phone?.slice(0, 4)}XXXX${phone?.slice(8, 10)}`} for an OTP.
-          </p> */}
+          </p>
           <div className="col-md-6 mx-auto">
-            <form action="" autoComplete="off" onSubmit={verifyOTP}>
+            <form ref={formRef} autoComplete="off" onSubmit={verifyOTP}>
               <input
                 className="form-control mb-3"
                 ref={(input) => input && input.focus()}
@@ -152,12 +155,19 @@ export default function VerifyLogin() {
                 placeholder={"Enter Your 6 digit OTP"}
                 value={mobileOTP}
                 onChange={(e) => {
-                  const inputValue = e.target.value;
-
-                  // Set a maxLength (e.g., 6 digits)
-                  if (inputValue.length <= 6) {
-                    setMobileOTP(inputValue);
-                  }
+                  // Only digits, max 6
+                  const inputValue = e.target.value
+                    .replace(/\D/g, "")
+                    .slice(0, 6);
+                  setMobileOTP(inputValue);
+                }}
+                onPaste={(e) => {
+                  e.preventDefault();
+                  const pasted = e.clipboardData
+                    .getData("Text")
+                    .replace(/\D/g, "")
+                    .slice(0, 6);
+                  setMobileOTP(pasted);
                 }}
               />
             </form>
