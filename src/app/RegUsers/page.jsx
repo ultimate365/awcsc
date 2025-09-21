@@ -386,7 +386,7 @@ const RegUsers = () => {
       setTeacherUpdateTime(Date.now());
       const docRef = doc(firestore, "teachers", user.id);
       await updateDoc(docRef, {
-        registered: false,
+        spregistered: false,
       });
       setLoader(false);
       userData();

@@ -123,7 +123,7 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
 
             const docRef = doc(firestore, "teachers", inputField.teachersID);
             await updateDoc(docRef, {
-              registered: true,
+              spregistered: true,
             }).catch((e) => console.log(e));
 
             setDisplayLoader(false);

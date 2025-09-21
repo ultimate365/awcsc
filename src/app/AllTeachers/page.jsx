@@ -66,7 +66,7 @@ const AllTeachers = () => {
     circle: "",
     hoi: "",
     udise: "",
-    registered: "",
+    spregistered: "",
     rank: "",
     phone: "",
     empid: "",
@@ -86,7 +86,7 @@ const AllTeachers = () => {
     circle: "",
     hoi: "",
     udise: "",
-    registered: "",
+    spregistered: "",
     rank: "",
     phone: "",
     empid: "",
@@ -255,7 +255,7 @@ const AllTeachers = () => {
       email: inputField.email,
       hoi: inputField.hoi,
       udise: inputField.udise,
-      registered: inputField.registered,
+      spregistered: inputField.registered,
       rank: inputField.rank,
       phone: inputField.phone,
       pan: inputField.pan,
@@ -328,7 +328,7 @@ const AllTeachers = () => {
         try {
           const docRef = doc(firestore, "teachers", el.id);
           await updateDoc(docRef, {
-            registered: true,
+            spregistered: true,
           });
           await setDoc(doc(firestore, "sportsUsers", el.id), entry)
             .then(() => {
@@ -522,7 +522,7 @@ const AllTeachers = () => {
                       circle: "",
                       hoi: "",
                       udise: "",
-                      registered: "",
+                      spregistered: "",
                       rank: "",
                       phone: "",
                       empid: "",
@@ -543,7 +543,7 @@ const AllTeachers = () => {
                       circle: "",
                       hoi: "",
                       udise: "",
-                      registered: "",
+                      spregistered: "",
                       rank: "",
                       phone: "",
                       empid: "",
@@ -869,7 +869,7 @@ const AllTeachers = () => {
                         onChange={(e) => {
                           setInputField({
                             ...inputField,
-                            registered: e.target.value,
+                            spregistered: e.target.value,
                           });
                         }}
                       >
@@ -910,7 +910,7 @@ const AllTeachers = () => {
                       circle: "",
                       hoi: "",
                       udise: "",
-                      registered: "",
+                      spregistered: "",
                       rank: "",
                       phone: "",
                       empid: "",
@@ -931,7 +931,7 @@ const AllTeachers = () => {
                       circle: "",
                       hoi: "",
                       udise: "",
-                      registered: "",
+                      spregistered: "",
                       rank: "",
                       phone: "",
                       empid: "",

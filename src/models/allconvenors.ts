@@ -15,7 +15,7 @@ const allconvenorsSchema = new mongoose.Schema(
     email: String,
     pan: String,
     circle: String,
-    registered: Boolean,
+    spregistered: Boolean,
     dataYear: Number,
     convenor: String,
     gpAssistant: String,
