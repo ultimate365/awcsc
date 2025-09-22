@@ -865,7 +865,7 @@ const AllTeachers = () => {
                       <select
                         className="form-select form-select-sm mb-3"
                         aria-label=".form-select-lg example"
-                        value={inputField?.registered}
+                        value={inputField?.spregistered}
                         onChange={(e) => {
                           setInputField({
                             ...inputField,

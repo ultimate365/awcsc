@@ -144,12 +144,14 @@ const RegUsers = () => {
       name: "Sl",
       selector: (row, index) => data.findIndex((i) => i.id === row?.id) + 1,
       sortable: +true,
+      center: +true,
     },
     {
       name: "Teacher Name",
       selector: (row) => row.tname,
       sortable: +true,
       wrap: +true,
+      center: +true,
     },
 
     {
@@ -157,24 +159,28 @@ const RegUsers = () => {
       selector: (row) => row.school,
       sortable: +true,
       wrap: +true,
+      center: +true,
     },
     {
       name: "Username",
       selector: (row) => row.username,
       sortable: +true,
       wrap: +true,
+      center: +true,
     },
     {
       name: "Email",
       selector: (row) => row.email,
       sortable: +true,
       wrap: +true,
+      center: +true,
     },
 
     {
       name: "Access",
       selector: (row) => row.circle,
       sortable: +true,
+      center: +true,
     },
     {
       name: "Registered On",
@@ -183,6 +189,7 @@ const RegUsers = () => {
         return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
       },
       sortable: +true,
+      center: +true,
     },
     {
       name: "Delete User",
@@ -199,6 +206,7 @@ const RegUsers = () => {
           Delete
         </button>
       ),
+      center: +true,
     },
     {
       name: "Update User Login",
@@ -232,6 +240,7 @@ const RegUsers = () => {
             Lock User
           </button>
         ),
+      center: +true,
     },
     {
       name: "Reset Password",
@@ -281,6 +290,7 @@ const RegUsers = () => {
             Reset Password
           </button>
         ),
+      center: +true,
     },
   ];
   const schoolColumns = [
@@ -288,83 +298,88 @@ const RegUsers = () => {
       name: "Sl",
       selector: (row, index) =>
         schoolData.findIndex((i) => i.id === row?.id) + 1,
+      width: "5%",
       sortable: +true,
+      center: +true,
     },
     {
       name: "School Name",
       selector: (row) => row.school,
       sortable: +true,
       wrap: +true,
+      center: +true,
+      width: "40%",
     },
     {
       name: "GP",
       selector: (row) => row.gp,
       sortable: +true,
       wrap: +true,
+      center: +true,
+      width: "10%",
     },
     {
       name: "Username",
       selector: (row) => row.username,
-      sortable: +true,
       wrap: +true,
+      center: +true,
+      width: "10%",
     },
     {
       name: "Default Password",
       selector: (row) => `${row.id}@${row.gp.toLowerCase()}`,
-      sortable: +true,
       wrap: +true,
-    },
-    {
-      name: "Password Changed?",
-      selector: (row) =>
-        compare(`${row.id}@${row.gp.toLowerCase()}`, row.password)
-          ? "No"
-          : "Yes",
-      sortable: +true,
-      wrap: +true,
+      center: +true,
+      width: "15%",
     },
 
     {
       name: "Reset Password",
-      cell: (row) => (
-        <button
-          type="button"
-          className="btn btn-sm btn-warning"
-          onClick={() => {
-            if (!compare(`${row.id}@${row.gp.toLowerCase()}`, row.password)) {
-              // eslint-disable-next-line
-              let message = confirm(
-                `Are You Sure To Reset Password of ${row.school}? `
-              );
-              message
-                ? resetSchoolPassword(row)
-                : toast.error("User Password Not Resetted!", {
-                    position: "top-right",
-                    autoClose: 1500,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                  });
-            } else {
-              toast.error("User Password Has Not Been Changed Yet!", {
-                position: "top-right",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
-              });
-            }
-          }}
-        >
-          Reset Password
-        </button>
-      ),
+      cell: (row) => {
+        const isPasswordChanged = !compare(
+          `${row.id}@${row.gp.toLowerCase()}`,
+          row.password
+        );
+        if (isPasswordChanged) {
+          return (
+            <button
+              type="button"
+              className="btn btn-sm btn-warning"
+              style={{ fontSize: 9 }}
+              onClick={() => {
+                // eslint-disable-next-line
+                let message = confirm(
+                  `Are You Sure To Reset Password of ${row.school} to ${
+                    row.id
+                  }@${row.gp.toLowerCase()}? `
+                );
+                message
+                  ? resetSchoolPassword(row)
+                  : toast.error("School Password Not Resetted!", {
+                      position: "top-right",
+                      autoClose: 1500,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "light",
+                    });
+              }}
+            >
+              Reset Password
+            </button>
+          );
+        } else {
+          return (
+            <h5>
+              <span className="badge bg-success">Default Password</span>
+            </h5>
+          );
+        }
+      },
+      width: "10%",
+      center: +true,
     },
   ];
   // console.log(inputField);
