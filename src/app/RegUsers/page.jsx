@@ -16,7 +16,10 @@ import { toast } from "react-toastify";
 import bcrypt from "bcryptjs";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
-import { comparePassword } from "@/modules/calculatefunctions";
+import {
+  comparePassword,
+  createDownloadLink,
+} from "@/modules/calculatefunctions";
 import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
 const RegUsers = () => {
@@ -50,62 +53,62 @@ const RegUsers = () => {
   const [filterSchoolData, setFilterSchoolData] = useState([]);
   const [loader, setLoader] = useState(false);
   const userData = async () => {
-    try {
-      const q = query(collection(firestore, "sportsUsers"));
+    // try {
+    const q = query(collection(firestore, "sportsUsers"));
 
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setData(data);
-      setFilteredData(data);
-      setShowTable(true);
-    } catch (error) {
-      await axios
-        .post(`/api/getuserteachers`)
-        .then((data) => {
-          const res = data.data?.data;
-          setData(res);
-          setFilteredData(res);
-          setShowTable(true);
-        })
-        .catch((e) => {
-          console.log(e);
-          setLoader(false);
-        });
-      console.log(error);
-    }
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map((doc) => ({
+      // doc.data() is never undefined for query doc snapshots
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setData(data);
+    setFilteredData(data);
+    setShowTable(true);
+    // } catch (error) {
+    //   await axios
+    //     .post(`/api/getuserteachers`)
+    //     .then((data) => {
+    //       const res = data.data?.data;
+    //       setData(res);
+    //       setFilteredData(res);
+    //       setShowTable(true);
+    //     })
+    //     .catch((e) => {
+    //       console.log(e);
+    //       setLoader(false);
+    //     });
+    //   console.log(error);
+    // }
   };
   const schoolUserData = async () => {
-    try {
-      const q = query(collection(firestore, "userschools"));
+    // try {
+    const q = query(collection(firestore, "userschools"));
 
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setSchoolData(data);
-      setFilterSchoolData(data);
-      setShowSchoolTable(true);
-    } catch (error) {
-      await axios
-        .post(`/api/getuserschools`)
-        .then((data) => {
-          const res = data.data?.data;
-          setSchoolData(res);
-          setFilterSchoolData(res);
-          setShowSchoolTable(true);
-        })
-        .catch((e) => {
-          console.log(e);
-          setLoader(false);
-        });
-      console.log(error);
-    }
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map((doc) => ({
+      // doc.data() is never undefined for query doc snapshots
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setSchoolData(data);
+    setFilterSchoolData(data);
+    setShowSchoolTable(true);
+    // } catch (error) {
+    //   await axios
+    //     .post(`/api/getuserschools`)
+    //     .then((data) => {
+    //       const res = data.data?.data;
+    //       setSchoolData(res);
+    //       setFilterSchoolData(res);
+    //       setShowSchoolTable(true);
+    //     })
+    //     .catch((e) => {
+    //       console.log(e);
+    //       setLoader(false);
+    //     });
+    //   console.log(error);
+    // }
   };
   useEffect(() => {
     if (!details) {
@@ -507,6 +510,26 @@ const RegUsers = () => {
   return (
     <div className="container text-center my-5">
       {loader ? <Loader /> : null}
+      <div>
+        <button
+          type="button"
+          className="btn btn-primary m-2"
+          onClick={() => {
+            createDownloadLink(data, "sportsUsers");
+          }}
+        >
+          Download User Teacher's Data
+        </button>
+        <button
+          type="button"
+          className="btn btn-success m-2"
+          onClick={() => {
+            createDownloadLink(schoolData, "userschools");
+          }}
+        >
+          Download User School's Data
+        </button>
+      </div>
       {showTable ? (
         <>
           <h3 className="text-center text-primary">
