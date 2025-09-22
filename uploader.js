@@ -4,7 +4,7 @@ var serviceAccount = require("./service_key.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://amtawestsports-default-rtdb.firebaseio.com",
+  databaseURL: "https://amtawestcsc-default-rtdb.firebaseio.com",
 });
 
 const firestore = admin.firestore();
