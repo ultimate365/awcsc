@@ -19,11 +19,6 @@ export async function POST(request: NextRequest) {
 
     const mobileOtp = Math.floor(100000 + Math.random() * 900000);
     const emailOtp = Math.floor(100000 + Math.random() * 900000);
-    let mobileOtpdata = new PhoneOtp({
-      phone: phone,
-      code: mobileOtp,
-      expiresIn: new Date().getTime() + 300 * 1000,
-    });
     let emailOtpdata = new EmailOtp({
       email: email,
       code: emailOtp,
@@ -39,11 +34,20 @@ export async function POST(request: NextRequest) {
       onError: (err) => console.log("Error:", err),
     });
     const user = await client.getEntity("+91" + phone);
-    await client.sendMessage(user, { message });
+    // In your original POST function (where you send messages), update this part:
+    const result = await client.sendMessage(user, { message: message });
 
     // const message_id = await sendToTelegram(message);
     // mobileOtpdata.message_id = message_id;
     await verifyEmailMailer(email, emailOtp, name);
+    // Store MORE information about the chat context
+    let mobileOtpdata = new PhoneOtp({
+      phone: phone,
+      code: mobileOtp,
+      expiresIn: new Date().getTime() + 300 * 1000,
+      message_id: result.id,
+      chat_id: user.id, // Store chat ID
+    });
     await mobileOtpdata.save();
     await emailOtpdata.save();
     return NextResponse.json(
