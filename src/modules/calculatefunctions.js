@@ -500,6 +500,10 @@ export const generateID = () => {
 
   return randomCode;
 };
+export const validateEmployeeID = (id) => {
+  const pattern = /^[A-Z]{4}\d{4}$/;
+  return pattern.test(id.toUpperCase());
+};
 export function compareObjects(x, y) {
   if (x === y) return true;
   // if both x and y are null or undefined and exactly the same

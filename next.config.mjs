@@ -19,6 +19,7 @@ const nextConfig = {
         hostname: "api.qrserver.com",
       },
     ],
+    unoptimized: true, // disables Image Optimization API
   },
   eslint: {
     ignoreDuringBuilds: true,
