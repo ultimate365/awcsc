@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js";
 import { secretKey } from "../../../modules/encryption";
 export async function POST(request) {
   try {
-    const { data, identity } = await request.json();
+    const { data } = await request.json();
     // // Get the request body
     const enc = CryptoJS.AES.decrypt(data?.message, secretKey);
     const mainObj = JSON.parse(enc.toString(CryptoJS.enc.Utf8));

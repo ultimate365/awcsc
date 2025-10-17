@@ -26,20 +26,20 @@ export async function POST(request: NextRequest) {
     });
     const message = `Hello ${name} your OTP is ${mobileOtp}. Please use it before 10 Minutes.`;
     await client.start({
-      phoneNumber: async () => "+91" + phone,
+      phoneNumber: async () => "+91" + phone.toString(),
       password: async () => "", // optional 2FA password if enabled
       phoneCode: async () => {
         throw new Error("OTP required — run setup separately to get session.");
       },
       onError: (err) => console.log("Error:", err),
     });
-    const user = await client.getEntity("+91" + phone);
+    const user = await client.getEntity("+91" + phone.toString());
     // In your original POST function (where you send messages), update this part:
     const result = await client.sendMessage(user, { message: message });
 
     // const message_id = await sendToTelegram(message);
     // mobileOtpdata.message_id = message_id;
-    await verifyEmailMailer(email, emailOtp, name);
+    if (email) await verifyEmailMailer(email, emailOtp, name);
     // Store MORE information about the chat context
     let mobileOtpdata = new PhoneOtp({
       phone: phone,

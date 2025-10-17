@@ -11,7 +11,7 @@ dbConnect();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { phone, phoneCode, name }: any = reqBody;
+    const { phone, phoneCode }: any = reqBody;
     const phoneData = await PhoneOtp.findOne({ phone, code: phoneCode });
     if (phoneData) {
       const currentTime = new Date().getTime();

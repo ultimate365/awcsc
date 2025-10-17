@@ -63,9 +63,9 @@ const CircleResultSection = () => {
     return 0;
   });
   const navigate = useRouter();
-  const docId = uuid();
-  const [allData, setAllData] = useState(data);
-  const [gpSchools, setGpSchools] = useState(gpData);
+
+  const [allData] = useState(data);
+  const [gpSchools] = useState(gpData);
   const [allFirstResult, setAllFirstResult] = useState([]);
   const [thisGp, setThisGp] = useState("");
   const [loader, setLoader] = useState(false);

@@ -136,7 +136,16 @@ export default function Signup() {
   };
 
   // Send OTP (calls your API)
-  const sendOTP = async () => {
+  const sendOTP = async (isResend = false) => {
+    if (isResend) {
+      // clear existing OTP fields when user requests resend
+      setOtp(new Array(6).fill(""));
+      setEmailOtp(new Array(6).fill(""));
+      // focus first mobile OTP input if available
+      setTimeout(() => {
+        inputsRef.current[0]?.focus();
+      }, 50);
+    }
     if (
       !inputField.phone ||
       inputField.phone.length < 10 ||
@@ -336,6 +345,42 @@ export default function Signup() {
     }
   };
 
+  // Paste handler for mobile OTP inputs
+  const handleOtpPaste = (e, index) => {
+    e.preventDefault();
+    const pasted =
+      (e.clipboardData || window.clipboardData).getData("Text") || "";
+    const digits = pasted.replace(/[^0-9]/g, "");
+    if (!digits) return;
+
+    const newOtp = [...otp];
+
+    // If user pasted a full 6-digit code, populate from start
+    if (digits.length >= 6) {
+      const firstSix = digits.slice(0, 6).split("");
+      for (let i = 0; i < 6; i++) newOtp[i] = firstSix[i];
+      setOtp(newOtp);
+      // focus last input
+      inputsRef.current[5]?.focus();
+      return;
+    }
+
+    // If previous fields are not filled, try to place starting at first empty
+    const prevFilled = otp.slice(0, index).every((d) => d !== "");
+    let start = index;
+    if (!prevFilled) {
+      const firstEmpty = otp.slice(0, index).findIndex((d) => d === "");
+      if (firstEmpty !== -1) start = firstEmpty;
+    }
+
+    for (let i = 0; i < digits.length; i++) {
+      if (start + i < 6) newOtp[start + i] = digits[i];
+    }
+    setOtp(newOtp);
+    const focusIndex = Math.min(start + digits.length, 5);
+    inputsRef.current[focusIndex]?.focus();
+  };
+
   const handleEmailOtpChange = (val, index) => {
     const only = val.replace(/[^0-9]/g, "");
     const newOtp = [...emailOtp];
@@ -365,6 +410,39 @@ export default function Signup() {
     } else if (!only && index > 0) {
       emailRef.current[index - 1]?.focus();
     }
+  };
+
+  // Paste handler for email OTP inputs
+  const handleEmailOtpPaste = (e, index) => {
+    e.preventDefault();
+    const pasted =
+      (e.clipboardData || window.clipboardData).getData("Text") || "";
+    const digits = pasted.replace(/[^0-9]/g, "");
+    if (!digits) return;
+
+    const newOtp = [...emailOtp];
+
+    if (digits.length >= 6) {
+      const firstSix = digits.slice(0, 6).split("");
+      for (let i = 0; i < 6; i++) newOtp[i] = firstSix[i];
+      setEmailOtp(newOtp);
+      emailRef.current[5]?.focus();
+      return;
+    }
+
+    const prevFilled = emailOtp.slice(0, index).every((d) => d !== "");
+    let start = index;
+    if (!prevFilled) {
+      const firstEmpty = emailOtp.slice(0, index).findIndex((d) => d === "");
+      if (firstEmpty !== -1) start = firstEmpty;
+    }
+
+    for (let i = 0; i < digits.length; i++) {
+      if (start + i < 6) newOtp[start + i] = digits[i];
+    }
+    setEmailOtp(newOtp);
+    const focusIndex = Math.min(start + digits.length, 5);
+    emailRef.current[focusIndex]?.focus();
   };
 
   // Keys handling (backspace) for OTP inputs
@@ -585,6 +663,7 @@ export default function Signup() {
                         ref={(el) => (inputsRef.current[index] = el)}
                         value={digit}
                         onChange={(e) => handleOtpChange(e.target.value, index)}
+                        onPaste={(e) => handleOtpPaste(e, index)}
                         onKeyDown={(e) => handleOtpKeyDown(e, index)}
                         inputMode="numeric"
                         maxLength={1}
@@ -606,6 +685,7 @@ export default function Signup() {
                         onChange={(e) =>
                           handleEmailOtpChange(e.target.value, index)
                         }
+                        onPaste={(e) => handleEmailOtpPaste(e, index)}
                         onKeyDown={(e) => handleEmailOtpKeyDown(e, index)}
                         inputMode="numeric"
                         maxLength={1}
@@ -631,7 +711,10 @@ export default function Signup() {
                     </button>
 
                     {showRetryBtn && (
-                      <button className="btn btn-secondary" onClick={sendOTP}>
+                      <button
+                        className="btn btn-secondary"
+                        onClick={() => sendOTP(true)}
+                      >
                         Resend OTP
                       </button>
                     )}

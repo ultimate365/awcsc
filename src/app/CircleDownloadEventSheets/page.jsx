@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { decryptObjData, getCookie } from "../../modules/encryption";
-import { enToBnNumber } from "../../modules/calculatefunctions";
-import { events, gpNames } from "../../modules/constants";
+import { events } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
 import dynamic from "next/dynamic";
 import CircleEventList from "../../pdf/CircleEventList";

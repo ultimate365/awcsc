@@ -12,38 +12,34 @@ const GPSchoolWiseStudentList = () => {
   const navigate = useRouter();
   const { stateArray } = useGlobalContext();
   const data = stateArray;
-  const [boysData, setBoysData] = useState(
-    data?.filter((el) => el?.gender === "BOYS")
-  );
-  const [boysGrAData, setBoysGrAData] = useState(
+  const [boysData] = useState(data?.filter((el) => el?.gender === "BOYS"));
+  const [boysGrAData] = useState(
     data
       .filter((el) => el?.gender === "BOYS")
       .filter((el) => el?.group === "GROUP-A")
   );
-  const [boysGrBData, setBoysGrBData] = useState(
+  const [boysGrBData] = useState(
     data
       .filter((el) => el?.gender === "BOYS")
       .filter((el) => el?.group === "GROUP-B")
   );
-  const [boysGrCData, setBoysGrCData] = useState(
+  const [boysGrCData] = useState(
     data
       .filter((el) => el?.gender === "BOYS")
       .filter((el) => el?.group === "GROUP-C")
   );
-  const [girlsData, setGirlsData] = useState(
-    data?.filter((el) => el?.gender === "GIRLS")
-  );
-  const [girlsGrAData, setGirlsGrAData] = useState(
+  const [girlsData] = useState(data?.filter((el) => el?.gender === "GIRLS"));
+  const [girlsGrAData] = useState(
     data
       .filter((el) => el?.gender === "GIRLS")
       .filter((el) => el?.group === "GROUP-A")
   );
-  const [girlsGrBData, setGirlsGrBData] = useState(
+  const [girlsGrBData] = useState(
     data
       .filter((el) => el?.gender === "GIRLS")
       .filter((el) => el?.group === "GROUP-B")
   );
-  const [girlsGrCData, setGirlsGrCData] = useState(
+  const [girlsGrCData] = useState(
     data
       .filter((el) => el?.gender === "GIRLS")
       .filter((el) => el?.group === "GROUP-C")
@@ -129,7 +125,10 @@ const GPSchoolWiseStudentList = () => {
             </div>
             <div className="container-fluid">
               {" "}
-              <table className="table table-bordered border-black" style={{border:2,borderColor:"black"}}>
+              <table
+                className="table table-bordered border-black"
+                style={{ border: 2, borderColor: "black" }}
+              >
                 <thead>
                   <tr>
                     <th>ক্রমিক নং</th>
@@ -156,7 +155,7 @@ const GPSchoolWiseStudentList = () => {
                         <td>{index + 1}</td>
                         <td>{el?.circleChestNo}</td>
                         <td>{el?.gp}</td>
-                        <td >{el?.school}</td>
+                        <td>{el?.school}</td>
                         <td>{el?.name}</td>
                         <td>{el?.gurdiansName}</td>
                         <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -185,7 +184,7 @@ const GPSchoolWiseStudentList = () => {
                         <td>{boysGrAData.length + index + 1}</td>
                         <td>{el?.circleChestNo}</td>
                         <td>{el?.gp}</td>
-                        <td >{el?.school}</td>
+                        <td>{el?.school}</td>
                         <td>{el?.name}</td>
                         <td>{el?.gurdiansName}</td>
                         <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -216,7 +215,7 @@ const GPSchoolWiseStudentList = () => {
                         </td>
                         <td>{el?.circleChestNo}</td>
                         <td>{el?.gp}</td>
-                        <td >{el?.school}</td>
+                        <td>{el?.school}</td>
                         <td>{el?.name}</td>
                         <td>{el?.gurdiansName}</td>
                         <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -300,7 +299,10 @@ const GPSchoolWiseStudentList = () => {
                 <h6 className="text-center text-white m-0 p-1">GIRLS</h6>
               </div>
             </div>
-            <table className="table table-bordered border-black" style={{border:2,borderColor:"black"}}>
+            <table
+              className="table table-bordered border-black"
+              style={{ border: 2, borderColor: "black" }}
+            >
               <thead>
                 <tr>
                   <th>ক্রমিক নং</th>
@@ -327,7 +329,7 @@ const GPSchoolWiseStudentList = () => {
                       <td>{index + 1}</td>
                       <td>{el?.circleChestNo}</td>
                       <td>{el?.gp}</td>
-                      <td >{el?.school}</td>
+                      <td>{el?.school}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -356,7 +358,7 @@ const GPSchoolWiseStudentList = () => {
                       <td>{girlsGrAData.length + index + 1}</td>
                       <td>{el?.circleChestNo}</td>
                       <td>{el?.gp}</td>
-                      <td >{el?.school}</td>
+                      <td>{el?.school}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
@@ -387,7 +389,7 @@ const GPSchoolWiseStudentList = () => {
                       </td>
                       <td>{el?.circleChestNo}</td>
                       <td>{el?.gp}</td>
-                      <td >{el?.school}</td>
+                      <td>{el?.school}</td>
                       <td>{el?.name}</td>
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>

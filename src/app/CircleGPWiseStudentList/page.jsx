@@ -12,46 +12,42 @@ const CircleGPWiseStudentList = () => {
   const { stateArray } = useGlobalContext();
   const data = stateArray;
   const navigate = useRouter();
-  const [allData, setAllData] = useState(data);
+  const [allData] = useState(data);
   const [thisGp, setThisGp] = useState("");
-  const [boysData, setBoysData] = useState(
-    data?.filter((el) => el?.gender === "BOYS")
-  );
-  const [boysGrAData, setBoysGrAData] = useState(
+  const [boysData] = useState(data?.filter((el) => el?.gender === "BOYS"));
+  const [boysGrAData] = useState(
     data
       ?.filter((el) => el?.gender === "BOYS")
       .filter((el) => el?.group === "GROUP-A")
   );
-  const [boysGrBData, setBoysGrBData] = useState(
+  const [boysGrBData] = useState(
     data
       ?.filter((el) => el?.gender === "BOYS")
       .filter((el) => el?.group === "GROUP-B")
   );
-  const [boysGrCData, setBoysGrCData] = useState(
+  const [boysGrCData] = useState(
     data
       ?.filter((el) => el?.gender === "BOYS")
       .filter((el) => el?.group === "GROUP-C")
   );
-  const [girlsData, setGirlsData] = useState(
-    data?.filter((el) => el?.gender === "GIRLS")
-  );
-  const [girlsGrAData, setGirlsGrAData] = useState(
+  const [girlsData] = useState(data?.filter((el) => el?.gender === "GIRLS"));
+  const [girlsGrAData] = useState(
     data
       ?.filter((el) => el?.gender === "GIRLS")
       .filter((el) => el?.group === "GROUP-A")
   );
-  const [girlsGrBData, setGirlsGrBData] = useState(
+  const [girlsGrBData] = useState(
     data
       ?.filter((el) => el?.gender === "GIRLS")
       .filter((el) => el?.group === "GROUP-B")
   );
-  const [girlsGrCData, setGirlsGrCData] = useState(
+  const [girlsGrCData] = useState(
     data
       ?.filter((el) => el?.gender === "GIRLS")
       .filter((el) => el?.group === "GROUP-C")
   );
   const [girlsClicked, setGirlsClicked] = useState(false);
-  const [displayLoader, setDisplayLoader] = useState(false);
+
   let teacherdetails;
   let details = getCookie("tid");
 

@@ -69,7 +69,6 @@ const sendEmail = async ({ email, code, name }: any) => {
           console.error(err);
           reject(err);
         } else {
-          console.log("Email Sent: " + info.response);
           resolve(info);
         }
       });

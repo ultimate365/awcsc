@@ -15,7 +15,7 @@ export default async function sendTelegramMessage(message) {
       text: message,
     });
 
-    console.log("Message sent successfully:", response.data);
+    // console.log("Message sent successfully:", response.data);
   } catch (error) {
     console.error(
       "Error sending message:",

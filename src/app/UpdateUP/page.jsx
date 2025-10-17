@@ -15,12 +15,16 @@ import {
 import bcrypt from "bcryptjs";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import Loader from "../../components/Loader";
+import { useGlobalContext } from "../../context/Store";
+import { set } from "mongoose";
+import axios from "axios";
+
 const UpdateUP = () => {
+  const { state, setState } = useGlobalContext();
   const navigate = useRouter();
   let userdetails;
   const [loader, setLoader] = useState(false);
-  const [usernameForm, setUsernameForm] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const user = state.USER;
   const [isTeacher, setIsTeacher] = useState(true);
   const [id, setId] = useState("");
   const [username, setUsername] = useState("");
@@ -35,6 +39,20 @@ const UpdateUP = () => {
     passwordErr: "",
     cpasswordErr: "",
   });
+  const [showBtns, setShowBtns] = useState(true);
+  const [usernameForm, setUsernameForm] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showMobile, setShowMobile] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  const [mobileOTPSent, setMobileOTPSent] = useState(false);
+  const [emailOTPSent, setEmailOTPSent] = useState(false);
+  const [mobileOTP, setMobileOTP] = useState("");
+  const [emailOTP, setEmailOTP] = useState("");
+  const [showRetryBtn, setShowRetryBtn] = useState(false);
+  const [phone, setPhone] = useState(user.phone);
+  const [email, setEmail] = useState(user.email);
+  const [showEmailRetryBtn, setShowEmailRetryBtn] = useState(false);
+
   const checkUser = () => {
     let details = getCookie("uid");
     let schdetails = getCookie("schid");
@@ -49,8 +67,13 @@ const UpdateUP = () => {
         password: "",
         cpassword: "",
       });
-    }
-    if (schdetails) {
+      setState({
+        USER: userdetails,
+        ACCESS: userdetails?.circle,
+        LOGGEDAT: Date.now(),
+        TYPE: "teacher",
+      });
+    } else if (schdetails) {
       userdetails = decryptObjData("schid");
       setIsTeacher(false);
       setId(userdetails.id);
@@ -61,11 +84,14 @@ const UpdateUP = () => {
         password: "",
         cpassword: "",
       });
-    }
-    if (!details) {
-      if (!schdetails) {
-        navigate.push("/logout");
-      }
+      setState({
+        USER: userdetails,
+        ACCESS: userdetails?.convenor,
+        LOGGEDAT: Date.now(),
+        TYPE: "school",
+      });
+    } else {
+      navigate.push("/logout");
     }
   };
 
@@ -121,18 +147,40 @@ const UpdateUP = () => {
 
   const checkUsername = async () => {
     setLoader(true);
-    if (isTeacher) {
-      if (inputField.username !== "") {
-        const collectionRef = collection(firestore, "sportsUsers");
-        const q = query(
-          collectionRef,
-          where("username", "==", inputField.username.toLowerCase())
-        );
-        const querySnapshot = await getDocs(q);
-        // console.log(querySnapshot.docs[0].data().username);
-        if (querySnapshot.docs.length > 0) {
+    if (inputField.username !== "") {
+      const collectionRef = collection(firestore, "sportsUsers");
+      const q = query(
+        collectionRef,
+        where("username", "==", inputField.username.toLowerCase())
+      );
+      const querySnapshot = await getDocs(q);
+      const collectionRef2 = collection(firestore, "sportsUsers");
+      const q2 = query(
+        collectionRef2,
+        where("username", "==", inputField.username.toLowerCase())
+      );
+      const querySnapshot2 = await getDocs(q2);
+      if (querySnapshot.docs.length > 0 || querySnapshot2.docs.length > 0) {
+        setLoader(false);
+        toast.error("Username already Exists! Please Select Another One", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        const docRef = isTeacher
+          ? doc(firestore, "sportsUsers", id)
+          : doc(firestore, "userschools", id);
+        await updateDoc(docRef, {
+          username: inputField.username.toLowerCase(),
+        }).then(() => {
           setLoader(false);
-          toast.error("Username already Exists! Please Select Another One", {
+          toast.success("Congrats! Your Username Changed Successfully!", {
             position: "top-right",
             autoClose: 1500,
             hideProgressBar: false,
@@ -142,101 +190,26 @@ const UpdateUP = () => {
             progress: undefined,
             theme: "light",
           });
-        } else {
-          const docRef = doc(firestore, "sportsUsers", id);
-          await updateDoc(docRef, {
-            username: inputField.username.toLowerCase(),
-          }).then(() => {
-            setLoader(false);
-            toast.success("Congrats! Your Username Changed Successfully!", {
-              position: "top-right",
-              autoClose: 1500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-            setTimeout(() => {
-              navigate.push("/logout");
-            }, 1500);
-          });
-        }
-      }
-    } else {
-      if (inputField.username !== "") {
-        const collectionRef = collection(firestore, "userschools");
-        const q = query(
-          collectionRef,
-          where("username", "==", inputField.username.toLowerCase())
-        );
-        const querySnapshot = await getDocs(q);
-        // console.log(querySnapshot.docs[0].data().username);
-        if (querySnapshot.docs.length > 0) {
-          setLoader(false);
-          toast.error("Username already Exists! Please Select Another One", {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        } else {
-          const docRef = doc(firestore, "userschools", id);
-          await updateDoc(docRef, {
-            username: inputField.username.toLowerCase(),
-          }).then(() => {
-            setLoader(false);
-            toast.success("Congrats! Your Username Changed Successfully!", {
-              position: "top-right",
-              autoClose: 1500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-            setTimeout(() => {
-              navigate.push("/logout");
-            }, 1500);
-          });
-        }
+          setTimeout(() => {
+            navigate.push("/logout");
+          }, 1500);
+        });
       }
     }
   };
   const submitBtn = async (e) => {
-    // e.preventDefault();
-    // console.log(inputField);
+    e.preventDefault();
     if (validForm()) {
       setLoader(true);
-      if (isTeacher) {
-        try {
-          const docRef = doc(firestore, "sportsUsers", id);
-          await updateDoc(docRef, {
-            password: bcrypt.hashSync(inputField.password, 10),
-          }).then(() => {
-            setLoader(false);
-            toast.success("Congrats! Your Password Changed Successfully!", {
-              position: "top-right",
-              autoClose: 1500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-            setTimeout(() => {
-              navigate.push("/logout");
-            }, 1500);
-          });
-        } catch (e) {
-          toast.error("Server Error! Unable to Change Password!", {
+      try {
+        const docRef = isTeacher
+          ? doc(firestore, "sportsUsers", id)
+          : doc(firestore, "userschools", id);
+        await updateDoc(docRef, {
+          password: bcrypt.hashSync(inputField.password, 10),
+        }).then(() => {
+          setLoader(false);
+          toast.success("Congrats! Your Password Changed Successfully!", {
             position: "top-right",
             autoClose: 1500,
             hideProgressBar: false,
@@ -246,40 +219,21 @@ const UpdateUP = () => {
             progress: undefined,
             theme: "light",
           });
-        }
-      } else {
-        try {
-          const docRef = doc(firestore, "userschools", id);
-          await updateDoc(docRef, {
-            password: bcrypt.hashSync(inputField.password, 10),
-          }).then(() => {
-            setLoader(false);
-            toast.success("Congrats! Your Password Changed Successfully!", {
-              position: "top-right",
-              autoClose: 1500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-            setTimeout(() => {
-              navigate.push("/logout");
-            }, 1500);
-          });
-        } catch (e) {
-          toast.error("Server Error! Unable to Change Password!", {
-            position: "top-right",
-            autoClose: 1500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
+          setTimeout(() => {
+            navigate.push("/logout");
+          }, 1500);
+        });
+      } catch (e) {
+        toast.error("Server Error! Unable to Change Password!", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } else {
       toast.error("Form Is Invalid", {
@@ -294,6 +248,139 @@ const UpdateUP = () => {
       });
     }
   };
+  const changePhone = async (e) => {
+    e.preventDefault();
+    setLoader(true);
+    try {
+      const res = await axios.post(`/api/sendMobileOTP`, {
+        phone,
+        name: user.tname,
+      });
+      const record = res.data;
+      if (record.success) {
+        toast.success("OTP sent to your Mobile Number!");
+        setLoader(false);
+        setMobileOTPSent(true);
+        setShowRetryBtn(false);
+        setTimeout(() => {
+          setShowRetryBtn(true);
+        }, 30000);
+      } else {
+        setShowRetryBtn(true);
+        toast.error("Failed to send OTP!");
+        setLoader(false);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong!");
+      setLoader(false);
+    }
+  };
+  const verifyMobileOTP = async (e) => {
+    e.preventDefault();
+    if (mobileOTP !== "" && mobileOTP.toString().length === 6) {
+      setLoader(true);
+      try {
+        const res = await axios.post(`/api/verifyMobileOTP`, {
+          phone,
+          phoneCode: mobileOTP.toString(),
+          name: user.tname,
+        });
+        const record = res.data;
+        if (record.success) {
+          const docRef = isTeacher
+            ? doc(firestore, "sportsUsers", id)
+            : doc(firestore, "userschools", id);
+          await updateDoc(docRef, {
+            phone: phone.toString(),
+          }).then(() => {
+            toast.success("Your Mobile Number is successfully verified!");
+            setLoader(false);
+            setTimeout(async () => {
+              navigate.push("/logout");
+              setState({
+                USER: {},
+                ACCESS: null,
+                LOGGEDAT: "",
+                TYPE: null,
+              });
+            }, 1500);
+          });
+        } else {
+          toast.error("Please enter a Valid 6 Digit OTP");
+          setLoader(false);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something Went Wrong!");
+        setLoader(false);
+      }
+    }
+  };
+  const changeEmail = async () => {
+    setLoader(true);
+    try {
+      const res = await axios.post(`/api/sendEmailOTP`, {
+        email,
+        name: user.tname,
+      });
+      const record = res.data;
+      if (record.success) {
+        toast.success("OTP sent to your Email!");
+        setLoader(false);
+        setEmailOTPSent(true);
+        setShowEmailRetryBtn(false);
+        setTimeout(() => {
+          setShowEmailRetryBtn(true);
+        }, 30000);
+      } else {
+        setShowEmailRetryBtn(true);
+        toast.error("Failed to send OTP!");
+        setLoader(false);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong!");
+      setLoader(false);
+    }
+  };
+  const verifyEmailOTP = async () => {
+    if (emailOTP !== "" && emailOTP.toString().length === 6) {
+      setLoader(true);
+      try {
+        const res = await axios.post(`/api/verifyEmailOTP`, {
+          email,
+          code: emailOTP.toString(),
+        });
+        const record = res.data;
+        if (record.success) {
+          const docRef = doc(firestore, "sportsUsers", id);
+          await updateDoc(docRef, {
+            email,
+          }).then(() => {
+            toast.success("Your Email is successfully verified!");
+            setLoader(false);
+            setTimeout(async () => {
+              navigate.push("/logout");
+              setState({
+                USER: {},
+                ACCESS: null,
+                LOGGEDAT: "",
+                TYPE: null,
+              });
+            }, 1500);
+          });
+        } else {
+          toast.error("Please enter a Valid 6 Digit OTP");
+          setLoader(false);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something Went Wrong!");
+        setLoader(false);
+      }
+    }
+  };
   useEffect(() => {
     document.title = "WBTPTA Sports App:Update User ID or Password";
     checkUser();
@@ -306,136 +393,361 @@ const UpdateUP = () => {
   return (
     <div className="container text-black p-2">
       {loader ? <Loader /> : null}
+      <h3 className="text-primary text-center">Update User Details</h3>
       <div className="col-md-6 mx-auto p-2">
-        <div className="col-md-4 mx-auto">
-          <button
-            type="button"
-            className="btn btn-primary m-1"
-            onClick={() => setUsernameForm(!usernameForm)}
-          >
-            {!usernameForm ? "Change Username" : "Change Password"}
-          </button>
-        </div>
-        <form autoComplete="off" method="post">
-          {!usernameForm ? (
-            <>
-              <h3 className="my-3 text-center text-primary">Change Password</h3>
-              <div className="mb-3">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="form-control"
-                  name="password"
-                  id="password"
-                  placeholder="Enter Password"
-                  value={inputField.password}
-                  onChange={(e) =>
-                    setInputField({ ...inputField, password: e.target.value })
-                  }
-                />
-                <button
-                  type="button"
-                  className="btn btn-warning btn-sm mt-2"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? "Hide Password" : "Show Password"}
-                </button>
-                <br />
-
-                {errField.passwordErr.length > 0 && (
-                  <span className="error">{errField.passwordErr}</span>
-                )}
-              </div>
-              <div className="mb-3">
-                <label htmlFor="" className="form-label">
-                  Confirm Password
-                </label>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  className="form-control"
-                  name="cpassword"
-                  id="cpassword"
-                  placeholder="Confirm Password"
-                  value={inputField.cpassword}
-                  onChange={(e) =>
-                    setInputField({
-                      ...inputField,
-                      cpassword: e.target.value,
-                    })
-                  }
-                />
-                {errField.cpasswordErr.length > 0 && (
-                  <span className="error">{errField.cpasswordErr}</span>
-                )}
-              </div>
-              <div>
-                <button
-                  type="button"
-                  className="btn btn-primary m-1"
-                  onClick={submitBtn}
-                >
-                  Change Password <i className="bi bi-box-arrow-in-right"></i>
-                </button>
-              </div>
-            </>
-          ) : (
+        {showBtns && (
+          <div className="mx-auto">
+            <button
+              type="button"
+              className="btn btn-primary m-1"
+              onClick={() => {
+                setUsernameForm(true);
+                setShowBtns(false);
+              }}
+            >
+              Change Username
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary m-1"
+              onClick={() => {
+                setShowPassword(true);
+                setShowBtns(false);
+              }}
+            >
+              Change Password
+            </button>
+            <button
+              type="button"
+              className="btn btn-info m-1"
+              onClick={() => {
+                setShowMobile(true);
+                setShowBtns(false);
+              }}
+            >
+              Change Mobile
+            </button>
+            {state.TYPE === "teacher" && (
+              <button
+                type="button"
+                className="btn btn-warning m-1"
+                onClick={() => {
+                  setShowEmail(true);
+                  setShowBtns(false);
+                }}
+              >
+                Change Email
+              </button>
+            )}
+          </div>
+        )}
+        {usernameForm && (
+          <form action="" onSubmit={checkUsername} autoComplete="off">
             <div className="mb-3">
-              <h3 className="my-3 text-center text-primary">Change Username</h3>
               <label htmlFor="" className="form-label">
                 Username
               </label>
-              <div className="row">
-                <input
-                  type="text"
-                  className="form-control m-3"
-                  name="username"
-                  id="username"
-                  placeholder="Enter Username"
-                  value={inputField.username}
-                  onChange={inputHandler}
-                />
-                <div className="col-mb-4 mx-auto">
+              <input
+                type="text"
+                className="form-control"
+                name="username"
+                id="username"
+                placeholder="Enter Username"
+                value={inputField.username}
+                onChange={inputHandler}
+              />
+            </div>
+            <div className="col-mb-4 mx-auto">
+              <button
+                type="submit"
+                className="btn btn-primary m-1"
+                disabled={
+                  inputField.username === username || inputField.username === ""
+                }
+                onClick={() => {
+                  if (inputField.username === username) {
+                    toast.error(
+                      "Entered Username is Same as Previous Username",
+                      {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                      }
+                    );
+                  } else {
+                    checkUsername();
+                  }
+                }}
+              >
+                Check & Change Username{" "}
+                <i className="bi bi-box-arrow-in-right"></i>
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger m-1"
+                onClick={() => {
+                  setUsernameForm(false);
+                  setShowBtns(true);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+        {showPassword && (
+          <form autoComplete="off" method="post" onSubmit={submitBtn}>
+            <h3 className="my-3 text-center text-primary">Change Password</h3>
+            <div className="mb-3">
+              <input
+                type="password"
+                className="form-control"
+                name="password"
+                id="password"
+                placeholder="Enter Password"
+                value={inputField.password}
+                onChange={(e) =>
+                  setInputField({ ...inputField, password: e.target.value })
+                }
+              />
+
+              <br />
+
+              {errField.passwordErr.length > 0 && (
+                <span className="error">{errField.passwordErr}</span>
+              )}
+            </div>
+            <div className="mb-3">
+              <label htmlFor="" className="form-label">
+                Confirm Password
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                name="cpassword"
+                id="cpassword"
+                placeholder="Confirm Password"
+                value={inputField.cpassword}
+                onChange={(e) =>
+                  setInputField({
+                    ...inputField,
+                    cpassword: e.target.value,
+                  })
+                }
+              />
+              {errField.cpasswordErr.length > 0 && (
+                <span className="error">{errField.cpasswordErr}</span>
+              )}
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="btn btn-primary m-1"
+                disabled={
+                  inputField.password === "" ||
+                  inputField.cpassword === "" ||
+                  inputField.password !== inputField.cpassword
+                }
+                onClick={submitBtn}
+              >
+                Change Password <i className="bi bi-box-arrow-in-right"></i>
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger m-1"
+                onClick={() => {
+                  setShowPassword(false);
+                  setShowBtns(true);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        )}
+        {showMobile && (
+          <form autoComplete="off">
+            <h3 className="my-3 text-center text-primary">Change Mobile</h3>
+            {!mobileOTPSent ? (
+              <div>
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label">
+                    Mobile
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="mobile"
+                    id="mobile"
+                    placeholder="Enter Mobile"
+                    value={phone}
+                    onChange={(e) =>
+                      e.target.value.length <= 10 && setPhone(e.target.value)
+                    }
+                  />
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    className="btn btn-primary m-1"
+                    disabled={phone.length !== 10 || user.phone === phone}
+                    onClick={changePhone}
+                  >
+                    Change Mobile <i className="bi bi-box-arrow-in-right"></i>
+                  </button>
                   <button
                     type="button"
-                    className="btn btn-primary m-1"
-                    onClick={(e) => {
-                      if (inputField.username === username) {
-                        toast.error(
-                          "Entered Username is Same as Previous Username",
-                          {
-                            position: "top-right",
-                            autoClose: 3000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                          }
-                        );
-                      } else {
-                        checkUsername();
-                      }
+                    className="btn btn-danger m-1"
+                    onClick={() => {
+                      setShowMobile(false);
+                      setShowBtns(true);
                     }}
                   >
-                    Check & Change Username{" "}
                     <i className="bi bi-box-arrow-in-right"></i>
+                    Cancel
                   </button>
                 </div>
               </div>
-              {errField.usernameErr.length > 0 && (
-                <span className="error">{errField.usernameErr}</span>
-              )}
-            </div>
-          )}
-
-          <button
-            type="button"
-            className="btn btn-danger m-1 px-4"
-            onClick={() => navigate.back()}
-          >
-            Back
-          </button>
-        </form>
+            ) : (
+              <div>
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label">
+                    OTP
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="otp"
+                    id="otp"
+                    placeholder="Enter OTP"
+                    value={mobileOTP}
+                    onChange={(e) => setMobileOTP(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    className="btn btn-primary m-1"
+                    disabled={mobileOTP.length !== 6}
+                    onClick={verifyMobileOTP}
+                  >
+                    Verify OTP <i className="bi bi-box-arrow-in-right"></i>
+                  </button>
+                  {showRetryBtn && (
+                    <button
+                      type="button"
+                      className="btn btn-danger m-1"
+                      onClick={changePhone}
+                    >
+                      <i className="bi bi-box-arrow-in-right"></i>
+                      Retry
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="btn btn-danger m-1"
+                    onClick={() => {
+                      setShowMobile(false);
+                      setShowBtns(true);
+                    }}
+                  >
+                    <i className="bi bi-box-arrow-in-right"></i>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </form>
+        )}
+        {state.TYPE === "teacher" && showEmail && (
+          <form autoComplete="off">
+            <h3 className="my-3 text-center text-primary">Change Email</h3>
+            {!emailOTPSent ? (
+              <div>
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    name="email"
+                    id="email"
+                    placeholder="Enter Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    className="btn btn-primary m-1"
+                    disabled={
+                      email === "" ||
+                      !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ||
+                      email == user.email
+                    }
+                    onClick={changeEmail}
+                  >
+                    Change Email <i className="bi bi-box-arrow-in-right"></i>
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger m-1"
+                    onClick={() => {
+                      setShowEmail(false);
+                      setShowBtns(true);
+                    }}
+                  >
+                    <i className="bi bi-box-arrow-in-right"></i>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label">
+                    OTP
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="otp"
+                    id="otp"
+                    placeholder="Enter OTP"
+                    value={emailOTP}
+                    onChange={(e) => setEmailOTP(e.target.value)}
+                  />
+                </div>
+                <div>
+                  {showEmailRetryBtn && (
+                    <button
+                      type="button"
+                      className="btn btn-primary m-1"
+                      onClick={changeEmail}
+                    >
+                      Retry
+                    </button>
+                  )}
+                  <button
+                    type="submit"
+                    className="btn btn-primary m-1"
+                    disabled={emailOTP.length !== 6}
+                    onClick={verifyEmailOTP}
+                  >
+                    Verify OTP <i className="bi bi-box-arrow-in-right"></i>
+                  </button>
+                </div>
+              </div>
+            )}
+          </form>
+        )}
       </div>
     </div>
   );

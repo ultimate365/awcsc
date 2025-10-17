@@ -30,7 +30,7 @@ const verifyEmailMailer = async (email: any, emailOtp: number, name: any) => {
       },
       replyTo: email,
       to: email,
-      subject: `Reset your Password: Mail no ${Math.floor(
+      subject: `Your Email Verification: Mail no ${Math.floor(
         Math.random() * 1000 + 1
       )}`,
       text: `Hello Dear ${name}!`,
@@ -45,7 +45,7 @@ const verifyEmailMailer = async (email: any, emailOtp: number, name: any) => {
           console.error(err);
           reject(err);
         } else {
-          console.log("Email Sent: " + info.response);
+          // console.log("Email Sent: " + info.response);
           resolve(info);
         }
       });

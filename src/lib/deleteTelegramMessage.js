@@ -7,9 +7,7 @@ export default async function deleteTelegramMessage(message_id) {
   const chatId = process.env.AWCSC_TELEGRAM_GROUP_ID;
   const url = `https://api.telegram.org/bot${botToken}/deleteMessage?chat_id=${chatId}&message_id=${message_id}`;
   try {
-    const response = await axios.post(url);
-
-    console.log("Message deleted successfully:", response.data);
+    await axios.post(url);
   } catch (error) {
     console.error(
       "Error sending message:",

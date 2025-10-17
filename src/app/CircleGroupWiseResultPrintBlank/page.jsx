@@ -12,10 +12,10 @@ const CircleGroupWiseResultPrint = () => {
   const data = yourStateObject?.data;
   const [img, setImg] = useState("");
   const navigate = useRouter();
-  const [allData, setAllData] = useState(data);
+  const [allData] = useState(data);
 
-  const [gender, setGender] = useState(yourStateObject?.gender);
-  const [group, setGroup] = useState(yourStateObject?.group);
+  const [gender] = useState(yourStateObject?.gender);
+  const [group] = useState(yourStateObject?.group);
 
   const [bengGroupName, setBengGroupName] = useState("");
   const [benGender, setBenGender] = useState("");
@@ -88,7 +88,10 @@ const CircleGroupWiseResultPrint = () => {
           Print
         </button>
       </div>
-      <table className="table table-bordered boder-black border-4" style={{border:2,borderColor:"black"}}>
+      <table
+        className="table table-bordered boder-black border-4"
+        style={{ border: 2, borderColor: "black" }}
+      >
         <thead>
           <tr>
             <th colSpan={6}>
@@ -105,7 +108,7 @@ const CircleGroupWiseResultPrint = () => {
               <th colSpan={3} style={{ borderRight: 0 }}></th>
               <th colSpan={2} style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-1 rounded-2">
-                  {bengGroupName}
+                  {benGender}
                 </h4>
               </th>
             </tr>

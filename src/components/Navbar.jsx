@@ -306,7 +306,7 @@ const Navbar = () => {
                   href="/UpdateUP"
                   onClick={handleNavCollapse}
                 >
-                  Update Username And Password
+                  Update Profile Details
                 </Link>
               </li>
               <div className="row">
@@ -448,7 +448,7 @@ const Navbar = () => {
                   href="/UpdateUP"
                   onClick={handleNavCollapse}
                 >
-                  Update Username And Password
+                  Update Profile Details
                 </Link>
               </li>
               <div className="row">
@@ -538,7 +538,7 @@ const Navbar = () => {
                 href="/UpdateUP"
                 onClick={handleNavCollapse}
               >
-                Update Username And Password
+                Update Profile Details
               </Link>
             </li>
             <div className="row">

@@ -13,7 +13,6 @@ import {
 } from "../../modules/calculatefunctions";
 import { bengEventNames, events } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
-import axios from "axios";
 const CircleAllStudents = () => {
   const {
     stateObject,
@@ -34,7 +33,7 @@ const CircleAllStudents = () => {
   });
   const gpData = stateObject?.gp;
   const navigate = useRouter();
-  const [allData, setAllData] = useState(data);
+  const [allData] = useState(data);
   const [filteredData, setFilteredData] = useState(data);
   const [showChestNoDiv, setShowChestNoDiv] = useState(false);
   const [startingChestNo, setStartingChestNo] = useState(1);
@@ -50,7 +49,6 @@ const CircleAllStudents = () => {
   let gender;
   let group;
   let eventName;
-  const isDev = process.env.NODE_ENV === "development";
   const [inpgender, setInpGender] = useState("");
   const [inpGroup, setInpGroup] = useState("");
   const [inpeventBengName, setInpEventBengName] = useState("");
