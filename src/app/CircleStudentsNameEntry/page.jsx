@@ -598,7 +598,45 @@ const CircleStudentsNameEntry = () => {
       center: +true,
     },
   ];
-
+  const changeGPLockEntry = async (gp, state) => {
+    setLoader(true);
+    const entry = {
+      edit: state,
+      closeDate: Date.now(),
+      entryCloseddBy: teacherdetails.tname,
+    };
+    let x = gpLockState.filter((item) => item?.id === gp.id)[0];
+    x.edit = state;
+    x.closeDate = "";
+    x.entryCloseddBy = teacherdetails.tname;
+    let y = gpLockState.filter((item) => item?.id !== gp.id);
+    y = [...y, x];
+    setGpLockState(y);
+    setGpLockUpdateTime(Date.now());
+    const docRef = doc(firestore, "gpLockData", gp.id);
+    await updateDoc(docRef, entry)
+      .then(async () => {
+        setLoader(false);
+        // getLockData();
+        toast.success(
+          `congratulation! Student Entry Closed For ${gp.gp} GP Sports Data`,
+          {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoader(false);
+      });
+  };
   const lockGP = async (gp, state) => {
     setLoader(true);
     const selectedGPLock = circleLockState.filter((el) => el?.gp === gp)[0];
@@ -795,13 +833,32 @@ const CircleStudentsNameEntry = () => {
           Go To Circle Sports All Student List
         </button>
       )}
-      <div className="my-4 container">
+      <div className="my-4 container d-flex flex-column justify-centent-center align-items-center mx-auto">
         {lockData
-          .filter((el) => el?.edit === true)
+          // .filter((el) => el?.edit === true)
           .map((el, ind) => (
-            <h6 className="text-center text-danger " key={ind}>
-              Currently {el?.gp} Student Entry & Edit is not Closed
-            </h6>
+            <div
+              className="d-flex flex-row justify-centent-center align-items-center mx-auto"
+              key={ind}
+            >
+              <h6
+                className={`text-center text-${
+                  el?.edit ? "success" : "danger"
+                }`}
+              >
+                Currently {el?.gp} Student Entry & Edit is{" "}
+                {el?.edit ? "Open" : "Closed"}
+              </h6>
+              <button
+                type="button"
+                className={`btn btn-${
+                  el?.edit ? "danger" : "success"
+                } m-1  btn-sm`}
+                onClick={() => changeGPLockEntry(el, !el?.edit)}
+              >
+                {el?.edit ? "Close" : "Open"}
+              </button>
+            </div>
           ))}
       </div>
       <div className="my-4 container">
