@@ -27,7 +27,10 @@ const Complain = () => {
     userdetails = decryptObjData("uid");
   }
 
-  const [docId, setDocId] = useState(uuid().split("-")[0]);
+  const [docId, setDocId] = useState(
+    `${teacherdetails.id}-${uuid().split("-")[0]}`
+  );
+  const [complainID, setComplainID] = useState("");
   const [showMessage, setShowMessage] = useState(true);
   const [loader, setLoader] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -133,9 +136,11 @@ const Complain = () => {
     if (validForm()) {
       try {
         setLoader(true);
-        await setDoc(doc(firestore, "sportscomplains", docId), inputField);
-        // await axios.post("/api/addcomplains", inputField);
-        // console.log(result.id);
+        await setDoc(
+          doc(firestore, "sportscomplains", inputField.id),
+          inputField
+        );
+        setComplainID(inputField.id);
         setLoader(false);
         toast.success("Congrats! Request Has Been Registered Successfully!", {
           position: "top-right",
@@ -174,12 +179,19 @@ const Complain = () => {
     }
   };
   const [complainSearch, setComplainSearch] = useState(false);
-  const [comptname, setComptname] = useState("");
-  const [compToken, setCompToken] = useState("");
-  const [compStatus, setCompStatus] = useState("");
-  const [compRemarks, setCompRemarks] = useState("");
-  const [compReqDate, setCompReqDate] = useState(0);
-  const [compClosedDate, setCompClosedDate] = useState(0);
+  const [requestedComplain, setRequestedComplain] = useState({
+    tname: "",
+    school: "",
+    sis: "",
+    email: "",
+    mobile: "",
+    complain: "",
+    status: "",
+    complainTime: "",
+    id: "",
+    solvedOn: "",
+    remarks: "",
+  });
   const searchComplain = async () => {
     setLoader(true);
     let data;
@@ -190,12 +202,7 @@ const Complain = () => {
       if (querySnapshot.docs.length > 0) {
         setComplainSearch(true);
         data = querySnapshot.docs[0].data();
-        setComptname(data.tname);
-        setCompToken(data.id);
-        setCompStatus(data.status);
-        setCompRemarks(data.remarks);
-        setCompReqDate(data.complainTime);
-        setCompClosedDate(data.solvedOn);
+        setRequestedComplain(data);
         setLoader(false);
       } else {
         setLoader(false);
@@ -203,29 +210,8 @@ const Complain = () => {
       }
     } catch (error) {
       toast.error("Something went Wrong");
-      await axios
-        .post("/api/findComplains", { id: search })
-        .then((data) => {
-          if (data.data.length > 0) {
-            setComplainSearch(true);
-            data = data.data[0];
-            setComptname(data.tname);
-            setCompToken(data.id);
-            setCompStatus(data.status);
-            setCompRemarks(data.remarks);
-            setCompReqDate(data.complainTime);
-            setCompClosedDate(data.solvedOn);
-            setLoader(false);
-          } else {
-            setLoader(false);
-            toast.error("Invalid Token Number!");
-          }
-        })
-        .catch((error) => {
-          toast.error("Something went Wrong");
-          setLoader(false);
-          console.log(error);
-        });
+      setLoader(false);
+      console.log(error);
     }
   };
 
@@ -265,37 +251,52 @@ const Complain = () => {
                 Search
               </button>
               {complainSearch ? (
-                <div>
-                  <h4 className="text-primary text-center">
-                    Token No: {compToken}
-                  </h4>
-                  <h4 className="text-primary text-center">
-                    Name: {comptname}
-                  </h4>
-                  <h4 className="text-primary text-center">
-                    Status: {compStatus}
-                  </h4>
-                  <h4 className="text-primary text-center">
-                    Remarks: {compRemarks}
-                  </h4>
-                  <h4 className="text-primary text-center">
-                    Request Date: {DateValueToSring(compReqDate)}
-                  </h4>
-                  {compClosedDate !== "Not Solved" && (
-                    <h4
-                      className="text-primary text-center"
-                      onClick={() => console.log(compClosedDate)}
+                <div className="card my-3 mx-auto" style={{ width: "30rem" }}>
+                  <div className="card-header bg-primary text-white d-flex justify-content-center align-items-center">
+                    <h3 className="text-center mx-5 px-5">Complain Status</h3>
+                    <button
+                      type="button"
+                      className="btn-close btn-white"
+                      onClick={() => setComplainSearch(false)}
+                    ></button>
+                  </div>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item">
+                      Token No: {requestedComplain.id}
+                    </li>
+                    <li className="list-group-item">
+                      Name: {requestedComplain.tname}
+                    </li>
+                    <li className="list-group-item">
+                      Status: {requestedComplain.status}
+                    </li>
+                    <li className="list-group-item">
+                      Remarks: {requestedComplain.remarks}
+                    </li>
+                    <li className="list-group-item">
+                      Request Date:{" "}
+                      {DateValueToSring(requestedComplain.complainTime)}
+                    </li>
+
+                    {requestedComplain.solvedOn !== "Not Solved" && (
+                      <li className="list-group-item">
+                        Close Date:{" "}
+                        {DateValueToSring(requestedComplain.solvedOn)}
+                      </li>
+                    )}
+                  </ul>
+                  <div className="card-body">
+                    <p className="card-text">
+                      Complain: {requestedComplain.complain}
+                    </p>
+                    <button
+                      type="button"
+                      className="btn btn-primary m-3"
+                      onClick={() => setComplainSearch(false)}
                     >
-                      Close Date: {DateValueToSring(compClosedDate)}
-                    </h4>
-                  )}
-                  <button
-                    type="button"
-                    className="btn btn-primary mb-3"
-                    onClick={() => setComplainSearch(false)}
-                  >
-                    Close
-                  </button>
+                      Close
+                    </button>
+                  </div>
                 </div>
               ) : null}
             </div>
@@ -407,7 +408,7 @@ const Complain = () => {
             )}
           </div>
           <div className="row">
-            <div className="m-3 form-check col-md-3">
+            <div className="my-3 mx-auto form-check col-md-6">
               <button
                 type="button"
                 className="btn btn-primary"
@@ -459,7 +460,7 @@ const Complain = () => {
               {!success ? (
                 <BsClipboard
                   onClick={() => {
-                    navigator.clipboard.writeText(docId);
+                    navigator.clipboard.writeText(complainID);
                     setSuccess(true);
                     setTimeout(() => setSuccess(false), 1500);
                   }}
@@ -469,7 +470,7 @@ const Complain = () => {
               ) : (
                 <BsClipboard2Check
                   onClick={() => {
-                    navigator.clipboard.writeText(docId);
+                    navigator.clipboard.writeText(complainID);
                     setSuccess(true);
                     setTimeout(() => setSuccess(false), 1500);
                   }}
@@ -478,7 +479,7 @@ const Complain = () => {
                 />
               )}
             </div>
-            <h3 className="text-primary text-center">{docId}</h3>
+            <h3 className="text-primary text-center">{complainID}</h3>
             {success ? (
               <h6 className="text-success">Token Coppied to Clipboard</h6>
             ) : null}
@@ -490,17 +491,8 @@ const Complain = () => {
                   setShowMessage(!showMessage);
                   setDocId(uuid().split("-")[0]);
                   setInputField({
-                    tname: "",
-                    school: "",
-                    sis: "",
-                    email: "",
-                    mobile: "",
+                    ...inputField,
                     complain: "",
-                    status: "Not Solved",
-                    complainTime: Date.now(),
-                    id: docId,
-                    solvedOn: "Not Solved",
-                    remarks: "Not Solved",
                   });
                 }}
               >

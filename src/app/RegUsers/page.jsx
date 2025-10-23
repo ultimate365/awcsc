@@ -342,7 +342,7 @@ const RegUsers = () => {
           return (
             <button
               type="button"
-              className="btn btn-sm btn-warning"
+              className="btn btn-sm"
               style={{ fontSize: 9 }}
               onClick={() => {
                 // eslint-disable-next-line
@@ -365,19 +365,16 @@ const RegUsers = () => {
                     });
               }}
             >
-              Reset Password
+              <i className="bi bi-arrow-counterclockwise text-warning fs-1"></i>
             </button>
           );
         } else {
-          return (
-            <h5>
-              <span className="badge bg-success">Default Password</span>
-            </h5>
-          );
+          return <i className="bi bi-check-circle-fill text-success fs-4"></i>;
         }
       },
       width: "10%",
       center: +true,
+      wrap: +true,
     },
   ];
   // console.log(inputField);

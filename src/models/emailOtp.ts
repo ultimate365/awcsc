@@ -11,7 +11,7 @@ let otpSchema = new mongoose.Schema(
   }
 );
 
-const Otp =
+const EmailOtp =
   mongoose.models.emailotp || mongoose.model("emailotp", otpSchema, "emailotp");
 
-export default Otp;
+export default EmailOtp;

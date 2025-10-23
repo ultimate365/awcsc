@@ -17,7 +17,7 @@ import {
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
-import axios from "axios";
+import { BsClipboard, BsClipboard2Check } from "react-icons/bs";
 const DisplayComplain = () => {
   const navigate = useRouter();
   let teacherdetails = {
@@ -41,6 +41,7 @@ const DisplayComplain = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [complainId, setComplainId] = useState("");
+  const [success, setSuccess] = useState(false);
   const [currentComplain, setCurrentComplain] = useState({
     tname: "",
     school: "",
@@ -68,6 +69,30 @@ const DisplayComplain = () => {
     {
       name: "Id",
       selector: (row) => row.id,
+      wrap: +true,
+      center: +true,
+    },
+    {
+      name: "View",
+      selector: (row) => (
+        <button
+          type="button"
+          className="btn btn-sm btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+          onClick={(e) => {
+            setComplainId(row.id);
+            setCurrentComplain(row);
+            setDate(new Date(row.complainTime));
+            setDate2(new Date(row.solvedOn));
+          }}
+        >
+          Show
+        </button>
+      ),
+
+      wrap: +true,
+      center: +true,
     },
     {
       name: "Teacher Name",
@@ -90,6 +115,8 @@ const DisplayComplain = () => {
     {
       name: "Mobile",
       selector: (row) => row.mobile,
+      wrap: +true,
+      center: +true,
     },
     {
       name: "Status",
@@ -97,35 +124,10 @@ const DisplayComplain = () => {
       wrap: +true,
       center: +true,
     },
-    {
-      name: "View Complain",
-      selector: (row) => (
-        <button
-          type="button"
-          className="btn btn-sm btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#staticBackdrop"
-          onClick={(e) => {
-            setComplainId(row.id);
-            setCurrentComplain(row);
-            setDate(new Date(row.complainTime));
-            setDate2(new Date(row.solvedOn));
-          }}
-        >
-          Show Complain
-        </button>
-      ),
-
-      wrap: +true,
-      center: +true,
-    },
 
     {
       name: "Registered On",
-      selector: (row) => {
-        let date = new Date(row.complainTime);
-        return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`;
-      },
+      selector: (row) => DateValueToSring(row.complainTime),
       wrap: +true,
       center: +true,
     },
@@ -145,6 +147,8 @@ const DisplayComplain = () => {
           Delete
         </button>
       ),
+      wrap: +true,
+      center: +true,
     },
   ];
   const noticed = async () => {
@@ -198,7 +202,14 @@ const DisplayComplain = () => {
     // console.log(user.teachersID);
     // console.log(res);
   };
-
+  const DateValueToSring = (dateValue) => {
+    let date = new Date(dateValue);
+    return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()} At ${
+      date.getHours() > 12 ? date.getHours() - 12 : date.getHours()
+    }:${date.getMinutes()}:${date.getSeconds()} ${
+      date.getHours() > 12 ? "PM" : "AM"
+    }`;
+  };
   useEffect(() => {
     document.title = "AWC Sports App:Requests";
     getComplains();
@@ -261,6 +272,37 @@ const DisplayComplain = () => {
                 </div>
                 <div className="modal-body">
                   <div className="mb-3">
+                    <div className="float-end">
+                      {!success ? (
+                        <BsClipboard
+                          onClick={() => {
+                            navigator.clipboard.writeText(currentComplain.id);
+                            setSuccess(true);
+                            setTimeout(() => setSuccess(false), 1500);
+                          }}
+                          size={30}
+                          color="skyblue"
+                        />
+                      ) : (
+                        <BsClipboard2Check
+                          onClick={() => {
+                            navigator.clipboard.writeText(currentComplain.id);
+                            setSuccess(true);
+                            setTimeout(() => setSuccess(false), 1500);
+                          }}
+                          size={30}
+                          color="skyblue"
+                        />
+                      )}
+                    </div>
+                    <h3 className="text-primary text-center">
+                      {currentComplain.id}
+                    </h3>
+                    {success && (
+                      <h6 className="text-success">
+                        Token Coppied to Clipboard
+                      </h6>
+                    )}
                     <h5 className="text-center" id="name">
                       Complain of Visitor {currentComplain.tname}
                     </h5>
@@ -309,8 +351,10 @@ const DisplayComplain = () => {
                   </div>
                   <div className="mb-3">
                     <h5 className="text-center" id="noticed">
+                      Status of Complain:-
+                      <br />
                       {currentComplain.status !== "Not Solved"
-                        ? `Status of Complain:-<br/> ${
+                        ? `${
                             currentComplain.status
                           } at ${date2.getDate()}-${date2.getMonth()}-${date2.getFullYear()} At ${
                             date2.getHours() > 12

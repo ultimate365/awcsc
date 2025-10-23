@@ -1,5 +1,10 @@
 import nodemailer from "nodemailer";
-const verifyEmailMailer = async (email: any, emailOtp: number, name: any) => {
+const verifyEmailMailer = async (
+  email: any,
+  emailOtp: number,
+  name: any,
+  username: any
+) => {
   try {
     const mail = process.env.AWCSC_GMAIL_ID || "";
     const mailpassword = process.env.AWCSC_GMAIL_PASSWORD;
@@ -34,7 +39,9 @@ const verifyEmailMailer = async (email: any, emailOtp: number, name: any) => {
         Math.random() * 1000 + 1
       )}`,
       text: `Hello Dear ${name}!`,
-      html: `<h1 style="text-align:center; color:blue; ">Hello Dear ${name}!</h1>
+      html: `<h1 style="text-align:center; color:blue; ">Hello Dear ${name}, ${
+        username && `Your username is ${username}`
+      }!</h1>
         <h2 style="text-align:center; color:blue;">Your OTP is ${emailOtp}. Please use this OTP to Verify Your Email id.</h2>`,
     };
 

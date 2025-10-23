@@ -7,16 +7,16 @@ dbConnect();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { email, name }: any = reqBody;
+    const { email, name, username }: any = reqBody;
 
     const emailOtp = Math.floor(100000 + Math.random() * 900000);
-    let emailOtpdata = new EmailOtp({
+    const emailOtpdata = new EmailOtp({
       email: email,
       code: emailOtp,
       expiresIn: new Date().getTime() + 300 * 1000,
     });
 
-    if (email) await verifyEmailMailer(email, emailOtp, name);
+    if (email) await verifyEmailMailer(email, emailOtp, name, username);
 
     await emailOtpdata.save();
     return NextResponse.json(

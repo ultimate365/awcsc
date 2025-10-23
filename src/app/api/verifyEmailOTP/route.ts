@@ -1,18 +1,16 @@
 import dbConnect from "../../../lib/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
-import Otp from "../../../models/otp";
+import EmailOtp from "../../../models/emailOtp";
 import Userteachers from "../../../models/userteachers";
 dbConnect();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
     const { email, code }: any = reqBody;
-
-    let data = await Otp.findOne({ email, code });
-
+    const data = await EmailOtp.findOne({ email, code: parseInt(code) });
     if (data) {
-      let currentTime = new Date().getTime();
-      let difference = data.expiresIn - currentTime;
+      const currentTime = new Date().getTime();
+      const difference = data.expiresIn - currentTime;
       if (difference < 0) {
         return NextResponse.json(
           {
@@ -23,10 +21,12 @@ export async function POST(request: NextRequest) {
           { status: 200 }
         );
       } else {
-        let userteachers = await Userteachers.findOne({ email });
-        userteachers.email = email;
-        userteachers.save();
-        await Otp.deleteMany({ email });
+        const userteachers = await Userteachers.findOne({ email });
+        if (userteachers) {
+          userteachers.email = email;
+          userteachers.save();
+        }
+        await EmailOtp.deleteMany({ email });
 
         return NextResponse.json(
           {

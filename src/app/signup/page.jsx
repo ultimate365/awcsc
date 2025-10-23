@@ -549,12 +549,6 @@ export default function Signup() {
                       <input
                         className="form-control"
                         value={inputField.tname}
-                        onChange={(e) =>
-                          setInputField({
-                            ...inputField,
-                            tname: e.target.value,
-                          })
-                        }
                         readOnly
                       />
                     </div>
@@ -564,12 +558,6 @@ export default function Signup() {
                       <input
                         className="form-control"
                         value={inputField.desig}
-                        onChange={(e) =>
-                          setInputField({
-                            ...inputField,
-                            desig: e.target.value,
-                          })
-                        }
                         readOnly
                       />
                     </div>
@@ -579,12 +567,6 @@ export default function Signup() {
                       <input
                         className="form-control"
                         value={inputField.school}
-                        onChange={(e) =>
-                          setInputField({
-                            ...inputField,
-                            school: e.target.value,
-                          })
-                        }
                         readOnly
                       />
                     </div>
@@ -596,12 +578,6 @@ export default function Signup() {
                       <input
                         className="form-control"
                         value={inputField.empid}
-                        onChange={(e) =>
-                          setInputField({
-                            ...inputField,
-                            empid: e.target.value,
-                          })
-                        }
                         readOnly
                       />
                     </div>
@@ -611,14 +587,9 @@ export default function Signup() {
                       <input
                         className="form-control"
                         value={inputField.phone}
-                        onChange={(e) =>
-                          setInputField({
-                            ...inputField,
-                            phone: e.target.value,
-                          })
-                        }
                         inputMode="numeric"
                         maxLength={10}
+                        readOnly
                       />
                     </div>
 

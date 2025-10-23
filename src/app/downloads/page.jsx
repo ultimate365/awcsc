@@ -39,7 +39,7 @@ const Downloads = () => {
     teacherdetails = decryptObjData("tid");
   }
   const [allData, setAllData] = useState([]);
-  const [folder, setFolder] = useState("files");
+  const [folder, setFolder] = useState("downloads");
   const [loader, setLoader] = useState(false);
   const [file, setFile] = useState({});
   const [fileName, setFileName] = useState("");
@@ -230,6 +230,7 @@ const Downloads = () => {
               aria-label="Default select example"
             >
               <option value="">Select Foder Name</option>
+              <option value="downloads">Downloads</option>
               <option value="files">Files</option>
               <option value="databases">Databases</option>
               <option value="others">Others</option>

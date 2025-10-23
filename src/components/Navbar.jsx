@@ -1,43 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
-import { decryptObjData, getCookie } from "../modules/encryption";
-import School from "../helpers/schools.json";
+import { getCookie } from "../modules/encryption";
 import { titleCase } from "../modules/calculatefunctions";
 import Image from "next/image";
 import { useGlobalContext } from "../context/Store";
-import { firestore } from "../context/FirbaseContext";
-import axios from "axios";
-import { collection, getDocs, query } from "firebase/firestore";
-import Loader from "./Loader";
+
 const Navbar = () => {
-  const {
-    state,
-    setState,
-    setGpLockState,
-    gpLockUpdateTime,
-    setGpLockUpdateTime,
-    setCircleLockState,
-    circleLockUpdateTime,
-    setCircleLockUpdateTime,
-    setTeachersState,
-    setTeacherUpdateTime,
-    teachersState,
-    teacherUpdateTime,
-  } = useGlobalContext();
+  const { state } = useGlobalContext();
   const type = state.TYPE;
   const access = state.ACCESS;
   const user = state.USER;
-  const [showLoader, setShowLoader] = useState(false);
-  const [teacherdetails, setTeacherdetails] = useState({
-    tname: "",
-    school: "",
-    gp: "",
-    circle: "taw",
-    circleAssistant: "taw",
-    gpAssistant: "taw",
-  });
-  const details = getCookie("tid");
+
   const schdetails = getCookie("schid");
   const handleNavCollapse = () => {
     if (
@@ -50,107 +24,6 @@ const Navbar = () => {
         .classList.remove("show");
     }
   };
-  const storeTeachersData = async () => {
-    setShowLoader(true);
-    let data = [];
-    try {
-      const q = query(collection(firestore, "teachers"));
-      const querySnapshot = await getDocs(q);
-      data = querySnapshot.docs.map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        id: doc.id,
-      }));
-    } catch (error) {
-      console.error("Error fetching teachers data: ", error);
-      const url = `/api/getTeachers`;
-      const response = await axios.post(url);
-      data = response.data.data;
-    }
-
-    const newDatas = data.sort((a, b) => {
-      // First, compare the "school" keys
-      if (a.school < b.school) {
-        return -1;
-      }
-      if (a.school > b.school) {
-        return 1;
-      }
-      // If "school" keys are equal, compare the "rank" keys
-      return a.rank - b.rank;
-    });
-    setShowLoader(false);
-    setTeachersState(newDatas);
-    setTeacherUpdateTime(Date.now());
-  };
-  const getLockData = async () => {
-    try {
-      const q = query(collection(firestore, "gpLockData"));
-
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        // id: doc.id,
-      }));
-      setGpLockState(data);
-      setGpLockUpdateTime(Date.now());
-    } catch (error) {
-      await axios
-        .post("/api/getgpLockData")
-        .then((response) => {
-          const data = response.data.data;
-          setGpLockState(data);
-          setGpLockUpdateTime(Date.now());
-        })
-        .catch((error) => {
-          console.error("Error fetching lock data: ", error);
-        });
-      console.log(error);
-    }
-  };
-  const getCircleLockData = async () => {
-    try {
-      const q = query(collection(firestore, "circleLockData"));
-
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        // id: doc.id,
-      }));
-      setCircleLockState(data);
-      setCircleLockUpdateTime(Date.now());
-    } catch (error) {
-      await axios
-        .post("/api/getcircleLockData")
-        .then((response) => {
-          const data = response.data.data;
-          setCircleLockState(data);
-          setCircleLockUpdateTime(Date.now());
-        })
-        .catch((error) => {
-          console.error("Error fetching lock data: ", error);
-        });
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    const difference = (Date.now() - gpLockUpdateTime) / 1000 / 60 / 10;
-    if (difference >= 1) {
-      getLockData();
-    }
-    const difference2 = (Date.now() - circleLockUpdateTime) / 1000 / 60 / 10;
-    if (difference2 >= 1) {
-      getCircleLockData();
-    }
-    const teacherDifference = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
-    if (teacherDifference >= 1 || teachersState.length === 0) {
-      storeTeachersData();
-    }
-    //eslint-disable-next-line
-  }, []);
 
   const RenderMenu = () => {
     if (type !== null) {
@@ -610,31 +483,7 @@ const Navbar = () => {
       );
     }
   };
-  useEffect(() => {
-    if (details) {
-      const tea = decryptObjData("tid");
-      setTeacherdetails(tea);
-      setState({
-        USER: tea,
-        ACCESS: tea?.circle,
-        LOGGEDAT: Date.now(),
-        TYPE: "teacher",
-      });
-    } else if (schdetails) {
-      const sch = decryptObjData("schid");
-      setState({
-        USER: sch,
-        ACCESS: sch?.convenor,
-        LOGGEDAT: Date.now(),
-        TYPE: "school",
-      });
-      setTeacherdetails(sch);
-    }
-    //eslint-disable-next-line
-  }, []);
-  useEffect(() => {
-    //eslint-disable-next-line
-  }, [teacherdetails, user, type]);
+
   return (
     <nav className="navbar align-items-end navbar-expand-lg bg-white px-lg-3 py-lg-2 shadow-sm sticky-top p-2 overflow-auto bg-body-tertiary noprint">
       <div className="container-fluid">
@@ -668,7 +517,6 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-      {showLoader && <Loader />}
     </nav>
   );
 };
