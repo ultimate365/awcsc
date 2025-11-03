@@ -180,58 +180,8 @@ const Login = () => {
           }
         }
       } catch (error) {
-        try {
-          const res = await axios.post("/api/login", {
-            username: inputField.username.toLowerCase(),
-            password: inputField.password,
-          });
-          const record = res.data;
-          const type = record.type;
-          if (record.success) {
-            if (type === "teacher") {
-              const userteacherData = record.userteacherData;
-              const teacherData = record.teacherData;
-              setLoader(false);
-              toast.success("Congrats! You are Logined Successfully!");
-              // encryptObjData("uid", userteacherData, 10080);
-              // encryptObjData("tid", teacherData, 10080);
-              // setCookie("t", teacherData.tname, 10080);
-              // setCookie("loggedAt", Date.now(), 10080);
-              // setState({
-              //   USER: userteacherData,
-              //   ACCESS: userteacherData.circle,
-              //   LOGGEDAT: Date.now(),
-              //   TYPE: "teacher",
-              // });
-              encryptObjData("nonVerifiedUid", userteacherData, 10080);
-              encryptObjData("nonVerifiedTid", teacherData, 10080);
-              setCookie("t", teacherData.tname, 10080);
-
-              navigate.push("/verifyLogin");
-            } else {
-              const userSchoolData = record.userschoolData;
-              setLoader(false);
-              toast.success("Congrats! You are Logined Successfully!");
-              // encryptObjData("schid", userSchoolData, 10080);
-              // setCookie("loggedAt", Date.now(), 10080);
-              // setState({
-              //   USER: userSchoolData,
-              //   ACCESS: userSchoolData.convenor,
-              //   LOGGEDAT: Date.now(),
-              //   TYPE: "school",
-              // });
-              encryptObjData("nonVerifiedSchId", userSchoolData, 10080);
-
-              navigate.push("/verifyLogin");
-            }
-          } else {
-            setLoader(false);
-            toast.error("Invalid Username or Password!");
-          }
-        } catch (error) {
-          setLoader(false);
-          toast.error("Error Occurred: " + error.message);
-        }
+        setLoader(false);
+        toast.error("Error Occurred: " + error.message);
       }
     } else {
       toast.error("Form Is Invalid");

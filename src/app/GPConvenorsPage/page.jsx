@@ -72,6 +72,7 @@ const GPConvenorsPage = () => {
     if (teacherdetails.circle !== "admin") {
       if (teacherdetails.convenor !== "admin") {
         if (teacherdetails.gpAssistant !== "admin") {
+          console.log(teacherdetails.circle);
           navigate.push("/login");
         }
       }
@@ -99,6 +100,7 @@ const GPConvenorsPage = () => {
     updatedBy: "",
   });
   const [search, setSearch] = useState("");
+  const [selectedGP, setSelectedGP] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [inpGrSelected, setInpGrSelected] = useState(false);
   const [firstEventSelected, setFirstEventSelected] = useState(false);
@@ -725,6 +727,7 @@ const GPConvenorsPage = () => {
     setBtnClickedGP(`${gp} GP`);
     setGpClicked(true);
     setFilteredGPData(allParticipants.filter((el) => el?.gp === gp));
+    setSelectedGP(gp);
   };
   const updatePassword = async () => {
     setLoader(true);
@@ -807,6 +810,7 @@ const GPConvenorsPage = () => {
       setAllParticipants(sorted);
       setFilteredGPData(sorted);
       setGpConvenorsData(sorted.filter((el) => el?.gp === teacherdetails?.gp));
+      setSelectedGP(teacherdetails?.gp);
     }
     const difference2 = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
 
@@ -901,13 +905,19 @@ const GPConvenorsPage = () => {
               setYourStateObject({
                 data: allParticipants,
                 school: convenorsGPSchoolData,
+                gp: selectedGP,
               });
               navigate.push(`/GPAllStudents`);
             }}
           >
-            Go To GP Sports All Student List
+            {`Go To ${selectedGP} GP Sports All Student List`}
           </button>
         )}
+      {teacherdetails.circle === "admin" && (
+        <p className="text-success">
+          Click on any Filter Button to show that GP's Participants
+        </p>
+      )}
       {(teacherdetails.circle === "admin" ||
         teacherdetails.convenor === "admin") && (
         <div className="my-4 mx-auto">

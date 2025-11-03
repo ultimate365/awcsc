@@ -34,9 +34,13 @@ const GPAllStudents = () => {
   });
   const schoolData = yourStateObject?.school;
   const navigate = useRouter();
-  const [allData, setAllData] = useState(data);
-  const [filteredData, setFilteredData] = useState(data);
-  const [selectedGP, setSelectedGP] = useState("");
+  const [allData, setAllData] = useState(
+    data?.filter((el) => el?.gp === yourStateObject.gp)
+  );
+  const [filteredData, setFilteredData] = useState(
+    data?.filter((el) => el?.gp === yourStateObject.gp)
+  );
+  const [selectedGP, setSelectedGP] = useState(yourStateObject.gp);
   const [showChestNoDiv, setShowChestNoDiv] = useState(false);
   const [startingChestNo, setStartingChestNo] = useState(1);
   const [search, setSearch] = useState("");
@@ -53,7 +57,6 @@ const GPAllStudents = () => {
   let gender;
   let group;
   let eventName;
-  const isDev = process.env.NODE_ENV === "development";
   const [inpgender, setInpGender] = useState("");
   const [inpGroup, setInpGroup] = useState("");
   const [inpeventBengName, setInpEventBengName] = useState("");
@@ -71,7 +74,7 @@ const GPAllStudents = () => {
   useEffect(() => {
     if (teacherdetails.circle !== "admin") {
       if (teacherdetails.convenor !== "admin") {
-        if (teacherdetails.gpAssistant !== "admin") {
+        if (selectedGPAssistant !== "admin") {
           navigate.push("/login");
         }
       }
@@ -85,7 +88,7 @@ const GPAllStudents = () => {
   const allotChestNumber = async () => {
     setLoader(true);
     const actions = data
-      .filter((el) => el?.gp === teacherdetails.gp)
+      .filter((el) => el?.gp === selectedGP)
       .sort((a, b) => {
         if (a.gp < b.gp) return -1;
         if (a.gp > b.gp) return 1;
@@ -126,9 +129,6 @@ const GPAllStudents = () => {
         } catch (error) {
           console.log(error);
         }
-        if (isDev) {
-          await axios.post(`/api/allowGPChestNo`, { id: el?.id, chestNo });
-        }
         await updateDoc(docRef, {
           chestNo: chestNo,
         })
@@ -148,7 +148,7 @@ const GPAllStudents = () => {
   const removeChestNumber = async () => {
     setLoader(true);
     const actions = data
-      .filter((el) => el?.gp === teacherdetails.gp)
+      .filter((el) => el?.gp === selectedGP)
       .map(async (el, ind) => {
         const chestNo = "";
         const docRef = doc(firestore, "gpSportsStudentData", el?.id);
@@ -179,9 +179,6 @@ const GPAllStudents = () => {
           setSelectedGpStudentStateUpdateTime(Date.now());
         } catch (error) {
           console.log(error);
-        }
-        if (isDev) {
-          await axios.post(`/api/allowGPChestNo`, { id: el?.id, chestNo });
         }
         await updateDoc(docRef, {
           chestNo: chestNo,
@@ -271,19 +268,50 @@ const GPAllStudents = () => {
       center: +true,
     },
   ];
+  const onGenderChange = (e) => {
+    if (group) {
+      group.value = "";
+    }
+    if (eventName) {
+      eventName.value = "";
+    }
+    setGenderSelected(true);
+    setInpGender(e.target.value?.split("_")[0] || "");
+    setEngGenderName(e.target.value?.split("_")[1] || "");
+  };
+  const onGroupChange = (e) => {
+    if (eventName) {
+      eventName.value = "";
+    }
+    setInpGrSelected(true);
+    setInpGroup(e.target.value?.split("_")[0] || "");
+    setEngGroupName(e.target.value?.split("_")[1] || "");
+  };
+  const onEventChange = (e) => {
+    setEventSelected(true);
+    setInpEventBengName(e.target.value?.split("_")[0] || "");
+    setEngEventName(e.target.value?.split("_")[1] || "");
+  };
+  const onDownloadGroupChange = (e) => {
+    eventName = document.getElementById("eventName");
+    if (eventName) {
+      eventName.value = "";
+    }
+    setDldGrSelected(true);
+    setDldInpGroup(e.target.value);
+  };
+  const onDownloadEventChange = (e) => {
+    setDldEventSelected(true);
+    setDldEventName(e.target.value);
+  };
+
   useEffect(() => {
     const result = allData?.filter((el) => {
       return el?.name?.toLowerCase().match(search.toLowerCase());
     });
     setFilteredData(result);
   }, [search]);
-  useEffect(() => {
-    setAllData(data?.filter((el) => el?.gp === teacherdetails.gp));
-    setFilteredData(data?.filter((el) => el?.gp === teacherdetails.gp));
-    setSelectedGP(data?.filter((el) => el?.gp === teacherdetails.gp)[0].gp);
-  }, []);
 
-  useEffect(() => {}, [startingChestNo, allData, filteredData]);
   return (
     <div className="container-fluid timesfont my-4 bg-white">
       {showChestNoDiv ? (
@@ -386,17 +414,7 @@ const GPAllStudents = () => {
               className="form-select ben"
               id="gender"
               defaultValue={""}
-              onChange={(e) => {
-                if (group) {
-                  group.value = "";
-                }
-                if (eventName) {
-                  eventName.value = "";
-                }
-                setGenderSelected(true);
-                setInpGender(e.target.value?.split("_")[0] || "");
-                setEngGenderName(e.target.value?.split("_")[1] || "");
-              }}
+              onChange={onGenderChange}
               aria-label="Default select example"
             >
               <option value="">Select Gender</option>
@@ -411,14 +429,7 @@ const GPAllStudents = () => {
                 className="form-select ben"
                 defaultValue={""}
                 id="group"
-                onChange={(e) => {
-                  if (eventName) {
-                    eventName.value = "";
-                  }
-                  setInpGrSelected(true);
-                  setInpGroup(e.target.value?.split("_")[0] || "");
-                  setEngGroupName(e.target.value?.split("_")[1] || "");
-                }}
+                onChange={onGroupChange}
                 aria-label="Default select example"
               >
                 <option value="">Select Group</option>
@@ -435,11 +446,7 @@ const GPAllStudents = () => {
                 className="form-select ben"
                 defaultValue={""}
                 id="eventName"
-                onChange={(e) => {
-                  setEventSelected(true);
-                  setInpEventBengName(e.target.value?.split("_")[0] || "");
-                  setEngEventName(e.target.value?.split("_")[1] || "");
-                }}
+                onChange={onEventChange}
                 aria-label="Default select example"
               >
                 <option value="">Select Event Name</option>
@@ -468,30 +475,39 @@ const GPAllStudents = () => {
         </div>
         {eventSelected && (
           <>
-            <button
-              type="button"
-              className="btn btn-primary m-1 btn-sm"
-              onClick={async () => {
-                setMyStateObject({
-                  data: filteredData
-                    .filter((el) => el?.gender === engGenderName)
-                    .filter((el) => el?.group === engGroupName)
-                    .filter(
-                      (el) =>
-                        el?.event1 === engEventName ||
-                        el?.event2 === engEventName
-                    ),
-                  school: schoolData,
-                  eventName: `${inpgender} ${inpGroup}- ${inpeventBengName}`,
-                  gender: engGenderName,
-                  group: engGroupName,
-                  engEventName: engEventName,
-                });
-                navigate.push(`/GPSportsEventWiseName`);
-              }}
-            >
-              {`Go To => ${inpgender} ${inpGroup}- ${inpeventBengName}`}
-            </button>
+            {allData
+              .filter((el) => el?.gender === engGenderName)
+              .filter((el) => el?.group === engGroupName)
+              .filter(
+                (el) =>
+                  el?.event1 === engEventName || el?.event2 === engEventName
+              ).length > 0 && (
+              <button
+                type="button"
+                className="btn btn-primary m-1 btn-sm"
+                onClick={async () => {
+                  setMyStateObject({
+                    data: allData
+                      .filter((el) => el?.gender === engGenderName)
+                      .filter((el) => el?.group === engGroupName)
+                      .filter(
+                        (el) =>
+                          el?.event1 === engEventName ||
+                          el?.event2 === engEventName
+                      ),
+                    school: schoolData,
+                    eventName: `${inpgender} ${inpGroup}- ${inpeventBengName}`,
+                    gender: engGenderName,
+                    group: engGroupName,
+                    engEventName: engEventName,
+                    gp: selectedGP,
+                  });
+                  navigate.push(`/GPSportsEventWiseName`);
+                }}
+              >
+                {`Go To => ${inpgender} ${inpGroup}- ${inpeventBengName}`}
+              </button>
+            )}
             <button
               type="button"
               className="btn btn-danger m-1 btn-sm"
@@ -524,14 +540,7 @@ const GPAllStudents = () => {
               className="form-select ben"
               defaultValue={""}
               id="group"
-              onChange={(e) => {
-                eventName = document.getElementById("eventName");
-                if (eventName) {
-                  eventName.value = "";
-                }
-                setDldGrSelected(true);
-                setDldInpGroup(e.target.value);
-              }}
+              onChange={onDownloadGroupChange}
               aria-label="Default select example"
             >
               <option value="">Select Group</option>
@@ -547,10 +556,7 @@ const GPAllStudents = () => {
                 className="form-select ben"
                 defaultValue={""}
                 id="eventName"
-                onChange={(e) => {
-                  setDldEventSelected(true);
-                  setDldEventName(e.target.value);
-                }}
+                onChange={onDownloadEventChange}
                 aria-label="Default select example"
               >
                 <option value="">Select Event Name</option>

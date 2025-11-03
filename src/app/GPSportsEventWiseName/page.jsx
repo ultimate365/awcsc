@@ -17,8 +17,8 @@ const GPSportsEventWiseName = () => {
   const [allData, setAllData] = useState(data);
   const [gpSchools, setGpSchools] = useState(schoolData);
 
-  const [thisGp, setThisGp] = useState("");
-  const { eventName, gender, group,engEventName } = myStateObject;
+  const { eventName, gender, group, engEventName, gp } = myStateObject;
+  const [thisGp, setThisGp] = useState(gp);
   const [feildSheetsClicked, setFeildSheetsClicked] = useState(false);
   let teacherdetails;
   let details = getCookie("tid");
@@ -42,10 +42,7 @@ const GPSportsEventWiseName = () => {
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    setThisGp(
-      gpNames.filter((el) => el.englishName === schoolData[0]?.gp)[0]
-        ?.bengaliName
-    );
+    setThisGp(gpNames.filter((el) => el.englishName === gp)[0]?.bengaliName);
     // eslint-disable-next-line
   }, [allData, gpSchools, thisGp]);
   useEffect(() => {}, []);
@@ -652,8 +649,6 @@ const GPSportsEventWiseName = () => {
           Print
         </button>
       </div>
-
-
     </div>
   );
 };

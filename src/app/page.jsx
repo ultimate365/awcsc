@@ -1,12 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Typed from "typed.js";
 import useWindowSize from "@rooks/use-window-size";
 import { decryptObjData, getCookie } from "../modules/encryption";
-import { collection, getDocs, query } from "firebase/firestore";
-import { firestore } from "../context/FirbaseContext";
 import { useGlobalContext } from "../context/Store";
-import Loader from "../components/Loader";
+
 export default function Home() {
   const { outerWidth } = useWindowSize();
   const el = React.useRef(null);
@@ -24,81 +22,6 @@ export default function Home() {
     teacherUpdateTime,
   } = useGlobalContext();
 
-  const [showLoader, setShowLoader] = useState(false);
-
-  const storeTeachersData = async () => {
-    setShowLoader(true);
-    const q = query(collection(firestore, "teachers"));
-    const querySnapshot = await getDocs(q);
-    const data = querySnapshot.docs.map((doc) => ({
-      // doc.data() is never undefined for query doc snapshots
-      ...doc.data(),
-      id: doc.id,
-    }));
-
-    const newDatas = data.sort((a, b) => {
-      // First, compare the "school" keys
-      if (a.school < b.school) {
-        return -1;
-      }
-      if (a.school > b.school) {
-        return 1;
-      }
-      // If "school" keys are equal, compare the "rank" keys
-      return a.rank - b.rank;
-    });
-    setShowLoader(false);
-    setTeachersState(newDatas);
-    setTeacherUpdateTime(Date.now());
-  };
-  const getLockData = async () => {
-    try {
-      const q = query(collection(firestore, "gpLockData"));
-
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        // id: doc.id,
-      }));
-      setGpLockState(data);
-      setGpLockUpdateTime(Date.now());
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const getCircleLockData = async () => {
-    try {
-      const q = query(collection(firestore, "circleLockData"));
-
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        // id: doc.id,
-      }));
-      setCircleLockState(data);
-      setCircleLockUpdateTime(Date.now());
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    const difference = (Date.now() - gpLockUpdateTime) / 1000 / 60 / 10;
-    if (difference >= 1) {
-      getLockData();
-    }
-    const difference2 = (Date.now() - circleLockUpdateTime) / 1000 / 60 / 10;
-    if (difference2 >= 1) {
-      getCircleLockData();
-    }
-    const teacherDifference = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
-    if (teacherDifference >= 1 || teachersState.length === 0) {
-      storeTeachersData();
-    }
-    //eslint-disable-next-line
-  }, []);
   useEffect(() => {
     const details = getCookie("tid");
     const schdetails = getCookie("schid");
@@ -157,7 +80,6 @@ export default function Home() {
           />
         )}
       </div>
-      {showLoader && <Loader />}
     </div>
   );
 }
