@@ -42,7 +42,7 @@ const GPAllStudents = () => {
   );
   const [selectedGP, setSelectedGP] = useState(yourStateObject.gp);
   const [showChestNoDiv, setShowChestNoDiv] = useState(false);
-  const [startingChestNo, setStartingChestNo] = useState(1);
+  const [startingChestNo, setStartingChestNo] = useState(101);
   const [search, setSearch] = useState("");
   const [loader, setLoader] = useState(false);
   let teacherdetails;
@@ -383,7 +383,7 @@ const GPAllStudents = () => {
               className="btn btn-warning m-1 col-md-1 btn-sm"
               onClick={() => {
                 setShowChestNoDiv(false);
-                setStartingChestNo(1);
+                setStartingChestNo(101);
               }}
             >
               Cancel

@@ -15,7 +15,8 @@ import { enToBnNumber } from "../modules/calculatefunctions";
 import { useGlobalContext } from "../context/Store";
 const width = 2480;
 const height = 3508;
-export default function GPEventList({myData}) {
+export default function GPEventList({ myData }) {
+  const { gpSportsDateState } = useGlobalContext();
   const data = myData?.data?.sort((a, b) => {
     if (a.gp < b.gp) return -1;
     if (a.gp > b.gp) return 1;
@@ -45,13 +46,14 @@ export default function GPEventList({myData}) {
   useEffect(() => {
     setThisGp(gpNames.filter((el) => el.englishName === gp)[0]?.bengaliName);
     setEngGP(gpNames.filter((el) => el.englishName === gp)[0]?.englishName);
-    setGpSportsDate(gpNames.filter((el) => el.englishName === gp)[0]?.date);
+    const spDate = gpSportsDateState.filter((item) => item.gp === gp)[0].date;
+    setGpSportsDate(spDate);
     // eslint-disable-next-line
   }, [allData, gpSchools]);
   return (
     <Document
       style={{ margin: 5, padding: 5 }}
-      title={`GP Event Sheets of ${group}, ${engEventName}`}
+      title={`${gp} GP Event Sheets of ${group}, ${engEventName}`}
     >
       <Page size="A4" orientation="portrait" style={styles.page}>
         <View style={styles.pageMainView}>

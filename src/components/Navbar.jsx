@@ -23,6 +23,8 @@ const Navbar = () => {
     setTeacherUpdateTime,
     teachersState,
     teacherUpdateTime,
+    gpSportsDateState,
+    setGpSportsDateState,
   } = useGlobalContext();
 
   const [showLoader, setShowLoader] = useState(false);
@@ -71,6 +73,21 @@ const Navbar = () => {
       console.log(error);
     }
   };
+  const getGPSportsDate = async () => {
+    try {
+      const q = query(collection(firestore, "gpSportsDate"));
+
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => ({
+        // doc.data() is never undefined for query doc snapshots
+        ...doc.data(),
+        // id: doc.id,
+      }));
+      setGpSportsDateState(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getCircleLockData = async () => {
     try {
       const q = query(collection(firestore, "circleLockData"));
@@ -101,6 +118,7 @@ const Navbar = () => {
     if (teacherDifference >= 1 || teachersState.length === 0) {
       storeTeachersData();
     }
+    getGPSportsDate();
     //eslint-disable-next-line
   }, []);
   const schdetails = getCookie("schid");

@@ -80,7 +80,7 @@ export default function GPDownloadEventSheets() {
       </div>
       <PDFDownloadLink
         document={<GPEventList myData={myStateObject} />}
-        fileName={`GP Event Sheets of ${group}, ${engEventName}`}
+        fileName={`${gp} GP Event Sheets of ${group}, ${engEventName}`}
         style={{
           textDecoration: "none",
           padding: "10px",

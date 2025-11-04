@@ -27,6 +27,9 @@ import {
 import bcrypt from "bcryptjs";
 import {
   createDownloadLink,
+  dateObjToDateFormat,
+  getCurrentDateInput,
+  getSubmitDateInput,
   removeDuplicates,
 } from "../../modules/calculatefunctions";
 import axios from "axios";
@@ -52,6 +55,8 @@ const GPConvenorsPage = () => {
     userSchoolState,
     setUserSchoolState,
     setUserSchoolStateUpdateTime,
+    gpSportsDateState,
+    setGpSportsDateState,
   } = useGlobalContext();
 
   const navigate = useRouter();
@@ -101,6 +106,8 @@ const GPConvenorsPage = () => {
   });
   const [search, setSearch] = useState("");
   const [selectedGP, setSelectedGP] = useState("");
+  const [showDateSection, setShowDateSection] = useState(false);
+  const [gpSpDate, setGpSpDate] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [inpGrSelected, setInpGrSelected] = useState(false);
   const [firstEventSelected, setFirstEventSelected] = useState(false);
@@ -728,6 +735,8 @@ const GPConvenorsPage = () => {
     setGpClicked(true);
     setFilteredGPData(allParticipants.filter((el) => el?.gp === gp));
     setSelectedGP(gp);
+    const spDate = gpSportsDateState.filter((item) => item.gp === gp)[0].date;
+    setGpSpDate(spDate);
   };
   const updatePassword = async () => {
     setLoader(true);
@@ -765,6 +774,29 @@ const GPConvenorsPage = () => {
         }
       );
     });
+  };
+
+  const updateGPDate = async () => {
+    setLoader(true);
+    let x = gpSportsDateState.map((item) => {
+      if (item.gp === selectedGP) {
+        item.date = gpSpDate;
+      }
+      return item;
+    });
+    setGpSportsDateState(x);
+    const docRef = doc(firestore, "gpSportsDate", selectedGP);
+    await updateDoc(docRef, { date: gpSpDate })
+      .then(() => {
+        setLoader(false);
+        toast.success(`GP Sports Date Updated Successfully`);
+        setShowDateSection(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoader(false);
+        toast.error("GP Sports Date Not Updated");
+      });
   };
 
   const handleSchoolChange = (e) => {
@@ -810,8 +842,8 @@ const GPConvenorsPage = () => {
       setAllParticipants(sorted);
       setFilteredGPData(sorted);
       setGpConvenorsData(sorted.filter((el) => el?.gp === teacherdetails?.gp));
-      setSelectedGP(teacherdetails?.gp);
     }
+
     const difference2 = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
 
     getTeachersData();
@@ -835,7 +867,8 @@ const GPConvenorsPage = () => {
           .filter((el) => el?.gpAssistant === "admin")
       );
     }
-
+    setSelectedGP(teacherdetails?.gp);
+    filterData(teacherdetails?.gp);
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -894,8 +927,10 @@ const GPConvenorsPage = () => {
         </div>
       )}
       {(teacherdetails.circle === "admin" ||
+        teacherdetails.circleAssistant === "admin" ||
         teacherdetails.convenor === "admin" ||
         teacherdetails.gpAssistant === "admin") &&
+        selectedGP &&
         allParticipants.length > 0 && (
           <button
             type="button"
@@ -918,6 +953,60 @@ const GPConvenorsPage = () => {
           Click on any Filter Button to show that GP's Participants
         </p>
       )}
+      <h4 className="text-primary m-3">
+        {selectedGP && `${selectedGP} GP Sports Date is `}
+        {gpSpDate}
+      </h4>
+      {(teacherdetails.circle === "admin" ||
+        teacherdetails.circleAssistant === "admin" ||
+        teacherdetails.convenor === "admin" ||
+        teacherdetails.gpAssistant === "admin") &&
+        selectedGP && (
+          <div className="m-2 mx-auto">
+            <button
+              type="button"
+              className="btn btn-success"
+              onClick={() => setShowDateSection(!showDateSection)}
+            >
+              Set GP Sports Date
+            </button>
+            {showDateSection && (
+              <div className="my-4 mx-auto col-md-6 ">
+                <input
+                  type="date"
+                  className="form-control"
+                  id="gpSportsDate"
+                  placeholder="Select GP Sports Date"
+                  value={getCurrentDateInput(gpSpDate)}
+                  onChange={(e) => {
+                    setGpSpDate(getSubmitDateInput(e.target.value));
+                  }}
+                />
+                <button
+                  type="button"
+                  className="btn btn-primary m-2"
+                  onClick={updateGPDate}
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger m-2"
+                  onClick={() => {
+                    setGpSpDate(
+                      gpSportsDateState.filter(
+                        (item) => item.gp === selectedGP
+                      )[0].date
+                    );
+                    setShowDateSection(false);
+                  }}
+                >
+                  Reset
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       {(teacherdetails.circle === "admin" ||
         teacherdetails.convenor === "admin") && (
         <div className="my-4 mx-auto">

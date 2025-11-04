@@ -5,6 +5,7 @@ import { FirebaseProvider } from "./FirbaseContext";
 import GP_LOCK_DATA from "@/helpers/gpLockData.json";
 import CIRCLE_LOCK_DATA from "@/helpers/circleLockData.json";
 import SCHOOL_DATA from "@/helpers/schools.json";
+import GPSPORTSDATE from "@/helpers/gpSportsDate.json";
 const GlobalContext = createContext({
   state: {
     USER: {},
@@ -87,6 +88,8 @@ const GlobalContext = createContext({
   setCircleFirstResultState: () => [],
   circleFirstUpdateTime: Date.now() - 60000,
   setCircleFirstUpdateTime: () => Date.now() - 60000,
+  gpSportsDateState: GPSPORTSDATE,
+  setGpSportsDateState: () => [],
 });
 export const GlobalContextProvider = ({ children }) => {
   const [state, setState] = useState({
@@ -152,6 +155,7 @@ export const GlobalContextProvider = ({ children }) => {
   const [circleFirstUpdateTime, setCircleFirstUpdateTime] = useState(
     Date.now() - 60000
   );
+  const [gpSportsDateState, setGpSportsDateState] = useState(GPSPORTSDATE);
 
   return (
     <GlobalContext.Provider
@@ -231,6 +235,8 @@ export const GlobalContextProvider = ({ children }) => {
         setCircleFirstResultState,
         circleFirstUpdateTime,
         setCircleFirstUpdateTime,
+        gpSportsDateState,
+        setGpSportsDateState,
       }}
     >
       <FirebaseProvider>{children}</FirebaseProvider>

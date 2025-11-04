@@ -39,6 +39,7 @@ const GPStudentNameEntry = () => {
     setGpLockUpdateTime,
     selectedGpStudentStateUpdateTime,
     setSelectedGpStudentStateUpdateTime,
+    gpSportsDateState,
   } = useGlobalContext();
   const navigate = useRouter();
   const docId = uuid();
@@ -121,6 +122,7 @@ const GPStudentNameEntry = () => {
   const [resultFilteredData, setresultFilteredData] = useState([]);
   const [resultSearch, setResultSearch] = useState("");
   const [showCircleResult, setShowCircleResult] = useState(false);
+  const [gpSpDate, setGpSpDate] = useState("");
 
   const getLockData = async () => {
     const data = gpLockState;
@@ -138,6 +140,8 @@ const GPStudentNameEntry = () => {
     // }
 
     setGpLockData(data?.filter((el) => el?.gp === gp)[0]);
+    const spDate = gpSportsDateState.filter((item) => item.gp === gp)[0].date;
+    setGpSpDate(spDate);
   };
 
   const openLockForEntry = async (id) => {
@@ -891,6 +895,11 @@ const GPStudentNameEntry = () => {
 
   return (
     <div className="container text-center my-5">
+      {gpSpDate && (
+        <h5 className="text-center text-primary">
+          {titleCase(tawSchoolData.gp)} GP Sports Date: {gpSpDate}
+        </h5>
+      )}
       {selectSchoolsParticipants.length > 0 && showTable && (
         <div className="my-4">
           <h3 className="text-center text-primary">
