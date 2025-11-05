@@ -1,15 +1,17 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { useGlobalContext } from "../../context/Store";
 
 import Typed from "typed.js";
 import { decryptObjData, getCookie } from "../../modules/encryption";
+import { titleCase } from "@/modules/calculatefunctions";
 
 const Dashboard = () => {
-  const { state, setState } = useGlobalContext();
+  const { state, setState, gpSportsDateState } = useGlobalContext();
   const user = state.USER;
+  const gp = user?.gp;
   const navigate = useRouter();
   let details = getCookie("tid");
   let schid = getCookie("schid");
@@ -27,7 +29,7 @@ const Dashboard = () => {
   if (details) {
     teacher = decryptObjData("tid");
   }
-
+  const [gpSpDate, setGpSpDate] = useState("");
   const el = useRef(null);
   useEffect(() => {
     if (!details) {
@@ -35,6 +37,8 @@ const Dashboard = () => {
         navigate.push("/logout");
       }
     }
+    const spDate = gpSportsDateState.filter((item) => item.gp === gp)[0].date;
+    setGpSpDate(spDate);
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -79,6 +83,11 @@ const Dashboard = () => {
           ref={el}
         />
       </div>
+      {gpSpDate && (
+        <h5 className="text-center text-primary">
+          {titleCase(gp)} GP Sports Date: {gpSpDate}
+        </h5>
+      )}
       {details ? (
         teacher?.convenor === "taw" ? (
           <div className="my-4">

@@ -20,7 +20,14 @@ import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import axios from "axios";
 const Complain = () => {
-  let teacherdetails, userdetails;
+  let userdetails;
+  let teacherdetails = {
+    id: "",
+    tname: "",
+    school: "",
+    email: "",
+    phone: "",
+  };
   let details = getCookie("tid");
   if (details) {
     teacherdetails = decryptObjData("tid");
