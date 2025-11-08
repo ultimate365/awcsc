@@ -94,6 +94,7 @@ const Downloads = () => {
                 fileName: fileName,
                 storageFileName: file.name,
                 fileType: file.type,
+                isRelease: false,
               });
               toast.success("Congrats! File Uploaded Successfully!", {
                 position: "top-right",
@@ -318,8 +319,8 @@ const Downloads = () => {
             <thead>
               <tr>
                 <th>Sl</th>
-                <th>Format</th>
                 <th>File Name</th>
+                <th>Format</th>
                 <th>Download</th>
                 {teacherdetails.circle === "admin" && (
                   <>
@@ -336,7 +337,9 @@ const Downloads = () => {
                     <td>{ind + 1}</td>
                     <td>{el.fileName.toUpperCase()}</td>
                     <td>
-                      {el.fileType === "application/pdf"
+                      {el.fileType === "application/vnd.android.package-archive"
+                        ? "APK"
+                        : el.fileType === "application/pdf"
                         ? "PDF"
                         : el.fileType === "application/msword"
                         ? "WORD"
