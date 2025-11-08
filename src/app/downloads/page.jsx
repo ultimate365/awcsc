@@ -23,7 +23,10 @@ import {
 import Loader from "../../components/Loader";
 import { v4 as uuid } from "uuid";
 import { decryptObjData, getCookie } from "../../modules/encryption";
-import { findEmptyValues } from "../../modules/calculatefunctions";
+import {
+  createDownloadLink,
+  findEmptyValues,
+} from "../../modules/calculatefunctions";
 const Downloads = () => {
   let teacherdetails = {
     convenor: "",
@@ -217,6 +220,14 @@ const Downloads = () => {
       {loader ? <Loader /> : null}
       {teacherdetails.circle === "admin" && (
         <div className="col-md-6 mx-auto">
+          <div className="my-3">
+            <button
+              className="btn btn-dark"
+              onClick={() => createDownloadLink(allData, "downloads")}
+            >
+              Download Data
+            </button>
+          </div>
           <h3 className="text-primary text-center">Upload Files</h3>
           <div className="col-md-6 mx-auto mb-3">
             <h5 className="text-center text-primary mb-3">
