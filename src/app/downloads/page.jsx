@@ -87,8 +87,9 @@ const Downloads = () => {
                 date: Date.now(),
                 addedBy: teacherdetails.tname,
                 url: url,
+                downloadUrl: url,
                 fileName: fileName,
-                originalFileName: file.name,
+                storageFileName: file.name,
                 fileType: file.type,
               });
               toast.success("Congrats! File Uploaded Successfully!", {
@@ -391,7 +392,7 @@ const Downloads = () => {
                                 `Are you sure you want to Delete This File?`
                               );
                               if (conf) {
-                                deleteFile(el.originalFileName, el.id);
+                                deleteFile(el.storageFileName, el.id);
                               } else {
                                 toast.success("File Not Deleted!!!");
                               }
