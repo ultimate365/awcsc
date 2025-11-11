@@ -31,14 +31,10 @@ const GPStudentNameEntry = () => {
   const {
     setStateArray,
     schoolState,
-    setSchoolState,
     gpLockState,
     setGpLockState,
     selectedGpStudentState,
     setSelectedGpStudentState,
-    setGpLockUpdateTime,
-    selectedGpStudentStateUpdateTime,
-    setSelectedGpStudentStateUpdateTime,
     gpSportsDateState,
   } = useGlobalContext();
   const navigate = useRouter();
@@ -160,7 +156,6 @@ const GPStudentNameEntry = () => {
     let y = gpLockState.filter((item) => item?.id !== id);
     y = [...y, x];
     setGpLockState(y);
-    setGpLockUpdateTime(Date.now());
     const docRef = doc(firestore, "gpLockData", id);
     await axios.post(`/api/updategpLockData`, x);
     await updateDoc(docRef, entry)
@@ -202,7 +197,6 @@ const GPStudentNameEntry = () => {
     y = [...y, x];
     await axios.post(`/api/updategpLockData`, x);
     setGpLockState(y);
-    setGpLockUpdateTime(Date.now());
     const docRef = doc(firestore, "gpLockData", id);
     await updateDoc(docRef, entry)
       .then(async () => {
@@ -257,7 +251,6 @@ const GPStudentNameEntry = () => {
         return 0;
       });
     setSelectedGpStudentState(data);
-    setSelectedGpStudentStateUpdateTime(Date.now());
     setSelectSchoolsParticipants(data);
     setFilteredData(data);
     setLoader(false);
@@ -396,7 +389,6 @@ const GPStudentNameEntry = () => {
       updatedBy: tawSchoolData.id,
     };
     setSelectedGpStudentState([...selectedGpStudentState, upLoadedResult]);
-    setSelectedGpStudentStateUpdateTime(Date.now());
     // await axios.post("/api/addgpSportsStudentData", upLoadedResult);
     await setDoc(
       doc(firestore, "gpSportsStudentData", inputField.id),
@@ -509,7 +501,6 @@ const GPStudentNameEntry = () => {
     let x = selectedGpStudentState.filter((item) => item.id !== inputField.id);
     x = [...x, updatedResult];
     setSelectedGpStudentState(x);
-    setSelectedGpStudentStateUpdateTime(Date.now());
     // await axios.post("/api/updategpSportsStudentData", updatedResult);
     await updateDoc(
       doc(firestore, "gpSportsStudentData", inputField.id),
@@ -569,7 +560,6 @@ const GPStudentNameEntry = () => {
         setSelectedGpStudentState(
           selectedGpStudentState.filter((item) => item.id !== participant.id)
         );
-        setSelectedGpStudentStateUpdateTime(Date.now());
         toast.success("Participant Deleted Successfully");
       });
     } catch (e) {
@@ -841,9 +831,7 @@ const GPStudentNameEntry = () => {
       );
     }
 
-    const difference =
-      (Date.now() - selectedGpStudentStateUpdateTime) / 1000 / 60 / 10;
-    if (difference >= 1 || selectedGpStudentState.length === 0) {
+    if (selectedGpStudentState.length === 0) {
       getAllParticipant();
     } else {
       sortForSchool(selectedGpStudentState);

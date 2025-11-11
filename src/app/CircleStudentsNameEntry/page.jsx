@@ -36,27 +36,18 @@ const CircleStudentsNameEntry = () => {
     setStateArray,
     gpLockState,
     setGpLockState,
-    setGpLockUpdateTime,
-    convenorsState,
     setConvenorsState,
     setGpStudentState,
     setCircleStudentState,
-    setConvenorsUpdateTime,
     teachersState,
     setTeachersState,
-    teacherUpdateTime,
-    setTeacherUpdateTime,
     schoolState,
     allGPFirstsState,
     setAllGPFirstsState,
-    allGPFirstsStateUpdateTime,
-    setAllGPFirstsStateUpdateTime,
     circleAssistantState,
     setCircleAssistantState,
     circleLockState,
     setCircleLockState,
-    circleLockUpdateTime,
-    setCircleLockUpdateTime,
   } = useGlobalContext();
   const navigate = useRouter();
   const [showTable, setShowTable] = useState(false);
@@ -142,7 +133,6 @@ const CircleStudentsNameEntry = () => {
     setAllParticipants(data1);
     setFilteredGPData(data1);
     setAllGPFirstsState(data1);
-    setAllGPFirstsStateUpdateTime(Date.now());
     setGpConvenorsData(data1.filter((el) => el?.gp === teacherdetails.gp));
 
     setLoader(false);
@@ -154,7 +144,6 @@ const CircleStudentsNameEntry = () => {
       (teacher) => teacher.circleAssistant === "admin"
     );
     setAllCircleAssistants(circleAssistants);
-    setTeacherUpdateTime(Date.now());
   };
   const updateData = async () => {
     setLoader(true);
@@ -164,7 +153,6 @@ const CircleStudentsNameEntry = () => {
     setAllGPFirstsState(newData);
     setAllParticipants(newData);
     setFilteredGPData(newData);
-    setAllGPFirstsStateUpdateTime(Date.now());
     // await axios.post("/api/updateallGPFirsts", inputField);
     const docRef = doc(firestore, "allGPFirsts", inputField.id);
     await updateDoc(docRef, inputField)
@@ -217,7 +205,6 @@ const CircleStudentsNameEntry = () => {
           );
           setAllGPFirstsState(x);
           setFilteredGPData(x);
-          setAllGPFirstsStateUpdateTime(Date.now());
           toast.success("Participant Deleted Successfully");
         })
         .catch((e) => {
@@ -296,7 +283,6 @@ const CircleStudentsNameEntry = () => {
 
       await Promise.all(createCircleAssistantNupdateTeacherData).then(
         async () => {
-          setTeacherUpdateTime(Date.now());
           setCircleAssistantState(all);
           setLoader(false);
           toast.success("All GP Assistants Created");
@@ -313,7 +299,6 @@ const CircleStudentsNameEntry = () => {
     let y = teachersState.filter((item) => item.id !== el?.id);
     y = [...y, x];
     setTeachersState(y);
-    setTeacherUpdateTime(Date.now());
     // await axios.post("/api/updTeacherConvenor", {
     //   id: el?.id,
     //   circleAssistant: "taw",
@@ -526,7 +511,6 @@ const CircleStudentsNameEntry = () => {
       });
       await Promise.all(closeOperation).then(() => {
         setGpLockState(x);
-        setGpLockUpdateTime(Date.now());
       });
     } catch (e) {
       setLoader(false);
@@ -537,7 +521,6 @@ const CircleStudentsNameEntry = () => {
 
     await waitForSomeTime();
     setConvenorsState([]);
-    setConvenorsUpdateTime(Date.now());
     getTeachersData();
   };
   const waitForSomeTime = async () => {
@@ -612,7 +595,6 @@ const CircleStudentsNameEntry = () => {
     let y = gpLockState.filter((item) => item?.id !== gp.id);
     y = [...y, x];
     setGpLockState(y);
-    setGpLockUpdateTime(Date.now());
     const docRef = doc(firestore, "gpLockData", gp.id);
     await updateDoc(docRef, entry)
       .then(async () => {
@@ -671,7 +653,6 @@ const CircleStudentsNameEntry = () => {
       a.gp.localeCompare(b.gp)
     );
     setCircleLockState(x);
-    setCircleLockUpdateTime(Date.now());
   };
   const lockAllGP = async (state) => {
     setLoader(true);
@@ -711,7 +692,6 @@ const CircleStudentsNameEntry = () => {
       );
       setCircleLockState(x);
     });
-    setCircleLockUpdateTime(Date.now());
   };
 
   useEffect(() => {
@@ -731,9 +711,8 @@ const CircleStudentsNameEntry = () => {
       schoolState.filter((el) => el?.gp === teacherdetails.gp)
     );
     getTeachersData();
-    const AllParticipantdifference =
-      (Date.now() - allGPFirstsStateUpdateTime) / 1000 / 60 / 10;
-    if (AllParticipantdifference >= 1 || allGPFirstsState.length === 0) {
+
+    if (allGPFirstsState.length === 0) {
       getAllParticipant();
     } else {
       setAllParticipants(allGPFirstsState);

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import DataTable from "react-data-table-component";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,7 +9,6 @@ import {
   doc,
   getDocs,
   query,
-  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { firestore } from "../../context/FirbaseContext";
@@ -27,34 +26,25 @@ import {
 import bcrypt from "bcryptjs";
 import {
   createDownloadLink,
-  dateObjToDateFormat,
   getCurrentDateInput,
   getSubmitDateInput,
   removeDuplicates,
 } from "../../modules/calculatefunctions";
-import axios from "axios";
 const GPConvenorsPage = () => {
   const {
     setStateArray,
     setYourStateObject,
     gpStudentState,
-    gpStudentStateUpdateTime,
     schoolState,
     teachersState,
     setTeachersState,
-    teacherUpdateTime,
-    setTeacherUpdateTime,
     setGpStudentState,
-    setGpStudentStateUpdateTime,
     AmtaWestCircleAllResultState,
     setAmtaWestCircleAllResultState,
-    setAmtaWestCircleAllResultUpdateTime,
-    AmtaWestCircleAllResultUpdateTime,
     allGPAssistantsState,
     setAllGPAssistantsState,
     userSchoolState,
     setUserSchoolState,
-    setUserSchoolStateUpdateTime,
     gpSportsDateState,
     setGpSportsDateState,
   } = useGlobalContext();
@@ -157,7 +147,6 @@ const GPConvenorsPage = () => {
   const getTeachersData = async () => {
     setAllTeachers(teachersState);
     setTeachersState(teachersState);
-    setTeacherUpdateTime(Date.now());
   };
 
   const getAllGPAssistantsData = async () => {
@@ -173,47 +162,26 @@ const GPConvenorsPage = () => {
     );
   };
   const getAllResult = async () => {
-    try {
-      setLoader(true);
-      const querySnapshot = await getDocs(
-        query(collection(firestore, "AmtaWestCircleAllResult"))
-      );
-      const data = querySnapshot.docs
-        .map((doc) => doc.data())
-        .sort((a, b) => {
-          if (a.gp < b.gp) return -1;
-          if (a.gp > b.gp) return 1;
-          if (a.gender < b.gender) return -1;
-          if (a.gender > b.gender) return 1;
-          if (a.event1rank < b.event1rank) return -1;
-          if (a.event1rank > b.event1rank) return 1;
-          return 0;
-        });
-      setLoader(false);
-      setAmtaWestCircleAllResultState(data);
-      setAmtaWestCircleAllResultUpdateTime(Date.now());
-      setAllResult(data);
-      setresultFilteredData(data);
-      setShowCircleResult(true);
-    } catch (error) {
-      await axios
-        .post("/api/getAmtaWestCircleAllResult")
-        .then((response) => {
-          const data = response.data.data.sort(
-            (a, b) => a?.event1rank - b?.event1rank
-          );
-          setLoader(false);
-          setAmtaWestCircleAllResultState(data);
-          setAmtaWestCircleAllResultUpdateTime(Date.now());
-          setAllResult(data);
-          setresultFilteredData(data);
-          setShowCircleResult(true);
-        })
-        .catch((error) => {
-          console.error("Error fetching lock data: ", error);
-        });
-      console.error("Error fetching lock data: ", error);
-    }
+    setLoader(true);
+    const querySnapshot = await getDocs(
+      query(collection(firestore, "AmtaWestCircleAllResult"))
+    );
+    const data = querySnapshot.docs
+      .map((doc) => doc.data())
+      .sort((a, b) => {
+        if (a.gp < b.gp) return -1;
+        if (a.gp > b.gp) return 1;
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
+        return 0;
+      });
+    setLoader(false);
+    setAmtaWestCircleAllResultState(data);
+    setAllResult(data);
+    setresultFilteredData(data);
+    setShowCircleResult(true);
   };
   const updateAssistantData = async () => {
     let all = allGPAssistantsState;
@@ -255,10 +223,6 @@ const GPConvenorsPage = () => {
     await Promise.all(gpAssistantUpdateNteacherUpdate).then(async () => {
       const createGpAssistantNupdateTeacherData = assistants.map(
         async (el, ind) => {
-          // await axios.post("/api/updTeacherConvenor", {
-          //   id: el?.id,
-          //   gpAssistant: "admin",
-          // });
           let x = teachersState.filter((item) => item.id === el?.id)[0];
           x.gpAssistant = "admin";
           let y = teachersState.filter((item) => item.id !== el?.id);
@@ -280,7 +244,6 @@ const GPConvenorsPage = () => {
         }
       );
       await Promise.all(createGpAssistantNupdateTeacherData).then(async () => {
-        setTeacherUpdateTime(Date.now());
         setAllGPAssistantsState(all);
         setLoader(false);
         toast.success("All GP Assistants Created", {
@@ -305,11 +268,6 @@ const GPConvenorsPage = () => {
     let y = teachersState.filter((item) => item.id !== el?.id);
     y = [...y, x];
     setTeachersState(y);
-    setTeacherUpdateTime(Date.now());
-    // await axios.post("/api/updTeacherConvenor", {
-    //   id: el?.id,
-    //   gpAssistant: "taw",
-    // });
 
     setAllGPAssistantsState(
       allGPAssistantsState.filter((item) => item?.id !== el?.id)
@@ -344,53 +302,26 @@ const GPConvenorsPage = () => {
   };
 
   const getAllParticipant = async () => {
-    try {
-      setLoader(true);
-      const querySnapshot = await getDocs(
-        query(collection(firestore, "gpSportsStudentData"))
-      );
-      const data = querySnapshot.docs
-        .map((doc) => doc.data())
-        .sort((a, b) => {
-          if (a.gp < b.gp) return -1;
-          if (a.gp > b.gp) return 1;
-          if (a.gender < b.gender) return -1;
-          if (a.gender > b.gender) return 1;
-          if (a.event1rank < b.event1rank) return -1;
-          if (a.event1rank > b.event1rank) return 1;
-          return 0;
-        });
-      setGpStudentState(data);
-      setGpStudentStateUpdateTime(Date.now());
-      setAllParticipants(data);
-      setFilteredGPData(data);
-      setGpConvenorsData(data.filter((el) => el?.gp === teacherdetails.gp));
-      setLoader(false);
-    } catch (error) {
-      await axios
-        .post("/api/getgpSportsStudentData")
-        .then((response) => {
-          const data = response.data.data.sort((a, b) => {
-            if (a.gp < b.gp) return -1;
-            if (a.gp > b.gp) return 1;
-            if (a.gender < b.gender) return -1;
-            if (a.gender > b.gender) return 1;
-            if (a.event1rank < b.event1rank) return -1;
-            if (a.event1rank > b.event1rank) return 1;
-            return 0;
-          });
-          setGpStudentState(data);
-          setGpStudentStateUpdateTime(Date.now());
-          setAllParticipants(data);
-          setFilteredGPData(data);
-          setGpConvenorsData(data.filter((el) => el?.gp === teacherdetails.gp));
-          setLoader(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching lock data: ", error);
-        });
-      console.error("Error fetching lock data: ", error);
-    }
+    setLoader(true);
+    const querySnapshot = await getDocs(
+      query(collection(firestore, "gpSportsStudentData"))
+    );
+    const data = querySnapshot.docs
+      .map((doc) => doc.data())
+      .sort((a, b) => {
+        if (a.gp < b.gp) return -1;
+        if (a.gp > b.gp) return 1;
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
+        return 0;
+      });
+    setGpStudentState(data);
+    setAllParticipants(data);
+    setFilteredGPData(data);
+    setGpConvenorsData(data.filter((el) => el?.gp === teacherdetails.gp));
+    setLoader(false);
   };
   const updateData = async () => {
     setLoader(true);
@@ -456,9 +387,7 @@ const GPConvenorsPage = () => {
     let x = gpStudentState.filter((item) => item.id !== inputField.id);
     x = [...x, entry];
     setGpStudentState(x);
-    setGpStudentStateUpdateTime(Date.now());
 
-    // await axios.post("/api/updategpSportsStudentData", entry);
     const docRef = doc(firestore, "gpSportsStudentData", inputField.id);
 
     await updateDoc(docRef, entry)
@@ -515,11 +444,9 @@ const GPConvenorsPage = () => {
   };
   const deleteParticipant = async (participant) => {
     try {
-      await axios.post("api/delgpSportsStudentData", { id: participant.id });
       setGpStudentState(
         gpStudentState.filter((item) => item.id !== participant.id)
       );
-      setGpStudentStateUpdateTime(Date.now());
       await deleteDoc(doc(firestore, "gpSportsStudentData", participant.id))
         .then(() => {
           const x = gpStudentState.filter((item) => item.id !== participant.id);
@@ -750,7 +677,6 @@ const GPConvenorsPage = () => {
     if (userSchoolState.length > 0) {
       let us = userSchoolState.filter((el) => el.id !== selectedSchool.id);
       setUserSchoolState([...us, x]);
-      setUserSchoolStateUpdateTime(Date.now());
     }
     await updateDoc(doc(firestore, "userschools", selectedSchool.id), {
       password: password,
@@ -828,8 +754,8 @@ const GPConvenorsPage = () => {
         schoolState.filter((el) => el?.gp === teacherdetails.gp)
       );
     }
-    const difference = (Date.now() - gpStudentStateUpdateTime) / 1000 / 60 / 10;
-    if (difference >= 1 || gpStudentState.length === 0) {
+
+    if (gpStudentState.length === 0) {
       getAllParticipant();
     } else {
       const sorted = gpStudentState.sort(
@@ -844,13 +770,9 @@ const GPConvenorsPage = () => {
       setGpConvenorsData(sorted.filter((el) => el?.gp === teacherdetails?.gp));
     }
 
-    const difference2 = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
-
     getTeachersData();
 
-    const difference3 =
-      (Date.now() - AmtaWestCircleAllResultUpdateTime) / 1000 / 60 / 15;
-    if (AmtaWestCircleAllResultState.length === 0 || difference3 >= 1) {
+    if (AmtaWestCircleAllResultState.length === 0) {
       getAllResult();
     } else {
       setresultFilteredData(AmtaWestCircleAllResultState);

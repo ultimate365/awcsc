@@ -36,31 +36,14 @@ import { v4 as uuid } from "uuid";
 import SCHOOLS from "../../helpers/schools.json";
 export default function CircleSportsDirectNameEntry() {
   const {
-    setStateObject,
-    setStateArray,
     gpLockState,
-    setGpLockState,
-    setGpLockUpdateTime,
-    convenorsState,
-    setConvenorsState,
-    setGpStudentState,
-    setCircleStudentState,
-    setConvenorsUpdateTime,
     teachersState,
     setTeachersState,
-    teacherUpdateTime,
-    setTeacherUpdateTime,
     schoolState,
     allGPFirstsState,
     setAllGPFirstsState,
-    allGPFirstsStateUpdateTime,
-    setAllGPFirstsStateUpdateTime,
     circleAssistantState,
     setCircleAssistantState,
-    circleLockState,
-    setCircleLockState,
-    circleLockUpdateTime,
-    setCircleLockUpdateTime,
   } = useGlobalContext();
   const navigate = useRouter();
   const [search, setSearch] = useState("");
@@ -157,7 +140,6 @@ export default function CircleSportsDirectNameEntry() {
     setAllParticipants(data1);
     setFilteredGPData(data1);
     setAllGPFirstsState(data1);
-    setAllGPFirstsStateUpdateTime(Date.now());
     setGpConvenorsData(data1.filter((el) => el?.gp === teacherdetails.gp));
 
     setLoader(false);
@@ -173,7 +155,6 @@ export default function CircleSportsDirectNameEntry() {
         .sort((a, b) => a?.tname.localeCompare(b?.tname));
       setAllTeachers(data);
       setTeachersState(data);
-      setTeacherUpdateTime(Date.now());
     } catch (error) {
       await axios
         .post("/api/getTeacher")
@@ -184,7 +165,6 @@ export default function CircleSportsDirectNameEntry() {
           setLoader(false);
           setAllTeachers(data);
           setTeachersState(data);
-          setTeacherUpdateTime(Date.now());
         })
         .catch((error) => {
           setLoader(false);
@@ -268,7 +248,6 @@ export default function CircleSportsDirectNameEntry() {
       updatedBy: teacher.id,
     };
     setAllGPFirstsState([...allGPFirstsState, upLoadedResult]);
-    setAllGPFirstsStateUpdateTime(Date.now());
     setAllParticipants([...allGPFirstsState, upLoadedResult]);
     setFilteredGPData([...allGPFirstsState, upLoadedResult]);
     setGpConvenorsData(
@@ -322,7 +301,6 @@ export default function CircleSportsDirectNameEntry() {
       item.id === inputField.id ? inputField : item
     );
     setAllGPFirstsState(newData);
-    setAllGPFirstsStateUpdateTime(Date.now());
     // await axios.post("/api/updateallGPFirsts", inputField);
     const docRef = doc(firestore, "allGPFirsts", inputField.id);
     await updateDoc(docRef, inputField)
@@ -391,7 +369,6 @@ export default function CircleSportsDirectNameEntry() {
           item.id === inputField.id ? upLoadedResult : item
         );
         setAllGPFirstsState(newData);
-        setAllGPFirstsStateUpdateTime(Date.now());
         setAllParticipants(newData);
         setFilteredGPData(newData);
         setLoader(false);
@@ -442,7 +419,6 @@ export default function CircleSportsDirectNameEntry() {
           );
           setAllGPFirstsState(x);
           setFilteredGPData(x);
-          setAllGPFirstsStateUpdateTime(Date.now());
           setAllParticipants(x);
           toast.success("Participant Deleted Successfully");
         })
@@ -530,7 +506,6 @@ export default function CircleSportsDirectNameEntry() {
       );
       await Promise.all(createCircleAssistantNupdateTeacherData).then(
         async () => {
-          setTeacherUpdateTime(Date.now());
           setCircleAssistantState(all);
           setLoader(false);
           toast.success("All GP Assistants Created");
@@ -547,7 +522,6 @@ export default function CircleSportsDirectNameEntry() {
     let y = teachersState.filter((item) => item.id !== el?.id);
     y = [...y, x];
     setTeachersState(y);
-    setTeacherUpdateTime(Date.now());
     // await axios.post("/api/updTeacherConvenor", {
     //   id: el?.id,
     //   circleAssistant: "taw",
@@ -697,16 +671,12 @@ export default function CircleSportsDirectNameEntry() {
     setConvenorsGPSchoolData(
       schoolState.filter((el) => el?.gp === teacherdetails.gp)
     );
-
-    const difference = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
-    if (difference >= 1 || teachersState.length === 0) {
+    if (teachersState.length === 0) {
       getTeachersData();
     } else {
       setAllTeachers(teachersState);
     }
-    const AllParticipantdifference =
-      (Date.now() - allGPFirstsStateUpdateTime) / 1000 / 60 / 10;
-    if (AllParticipantdifference >= 1 || allGPFirstsState.length === 0) {
+    if (allGPFirstsState.length === 0) {
       getAllParticipant();
     } else {
       setAllParticipants(allGPFirstsState);

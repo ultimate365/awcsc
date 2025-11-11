@@ -743,3 +743,10 @@ export const sortMonthwise = (arr) => {
     return monthA - monthB;
   });
 };
+export function getFilenameWithoutExtension(filename) {
+  const lastDotIndex = filename.lastIndexOf(".");
+  if (lastDotIndex === -1) {
+    return filename; // No extension found
+  }
+  return filename.substring(0, lastDotIndex);
+}

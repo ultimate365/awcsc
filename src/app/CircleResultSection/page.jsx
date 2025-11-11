@@ -27,7 +27,6 @@ import {
   StdClass,
 } from "../../modules/constants";
 import { events } from "../../modules/constants";
-import { v4 as uuid } from "uuid";
 import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
 const CircleResultSection = () => {
@@ -36,13 +35,9 @@ const CircleResultSection = () => {
     setYourStateObject,
     AmtaWestCircleAllResultState,
     setAmtaWestCircleAllResultState,
-    AmtaWestCircleAllResultUpdateTime,
-    setAmtaWestCircleAllResultUpdateTime,
     setStateArray,
     circleFirstResultState,
     setCircleFirstResultState,
-    circleFirstUpdateTime,
-    setCircleFirstUpdateTime,
   } = useGlobalContext();
   const data = myStateObject?.data?.sort((a, b) => {
     if (a.gp < b.gp) return -1;
@@ -171,7 +166,6 @@ const CircleResultSection = () => {
     });
     setAmtaWestCircleAllResultState(sortedOnlyFirstResult);
     setFilteredData(sortedOnlyFirstResult);
-    setAmtaWestCircleAllResultUpdateTime(Date.now());
     await setDoc(
       doc(firestore, `AmtaWestCircleAllResult`, student.id),
       entry
@@ -211,7 +205,6 @@ const CircleResultSection = () => {
             return 0;
           });
           setCircleFirstResultState(sortedFirstResult);
-          setCircleFirstUpdateTime(Date.now());
           setLoader(false);
           setTimeout(() => {
             navigate.back();
@@ -238,7 +231,6 @@ const CircleResultSection = () => {
     );
     setAmtaWestCircleAllResultState(newData);
     setAllResult(newData);
-    setAmtaWestCircleAllResultUpdateTime(Date.now());
     // await axios.post("/api/updateallGPFirsts", inputField);
     const docRef = doc(firestore, "allGPFirsts", inputField.id);
     const docRef2 = doc(firestore, "AmtaWestCircleAllResult", inputField.id);
@@ -264,7 +256,6 @@ const CircleResultSection = () => {
             item.id === inputField.id ? inputField : item
           );
           setCircleFirstResultState(newData);
-          setCircleFirstUpdateTime(Date.now());
         }
         setLoader(false);
         setInputField({
@@ -320,7 +311,6 @@ const CircleResultSection = () => {
         });
       setLoader(false);
       setAmtaWestCircleAllResultState(data);
-      setAmtaWestCircleAllResultUpdateTime(Date.now());
       setAllResult(data);
       setFilteredData(data);
     } catch (error) {
@@ -336,7 +326,6 @@ const CircleResultSection = () => {
           });
           setLoader(false);
           setAmtaWestCircleAllResultState(data);
-          setAmtaWestCircleAllResultUpdateTime(Date.now());
           setAllResult(data);
           setFilteredData(data);
         })
@@ -356,7 +345,6 @@ const CircleResultSection = () => {
         .map((doc) => doc.data())
         .sort((a, b) => a?.position1 - b?.position1);
       setAllFirstResult(data);
-      setCircleFirstUpdateTime(Date.now());
       setCircleFirstResultState(data);
     } catch (error) {
       await axios
@@ -370,7 +358,6 @@ const CircleResultSection = () => {
             return 0;
           });
           setAllFirstResult(data);
-          setCircleFirstUpdateTime(Date.now());
           setCircleFirstResultState(data);
         })
         .catch((error) => {
@@ -512,9 +499,7 @@ const CircleResultSection = () => {
   }, []);
 
   useEffect(() => {
-    const difference =
-      (Date.now() - AmtaWestCircleAllResultUpdateTime) / 1000 / 60 / 5;
-    if (difference >= 1 || AmtaWestCircleAllResultState.length === 0) {
+    if (AmtaWestCircleAllResultState.length === 0) {
       getAllResult();
     } else {
       setAllResult(
@@ -537,9 +522,7 @@ const CircleResultSection = () => {
       );
     }
 
-    const firstDifference =
-      (Date.now() - circleFirstUpdateTime) / 1000 / 60 / 5;
-    if (firstDifference >= 1 || circleFirstResultState.length === 0) {
+    if (circleFirstResultState.length === 0) {
       getAllCircleFirstResult();
     } else {
       const rdata = circleFirstResultState.sort((a, b) => {

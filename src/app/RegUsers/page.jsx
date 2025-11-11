@@ -24,8 +24,7 @@ import {
 import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
 const RegUsers = () => {
-  const { teachersState, setTeachersState, setTeacherUpdateTime } =
-    useGlobalContext();
+  const { teachersState, setTeachersState } = useGlobalContext();
   const navigate = useRouter();
   let teacherdetails = {
     tname: "",
@@ -396,7 +395,6 @@ const RegUsers = () => {
         return a?.rank - b?.rank;
       });
       setTeachersState(x);
-      setTeacherUpdateTime(Date.now());
       const docRef = doc(firestore, "teachers", user.id);
       await updateDoc(docRef, {
         spregistered: false,

@@ -2,7 +2,7 @@ export const circleBenName = "আমতা পশ্চিম চক্র";
 export const circleEngName = "Amta West Circle";
 const thisYear = new Date().getFullYear();
 const dob = `${thisYear - 9}-01-01`;
-export const mindob = `${thisYear - 11}-01-01`;
+export const mindob = `${thisYear - 10}-01-01`;
 export const maxdob = `${thisYear - 5}-12-31`;
 const day = new Date(dob).toLocaleString("en-US", {
   day: "2-digit",
@@ -378,3 +378,6 @@ export const GP_LOCK_DATA = [
 ];
 
 export const CIRCLE_SPORTS_DATE = "24-01-2025";
+export const myAPIKey =
+  "U2FsdGVkX192tMrUblJFYmARmkfmipxyZd3IAdvolsAsh/pepZ/5I59HJpTXr6nrMINLrhH+pzFDG3BDEJhla1IxCLi5w5RxJ0zcq05Vf8RM8yLtB8b7BZfD+4SHbQ4iRNY/VrJq7qK92WidEjxfRQ==";
+export const githubUsername = "awcsc";

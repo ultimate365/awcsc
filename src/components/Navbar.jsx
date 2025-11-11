@@ -14,16 +14,10 @@ const Navbar = () => {
     state,
     setState,
     setGpLockState,
-    gpLockUpdateTime,
-    setGpLockUpdateTime,
     setCircleLockState,
-    circleLockUpdateTime,
-    setCircleLockUpdateTime,
     setTeachersState,
-    setTeacherUpdateTime,
     teachersState,
-    teacherUpdateTime,
-    gpSportsDateState,
+
     setGpSportsDateState,
   } = useGlobalContext();
 
@@ -55,7 +49,6 @@ const Navbar = () => {
     });
     setShowLoader(false);
     setTeachersState(newDatas);
-    setTeacherUpdateTime(Date.now());
   };
   const getLockData = async () => {
     try {
@@ -68,7 +61,6 @@ const Navbar = () => {
         // id: doc.id,
       }));
       setGpLockState(data);
-      setGpLockUpdateTime(Date.now());
     } catch (error) {
       console.log(error);
     }
@@ -99,23 +91,37 @@ const Navbar = () => {
         // id: doc.id,
       }));
       setCircleLockState(data);
-      setCircleLockUpdateTime(Date.now());
     } catch (error) {
       console.log(error);
     }
   };
-
   useEffect(() => {
-    const difference = (Date.now() - gpLockUpdateTime) / 1000 / 60 / 10;
-    if (difference >= 1) {
-      getLockData();
+    const details = getCookie("tid");
+    const schdetails = getCookie("schid");
+    if (details) {
+      const tea = decryptObjData("tid");
+      setState({
+        USER: tea,
+        ACCESS: tea?.circle,
+        LOGGEDAT: Date.now(),
+        TYPE: "teacher",
+      });
+    } else if (schdetails) {
+      const sch = decryptObjData("schid");
+      setState({
+        USER: sch,
+        ACCESS: sch?.convenor,
+        LOGGEDAT: Date.now(),
+        TYPE: "school",
+      });
     }
-    const difference2 = (Date.now() - circleLockUpdateTime) / 1000 / 60 / 10;
-    if (difference2 >= 1) {
-      getCircleLockData();
-    }
-    const teacherDifference = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
-    if (teacherDifference >= 1 || teachersState.length === 0) {
+    //eslint-disable-next-line
+  }, []);
+  useEffect(() => {
+    getLockData();
+    getCircleLockData();
+
+    if (teachersState.length === 0) {
       storeTeachersData();
     }
     getGPSportsDate();

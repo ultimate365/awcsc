@@ -26,17 +26,11 @@ import {
 const SetConvenors = () => {
   const {
     teachersState,
-    teacherUpdateTime,
     setTeachersState,
-    setTeacherUpdateTime,
     convenorsState,
-    convenorsUpdateTime,
     setConvenorsState,
-    setConvenorsUpdateTime,
     gpLockState,
     setGpLockState,
-    gpLockUpdateTime,
-    setGpLockUpdateTime,
   } = useGlobalContext();
   const [isAdmin, setIsAdmin] = useState(false);
   let teacherdetails = {
@@ -100,7 +94,6 @@ const SetConvenors = () => {
     );
     setData(convenors);
     setConvenorsState(convenors);
-    setTeacherUpdateTime(Date.now());
     filterGPTeachers(
       teachersState.sort((a, b) => a?.tname?.localeCompare(b?.tname))
     );
@@ -223,7 +216,6 @@ const SetConvenors = () => {
       await Promise.all(newConvenorAdd).then(async () => {
         setConvenorsState(allConvenors);
         setData(allConvenors);
-        setConvenorsUpdateTime(Date.now());
         setLoader(false);
         toast.success("All GP Convenor Created", {
           position: "top-right",
@@ -278,7 +270,6 @@ const SetConvenors = () => {
           });
       });
       setGpLockState(y);
-      setGpLockUpdateTime(Date.now());
     } catch (e) {
       setLoader(false);
       console.log(e);
@@ -324,7 +315,6 @@ const SetConvenors = () => {
       });
       await waitForSomeTime();
       setGpLockState(y);
-      setGpLockUpdateTime(Date.now());
     } catch (e) {
       setLoader(false);
       console.log(e);
@@ -351,7 +341,6 @@ const SetConvenors = () => {
               convenorsState.filter((convenor) => convenor.id !== id)
             );
             setData(convenorsState.filter((convenor) => convenor.id !== id));
-            setConvenorsUpdateTime(Date.now());
             setLoader(false);
             toast.success("GP Convenor Deleted", {
               position: "top-right",
@@ -487,14 +476,12 @@ const SetConvenors = () => {
       return a?.rank - b?.rank;
     });
     setTeachersState(newData);
-    setTeacherUpdateTime(Date.now());
     await updTeacherMongoDB(id, access);
   };
 
   const delAllConvenorsState = async () => {
     setConvenorsState([]);
     setData([]);
-    setConvenorsUpdateTime(Date.now());
     await delAllConvenorMongoDB();
   };
 
@@ -579,8 +566,7 @@ const SetConvenors = () => {
 
   useEffect(() => {
     document.title = "AWC Sports App:Convenors";
-    const difference = (Date.now() - convenorsUpdateTime) / 1000 / 60 / 15;
-    if (convenorsState?.length === 0 || difference >= 1) {
+    if (convenorsState?.length === 0) {
       getAllConvenors();
     } else {
       setData(convenorsState);

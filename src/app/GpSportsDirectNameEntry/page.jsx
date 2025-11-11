@@ -20,35 +20,17 @@ import {
   BUTTONCOLORS,
   events,
   gpEngNames,
-  gpNames,
   maxdob,
   mindob,
   StdClass,
 } from "../../modules/constants";
-import {
-  createDownloadLink,
-  deleteCollection,
-  removeDuplicates,
-} from "../../modules/calculatefunctions";
 import { useGlobalContext } from "../../context/Store";
 import { v4 as uuid } from "uuid";
 import axios from "axios";
 import SCHOOLS from "../../helpers/schools.json";
 export default function GpSportsDirectNameEntry() {
-  const {
-    setStateArray,
-    schoolState,
-    setSchoolState,
-    gpLockState,
-    setGpLockState,
-    setGpLockUpdateTime,
-    setGpStudentStateUpdateTime,
-    gpStudentState,
-    setGpStudentState,
-    gpStudentStateUpdateTime,
-  } = useGlobalContext();
+  const { gpLockState, gpStudentState, setGpStudentState } = useGlobalContext();
   const navigate = useRouter();
-  const [showTable, setShowTable] = useState(true);
   const [filteredSchools, setFilteredSchools] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState({
     id: "",
@@ -135,7 +117,6 @@ export default function GpSportsDirectNameEntry() {
         return 0;
       });
     setGpStudentState(data);
-    setGpStudentStateUpdateTime(Date.now());
     setFilteredData(data);
     setLoader(false);
   };
@@ -309,7 +290,6 @@ export default function GpSportsDirectNameEntry() {
       updatedBy: teacher.id,
     };
     setGpStudentState([...gpStudentState, upLoadedResult]);
-    setGpStudentStateUpdateTime(Date.now());
     // await axios.post("/api/addgpSportsStudentData", upLoadedResult);
     await setDoc(
       doc(firestore, "gpSportsStudentData", inputField.id),
@@ -416,7 +396,6 @@ export default function GpSportsDirectNameEntry() {
     );
     setGpStudentState(newData);
     setFilteredData(newData);
-    setGpStudentStateUpdateTime(Date.now());
     // await axios.post("/api/updategpSportsStudentData", updatedResult);
     await updateDoc(
       doc(firestore, "gpSportsStudentData", inputField.id),
@@ -468,7 +447,6 @@ export default function GpSportsDirectNameEntry() {
         setGpStudentState(
           gpStudentState.filter((item) => item.id !== participant.id)
         );
-        setGpStudentStateUpdateTime(Date.now());
         setFilteredData(
           gpStudentState.filter((item) => item.id !== participant.id)
         );
@@ -590,7 +568,6 @@ export default function GpSportsDirectNameEntry() {
                       ...prev,
                       school: value.school,
                     }));
-                    setShowTable(true);
                   }}
                   aria-label="Default select example"
                 >

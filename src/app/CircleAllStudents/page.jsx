@@ -20,7 +20,6 @@ const CircleAllStudents = () => {
     setMyStateObject,
     allGPFirstsState,
     setAllGPFirstsState,
-    setAllGPFirstsStateUpdateTime,
   } = useGlobalContext();
   const data = stateObject?.data?.sort((a, b) => {
     if (a.gp < b.gp) return -1;
@@ -103,7 +102,6 @@ const CircleAllStudents = () => {
             );
             setAllGPFirstsState([...otherStudents, thisStudent]);
             setFilteredData([...otherStudents, thisStudent]);
-            setAllGPFirstsStateUpdateTime(Date.now());
 
             console.log(`Participant ${el?.name} Alloted Chest No ${chestNo}`);
           })
@@ -153,7 +151,6 @@ const CircleAllStudents = () => {
             );
             setAllGPFirstsState([...otherStudents, thisStudent]);
             setFilteredData([...otherStudents, thisStudent]);
-            setAllGPFirstsStateUpdateTime(Date.now());
 
             console.log(`Participant ${el?.name}'s Alloted Chest No Removed`);
           })

@@ -18,10 +18,8 @@ const GPAllStudents = () => {
     setStateObject,
     gpStudentState,
     setGpStudentState,
-    setGpStudentStateUpdateTime,
     selectedGpStudentState,
     setSelectedGpStudentState,
-    setSelectedGpStudentStateUpdateTime,
   } = useGlobalContext();
   const data = yourStateObject?.data?.sort((a, b) => {
     if (a.gp < b.gp) return -1;
@@ -106,7 +104,6 @@ const GPAllStudents = () => {
         let y = gpStudentState.filter((item) => item.id !== el?.id);
         y = [...y, x];
         setGpStudentState(y);
-        setGpStudentStateUpdateTime(Date.now());
         try {
           let n;
           if (selectedGpStudentState.length > 0) {
@@ -125,7 +122,6 @@ const GPAllStudents = () => {
             n = [...n, m];
           }
           setSelectedGpStudentState(n);
-          setSelectedGpStudentStateUpdateTime(Date.now());
         } catch (error) {
           console.log(error);
         }
@@ -157,7 +153,6 @@ const GPAllStudents = () => {
         let y = gpStudentState.filter((item) => item.id !== el?.id);
         y = [...y, x];
         setGpStudentState(y);
-        setGpStudentStateUpdateTime(Date.now());
         try {
           let n;
           if (selectedGpStudentState.length > 0) {
@@ -176,7 +171,6 @@ const GPAllStudents = () => {
             n = [...n, m];
           }
           setSelectedGpStudentState(n);
-          setSelectedGpStudentStateUpdateTime(Date.now());
         } catch (error) {
           console.log(error);
         }

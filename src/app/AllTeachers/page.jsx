@@ -22,13 +22,7 @@ import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
 import { createDownloadLink } from "@/modules/calculatefunctions";
 const AllTeachers = () => {
-  const {
-    teachersState,
-    teacherUpdateTime,
-    setTeachersState,
-    setTeacherUpdateTime,
-    schoolState,
-  } = useGlobalContext();
+  const { teachersState, setTeachersState, schoolState } = useGlobalContext();
   const navigate = useRouter();
   let teacherdetails = {
     tname: "",
@@ -71,7 +65,6 @@ const AllTeachers = () => {
     phone: "",
     empid: "",
     pan: "",
-    id: "",
   });
   const [inputOrgField, setInputOrgField] = useState({
     convenor: "",
@@ -91,24 +84,15 @@ const AllTeachers = () => {
     phone: "",
     empid: "",
     pan: "",
-    id: "",
   });
   const getTeacherData = async () => {
-    let data = [];
-    try {
-      const q = query(collection(firestore, "teachers"));
-      const querySnapshot = await getDocs(q);
-      data = querySnapshot.docs.map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        id: doc.id,
-      }));
-    } catch (error) {
-      console.error("Error fetching teachers data: ", error);
-      const url = `/api/getTeachers`;
-      const response = await axios.post(url);
-      data = response.data.data;
-    }
+    const q = query(collection(firestore, "teachers"));
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map((doc) => ({
+      // doc.data() is never undefined for query doc snapshots
+      ...doc.data(),
+      id: doc.id,
+    }));
     const newDatas = data.sort((a, b) => {
       // First, compare the "school" keys
       if (a.school < b.school) {
@@ -123,7 +107,6 @@ const AllTeachers = () => {
     setTeacherData(newDatas);
     setFilteredData(newDatas);
     setTeachersState(newDatas);
-    setTeacherUpdateTime(Date.now());
     setShowTable(true);
   };
   const columns = [
@@ -245,57 +228,22 @@ const AllTeachers = () => {
 
   const updateTeacher = async () => {
     setLoader(true);
-    const url = `/api/updateteachers`;
-    const entry = {
-      id: inputField.id,
-      tname: inputField.tname,
-      school: inputField.school,
-      gp: inputField.gp,
-      circle: inputField.circle,
-      email: inputField.email,
-      hoi: inputField.hoi,
-      udise: inputField.udise,
-      spregistered: inputField.registered,
-      rank: inputField.rank,
-      phone: inputField.phone,
-      pan: inputField.pan,
-      empid: inputField.empid,
-      gpAssistant: inputField.gpAssistant,
-      circleAssistant: inputField.circleAssistant,
-      convenor: inputField.convenor,
-      desig: inputField.desig,
-      dataYear: inputField.dataYear,
-    };
-    try {
-      const response = await axios.post(url, entry);
-      if (response.data.success) {
-        const docRef = doc(firestore, "teachers", inputField.id);
-        await updateDoc(docRef, inputField);
-        let x = teachersState.filter((item) => item.id !== inputField.id);
-        x = [...x, inputField].sort((a, b) => {
-          if (a?.school < b?.school) {
-            return -1;
-          }
-          if (a?.school > b?.school) {
-            return 1;
-          }
-          return a?.rank - b?.rank;
-        });
-        setTeachersState(x);
-        setTeacherUpdateTime(Date.now());
-        toast.success("Teacher Details Updated Successfully!");
-
-        setShowModal(false);
-        setLoader(false);
-      } else {
-        toast.error("Error Updating Teacher Details!");
-        setLoader(false);
+    const docRef = doc(firestore, "teachers", inputField.id);
+    await updateDoc(docRef, inputField);
+    let x = teachersState.filter((item) => item.id !== inputField.id);
+    x = [...x, inputField].sort((a, b) => {
+      if (a?.school < b?.school) {
+        return -1;
       }
-    } catch (error) {
-      console.error("Error Updating Teacher Details: ", error);
-      toast.error("Error Updating Teacher Details!");
-      setLoader(false);
-    }
+      if (a?.school > b?.school) {
+        return 1;
+      }
+      return a?.rank - b?.rank;
+    });
+    setTeachersState(x);
+    toast.success("Teacher Details Updated Successfully!");
+    setShowModal(false);
+    setLoader(false);
   };
 
   const createUser = async (el) => {
@@ -344,7 +292,6 @@ const AllTeachers = () => {
                 return a?.rank - b?.rank;
               });
               setTeachersState(x);
-              setTeacherUpdateTime(Date.now());
               setLoader(false);
               toast.success(
                 `Registered Successfully with username Employee ID in LowerCase i.e. ${el.empid.toLowerCase()} and Password PAN in LowerCase i.e. ${el.pan.toLowerCase()}`,
@@ -428,8 +375,7 @@ const AllTeachers = () => {
   }, []);
   useEffect(() => {
     document.title = "AWC Sports App:Teacher Databse";
-    const difference = (Date.now() - teacherUpdateTime) / 1000 / 60 / 15;
-    if (teachersState.length === 0 || difference >= 1) {
+    if (teachersState.length === 0) {
       getTeacherData();
     } else {
       setTeacherData(teachersState);

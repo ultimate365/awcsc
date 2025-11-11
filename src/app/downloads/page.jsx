@@ -26,6 +26,7 @@ import { decryptObjData, getCookie } from "../../modules/encryption";
 import {
   createDownloadLink,
   findEmptyValues,
+  getFilenameWithoutExtension,
 } from "../../modules/calculatefunctions";
 const Downloads = () => {
   let teacherdetails = {
@@ -258,6 +259,9 @@ const Downloads = () => {
               placeholder="Upload Document"
               onChange={(e) => {
                 setFile(e.target.files[0]);
+                setFileName(
+                  getFilenameWithoutExtension(e.target.files[0].name)
+                );
               }}
             />
           </div>
@@ -314,7 +318,7 @@ const Downloads = () => {
         </div>
       )}
       {allData.length > 0 ? (
-        <div className="container overflow-auto col-md-6 d-flex">
+        <div className="container overflow-auto d-flex">
           <table className="table table-responsive table-hover table-striped table-success  px-lg-3 py-lg-2 ">
             <thead>
               <tr>
