@@ -8,7 +8,7 @@ dbConnect();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { phone, email, name }: any = reqBody;
+    const { phone, email, name, username }: any = reqBody;
 
     const mobileOtp = Math.floor(100000 + Math.random() * 900000);
     const emailOtp = Math.floor(100000 + Math.random() * 900000);
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     });
 
     await sendOTPSMS(phone, mobileOtp);
-    await verifyEmailMailer(email, emailOtp, name);
+    await verifyEmailMailer(email, emailOtp, name, username);
     await mobileOtpdata.save();
     await emailOtpdata.save();
     return NextResponse.json(
