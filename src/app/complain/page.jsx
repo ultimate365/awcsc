@@ -222,7 +222,7 @@ const Complain = () => {
     }
   };
 
-  const DateValueToSring = (dateValue) => {
+  const DateValueToString = (dateValue) => {
     let date = new Date(dateValue);
     return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()} At ${
       date.getHours() > 12 ? date.getHours() - 12 : date.getHours()
@@ -282,13 +282,13 @@ const Complain = () => {
                     </li>
                     <li className="list-group-item">
                       Request Date:{" "}
-                      {DateValueToSring(requestedComplain.complainTime)}
+                      {DateValueToString(requestedComplain.complainTime)}
                     </li>
 
                     {requestedComplain.solvedOn !== "Not Solved" && (
                       <li className="list-group-item">
                         Close Date:{" "}
-                        {DateValueToSring(requestedComplain.solvedOn)}
+                        {DateValueToString(requestedComplain.solvedOn)}
                       </li>
                     )}
                   </ul>

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { getCookie } from "../modules/encryption";
+import { decryptObjData, getCookie } from "../modules/encryption";
 import { titleCase } from "../modules/calculatefunctions";
 import Image from "next/image";
 import { useGlobalContext } from "../context/Store";

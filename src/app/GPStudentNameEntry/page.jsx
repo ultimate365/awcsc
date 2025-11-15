@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import { v4 as uuid } from "uuid";
 import { decryptObjData, getCookie } from "../../modules/encryption";
-import { DateValueToSring, titleCase } from "../../modules/calculatefunctions";
+import { DateValueToString, titleCase } from "../../modules/calculatefunctions";
 import {
   StdClass,
   birthday,
@@ -26,7 +26,7 @@ import {
   mindob,
 } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
-import axios from "axios";
+// import axios from "axios";
 const GPStudentNameEntry = () => {
   const {
     setStateArray,
@@ -157,10 +157,11 @@ const GPStudentNameEntry = () => {
     y = [...y, x];
     setGpLockState(y);
     const docRef = doc(firestore, "gpLockData", id);
-    await axios.post(`/api/updategpLockData`, x);
+    // await axios.post(`/api/updategpLockData`, x);
     await updateDoc(docRef, entry)
       .then(async () => {
         setLoader(false);
+        setLockStatus(true);
         // getLockData();
         toast.success(
           `congratulation! Student Entry Open For ${teacherdetails.gp} GP Sports Data`,
@@ -195,12 +196,13 @@ const GPStudentNameEntry = () => {
     x.entryCloseddBy = teacherdetails.tname;
     let y = gpLockState.filter((item) => item?.id !== id);
     y = [...y, x];
-    await axios.post(`/api/updategpLockData`, x);
+    // await axios.post(`/api/updategpLockData`, x);
     setGpLockState(y);
     const docRef = doc(firestore, "gpLockData", id);
     await updateDoc(docRef, entry)
       .then(async () => {
         setLoader(false);
+        setLockStatus(false);
         // getLockData();
         toast.success(
           `congratulation! Student Entry Closed For ${teacherdetails.gp} GP Sports Data`,
@@ -547,7 +549,7 @@ const GPStudentNameEntry = () => {
   const deleteParticipant = async (participant) => {
     setLoader(true);
     try {
-      await axios.post("api/delgpSportsStudentData", participant.id);
+      // await axios.post("api/delgpSportsStudentData", participant.id);
       await deleteDoc(
         doc(firestore, "gpSportsStudentData", participant.id)
       ).then(() => {
@@ -948,35 +950,32 @@ const GPStudentNameEntry = () => {
         </button>
       )}
       {(teacherdetails.circle === "admin" ||
-        teacherdetails.convenor === "admin") && (
-        <>
-          {lockStatus ? (
-            <button
-              type="button"
-              className="btn btn-danger m-1 btn-sm"
-              onClick={() => {
-                let id = lockData.filter((el) => el.gp === teacherdetails.gp)[0]
-                  .id;
-                closeLockForEntry(id);
-              }}
-            >
-              Close Student Entry
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="btn btn-primary m-1 btn-sm"
-              onClick={() => {
-                let id = lockData.filter((el) => el.gp === teacherdetails.gp)[0]
-                  .id;
-                openLockForEntry(id);
-              }}
-            >
-              Open Student Entry
-            </button>
-          )}
-        </>
-      )}
+        teacherdetails.convenor === "admin") &&
+        (lockStatus ? (
+          <button
+            type="button"
+            className="btn btn-danger m-1 btn-sm"
+            onClick={() => {
+              let id = lockData.filter((el) => el.gp === teacherdetails.gp)[0]
+                .id;
+              closeLockForEntry(id);
+            }}
+          >
+            Close Student Entry
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="btn btn-primary m-1 btn-sm"
+            onClick={() => {
+              let id = lockData.filter((el) => el.gp === teacherdetails.gp)[0]
+                .id;
+              openLockForEntry(id);
+            }}
+          >
+            Open Student Entry
+          </button>
+        ))}
       {lockStatus ? (
         <div className="container">
           <h4 className="text-center text-primary">
@@ -1612,10 +1611,10 @@ const GPStudentNameEntry = () => {
         </div>
       ) : (
         gpLockData.closeDate !== undefined && (
-          <h6 className="text-center text-danger my-4">
+          <h6 suppressHydrationWarning className="text-center text-danger my-4">
             {tawSchoolData.gp} GP Sports Student Entry & Edit Closed By{" "}
             {gpLockData.entryCloseddBy} at{" "}
-            {DateValueToSring(gpLockData.closeDate)}
+            {DateValueToString(gpLockData.closeDate)}
           </h6>
         )
       )}

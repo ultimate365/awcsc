@@ -19,7 +19,7 @@ import { firestore } from "../../context/FirbaseContext"; // adjust path if need
 import { validateEmployeeID } from "../../modules/calculatefunctions";
 import { toast, ToastContainer } from "react-toastify";
 import Image from "next/image";
-
+import { OTPWidget } from "@msg91comm/sendotp-sdk";
 /**
  * Client-side Signup component converted from React Native
  * Uses Bootstrap classes for styling
@@ -45,6 +45,12 @@ function Loader({ visible }) {
 }
 
 export default function Signup() {
+  const widgetId = process.env.NEXT_PUBLIC_MSG91_WIDGET_ID;
+  const authToken = process.env.NEXT_PUBLIC_MSG91_AUTH_TOKEN;
+
+  useEffect(() => {
+    OTPWidget.initializeWidget(widgetId, authToken);
+  }, []);
   const router = useRouter();
 
   const [phone, setPhone] = useState(new Array(10).fill(""));
@@ -80,7 +86,7 @@ export default function Signup() {
   const [showRegForm, setShowRegForm] = useState(false);
   const [empid, setEmpid] = useState("");
   const [showRegisterBtn, setShowRegisterBtn] = useState(false);
-
+  const [reqId, setReqId] = useState("");
   // Fetch user data from Firestore (teachers & sportsUsers)
   const fetchUserData = async () => {
     const trimEmpid = empid.trim().toUpperCase();
@@ -166,20 +172,31 @@ export default function Signup() {
 
     setLoader(true);
     try {
-      const res = await axios.post(`/api/sendMobileOTP`, {
-        phone: inputField.phone,
-        name: inputField.tname,
-        email: inputField.email,
-      });
-      const record = res.data;
-      if (record.success) {
+      const data = {
+        identifier: `91${inputField.phone}`,
+      };
+      const response = await OTPWidget.sendOTP(data);
+      if (response.type === "success") {
+        setReqId(response.message);
         toast.success("OTP sent to your Mobile Number!");
-        setLoader(false);
-        setOtpSent(true);
-        setShowRetryBtn(false);
-        setTimeout(() => {
-          setShowRetryBtn(true);
-        }, 30000);
+        const res = await axios.post(`/api/sendEmailOTP`, {
+          email: inputField.email,
+          name: inputField.tname,
+          username: "",
+        });
+        if (res.data.success) {
+          setLoader(false);
+          setOtpSent(true);
+          setShowRetryBtn(false);
+          setTimeout(() => {
+            setShowRetryBtn(true);
+          }, 30000);
+        } else {
+          toast.success("OTP sent to your Email!");
+          setLoader(false);
+          setOtpSent(true);
+          setShowRetryBtn(false);
+        }
       } else {
         setShowRetryBtn(true);
         toast.error("Failed to send OTP!");
@@ -207,24 +224,41 @@ export default function Signup() {
     }
     setLoader(true);
     try {
-      const res = await axios.post(`/api/verifyEmailAndMobile`, {
-        phone: inputField.phone,
-        phoneCode: code,
-        email: inputField.email,
-        emailCode: emailCode,
-      });
-      const record = res.data;
-      if (record.success) {
-        toast.success("OTP verified successfully!");
-        setShowRegisterBtn(true);
-        setLoader(false);
-        setOtpSent(false);
-        setOtp(new Array(6).fill(""));
-        setEmailOtp(new Array(6).fill(""));
-        setPhone(new Array(10).fill(""));
+      const data = {
+        otp: code,
+        reqId: reqId,
+      };
+      const response = await OTPWidget.verifyOTP(data);
+      if (response.type === "success") {
+        // const res = await axios.post(`/api/verifyEmailAndMobile`, {
+        //   phone: inputField.phone,
+        //   phoneCode: code,
+        //   email: inputField.email,
+        //   emailCode: emailCode,
+        // });
+        // const record = res.data;
+        // if (record.success) {
+        const res = await axios.post(`/api/verifyEmailOTP`, {
+          email: inputField.email.trim().toLowerCase(),
+          code: parseInt(emailCode, 10),
+        });
+
+        if (res.data.success) {
+          toast.success("OTP verified successfully!");
+          setShowRegisterBtn(true);
+          setLoader(false);
+          setOtpSent(false);
+          setOtp(new Array(6).fill(""));
+          setEmailOtp(new Array(6).fill(""));
+          setPhone(new Array(10).fill(""));
+        } else {
+          toast.error("Failed to verify Email OTP!");
+          setLoader(false);
+          console.log(res.data.message);
+        }
       } else {
-        toast.error("Failed to verify OTP!");
-        console.log(record);
+        toast.error("Failed to verify Mobile OTP!");
+        console.log(response);
         setLoader(false);
       }
     } catch (error) {

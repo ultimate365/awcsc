@@ -39,8 +39,8 @@ const verifyEmailMailer = async (
         Math.random() * 1000 + 1
       )}`,
       text: `Hello Dear ${name}!`,
-      html: `<h1 style="text-align:center; color:blue; ">Hello Dear ${name}, ${
-        username && `Your username is ${username}`
+      html: `<h1 style="text-align:center; color:blue; ">Hello Dear ${name} ${
+        username && `, Your username is ${username}`
       }!</h1>
         <h2 style="text-align:center; color:blue;">Your OTP is ${emailOtp}. Please use this OTP to Verify Your Email id.</h2>`,
     };

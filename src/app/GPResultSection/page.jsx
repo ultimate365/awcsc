@@ -16,7 +16,7 @@ import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import {
   createDownloadLink,
-  DateValueToSring,
+  DateValueToString,
   enToBnNumber,
 } from "../../modules/calculatefunctions";
 import { gpNames } from "../../modules/constants";

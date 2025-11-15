@@ -19,7 +19,7 @@ import { decryptObjData, getCookie } from "../../modules/encryption";
 import {
   comparePassword,
   createDownloadLink,
-  DateValueToSring,
+  DateValueToString,
 } from "@/modules/calculatefunctions";
 import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
@@ -184,7 +184,7 @@ const RegUsers = () => {
     },
     {
       name: "Registered On",
-      selector: (row) => DateValueToSring(row.createdAt),
+      selector: (row) => DateValueToString(row.createdAt),
       wrap: +true,
       center: +true,
     },

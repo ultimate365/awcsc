@@ -555,16 +555,25 @@ export function compareObjects(x, y) {
 }
 export const enToBnNumber = (n) =>
   n.toString().replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[d]);
-export const DateValueToSring = (dateValue) => {
-  if (dateValue) {
-    let date = new Date(dateValue);
-    return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()} At ${
-      date.getHours() > 12 ? date.getHours() - 12 : date.getHours()
-    }:${date.getMinutes()}:${date.getSeconds()} ${
-      date.getHours() > 12 ? "PM" : "AM"
-    }`;
-  }
+export const DateValueToString = (timestamp) => {
+  if (!timestamp) return "";
+  const date = new Date(Number(timestamp)); // ensure numeric timestamp
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+
+  let hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const seconds = date.getSeconds().toString().padStart(2, "0");
+
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12; // 0 -> 12, 13–23 -> 1–11
+  const formattedHours = hours.toString().padStart(2, "0");
+
+  return `${day}-${month}-${year} at ${formattedHours}:${minutes}:${seconds} ${ampm}`;
 };
+
 export function removeDuplicates(books) {
   // Create an array of objects
 

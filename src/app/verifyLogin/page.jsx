@@ -11,10 +11,16 @@ import {
 } from "../../modules/encryption";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
-import CustomInput from "../../components/CustomInput";
-import axios from "axios";
-import Link from "next/link";
+import { OTPWidget } from "@msg91comm/sendotp-sdk";
+import { titleCase } from "../../modules/calculatefunctions";
 export default function VerifyLogin() {
+  const widgetId = process.env.NEXT_PUBLIC_MSG91_WIDGET_ID;
+  const authToken = process.env.NEXT_PUBLIC_MSG91_AUTH_TOKEN;
+
+  useEffect(() => {
+    OTPWidget.initializeWidget(widgetId, authToken);
+  }, []);
+
   const { setState } = useGlobalContext();
   const formRef = useRef(null);
   const navigate = useRouter();
@@ -24,18 +30,28 @@ export default function VerifyLogin() {
   const [mobileOTP, setMobileOTP] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [showRetryBtn, setShowRetryBtn] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const [reqId, setReqId] = useState("");
   let nonVerifiedTid = getCookie("nonVerifiedTid");
   let nonVerifiedUid = getCookie("nonVerifiedUid");
   let nonVerifiedSchId = getCookie("nonVerifiedSchId");
 
-  const sendVerificationOTP = async (phone, name) => {
+  // Countdown timer for retry button
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
+
+  const sendVerificationOTP = async () => {
     setDisplayLoader(true);
-    const res = await axios.post("/api/sendMobileOTP", {
-      phone,
-      name,
-    });
-    const record = res.data;
-    if (record.success) {
+    const data = {
+      identifier: `91${phone}`,
+    };
+    const response = await OTPWidget.sendOTP(data);
+    if (response.type === "success") {
+      setReqId(response.message);
       toast.success("OTP sent to your Mobile Number!");
       setDisplayLoader(false);
       setOtpSent(true);
@@ -49,16 +65,17 @@ export default function VerifyLogin() {
       setDisplayLoader(false);
     }
   };
+
   const verifyOTP = async (e) => {
     e.preventDefault();
     if (mobileOTP !== "" && mobileOTP.length === 6) {
       setDisplayLoader(true);
-      const res = await axios.post("/api/verifyMobileOTP", {
-        phone,
-        phoneCode: mobileOTP,
-      });
-      const record = res.data;
-      if (record.success) {
+      const data = {
+        otp: mobileOTP,
+        reqId: reqId,
+      };
+      const response = await OTPWidget.verifyOTP(data);
+      if (response.type === "success") {
         toast.success("Your Mobile Number is successfully verified!");
         setDisplayLoader(false);
         if (nonVerifiedTid) {
@@ -120,11 +137,13 @@ export default function VerifyLogin() {
     }
     // eslint-disable-next-line
   }, []);
+
   useEffect(() => {
     if (mobileOTP.length === 6) {
       formRef.current?.requestSubmit();
     }
   }, [mobileOTP]);
+
   return (
     <div className="container">
       {displayLoader ? <Loader /> : null}
@@ -134,15 +153,14 @@ export default function VerifyLogin() {
         <button
           type="button"
           className="btn btn-primary m-1"
-          onClick={() => sendVerificationOTP(phone, name)}
+          onClick={sendVerificationOTP}
         >
           Send Verification OTP
         </button>
       ) : (
         <div>
-          {/* <p>Please check your OTP on Our Telegram Group</p> */}
           <p>
-            Please check your Telegram App on +91-
+            Hello {titleCase(name)}, Please check your Message on +91-
             {`${phone?.slice(0, 4)}XXXX${phone?.slice(8, 10)}`} for an OTP.
           </p>
           <div className="col-md-6 mx-auto">
@@ -179,28 +197,20 @@ export default function VerifyLogin() {
             >
               Verify
             </button>
+
             {showRetryBtn && (
               <button
                 type="button"
                 className="btn btn-primary m-1"
-                onClick={() => sendVerificationOTP(phone, name)}
+                onClick={resendOTP}
+                disabled={countdown > 0}
               >
-                Resend OTP
+                Resend OTP {countdown > 0 && `(${countdown}s)`}
               </button>
             )}
           </div>
         </div>
       )}
-
-      {/* <div className="my-5">
-        <Link
-          className="btn btn-success m-1 fs-5"
-          href={"https://t.me/+ZYcKXX_HM9g5NDk1"}
-          target="_blank"
-        >
-         <i className="bi bi-telegram"></i> Our Telegram Group
-        </Link>
-      </div> */}
     </div>
   );
 }

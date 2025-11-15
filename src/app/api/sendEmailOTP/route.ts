@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
     const { email, name, username }: any = reqBody;
-
+    console.log(email, name, username);
     const emailOtp = Math.floor(100000 + Math.random() * 900000);
     const emailOtpdata = new EmailOtp({
       email: email,

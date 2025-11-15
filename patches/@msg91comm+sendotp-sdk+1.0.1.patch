@@ -1,0 +1,334 @@
+diff --git a/node_modules/@msg91comm/sendotp-sdk/API/api.service.js b/node_modules/@msg91comm/sendotp-sdk/API/api.service.js
+new file mode 100644
+index 0000000..f23f25d
+--- /dev/null
++++ b/node_modules/@msg91comm/sendotp-sdk/API/api.service.js
+@@ -0,0 +1,42 @@
++import { apiUrls } from "./api.url.js";
++
++function postAPI(url, body) {
++  return fetch(url, {
++    method: "POST",
++    body: JSON.stringify(body),
++    headers: {
++      "Content-Type": "application/json"
++    }
++  }).then(response => response.json());
++}
++
++function getAPI(url) {
++  return fetch(url, {
++    method: "GET",
++    headers: {
++      "Content-Type": "application/json"
++    }
++  }).then(response => response.json());
++}
++
++export class ApiService {
++  static async sendOTP(body) {
++    return postAPI(apiUrls.sendOTP, body);
++  }
++
++  static async verifyOTP(body) {
++    return postAPI(apiUrls.verifyOTP, body);
++  }
++
++  static async retryOTP(body) {
++    return postAPI(apiUrls.retryOTP, body);
++  }
++
++  static async getWidgetProcess(widgetId, tokenAuth) {
++    return getAPI(
++      apiUrls.getWidgetProcess
++        .replace(":widgetId", widgetId)
++        .replace(":tokenAuth", tokenAuth)
++    );
++  }
++}
+diff --git a/node_modules/@msg91comm/sendotp-sdk/API/api.service.ts b/node_modules/@msg91comm/sendotp-sdk/API/api.service.ts
+deleted file mode 100644
+index 5c44ca8..0000000
+--- a/node_modules/@msg91comm/sendotp-sdk/API/api.service.ts
++++ /dev/null
+@@ -1,61 +0,0 @@
+-import { apiUrls } from './api.url';
+-
+-/**
+-* @param url
+-* @param body
+-* @returns {Promise<any>}
+-* @private
+-*/
+-function postAPI(url, body) {
+-  return fetch(url, {
+-    method: "POST",
+-    body: JSON.stringify(body),
+-    headers:{
+-      "Content-Type" : 'application/json'
+-    }
+-  }).then(response => response.json());
+-}
+-function getAPI(url) {
+-  return fetch(url, {
+-    method: "GET",
+-    headers:{
+-      "Content-Type" : 'application/json'
+-    }
+-  }).then(response => response.json());
+-}
+-
+-export class ApiService {
+-
+-  /**
+-   * @param body
+-   * @returns {Promise<any>}
+-   */
+-  static async sendOTP(body) {
+-    return postAPI(apiUrls.sendOTP, body);
+-  }
+-
+-  /**
+-   * @param body
+-   * @returns {Promise<any>}
+-   */
+-  static async verifyOTP(body) {
+-    return postAPI(apiUrls.verifyOTP, body);
+-  }
+-
+-  /**
+-   * @param body
+-   * @returns {Promise<any>}
+-   */
+-  static async retryOTP(body) {
+-    return postAPI(apiUrls.retryOTP, body);
+-  }
+-
+-  /**
+-   * @param widgetId
+-   * @param tokenAuth
+-   * @returns {Promise<any>}
+-   */
+-  static async getWidgetProcess(widgetId: string,tokenAuth: string) {
+-    return getAPI(apiUrls.getWidgetProcess.replace(':widgetId',widgetId).replace(':tokenAuth',tokenAuth));
+-  }
+-}
+\ No newline at end of file
+diff --git a/node_modules/@msg91comm/sendotp-sdk/API/api.url.ts b/node_modules/@msg91comm/sendotp-sdk/API/api.url.js
+similarity index 100%
+rename from node_modules/@msg91comm/sendotp-sdk/API/api.url.ts
+rename to node_modules/@msg91comm/sendotp-sdk/API/api.url.js
+diff --git a/node_modules/@msg91comm/sendotp-sdk/index.js b/node_modules/@msg91comm/sendotp-sdk/index.js
+new file mode 100644
+index 0000000..90cd3cc
+--- /dev/null
++++ b/node_modules/@msg91comm/sendotp-sdk/index.js
+@@ -0,0 +1,81 @@
++import { ApiService } from "./API/api.service.js";
++
++let widgetId = "";
++let tokenAuth = "";
++
++export class OTPWidget {
++    static checkInitialization() {
++        if (widgetId === "" || tokenAuth === "") {
++            console.error("Widget not initialized. Call initializeWidget before using any method.");
++            return false;
++        }
++        return true;
++    }
++
++    static async initializeWidget(widgetid, tokenauth) {
++        widgetId = widgetid;
++        tokenAuth = tokenauth;
++    }
++
++    static async sendOTP(body) {
++        if (!this.checkInitialization()) return;
++
++        const payload = {
++            widgetId: widgetId,
++            tokenAuth: tokenAuth,
++            ...body
++        };
++
++        try {
++            return await ApiService.sendOTP(payload);
++        } catch (error) {
++            console.error("Error sending OTP:", error);
++            throw error;
++        }
++    }
++
++    static async verifyOTP(body) {
++        if (!this.checkInitialization()) return;
++
++        const payload = {
++            widgetId: widgetId,
++            tokenAuth: tokenAuth,
++            ...body
++        };
++
++        try {
++            return await ApiService.verifyOTP(payload);
++        } catch (error) {
++            console.error("Error verifying OTP:", error);
++            throw error;
++        }
++    }
++
++    static async retryOTP(body) {
++        if (!this.checkInitialization()) return;
++
++        const payload = {
++            widgetId: widgetId,
++            tokenAuth: tokenAuth,
++            ...body
++        };
++
++        try {
++            return await ApiService.retryOTP(payload);
++        } catch (error) {
++            console.error("Error sending retry OTP:", error);
++            throw error;
++        }
++    }
++
++    static async getWidgetProcess() {
++        if (!this.checkInitialization()) return;
++
++        try {
++            return await ApiService.getWidgetProcess(widgetId, tokenAuth);
++        } catch (error) {
++            console.error("Error getting widget process:", error);
++            throw error;
++        }
++    }
++}
+diff --git a/node_modules/@msg91comm/sendotp-sdk/index.ts b/node_modules/@msg91comm/sendotp-sdk/index.ts
+deleted file mode 100644
+index a02d90a..0000000
+--- a/node_modules/@msg91comm/sendotp-sdk/index.ts
++++ /dev/null
+@@ -1,120 +0,0 @@
+-import { ApiService } from "./API/api.service";
+-var widgetId: string = "";
+-var tokenAuth: string = "";
+-
+-export class OTPWidget {
+-    // Checks if the widget has been properly initialized with a widget ID and a token.
+-    // This is an internal method and should not be called directly.
+-    private static checkInitialization() {
+-        if (widgetId === "" || tokenAuth === "") {
+-            console.error("Widget not initialized. Call initializeWidget before using any method.")
+-            return false;
+-        }
+-        return true
+-    }
+-
+-
+-    /**
+-    * Initializes the widget with necessary authentication details.
+-    * Must be called before using any other methods in the widget.
+-    * 
+-    * @param widgetid
+-    * @param tokenauth
+-    */
+-    static async initializeWidget(widgetid: string, tokenauth: string) {
+-        widgetId = widgetid
+-        tokenAuth = tokenauth
+-    }
+-
+-    
+-    /**
+-     * The sendOTP method is used to send an OTP to an identifier.
+-     * Identifier (string) - This is a mandatory argument. The identifier can be an email or mobile number (it must contain the country code without +)
+-     * 
+-     * @param body body Contains the identifier and other parameters necessary for sending an OTP.
+-     * @returns {Promise<any>} A Promise resolving to the send response or throws an error if the request fails.
+-     */
+-    static async sendOTP(body) {
+-        if (!this.checkInitialization()) return;
+-
+-        const payload = {
+-            widgetId: widgetId,
+-            tokenAuth: tokenAuth,
+-            ...body
+-        }
+-        try {
+-            const response = await ApiService.sendOTP(payload);
+-            return response;
+-        } catch (error) {
+-            console.error('Error sending OTP:', error);
+-            throw error; // Re-throw the error to propagate it to the caller
+-        }
+-
+-    }
+-    /**
+-     * The verifyOtp method is used to verify an OTP entered by the user.
+-     * 
+-     * @param body body Must include the otp for verification and the reqId of the original OTP request.
+-     * @returns {Promise<any>} A Promise resolving to the verification response or throws an error if verification fails.
+-     */
+-    static async verifyOTP(body) {
+-        if (!this.checkInitialization()) return;
+-
+-        const payload = {
+-            widgetId: widgetId,
+-            tokenAuth: tokenAuth,
+-            ...body
+-        }
+-        try {
+-            const response = await ApiService.verifyOTP(payload);
+-            return response;
+-        } catch (error) {
+-            console.error('Error verifying OTP:', error);
+-            throw error; // Re-throw the error to propagate it to the caller
+-        }
+-
+-    }
+-
+-    /**
+-     * The retryOtp method allows retrying the OTP if it was not received for any reason.
+-     * 
+-     * @param body body must include the req id and channel value for retrying the OTP.
+-     * @returns {Promise<any>} A Promise resolving to the response of the retry attempt or throws an error if the attempt fails.
+-     */
+-    static async retryOTP(body) {
+-        if (!this.checkInitialization()) return;
+-
+-        const payload = {
+-            widgetId: widgetId,
+-            tokenAuth: tokenAuth,
+-            ...body
+-        }
+-        try {
+-            const response = await ApiService.retryOTP(payload);
+-            return response;
+-        } catch (error) {
+-            console.error('Error sending retry OTP:', error);
+-            throw error; // Re-throw the error to propagate it to the caller
+-        }
+-
+-    }
+-
+-
+-    /**
+-    * getWidgetProcess method retrieves the current configuration and process information for the widget.
+-    * 
+-    * @returns {Promise<any>} A Promise resolving to the widget's current process data or throws an error if the request fails.
+-    */
+-    static async getWidgetProcess() {
+-        if (!this.checkInitialization()) return;
+-        try {
+-            const response = await ApiService.getWidgetProcess(widgetId, tokenAuth);
+-            return response;
+-        } catch (error) {
+-            console.error('Error getting widget process:', error);
+-            throw error; // Re-throw the error to propagate it to the caller
+-        }
+-
+-    }
+-
+-} 
+\ No newline at end of file

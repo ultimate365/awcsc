@@ -16,10 +16,15 @@ import bcrypt from "bcryptjs";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import Loader from "../../components/Loader";
 import { useGlobalContext } from "../../context/Store";
-import { set } from "mongoose";
 import axios from "axios";
-
+import { OTPWidget } from "@msg91comm/sendotp-sdk";
 const UpdateUP = () => {
+  const widgetId = process.env.NEXT_PUBLIC_MSG91_WIDGET_ID;
+  const authToken = process.env.NEXT_PUBLIC_MSG91_AUTH_TOKEN;
+
+  useEffect(() => {
+    OTPWidget.initializeWidget(widgetId, authToken);
+  }, []);
   const { state, setState } = useGlobalContext();
   const navigate = useRouter();
   let userdetails;
@@ -52,7 +57,7 @@ const UpdateUP = () => {
   const [phone, setPhone] = useState(user.phone);
   const [email, setEmail] = useState(user.email);
   const [showEmailRetryBtn, setShowEmailRetryBtn] = useState(false);
-
+  const [reqId, setReqId] = useState("");
   const checkUser = () => {
     let details = getCookie("uid");
     let schdetails = getCookie("schid");
@@ -252,12 +257,18 @@ const UpdateUP = () => {
     e.preventDefault();
     setLoader(true);
     try {
-      const res = await axios.post(`/api/sendMobileOTP`, {
-        phone,
-        name: user.tname,
-      });
-      const record = res.data;
-      if (record.success) {
+      // const res = await axios.post(`/api/sendMobileOTP`, {
+      //   phone,
+      //   name: user.tname,
+      // });
+      // const record = res.data;
+      // if (record.success) {
+      const data = {
+        identifier: `91${phone}`,
+      };
+      const response = await OTPWidget.sendOTP(data);
+      if (response.type === "success") {
+        setReqId(response.message);
         toast.success("OTP sent to your Mobile Number!");
         setLoader(false);
         setMobileOTPSent(true);
@@ -281,13 +292,19 @@ const UpdateUP = () => {
     if (mobileOTP !== "" && mobileOTP.toString().length === 6) {
       setLoader(true);
       try {
-        const res = await axios.post(`/api/verifyMobileOTP`, {
-          phone,
-          phoneCode: mobileOTP.toString(),
-          name: user.tname,
-        });
-        const record = res.data;
-        if (record.success) {
+        // const res = await axios.post(`/api/verifyMobileOTP`, {
+        //   phone,
+        //   phoneCode: mobileOTP.toString(),
+        //   name: user.tname,
+        // });
+        // const record = res.data;
+        // if (record.success) {
+        const data = {
+          otp: mobileOTP.toString(),
+          reqId: reqId,
+        };
+        const response = await OTPWidget.verifyOTP(data);
+        if (response.type === "success") {
           const docRef = isTeacher
             ? doc(firestore, "sportsUsers", id)
             : doc(firestore, "userschools", id);

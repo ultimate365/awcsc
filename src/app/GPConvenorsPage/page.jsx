@@ -17,15 +17,18 @@ import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import {
+  BUTTONCOLORS,
   StdClass,
   birthday,
   events,
+  gpEngNames,
   maxdob,
   mindob,
 } from "../../modules/constants";
 import bcrypt from "bcryptjs";
 import {
   createDownloadLink,
+  DateValueToString,
   getCurrentDateInput,
   getSubmitDateInput,
   removeDuplicates,
@@ -47,6 +50,8 @@ const GPConvenorsPage = () => {
     setUserSchoolState,
     gpSportsDateState,
     setGpSportsDateState,
+    gpLockState,
+    setGpLockState,
   } = useGlobalContext();
 
   const navigate = useRouter();
@@ -72,7 +77,6 @@ const GPConvenorsPage = () => {
         }
       }
     }
-
     // eslint-disable-next-line
   }, []);
   const [inputField, setInputField] = useState({
@@ -134,6 +138,17 @@ const GPConvenorsPage = () => {
   const [filteredGPData, setFilteredGPData] = useState([]);
   const [schFilterClicked, setSchFilterClicked] = useState(false);
   const [filteredSchData, setFilteredSchData] = useState([]);
+  const [lockStatus, setLockStatus] = useState(false);
+  const [lockData, setLockData] = useState([]);
+  const [gpLockData, setGpLockData] = useState({
+    entryDate: 1708313683517,
+    gp: "",
+    edit: true,
+    entryStaredBy: "",
+    entryCloseddBy: "",
+    id: "0eb11c9f-ca67-4388-b4f6-61aa5b646d9b-0",
+    closeDate: 1728288554977,
+  });
   const getSchoolData = async () => {
     const querySnapshot = await getDocs(
       query(collection(firestore, "schools"))
@@ -142,6 +157,15 @@ const GPConvenorsPage = () => {
     setFilteredSchData(data);
     setConvenorsGPSchoolData(
       data?.filter((el) => el?.gp === teacherdetails.gp)
+    );
+  };
+  const getLockData = async (gp) => {
+    setLockData(gpLockState);
+    setLockStatus(
+      gpLockState?.filter((el) => el?.gp === (gp || selectedGP))[0]?.edit
+    );
+    setGpLockData(
+      gpLockState?.filter((el) => el?.gp === (gp || selectedGP))[0]
     );
   };
   const getTeachersData = async () => {
@@ -664,6 +688,7 @@ const GPConvenorsPage = () => {
     setSelectedGP(gp);
     const spDate = gpSportsDateState.filter((item) => item.gp === gp)[0].date;
     setGpSpDate(spDate);
+    getLockData(gp);
   };
   const updatePassword = async () => {
     setLoader(true);
@@ -736,10 +761,99 @@ const GPConvenorsPage = () => {
     );
     setFilteredData(allParticipants.filter((el) => el?.udise === y?.udise));
   };
+  const openLockForEntry = async (id) => {
+    setLoader(true);
+    const entry = {
+      edit: true,
+      entryDate: Date.now(),
+      closeDate: "",
+      entryStaredBy: teacherdetails.tname,
+    };
+    let x = gpLockState.filter((item) => item?.id === id)[0];
+    x.edit = true;
+    x.entryDate = Date.now();
+    x.closeDate = "";
+    x.entryStaredBy = teacherdetails.tname;
+    let y = gpLockState.filter((item) => item?.id !== id);
+    y = [...y, x];
+    setGpLockState(y);
+    const docRef = doc(firestore, "gpLockData", id);
+    // await axios.post(`/api/updategpLockData`, x);
+    await updateDoc(docRef, entry)
+      .then(async () => {
+        setLoader(false);
+        setLockStatus(true);
+        // getLockData();
+        toast.success(
+          `congratulation! Student Entry Open For ${teacherdetails.gp} GP Sports Data`,
+          {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoader(false);
+      });
+  };
+  const closeLockForEntry = async (id) => {
+    setLoader(true);
+
+    const entry = {
+      edit: false,
+      closeDate: Date.now(),
+      entryCloseddBy: teacherdetails.tname,
+    };
+    let x = gpLockState.filter((item) => item?.id === id)[0];
+    x.edit = false;
+    x.closeDate = "";
+    x.entryCloseddBy = teacherdetails.tname;
+    let y = gpLockState.filter((item) => item?.id !== id);
+    y = [...y, x];
+    // await axios.post(`/api/updategpLockData`, x);
+    setGpLockState(y);
+    const docRef = doc(firestore, "gpLockData", id);
+    await updateDoc(docRef, entry)
+      .then(async () => {
+        setLoader(false);
+        setLockStatus(false);
+        // getLockData();
+        toast.success(
+          `congratulation! Student Entry Closed For ${teacherdetails.gp} GP Sports Data`,
+          {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoader(false);
+      });
+  };
 
   useEffect(() => {
     // eslint-disable-next-line
-  }, [selectedSchool, filteredData, resultFilteredData, gpConvenorsData]);
+  }, [
+    selectedSchool,
+    filteredData,
+    resultFilteredData,
+    gpConvenorsData,
+    gpLockData,
+  ]);
 
   useEffect(() => {
     document.title = "AWC Sports App: GP Convenors Page";
@@ -796,7 +910,10 @@ const GPConvenorsPage = () => {
   useEffect(() => {
     // eslint-disable-next-line
   }, [inputField, allParticipants, filteredData, thisGpAssistance]);
-
+  useEffect(() => {
+    getLockData(selectedGP);
+    // eslint-disable-next-line
+  }, [selectedGP]);
   return (
     <div className="container text-center my-5">
       {teacherdetails.circle === "admin" && (
@@ -852,6 +969,32 @@ const GPConvenorsPage = () => {
         teacherdetails.circleAssistant === "admin" ||
         teacherdetails.convenor === "admin" ||
         teacherdetails.gpAssistant === "admin") &&
+        selectedGP && (
+          <button
+            type="button"
+            className={`btn btn-${lockStatus ? "danger" : "success"} m-1`}
+            style={{ width: "auto" }}
+            onClick={() => {
+              let id = lockData.filter((el) => el.gp === selectedGP)[0].id;
+              lockStatus ? closeLockForEntry(id) : openLockForEntry(id);
+            }}
+          >
+            {lockStatus
+              ? `Close ${selectedGP} GP Student Entry`
+              : `Open ${selectedGP} GP Student Entry`}
+          </button>
+        )}
+      {!lockStatus && gpLockData?.closeDate !== undefined && (
+        <h6 className="text-danger">
+          {selectedGP} GP Sports Student Entry & Edit Closed By{" "}
+          {gpLockData?.entryCloseddBy} at{" "}
+          {DateValueToString(gpLockData?.closeDate)}
+        </h6>
+      )}
+      {(teacherdetails.circle === "admin" ||
+        teacherdetails.circleAssistant === "admin" ||
+        teacherdetails.convenor === "admin" ||
+        teacherdetails.gpAssistant === "admin") &&
         selectedGP &&
         allParticipants.length > 0 && (
           <button
@@ -870,13 +1013,41 @@ const GPConvenorsPage = () => {
             {`Go To ${selectedGP} GP Sports All Student List`}
           </button>
         )}
-      {teacherdetails.circle === "admin" && (
-        <p className="text-success">
-          Click on any Filter Button to show that GP's Participants
-        </p>
+      {(teacherdetails.circle === "admin" ||
+        teacherdetails.circleAssistant === "admin") && (
+        <div>
+          <p className="text-success">
+            Click on any Filter Button to show that GP's Convenor's Page
+          </p>
+          {gpEngNames.map((el, ind) => (
+            <button
+              type="button"
+              className="btn m-2"
+              style={{
+                backgroundColor: BUTTONCOLORS[ind],
+                color: "white",
+                width: "auto",
+              }}
+              key={ind}
+              onClick={() => {
+                filterData(el);
+                setSchFilterClicked(true);
+                const GPSchools = schoolState.filter(
+                  (student) => student.gp === el
+                );
+                setFilteredSchData(GPSchools);
+                const firstGPSchool = GPSchools[0];
+                document.getElementById("schNames").value =
+                  JSON.stringify(firstGPSchool);
+              }}
+            >
+              {el}
+            </button>
+          ))}
+        </div>
       )}
       <h4 className="text-primary m-3">
-        {selectedGP && `${selectedGP} GP Sports Date is `}
+        {selectedGP && gpSpDate && `${selectedGP} GP Sports Date is `}
         {gpSpDate}
       </h4>
       {(teacherdetails.circle === "admin" ||

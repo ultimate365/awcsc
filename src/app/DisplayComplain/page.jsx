@@ -127,7 +127,7 @@ const DisplayComplain = () => {
 
     {
       name: "Registered On",
-      selector: (row) => DateValueToSring(row.complainTime),
+      selector: (row) => DateValueToString(row.complainTime),
       wrap: +true,
       center: +true,
     },
@@ -202,7 +202,7 @@ const DisplayComplain = () => {
     // console.log(user.teachersID);
     // console.log(res);
   };
-  const DateValueToSring = (dateValue) => {
+  const DateValueToString = (dateValue) => {
     let date = new Date(dateValue);
     return `${date.getDate()}-${date.getMonth()}-${date.getFullYear()} At ${
       date.getHours() > 12 ? date.getHours() - 12 : date.getHours()

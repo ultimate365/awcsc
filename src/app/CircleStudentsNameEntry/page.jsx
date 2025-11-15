@@ -583,17 +583,22 @@ const CircleStudentsNameEntry = () => {
   ];
   const changeGPLockEntry = async (gp, state) => {
     setLoader(true);
-    const entry = {
-      edit: state,
-      closeDate: Date.now(),
-      entryCloseddBy: teacherdetails.tname,
-    };
     let x = gpLockState.filter((item) => item?.id === gp.id)[0];
     x.edit = state;
-    x.closeDate = "";
-    x.entryCloseddBy = teacherdetails.tname;
+    if (state) {
+      x.entryStaredBy = user.tname;
+      x.entryDate = Date.now();
+      x.closeDate = "";
+      x.entryCloseddBy = "";
+    } else {
+      x.entryCloseddBy = user.tname;
+      x.closeDate = Date.now();
+      x.entryStaredBy = "";
+      x.entryDate = "";
+    }
     let y = gpLockState.filter((item) => item?.id !== gp.id);
     y = [...y, x];
+    y = y.sort((a, b) => a?.gp?.localeCompare(b?.gp));
     setGpLockState(y);
     const docRef = doc(firestore, "gpLockData", gp.id);
     await updateDoc(docRef, entry)
@@ -625,11 +630,15 @@ const CircleStudentsNameEntry = () => {
     const otherGPLock = circleLockState.filter((el) => el?.gp !== gp);
     selectedGPLock.edit = state;
     if (state) {
-      selectedGPLock.entryStaredBy = teacherdetails.tname;
+      selectedGPLock.entryStaredBy = user.tname;
       selectedGPLock.entryDate = Date.now();
+      selectedGPLock.entryCloseddBy = "";
+      selectedGPLock.closeDate = "";
     } else {
-      selectedGPLock.entryCloseddBy = teacherdetails.tname;
+      selectedGPLock.entryCloseddBy = user.tname;
       selectedGPLock.closeDate = Date.now();
+      selectedGPLock.entryStaredBy = "";
+      selectedGPLock.entryDate = "";
     }
     // try {
     //   await axios.post("/api/updatecircleLockData", selectedGPLock);
@@ -654,6 +663,49 @@ const CircleStudentsNameEntry = () => {
     );
     setCircleLockState(x);
   };
+  const lockAllGPSportsEntry = async (state) => {
+    setLoader(true);
+    let x = [];
+    const gpLockData = gpLockState.map(async (item) => {
+      const selectedGPLock = gpLockState.filter((el) => el?.gp === item?.gp)[0];
+      selectedGPLock.edit = state;
+      if (state) {
+        selectedGPLock.entryStaredBy = teacherdetails.tname;
+        selectedGPLock.entryDate = Date.now();
+        selectedGPLock.entryCloseddBy = "";
+        selectedGPLock.closeDate = "";
+      } else {
+        selectedGPLock.entryCloseddBy = teacherdetails.tname;
+        selectedGPLock.closeDate = Date.now();
+        selectedGPLock.entryStaredBy = "";
+        selectedGPLock.entryDate = "";
+      }
+      x = [...x, selectedGPLock];
+
+      if (state) {
+        await updateDoc(doc(firestore, "gpLockData", item?.id), {
+          edit: true,
+          entryStaredBy: teacherdetails.tname,
+          entryDate: Date.now(),
+          entryCloseddBy: "",
+          closeDate: "",
+        });
+      } else {
+        await updateDoc(doc(firestore, "gpLockData", item?.id), {
+          edit: false,
+          entryCloseddBy: teacherdetails.tname,
+          closeDate: Date.now(),
+          entryStaredBy: "",
+          entryDate: "",
+        });
+      }
+    });
+    await Promise.all(gpLockData).then(() => {
+      setGpLockState(x);
+      setLoader(false);
+      toast.success("Entry of All GP Sports Lock State Changed successfully");
+    });
+  };
   const lockAllGP = async (state) => {
     setLoader(true);
     circleLockState.map(async (item) => {
@@ -663,11 +715,31 @@ const CircleStudentsNameEntry = () => {
       const otherGPLock = circleLockState.filter((el) => el?.gp !== item?.gp);
       selectedGPLock.edit = state;
       if (state) {
+        selectedGPLock.entryStaredBy = user.tname;
+        selectedGPLock.entryDate = Date.now();
+        selectedGPLock.entryCloseddBy = "";
+        selectedGPLock.closeDate = "";
+      } else {
+        selectedGPLock.entryCloseddBy = user.tname;
+        selectedGPLock.closeDate = Date.now();
+        selectedGPLock.entryStaredBy = "";
+        selectedGPLock.entryDate = "";
+      }
+
+      let x = [...otherGPLock, selectedGPLock].sort((a, b) =>
+        a.gp.localeCompare(b.gp)
+      );
+      setCircleLockState(x);
+      if (state) {
         selectedGPLock.entryStaredBy = teacherdetails.tname;
         selectedGPLock.entryDate = Date.now();
+        selectedGPLock.entryCloseddBy = "";
+        selectedGPLock.closeDate = "";
       } else {
         selectedGPLock.entryCloseddBy = teacherdetails.tname;
         selectedGPLock.closeDate = Date.now();
+        selectedGPLock.entryStaredBy = "";
+        selectedGPLock.entryDate = "";
       }
       // try {
       //   await axios.post("/api/updatecircleLockData", selectedGPLock);
@@ -687,10 +759,6 @@ const CircleStudentsNameEntry = () => {
         setLoader(false);
         console.log(e);
       }
-      let x = [...otherGPLock, selectedGPLock].sort((a, b) =>
-        a.gp.localeCompare(b.gp)
-      );
-      setCircleLockState(x);
     });
   };
 
@@ -812,6 +880,31 @@ const CircleStudentsNameEntry = () => {
           Go To Circle Sports All Student List
         </button>
       )}
+      <div className="my-4 container">
+        {teacherdetails.circle === "admin" && (
+          <div className=" my-2 ">
+            <h3 className="text-center text-primary">
+              Lock / Unlock GP Student&#8217;s Name Entry
+            </h3>
+            <div className="my-2">
+              <button
+                type="button"
+                className="btn btn-danger m-1  btn-sm"
+                onClick={() => lockAllGPSportsEntry(false)}
+              >
+                Lock All Gp
+              </button>
+              <button
+                type="button"
+                className="btn btn-success m-1  btn-sm"
+                onClick={() => lockAllGPSportsEntry(true)}
+              >
+                Unlock All Gp
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="my-4 container d-flex flex-column justify-centent-center align-items-center mx-auto">
         {lockData
           // .filter((el) => el?.edit === true)
@@ -840,6 +933,7 @@ const CircleStudentsNameEntry = () => {
             </div>
           ))}
       </div>
+
       <div className="my-4 container">
         {teacherdetails.circle === "admin" && (
           <div className=" my-2 ">
