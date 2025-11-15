@@ -143,69 +143,55 @@ export default function Signup() {
 
   // Send OTP (calls your API)
   const sendOTP = async (isResend = false) => {
+    const { phone, email, tname } = inputField;
+
+    // helper validators
+    const isValidPhone = phone && phone.length === 10 && /^[0-9]+$/.test(phone);
+    const isValidEmail = email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!isValidPhone) return toast.error("Please enter valid mobile number");
+    if (!isValidEmail) return toast.error("Please enter valid email address");
+
+    // reset OTP fields on resend
     if (isResend) {
-      // clear existing OTP fields when user requests resend
-      setOtp(new Array(6).fill(""));
-      setEmailOtp(new Array(6).fill(""));
-      // focus first mobile OTP input if available
-      setTimeout(() => {
-        inputsRef.current[0]?.focus();
-      }, 50);
-    }
-    if (
-      !inputField.phone ||
-      inputField.phone.length < 10 ||
-      !inputField.phone.match(/^[0-9]+$/)
-    ) {
-      toast.error("Please enter valid mobile number");
-      return;
-    }
-    if (
-      !inputField.email ||
-      !inputField.email.match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      )
-    ) {
-      toast.error("Please enter valid email address");
-      return;
+      setOtp(Array(6).fill(""));
+      setEmailOtp(Array(6).fill(""));
+      setTimeout(() => inputsRef.current[0]?.focus(), 50);
     }
 
     setLoader(true);
+
     try {
-      const data = {
-        identifier: `91${inputField.phone}`,
-      };
-      const response = await OTPWidget.sendOTP(data);
-      if (response.type === "success") {
-        setReqId(response.message);
-        toast.success("OTP sent to your Mobile Number!");
-        const res = await axios.post(`/api/sendEmailOTP`, {
-          email: inputField.email,
-          name: inputField.tname,
-          username: "",
-        });
-        if (res.data.success) {
-          setLoader(false);
-          setOtpSent(true);
-          setShowRetryBtn(false);
-          setTimeout(() => {
-            setShowRetryBtn(true);
-          }, 30000);
-        } else {
-          toast.success("OTP sent to your Email!");
-          setLoader(false);
-          setOtpSent(true);
-          setShowRetryBtn(false);
-        }
-      } else {
-        setShowRetryBtn(true);
-        toast.error("Failed to send OTP!");
-        setLoader(false);
-        console.log(record);
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to send OTP!");
+      const payload = isResend
+        ? { reqId, retryChannel: 11 }
+        : { identifier: `91${phone}` };
+
+      const response = isResend
+        ? await OTPWidget.retryOTP(payload)
+        : await OTPWidget.sendOTP(payload);
+
+      if (response.type !== "success") throw new Error();
+
+      if (!isResend) setReqId(response.message);
+
+      toast.success("OTP sent to your Mobile Number!");
+
+      const emailRes = await axios.post(`/api/sendEmailOTP`, {
+        email,
+        name: tname,
+        username: "",
+      });
+
+      toast.success("OTP sent to your Email!");
+
+      setOtpSent(true);
+      setShowRetryBtn(false);
+      setTimeout(() => setShowRetryBtn(true), 30000);
+    } catch (err) {
+      console.error(err);
+      toast.error(`Failed to ${isResend ? "resend" : "send"} OTP!`);
+      setShowRetryBtn(true);
+    } finally {
       setLoader(false);
     }
   };

@@ -65,7 +65,20 @@ export default function VerifyLogin() {
       setDisplayLoader(false);
     }
   };
-
+  const resendOTP = async () => {
+    setDisplayLoader(true);
+    const data = {
+      reqId: reqId,
+      retryChannel: 11,
+    };
+    const response = await OTPWidget.retryOTP(data);
+    if (response.type === "success") {
+      toast.success("OTP resent to your Mobile Number!");
+      setDisplayLoader(false);
+      setOtpSent(true);
+      setShowRetryBtn(false);
+    }
+  };
   const verifyOTP = async (e) => {
     e.preventDefault();
     if (mobileOTP !== "" && mobileOTP.length === 6) {
