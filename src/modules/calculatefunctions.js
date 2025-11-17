@@ -573,7 +573,46 @@ export const DateValueToString = (timestamp) => {
 
   return `${day}-${month}-${year} at ${formattedHours}:${minutes}:${seconds} ${ampm}`;
 };
+export const generateRandomPAN = () => {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+  // Valid 4th characters for type of holder
+  const panTypes = "PCHFATBLJG";
 
+  function getRandomChar(str) {
+    return str.charAt(Math.floor(Math.random() * str.length));
+  }
+
+  let pan = "";
+
+  // First three characters: random letters
+  for (let i = 0; i < 3; i++) {
+    pan += getRandomChar(letters);
+  }
+
+  // Fourth character: type of holder (e.g., 'P' for Personal)
+  pan += getRandomChar(panTypes);
+
+  // Fifth character: random letter
+  pan += getRandomChar(letters);
+
+  // Next four characters: random numbers
+  for (let i = 0; i < 4; i++) {
+    pan += getRandomChar(numbers);
+  }
+
+  // Last character: random letter
+  pan += getRandomChar(letters);
+
+  return pan;
+};
+export const generateRandomUDISE = () => {
+  // Generate a random number between 0 and 9999999
+  const randomNumber = Math.floor(Math.random() * 10000000);
+  // Pad with leading zeros to ensure a 7-digit string
+  const paddedNumber = String(randomNumber).padStart(7, "0");
+  return `1916${paddedNumber}`;
+};
 export function removeDuplicates(books) {
   // Create an array of objects
 

@@ -9,10 +9,11 @@ import {
   doc,
   getDocs,
   query,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { firestore } from "../../context/FirbaseContext";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import bcrypt from "bcryptjs";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
@@ -23,7 +24,15 @@ import {
 } from "@/modules/calculatefunctions";
 import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
+import { v4 as uuid } from "uuid";
+import {
+  generateID,
+  generateRandomPAN,
+  generateRandomUDISE,
+} from "../../modules/calculatefunctions";
+import { getCollection, updateDocument } from "../../firebase/firestoreHelper";
 const RegUsers = () => {
+  const docID = uuid().split("-")[0];
   const { teachersState, setTeachersState } = useGlobalContext();
   const navigate = useRouter();
   let teacherdetails = {
@@ -49,9 +58,73 @@ const RegUsers = () => {
   const [searchSchool, setSearchSchool] = useState("");
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [adminsData, setAdminsData] = useState([]);
   const [schoolData, setSchoolData] = useState([]);
   const [filterSchoolData, setFilterSchoolData] = useState([]);
   const [loader, setLoader] = useState(false);
+  const [showInput, setShowInput] = useState(false);
+  const [showAdminPassWord, setShowAdminPassWord] = useState(false);
+  const [adminPassword, setAdminPassword] = useState("");
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [adminID, setAdminID] = useState("");
+  const [selectedAdmin, setSelectedAdmin] = useState({
+    id: `teacher-${docID}`,
+    disabled: false,
+    pan: generateRandomPAN(),
+    createdAt: Date.now(),
+    username: "",
+    school: "",
+    password: "",
+    gp: "AMORAGORI",
+    empid: generateID(),
+    circleAssistant: "taw",
+    circle: "admin",
+    tname: "",
+    convenor: "taw",
+    udise: generateRandomUDISE(),
+    phone: "",
+    teachersID: `teacher-${docID}`,
+    email: "",
+    desig: "",
+    gpAssistant: "taw",
+    type: "Administrator",
+  });
+  const [type, setType] = useState("Add");
+  const userAdminData = async () => {
+    const q = query(collection(firestore, "sportsAdmins"));
+
+    const querySnapshot = await getDocs(q);
+    const data = querySnapshot.docs.map((doc) => ({
+      // doc.data() is never undefined for query doc snapshots
+      ...doc.data(),
+      id: doc.id,
+    }));
+    setAdminsData(data);
+  };
+  const resetInput = () => {
+    setSelectedAdmin({
+      id: `teacher-${docID}`,
+      disabled: false,
+      pan: generateRandomPAN(),
+      createdAt: Date.now(),
+      username: "",
+      school: "",
+      password: "",
+      gp: "AMORAGORI",
+      empid: generateID(),
+      circleAssistant: "taw",
+      circle: "admin",
+      tname: "",
+      convenor: "taw",
+      udise: generateRandomUDISE(),
+      phone: "",
+      teachersID: `teacher-${docID}`,
+      email: "",
+      desig: "",
+      gpAssistant: "taw",
+      type: "Administrator",
+    });
+  };
   const userData = async () => {
     // try {
     const q = query(collection(firestore, "sportsUsers"));
@@ -65,21 +138,6 @@ const RegUsers = () => {
     setData(data);
     setFilteredData(data);
     setShowTable(true);
-    // } catch (error) {
-    //   await axios
-    //     .post(`/api/getuserteachers`)
-    //     .then((data) => {
-    //       const res = data.data?.data;
-    //       setData(res);
-    //       setFilteredData(res);
-    //       setShowTable(true);
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //       setLoader(false);
-    //     });
-    //   console.log(error);
-    // }
   };
   const schoolUserData = async () => {
     // try {
@@ -94,21 +152,6 @@ const RegUsers = () => {
     setSchoolData(data);
     setFilterSchoolData(data);
     setShowSchoolTable(true);
-    // } catch (error) {
-    //   await axios
-    //     .post(`/api/getuserschools`)
-    //     .then((data) => {
-    //       const res = data.data?.data;
-    //       setSchoolData(res);
-    //       setFilterSchoolData(res);
-    //       setShowSchoolTable(true);
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //       setLoader(false);
-    //     });
-    //   console.log(error);
-    // }
   };
   useEffect(() => {
     if (!details) {
@@ -376,6 +419,128 @@ const RegUsers = () => {
       wrap: +true,
     },
   ];
+
+  const adminColumns = [
+    {
+      name: "Sl",
+      selector: (row, index) => data.findIndex((i) => i.id === row?.id) + 1,
+      sortable: +true,
+      center: +true,
+    },
+    {
+      name: "Name",
+      selector: (row) => row.tname,
+      sortable: +true,
+      wrap: +true,
+      center: +true,
+    },
+
+    {
+      name: "Office Name",
+      selector: (row) => row.school,
+      sortable: +true,
+      wrap: +true,
+      center: +true,
+    },
+    {
+      name: "Username",
+      selector: (row) => row.username,
+      sortable: +true,
+      wrap: +true,
+      center: +true,
+    },
+    {
+      name: "Email",
+      selector: (row) => row.email,
+      sortable: +true,
+      wrap: +true,
+      center: +true,
+    },
+
+    {
+      name: "Access",
+      selector: (row) => row.circle,
+      sortable: +true,
+      center: +true,
+    },
+    {
+      name: "Registered On",
+      selector: (row) => DateValueToString(row.createdAt),
+      wrap: +true,
+      center: +true,
+    },
+    {
+      name: "Delete Admin",
+      cell: (row) => (
+        <button
+          type="button"
+          className="btn btn-danger"
+          onClick={() => {
+            // eslint-disable-next-line
+            let message = confirm(
+              `Are You Want to Remove Admin ${row?.tname}?`
+            );
+            message ? deleteAdmin(row) : alert("Admin Not Deleted");
+          }}
+        >
+          Delete
+        </button>
+      ),
+      center: +true,
+    },
+    {
+      name: "Update User Login",
+      cell: (row) =>
+        row.disabled ? (
+          <button
+            type="button"
+            className="btn btn-sm btn-success"
+            onClick={() => {
+              // eslint-disable-next-line
+              let message = confirm(
+                `Are You Sure To Restore Admin ${row.tname}'s Login? `
+              );
+              message ? restoreAdmin(row) : alert("User Admin Not Restored!");
+            }}
+          >
+            Unlock Admin
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="btn btn-sm btn-warning"
+            onClick={() => {
+              // eslint-disable-next-line
+              let message = confirm(
+                `Are You Sure To Disable Admin ${row.tname}'s Login? `
+              );
+              message ? disableAdmin(row) : alert("Admin Login Not Disabled!");
+            }}
+          >
+            Lock Admin
+          </button>
+        ),
+      center: +true,
+    },
+    {
+      name: "Reset Password",
+      cell: (row) => (
+        <button
+          type="button"
+          className="btn btn-sm btn-success"
+          style={{ fontSize: 9 }}
+          onClick={() => {
+            setShowAdminPassWord(true);
+            setSelectedAdmin(row);
+          }}
+        >
+          Change Password
+        </button>
+      ),
+      center: +true,
+    },
+  ];
+
   // console.log(inputField);
   const deleteUser = async (user) => {
     setLoader(true);
@@ -514,10 +679,205 @@ const RegUsers = () => {
       toast.error("Congrats! School Password Reset Failed!");
     }
   };
-
+  const addAdmin = async () => {
+    if (!selectedAdmin.tname) {
+      toast.error("Please Enter Admin Name");
+      return;
+    }
+    if (!selectedAdmin.username) {
+      toast.error("Please Enter Admin Username");
+      return;
+    }
+    if (!selectedAdmin.password) {
+      toast.error("Please Enter Admin Password");
+      return;
+    }
+    if (!selectedAdmin.school) {
+      toast.error("Please Enter Office Name");
+      return;
+    }
+    if (
+      !selectedAdmin.email ||
+      !selectedAdmin.email.match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
+    ) {
+      toast.error("Please Enter Valid Email");
+      return;
+    }
+    if (!selectedAdmin.phone) {
+      toast.error("Please Enter Phone Number");
+      return;
+    }
+    if (!selectedAdmin.desig) {
+      toast.error("Please Enter Designation");
+      return;
+    }
+    setLoader(true);
+    try {
+      const entry = {
+        ...selectedAdmin,
+        id: `teacher-${docID}`,
+        password:
+          type === "add"
+            ? bcrypt.hashSync(selectedAdmin.password.trim(), 10)
+            : selectedAdmin.password,
+        username: selectedAdmin.username.trim().toLowerCase(),
+        tname: selectedAdmin.tname.trim().toUpperCase(),
+        school: selectedAdmin.school.trim().toUpperCase(),
+        gp: selectedAdmin.gp.trim(),
+        email: selectedAdmin.email.trim(),
+        desig: selectedAdmin.desig.trim().toUpperCase(),
+        phone: selectedAdmin.phone.trim(),
+        teachersID: `teacher-${docID}`,
+        createdAt: Date.now(),
+      };
+      const docRef = doc(firestore, "sportsAdmins", entry.id);
+      await setDoc(docRef, entry)
+        .then(() => {
+          setLoader(false);
+          resetInput();
+          toast.success("Congrats! Admin Added Successfully!");
+          userAdminData();
+          setShowInput(false);
+        })
+        .catch((error) => {
+          setLoader(false);
+          console.log(error);
+        });
+    } catch (error) {
+      setLoader(false);
+      console.log(error);
+    }
+  };
+  const resetAdminsPassword = async (admin) => {
+    setLoader(true);
+    try {
+      const password = bcrypt.hashSync(adminPassword.trim(), 10);
+      await updateDoc(doc(firestore, "sportsAdmins", admin.id), {
+        password: password,
+      })
+        .then(() => {
+          setLoader(false);
+          showToast(
+            "success",
+            `congratulation! ${
+              admin.tname
+            }'s Password Has Been Resetted to ${adminPassword.trim()} Successfully!`
+          );
+          userAdminData();
+          setShowAdminPassWord(false);
+          setAdminPassword("");
+          resetInput();
+        })
+        .catch((error) => {
+          setLoader(false);
+          toast.error("Congrats! Admin Password Reset Failed!");
+          console.log(error);
+        });
+    } catch (error) {
+      setLoader(false);
+      toast.error("Congrats! Admin Password Reset Failed!");
+      console.log(error);
+    }
+  };
+  const deleteAdmin = async (admin) => {
+    setLoader(true);
+    try {
+      await deleteDoc(doc(firestore, "sportsAdmins", admin.id));
+      let x = adminsData.filter((item) => item.id !== admin.id);
+      setAdminsData(x);
+      setLoader(false);
+      userAdminData();
+    } catch (error) {
+      toast.error("Failed to delete admin!");
+      console.log(error);
+    }
+  };
+  const getAdminLogin = async () => {
+    const data = await getCollection("appUpdate");
+    setShowAdminLogin(data[0]?.showAdminLogin);
+    setAdminID(data[0].id);
+  };
+  const disableAdmin = async (admin) => {
+    setLoader(true);
+    try {
+      const docRef = doc(firestore, "sportsAdmins", admin.id);
+      await updateDoc(docRef, {
+        disabled: true,
+      }).then(() => {
+        setLoader(false);
+        toast.success("Congrats! Admin Login is Disabled Successfully!");
+        userAdminData();
+      });
+    } catch (error) {
+      setLoader(false);
+      toast.error("Admin Login Disable Updation Failed!");
+      console.log(error);
+    }
+  };
+  const restoreAdmin = async (admin) => {
+    setLoader(true);
+    try {
+      const docRef = doc(firestore, "sportsAdmins", admin.id);
+      await updateDoc(docRef, {
+        disabled: false,
+      })
+        .then(() => {
+          setLoader(false);
+          toast.success("Congrats! Admin Login is Enabled Successfully!");
+          userAdminData();
+        })
+        .catch((e) => {
+          setLoader(false);
+          toast.error("Admin Login Enable Updation Failed!");
+          console.log(e);
+        });
+    } catch (error) {
+      setLoader(false);
+      toast.error("Admin Login Enable Updation Failed!");
+      console.log(error);
+    }
+  };
+  const updateAdminLogin = async () => {
+    setLoader(true);
+    await updateDocument("appUpdate", adminID, {
+      showAdminLogin: !showAdminLogin,
+    })
+      .then(() => {
+        setLoader(false);
+        toast.success(
+          `Admin Login Button ${!showAdminLogin ? "Displayed" : "Hidden"}`
+        );
+      })
+      .catch((e) => {
+        setLoader(false);
+        toast.error("Failed to the Operation");
+        console.log(e);
+      });
+  };
+  const onChangeRadio = () => {
+    setShowAdminLogin(!showAdminLogin);
+    updateAdminLogin();
+  };
+  useEffect(() => {
+    getAdminLogin();
+    //eslint-disable-next-line
+  }, []);
   return (
     <div className="container text-center my-5">
-      {loader ? <Loader /> : null}
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div>
         <button
           type="button"
@@ -538,7 +898,14 @@ const RegUsers = () => {
           Download User School's Data
         </button>
       </div>
-      {showTable ? (
+      <button
+        type="button"
+        className="btn btn-primary"
+        onClick={() => setShowTable(!showTable)}
+      >
+        {showTable ? "Hide Users" : "Show Users"}
+      </button>
+      {showTable && !showInput && (
         <>
           <h3 className="text-center text-primary">
             Displaying Users Database
@@ -563,10 +930,15 @@ const RegUsers = () => {
             subHeaderAlign="right"
           />
         </>
-      ) : (
-        <Loader />
       )}
-      {showSchoolTable ? (
+      <button
+        type="button"
+        className="btn btn-primary m-2"
+        onClick={() => setShowSchoolTable(!showSchoolTable)}
+      >
+        {showSchoolTable ? "Hide School Users" : "Show School Users"}
+      </button>
+      {showSchoolTable && !showInput && (
         <>
           <h3 className="text-center text-primary">
             Displaying School Users Database
@@ -591,9 +963,277 @@ const RegUsers = () => {
             subHeaderAlign="right"
           />
         </>
-      ) : (
-        <Loader />
       )}
+      <div>
+        <div>
+          <button
+            type="button"
+            className="btn btn-primary m-2"
+            onClick={() => {
+              setShowInput(!showInput);
+              resetInput();
+              setType("add");
+            }}
+          >
+            {showInput ? "Hide Add Admin" : "Add New Admin"}
+          </button>
+        </div>
+        <h3 className="text-center text-primary">
+          Displaying Administrators Data
+        </h3>
+        <div className="bg-dark col-md-6 mx-auto p-2 rounded rounded-4 d-flex justify-content-between align-items-center">
+          <div className="form-check m-1 d-flex justify-content-between align-items-center">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="flexRadioDefaul2"
+              id="flexRadioDefault2"
+              checked={showAdminLogin}
+              onChange={onChangeRadio}
+              style={{ width: 30, height: 30 }}
+            />
+            <label
+              className="form-check-label m-2 text-white fs-6"
+              htmlFor="flexRadioDefault2"
+            >
+              Shown Admin Login
+            </label>
+          </div>
+          <div className="form-check m-1 d-flex justify-content-between align-items-center">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="flexRadioDefault"
+              id="flexRadioDefault1"
+              checked={!showAdminLogin}
+              onChange={onChangeRadio}
+              style={{ width: 30, height: 30 }}
+            />
+            <label
+              className="form-check-label m-2 text-white fs-6"
+              htmlFor="flexRadioDefault1"
+            >
+              Hide Admin Login
+            </label>
+          </div>
+        </div>
+        {showInput && (
+          <div className="my-3 mx-auto">
+            <h5 className="text-primary">Add New Admin</h5>
+            <div className="col-md-6 mx-auto">
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  Admin Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Name"
+                  className="form-control"
+                  value={selectedAdmin.tname}
+                  onChange={(e) => {
+                    setSelectedAdmin({
+                      ...selectedAdmin,
+                      tname: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  Admin Username
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Username"
+                  className="form-control"
+                  value={selectedAdmin.username}
+                  onChange={(e) => {
+                    setSelectedAdmin({
+                      ...selectedAdmin,
+                      username: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+              {type === "add" && (
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label">
+                    Admin Password
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Password"
+                    className="form-control"
+                    value={selectedAdmin.password}
+                    onChange={(e) => {
+                      setSelectedAdmin({
+                        ...selectedAdmin,
+                        password: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+              )}
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  Admin Phone
+                </label>
+                <input
+                  type="number"
+                  placeholder="Enter Phone"
+                  className="form-control"
+                  value={selectedAdmin.phone}
+                  onChange={(e) => {
+                    e.target.value.toString().length <= 10 &&
+                      setSelectedAdmin({
+                        ...selectedAdmin,
+                        phone: e.target.value,
+                      });
+                  }}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  Admin Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="Enter Email"
+                  className="form-control"
+                  value={selectedAdmin.email}
+                  onChange={(e) => {
+                    setSelectedAdmin({
+                      ...selectedAdmin,
+                      email: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  Admin Office
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Office"
+                  className="form-control"
+                  value={selectedAdmin.school}
+                  onChange={(e) => {
+                    setSelectedAdmin({
+                      ...selectedAdmin,
+                      school: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  Admin Designation
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Designation"
+                  className="form-control"
+                  value={selectedAdmin.desig}
+                  onChange={(e) => {
+                    setSelectedAdmin({
+                      ...selectedAdmin,
+                      desig: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-primary m-1"
+                  onClick={addAdmin}
+                >
+                  Add
+                  <i className="bi bi-box-arrow-in-left"></i>
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary m-1"
+                  onClick={() => {
+                    setShowInput(false);
+                    resetInput();
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {showAdminPassWord && (
+          <div className="col-md-6 mx-auto">
+            <div className="mb-3">
+              <label htmlFor="" className="form-label">
+                Admin Password
+              </label>
+              <input
+                type="text"
+                placeholder="Enter Password"
+                className="form-control"
+                value={adminPassword}
+                onChange={(e) => {
+                  setAdminPassword(e.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <button
+                type="button"
+                className="btn btn-warning m-1"
+                disabled={!adminPassword}
+                onClick={() => {
+                  // eslint-disable-next-line
+                  let message = confirm(
+                    `Are You Want to Reset Password of Admin ${
+                      selectedAdmin?.tname
+                    } to ${adminPassword.trim()}`
+                  );
+                  message
+                    ? resetAdminsPassword(selectedAdmin)
+                    : toast.success("Password Not Reset!");
+                }}
+              >
+                Update
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary m-1"
+                onClick={() => {
+                  setShowAdminPassWord(false);
+                  setAdminPassword("");
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+        <h3 className="text-center text-primary">Registered Administrators</h3>
+        {adminsData.length > 0 ? (
+          <>
+            <h3 className="text-center text-primary">
+              Displaying Users Database
+            </h3>
+
+            <DataTable
+              columns={adminColumns}
+              data={adminsData}
+              pagination
+              highlightOnHover
+              fixedHeader
+            />
+          </>
+        ) : (
+          <h3 className="text-center text-primary">No Data Found</h3>
+        )}
+      </div>
+      {loader && <Loader />}
     </div>
   );
 };

@@ -16,8 +16,12 @@ import {
 import { useGlobalContext } from "../../context/Store";
 import axios from "axios";
 import Link from "next/link";
+import {
+  getCollection,
+  getDocumentByField,
+} from "../../firebase/firestoreHelper";
 const Login = () => {
-  const { setState, setStateObject } = useGlobalContext();
+  const { setState } = useGlobalContext();
   const [loader, setLoader] = useState(false);
   const [inputField, setInputField] = useState({
     username: "",
@@ -27,42 +31,11 @@ const Login = () => {
     usernameErr: "",
     passwordErr: "",
   });
-
-  useEffect(() => {
-    document.title = "AMTA WEST SPORTS: Login Page";
-    const loggedAt = getCookie("loggedAt");
-    const details = getCookie("tid");
-    const schdetails = getCookie("schid");
-    if (loggedAt && details && schdetails) {
-      navigate.push("/dashboard");
-      if (details) {
-        const teacherDetails = decryptObjData("tid");
-        setState({
-          USER: teacherDetails,
-          ACCESS: teacherDetails?.circle,
-          LOGGEDAT: Date.now(),
-          TYPE: "teacher",
-        });
-      } else if (schdetails) {
-        const schoolDetails = decryptObjData("schid");
-        setState({
-          USER: schoolDetails,
-          ACCESS: schoolDetails?.convenor,
-          LOGGEDAT: Date.now(),
-          TYPE: "school",
-        });
-      } else {
-        setState({
-          USER: {},
-          ACCESS: null,
-          LOGGEDAT: "",
-          TYPE: null,
-        });
-      }
-    }
-
-    // eslint-disable-next-line
-  }, []);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [showDevTechField, setShowDevTechField] = useState(false);
+  const [empid, setEmpid] = useState("");
+  const [udise, setUdise] = useState("");
+  const [showDevSchoolField, setShowDevSchoolField] = useState(false);
   const navigate = useRouter();
   const validForm = () => {
     let formIsValid = true;
@@ -187,9 +160,44 @@ const Login = () => {
       toast.error("Form Is Invalid");
     }
   };
-  // useEffect(() => {
-  //   getSchoolData();
-  // }, []);
+  const adminLogin = async () => {
+    if (!inputField.username) {
+      return toast.error("Please enter username");
+    }
+    if (!inputField.password) {
+      return toast.error("Please enter password");
+    }
+    setLoader(true);
+    const collectionRef = collection(firestore, "sportsAdmins");
+    const q = query(
+      collectionRef,
+      where("username", "==", inputField.username.trim().toLowerCase())
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.docs.length > 0) {
+      const data = querySnapshot.docs[0].data();
+
+      if (compare(inputField.password, data.password)) {
+        if (!data.disabled) {
+          setLoader(false);
+          encryptObjData("nonVerifiedUid", data, 10080);
+          encryptObjData("nonVerifiedTid", data, 10080);
+          setCookie("t", data.tname, 10080);
+          navigate.push("/verifyLogin");
+        } else {
+          setLoader(false);
+          toast.error("Your Account is Disabled!");
+        }
+      } else {
+        toast.error("Invalid Username or Password!");
+        setLoader(false);
+      }
+    } else {
+      toast.error("Invalid Username or Password!");
+      setLoader(false);
+    }
+  };
   const addUser = () => {
     navigate.push("/signup");
   };
@@ -197,7 +205,158 @@ const Login = () => {
     // Use a regular expression to match all spaces (whitespace characters) and replace them with an empty string
     return inputString.replace(/\s/g, "");
   }
+  const getAdminLogin = async () => {
+    const data = await getCollection("appUpdate");
+    setShowAdminLogin(data[0]?.showAdminLogin);
+  };
 
+  const devTeacherLogin = async () => {
+    if (!empid) {
+      return toast.error("Please enter Employee ID");
+    }
+    setLoader(true);
+    try {
+      const data = await getDocumentByField(
+        "sportsUsers",
+        "empid",
+        empid.toUpperCase()
+      ).catch((e) => {
+        console.log(e);
+        setLoader(false);
+        toast.error("Invalid Employee ID");
+      });
+      if (data) {
+        setLoader(false);
+        encryptObjData("uid", data, 10080);
+        encryptObjData("tid", data, 10080);
+        setCookie("t", data.tname, 10080);
+        setCookie("loggedAt", Date.now(), 10080);
+        setTimeout(() => {
+          setState({
+            USER: data,
+            ACCESS: data.circle,
+            LOGGEDAT: Date.now(),
+            TYPE: "teacher",
+          });
+          navigate.push("/dashboard");
+        }, 500);
+      } else {
+        const newData = await getDocumentByField(
+          "teachers",
+          "empid",
+          empid.toUpperCase()
+        ).catch((e) => {
+          console.log(e);
+          setLoader(false);
+          toast.error("Invalid Employee ID");
+        });
+        if (newData) {
+          setLoader(false);
+          encryptObjData("uid", newData, 10080);
+          encryptObjData("tid", newData, 10080);
+          setCookie("t", newData.tname, 10080);
+          setCookie("loggedAt", Date.now(), 10080);
+          setTimeout(() => {
+            setState({
+              USER: newData,
+              ACCESS: newData.circle,
+              LOGGEDAT: Date.now(),
+              TYPE: "teacher",
+            });
+            navigate.push("/dashboard");
+          }, 500);
+        } else {
+          setLoader(false);
+          toast.error("Invalid Employee ID");
+        }
+      }
+    } catch (e) {
+      console.log(e);
+      setLoader(false);
+      toast.error("Invalid Employee ID");
+    }
+  };
+  const devSchoolLogin = async () => {
+    if (!udise) {
+      return toast.error("Please enter UDISE");
+    }
+    setLoader(true);
+    try {
+      const data = await getDocumentByField(
+        "userschools",
+        "udise",
+        udise.toString()
+      ).catch((e) => {
+        console.log(e);
+        setLoader(false);
+        toast.error("Invalid UDISE");
+      });
+
+      setLoader(false);
+      encryptObjData("schid", data, 10080);
+      setCookie("loggedAt", Date.now(), 10080);
+      setTimeout(() => {
+        setState({
+          USER: data,
+          ACCESS: data.convenor,
+          LOGGEDAT: Date.now(),
+          TYPE: "school",
+        });
+        navigate.push("/dashboard");
+      }, 500);
+    } catch (e) {
+      console.log(e);
+      setLoader(false);
+      toast.error("Invalid UDISE");
+    }
+  };
+
+  useEffect(() => {
+    document.title = "AMTA WEST SPORTS: Login Page";
+    const loggedAt = getCookie("loggedAt");
+    const details = getCookie("tid");
+    const schdetails = getCookie("schid");
+    if (loggedAt && details && schdetails) {
+      navigate.push("/dashboard");
+      if (details) {
+        const teacherDetails = decryptObjData("tid");
+        setState({
+          USER: teacherDetails,
+          ACCESS: teacherDetails?.circle,
+          LOGGEDAT: Date.now(),
+          TYPE: "teacher",
+        });
+      } else if (schdetails) {
+        const schoolDetails = decryptObjData("schid");
+        setState({
+          USER: schoolDetails,
+          ACCESS: schoolDetails?.convenor,
+          LOGGEDAT: Date.now(),
+          TYPE: "school",
+        });
+      } else {
+        setState({
+          USER: {},
+          ACCESS: null,
+          LOGGEDAT: "",
+          TYPE: null,
+        });
+      }
+    }
+
+    // eslint-disable-next-line
+  }, []);
+  useEffect(() => {
+    getAdminLogin();
+    // eslint-disable-next-line
+  }, []);
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      empid.length === 8 && devTeacherLogin();
+      udise.toString().length === 11 && devSchoolLogin();
+    }
+    // eslint-disable-next-line
+  }, [empid, udise]);
   return (
     <div className="container text-black p-2">
       <ToastContainer
@@ -224,7 +383,6 @@ const Login = () => {
               username
             </label>
             <input
-              ref={(input) => input && input.focus()}
               type="text"
               name="username"
               id="username"
@@ -272,15 +430,120 @@ const Login = () => {
             >
               Login <i className="bi bi-box-arrow-in-left"></i>
             </button>
+            {showAdminLogin && (
+              <button
+                type="submit"
+                className="btn btn-dark m-1"
+                onClick={adminLogin}
+              >
+                Adminstrator Login <i className="bi bi-box-arrow-in-left"></i>
+              </button>
+            )}
             <button
               type="button"
-              id="addUserBtn"
               className="btn btn-success m-1"
               onClick={addUser}
             >
               Register Now <i className="bi bi-person-add"></i>
             </button>
           </div>
+          {process.env.NODE_ENV === "development" && (
+            <div className="bg-info bg-opacity-10 p-4 rounded-4 my-4">
+              {showDevTechField && (
+                <div>
+                  <div className="mb-3">
+                    <label htmlFor="" className="form-label">
+                      Employee ID
+                    </label>
+                    <input
+                      type="text"
+                      name="empid"
+                      id="empid"
+                      placeholder="Enter Employee ID"
+                      className="form-control"
+                      value={empid}
+                      maxLength={8}
+                      onChange={(e) => setEmpid(e.target.value)}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-primary m-1"
+                    onClick={devTeacherLogin}
+                  >
+                    Teacher Login
+                    <i className="bi bi-box-arrow-in-left"></i>
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary m-1"
+                    onClick={() => setShowDevTechField(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
+              {showDevSchoolField && (
+                <div>
+                  <div className="mb-3">
+                    <label htmlFor="" className="form-label">
+                      UDISE
+                    </label>
+                    <input
+                      type="number"
+                      name="udise"
+                      id="udise"
+                      placeholder="Enter UDISE"
+                      className="form-control"
+                      value={udise}
+                      onChange={(e) => {
+                        if (e.target.value.length <= 11) {
+                          setUdise(e.target.value);
+                        }
+                      }}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-success m-1"
+                    onClick={devSchoolLogin}
+                  >
+                    School Login <i className="bi bi-box-arrow-in-left"></i>
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary m-1"
+                    onClick={() => setShowDevSchoolField(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              )}
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-primary m-1"
+                  onClick={() => {
+                    setShowDevTechField(true);
+                    setShowDevSchoolField(false);
+                  }}
+                >
+                  Dev Teacher Login
+                  <i className="bi bi-box-arrow-in-left"></i>
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-success m-1"
+                  onClick={() => {
+                    setShowDevTechField(false);
+                    setShowDevSchoolField(true);
+                  }}
+                >
+                  Dev School Login <i className="bi bi-box-arrow-in-left"></i>
+                </button>
+              </div>
+            </div>
+          )}
         </form>
       </div>
     </div>
