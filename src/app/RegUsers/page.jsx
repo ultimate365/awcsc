@@ -100,6 +100,7 @@ const RegUsers = () => {
       ...doc.data(),
       id: doc.id,
     }));
+    console.log("data", data);
     setAdminsData(data);
   };
   const resetInput = () => {
@@ -166,6 +167,7 @@ const RegUsers = () => {
     document.title = "AWC Sports App:User Databse";
     userData();
     schoolUserData();
+    userAdminData();
     // eslint-disable-next-line
   }, []);
 
@@ -353,7 +355,7 @@ const RegUsers = () => {
       name: "Sl",
       selector: (row, index) =>
         schoolData.findIndex((i) => i.id === row?.id) + 1,
-      width: "5%",
+      width: "10%",
       sortable: +true,
       center: +true,
     },
@@ -438,7 +440,8 @@ const RegUsers = () => {
   const adminColumns = [
     {
       name: "Sl",
-      selector: (row, index) => data.findIndex((i) => i.id === row?.id) + 1,
+      selector: (row, index) =>
+        adminsData.findIndex((i) => i.id === row?.id) + 1,
       sortable: +true,
       center: +true,
     },
@@ -1229,13 +1232,11 @@ const RegUsers = () => {
             </div>
           </div>
         )}
-        <h3 className="text-center text-primary">Registered Administrators</h3>
+        <h3 className="text-center text-primary my-3">
+          Registered Administrators
+        </h3>
         {adminsData.length > 0 ? (
           <>
-            <h3 className="text-center text-primary">
-              Displaying Users Database
-            </h3>
-
             <DataTable
               columns={adminColumns}
               data={adminsData}
