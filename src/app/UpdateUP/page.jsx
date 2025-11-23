@@ -30,6 +30,7 @@ const UpdateUP = () => {
   let userdetails;
   const [loader, setLoader] = useState(false);
   const user = state.USER;
+  const [adminType, setAdminType] = useState(user.type);
   const [isTeacher, setIsTeacher] = useState(true);
   const [id, setId] = useState("");
   const [username, setUsername] = useState("");
@@ -78,6 +79,7 @@ const UpdateUP = () => {
         LOGGEDAT: Date.now(),
         TYPE: "teacher",
       });
+      setAdminType(userdetails.type);
     } else if (schdetails) {
       userdetails = decryptObjData("schid");
       setIsTeacher(false);
@@ -204,17 +206,36 @@ const UpdateUP = () => {
   };
   const submitBtn = async (e) => {
     e.preventDefault();
-    if (validForm()) {
-      setLoader(true);
-      try {
-        const docRef = isTeacher
-          ? doc(firestore, "sportsUsers", id)
-          : doc(firestore, "userschools", id);
-        await updateDoc(docRef, {
-          password: bcrypt.hashSync(inputField.password, 10),
-        }).then(() => {
-          setLoader(false);
-          toast.success("Congrats! Your Password Changed Successfully!", {
+    if (adminType === "Administrator") {
+      toast.error("*** This Section is not For You");
+      return;
+    } else {
+      if (validForm()) {
+        setLoader(true);
+        try {
+          const docRef = isTeacher
+            ? doc(firestore, "sportsUsers", id)
+            : doc(firestore, "userschools", id);
+          await updateDoc(docRef, {
+            password: bcrypt.hashSync(inputField.password, 10),
+          }).then(() => {
+            setLoader(false);
+            toast.success("Congrats! Your Password Changed Successfully!", {
+              position: "top-right",
+              autoClose: 1500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            setTimeout(() => {
+              navigate.push("/logout");
+            }, 1500);
+          });
+        } catch (e) {
+          toast.error("Server Error! Unable to Change Password!", {
             position: "top-right",
             autoClose: 1500,
             hideProgressBar: false,
@@ -224,14 +245,11 @@ const UpdateUP = () => {
             progress: undefined,
             theme: "light",
           });
-          setTimeout(() => {
-            navigate.push("/logout");
-          }, 1500);
-        });
-      } catch (e) {
-        toast.error("Server Error! Unable to Change Password!", {
+        }
+      } else {
+        toast.error("Form Is Invalid", {
           position: "top-right",
-          autoClose: 1500,
+          autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -240,91 +258,39 @@ const UpdateUP = () => {
           theme: "light",
         });
       }
-    } else {
-      toast.error("Form Is Invalid", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
     }
   };
   const changePhone = async (e) => {
     e.preventDefault();
-    setLoader(true);
-    try {
-      // const res = await axios.post(`/api/sendMobileOTP`, {
-      //   phone,
-      //   name: user.tname,
-      // });
-      // const record = res.data;
-      // if (record.success) {
-      const data = {
-        identifier: `91${phone}`,
-      };
-      const response = await OTPWidget.sendOTP(data);
-      if (response.type === "success") {
-        setReqId(response.message);
-        toast.success("OTP sent to your Mobile Number!");
-        setLoader(false);
-        setMobileOTPSent(true);
-        setShowRetryBtn(false);
-        setTimeout(() => {
-          setShowRetryBtn(true);
-        }, 30000);
-      } else {
-        setShowRetryBtn(true);
-        toast.error("Failed to send OTP!");
-        setLoader(false);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something Went Wrong!");
-      setLoader(false);
-    }
-  };
-  const verifyMobileOTP = async (e) => {
-    e.preventDefault();
-    if (mobileOTP !== "" && mobileOTP.toString().length === 6) {
+
+    if (adminType === "Administrator") {
+      toast.error("*** This Section is not For You");
+      return;
+    } else {
       setLoader(true);
       try {
-        // const res = await axios.post(`/api/verifyMobileOTP`, {
+        // const res = await axios.post(`/api/sendMobileOTP`, {
         //   phone,
-        //   phoneCode: mobileOTP.toString(),
         //   name: user.tname,
         // });
         // const record = res.data;
         // if (record.success) {
         const data = {
-          otp: mobileOTP.toString(),
-          reqId: reqId,
+          identifier: `91${phone}`,
         };
-        const response = await OTPWidget.verifyOTP(data);
+        const response = await OTPWidget.sendOTP(data);
         if (response.type === "success") {
-          const docRef = isTeacher
-            ? doc(firestore, "sportsUsers", id)
-            : doc(firestore, "userschools", id);
-          await updateDoc(docRef, {
-            phone: phone.toString(),
-          }).then(() => {
-            toast.success("Your Mobile Number is successfully verified!");
-            setLoader(false);
-            setTimeout(async () => {
-              navigate.push("/logout");
-              setState({
-                USER: {},
-                ACCESS: null,
-                LOGGEDAT: "",
-                TYPE: null,
-              });
-            }, 1500);
-          });
+          setReqId(response.message);
+          toast.success("OTP sent to your Mobile Number!");
+          setLoader(false);
+          setMobileOTPSent(true);
+          setShowRetryBtn(false);
+          setTimeout(() => {
+            setShowRetryBtn(true);
+          }, 30000);
         } else {
-          toast.error("Please enter a Valid 6 Digit OTP");
+          setShowRetryBtn(true);
+          toast.error("Failed to send OTP!");
           setLoader(false);
         }
       } catch (error) {
@@ -334,31 +300,88 @@ const UpdateUP = () => {
       }
     }
   };
+  const verifyMobileOTP = async (e) => {
+    e.preventDefault();
+    if (adminType === "Administrator") {
+      toast.error("*** This Section is not For You");
+      return;
+    } else {
+      if (mobileOTP !== "" && mobileOTP.toString().length === 6) {
+        setLoader(true);
+        try {
+          // const res = await axios.post(`/api/verifyMobileOTP`, {
+          //   phone,
+          //   phoneCode: mobileOTP.toString(),
+          //   name: user.tname,
+          // });
+          // const record = res.data;
+          // if (record.success) {
+          const data = {
+            otp: mobileOTP.toString(),
+            reqId: reqId,
+          };
+          const response = await OTPWidget.verifyOTP(data);
+          if (response.type === "success") {
+            const docRef = isTeacher
+              ? doc(firestore, "sportsUsers", id)
+              : doc(firestore, "userschools", id);
+            await updateDoc(docRef, {
+              phone: phone.toString(),
+            }).then(() => {
+              toast.success("Your Mobile Number is successfully verified!");
+              setLoader(false);
+              setTimeout(async () => {
+                navigate.push("/logout");
+                setState({
+                  USER: {},
+                  ACCESS: null,
+                  LOGGEDAT: "",
+                  TYPE: null,
+                });
+              }, 1500);
+            });
+          } else {
+            toast.error("Please enter a Valid 6 Digit OTP");
+            setLoader(false);
+          }
+        } catch (error) {
+          console.log(error);
+          toast.error("Something Went Wrong!");
+          setLoader(false);
+        }
+      }
+    }
+  };
   const changeEmail = async () => {
-    setLoader(true);
-    try {
-      const res = await axios.post(`/api/sendEmailOTP`, {
-        email,
-        name: user.tname,
-      });
-      const record = res.data;
-      if (record.success) {
-        toast.success("OTP sent to your Email!");
-        setLoader(false);
-        setEmailOTPSent(true);
-        setShowEmailRetryBtn(false);
-        setTimeout(() => {
+    if (adminType === "Administrator") {
+      toast.error("*** This Section is not For You");
+      return;
+    } else {
+      setLoader(true);
+      try {
+        const res = await axios.post(`/api/sendEmailOTP`, {
+          email,
+          name: user.tname,
+        });
+        const record = res.data;
+        if (record.success) {
+          toast.success("OTP sent to your Email!");
+          setLoader(false);
+          setEmailOTPSent(true);
+          setShowEmailRetryBtn(false);
+          setTimeout(() => {
+            setShowEmailRetryBtn(true);
+          }, 30000);
+        } else {
           setShowEmailRetryBtn(true);
-        }, 30000);
-      } else {
-        setShowEmailRetryBtn(true);
-        toast.error("Failed to send OTP!");
+          toast.error("Failed to send OTP!");
+          setLoader(false);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something Went Wrong!");
         setLoader(false);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error("Something Went Wrong!");
-      setLoader(false);
     }
   };
   const verifyEmailOTP = async () => {
@@ -411,6 +434,11 @@ const UpdateUP = () => {
     <div className="container text-black p-2">
       {loader ? <Loader /> : null}
       <h3 className="text-primary text-center">Update User Details</h3>
+      {adminType === "Administrator" && (
+        <h3 className="text-danger text-center">
+          *** This Section is not For You
+        </h3>
+      )}
       <div className="col-md-6 mx-auto p-2">
         {showBtns && (
           <div className="mx-auto">
@@ -497,7 +525,11 @@ const UpdateUP = () => {
                       }
                     );
                   } else {
-                    checkUsername();
+                    if (adminType === "Administrator") {
+                      toast.error("*** This Section is not For You");
+                    } else {
+                      checkUsername();
+                    }
                   }
                 }}
               >
@@ -702,7 +734,7 @@ const UpdateUP = () => {
                 </div>
                 <div>
                   <button
-                    type="submit"
+                    type="button"
                     className="btn btn-primary m-1"
                     disabled={
                       email === "" ||
@@ -753,7 +785,7 @@ const UpdateUP = () => {
                     </button>
                   )}
                   <button
-                    type="submit"
+                    type="button"
                     className="btn btn-primary m-1"
                     disabled={emailOTP.length !== 6}
                     onClick={verifyEmailOTP}

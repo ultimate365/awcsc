@@ -41,12 +41,13 @@ const RegUsers = () => {
     gp: "",
     circle: "taw",
   };
-
+  let adminType = "";
   let details = getCookie("tid");
   let schdetails = getCookie("schid");
 
   if (details) {
     teacherdetails = decryptObjData("tid");
+    adminType = teacherdetails.type;
   }
   if (schdetails) {
     schdetails = decryptObjData("schid");
@@ -240,7 +241,11 @@ const RegUsers = () => {
           onClick={() => {
             // eslint-disable-next-line
             let message = confirm(`Are You Sure To Delete User ${row.tname}`);
-            message ? deleteUser(row) : alert("Teacher Not Deleted");
+            message
+              ? adminType === "Administrator" && row.circle === "admin"
+                ? toast.error("Access Denied")
+                : deleteUser(row)
+              : alert("Teacher Not Deleted");
           }}
         >
           Delete
@@ -260,7 +265,11 @@ const RegUsers = () => {
               let message = confirm(
                 `Are You Sure To Restore User ${row.tname}'s Login? `
               );
-              message ? restoreUser(row.id) : alert("User Login Not Restored!");
+              message
+                ? adminType === "Administrator" && row.circle === "admin"
+                  ? toast.error("Access Denied")
+                  : restoreUser(row.id)
+                : alert("User Login Not Restored!");
             }}
           >
             Unlock User
@@ -274,7 +283,11 @@ const RegUsers = () => {
               let message = confirm(
                 `Are You Sure To Disable User ${row.tname}'s Login? `
               );
-              message ? disableUser(row.id) : alert("User Login Not Disabled!");
+              message
+                ? adminType === "Administrator" && row.circle === "admin"
+                  ? toast.error("Access Denied")
+                  : disableUser(row.id)
+                : alert("User Login Not Disabled!");
             }}
           >
             Lock User
@@ -314,7 +327,9 @@ const RegUsers = () => {
                 } to PAN in Lowercase i.e. ${row.pan.toLowerCase()}? `
               );
               message
-                ? resetPassword(row)
+                ? adminType === "Administrator" && row.circle === "admin"
+                  ? toast.error("Access Denied")
+                  : resetPassword(row)
                 : toast.error("User Password Not Resetted!", {
                     position: "top-right",
                     autoClose: 1500,

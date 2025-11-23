@@ -48,6 +48,7 @@ const GPStudentNameEntry = () => {
     tname: "",
     udise: "",
   };
+  let adminType = "";
   let schdetails = {
     gp: "",
     school: "",
@@ -57,6 +58,7 @@ const GPStudentNameEntry = () => {
   schdetails = getCookie("schid");
   if (details) {
     teacherdetails = decryptObjData("tid");
+    adminType = teacherdetails.type;
   }
   if (schdetails) {
     schdetails = decryptObjData("schid");
@@ -824,13 +826,17 @@ const GPStudentNameEntry = () => {
     getLockData();
 
     if (teacherdetails.udise !== "") {
-      setTawSchoolData(
-        schoolState.filter((el) => el.udise === teacherdetails.udise)[0]
-      );
+      setTawSchoolData({
+        gp: teacherdetails.gp,
+        school: teacherdetails.school,
+        udise: teacherdetails.udise,
+      });
     } else if (schdetails.udise !== "") {
-      setTawSchoolData(
-        schoolState.filter((el) => el.udise === schdetails.udise)[0]
-      );
+      setTawSchoolData({
+        gp: schdetails.gp,
+        school: schdetails.school,
+        udise: schdetails.udise,
+      });
     }
 
     if (selectedGpStudentState.length === 0) {
@@ -977,638 +983,652 @@ const GPStudentNameEntry = () => {
           </button>
         ))}
       {lockStatus ? (
-        <div className="container">
-          <h4 className="text-center text-primary">
-            Students Name Entry for {titleCase(tawSchoolData.gp)} GP Sports
-          </h4>
-          <h4 className="text-center text-primary">
-            Your School is {titleCase(tawSchoolData.school)}
-          </h4>
-          <p className="text-center text-danger">
-            (*) Marked Fields are Compulsary.
-          </p>
-          <div className="row align-items-end my-4">
-            <div className="mb-3 col-md-3">
-              <label className="form-label">Participant Name *</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Participant Name"
-                value={inputField.name}
-                onChange={(e) => {
-                  setInputField({
-                    ...inputField,
-                    name: e.target.value.toUpperCase(),
-                    school: tawSchoolData.school,
-                    gp: tawSchoolData.gp,
-                    udise: tawSchoolData.udise,
-                    entryBy: tawSchoolData.id,
-                  });
-                }}
-                required
-              />
-            </div>
-            {inputField.name && (
-              <React.Fragment>
-                <div className="mb-3 col-md-3">
-                  <label className="form-label">Gurdian's Name *</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Gurdian's Name"
-                    value={inputField.gurdiansName}
-                    onChange={(e) => {
-                      setInputField({
-                        ...inputField,
-                        gurdiansName: e.target.value.toUpperCase(),
-                      });
-                    }}
-                    required
-                  />
-                </div>
-                <div className="mb-3 col-md-3">
-                  <label className="form-label">Gender *</label>
-                  <select
-                    className="form-select"
-                    id="gender"
-                    defaultValue={""}
-                    onChange={(e) => {
-                      setInpGrSelected(false);
-                      setFirstEventSelected(false);
-                      if (group) {
-                        group.value = "";
-                      }
-                      if (event1) {
-                        event1.value = "";
-                        setInputField({
-                          ...inputField,
-                          event1: "",
-                          event1rank: "",
-                          event2: "",
-                          event2rank: "",
-                        });
-                      }
-
-                      if (event2) {
-                        event2.value = "";
-                        setInputField({
-                          ...inputField,
-                          event1: "",
-                          event1rank: "",
-                          event2: "",
-                          event2rank: "",
-                        });
-                      }
-                      setInputField({
-                        ...inputField,
-                        gender: e.target.value,
-                      });
-                    }}
-                    aria-label="Default select example"
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="BOYS">BOYS</option>
-                    <option value="GIRLS">GIRLS</option>
-                  </select>
-                </div>
-                <div className="mb-3 col-md-3">
-                  <label className="form-label">BSP Student ID</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="BSP Student ID"
-                    value={inputField.studentId}
-                    onChange={(e) => {
-                      setInputField({
-                        ...inputField,
-                        studentId: e.target.value,
-                      });
-                    }}
-                    maxLength={14}
-                    required
-                  />
-                </div>
-                <div className="mb-3 col-md-3">
-                  <label className="form-label">Date Of Birth: *</label>
-
-                  <input
-                    type="date"
-                    className="form-control"
-                    id="birthday"
-                    value={inputField.birthday}
-                    onChange={(e) => {
-                      setInputField({
-                        ...inputField,
-                        birthday: e.target.value,
-                      });
-                    }}
-                    min={mindob}
-                    max={maxdob}
-                    required
-                  />
-                </div>
-                <div className="mb-3 col-md-3">
-                  <label className="form-label">CLASS *</label>
-
-                  <select
-                    className="form-select"
-                    id="stdClass"
-                    defaultValue={""}
-                    onChange={(e) => {
-                      if (group) {
-                        group.value = "";
-                      }
-                      if (event1) {
-                        event1.value = "";
-                        setInputField({
-                          ...inputField,
-                          event1: "",
-                          event1rank: "",
-                          event2: "",
-                          event2rank: "",
-                        });
-                      }
-                      if (event2) {
-                        event2.value = "";
-                        setInputField({
-                          ...inputField,
-                          event1: "",
-                          event1rank: "",
-                          event2: "",
-                          event2rank: "",
-                        });
-                      }
-                      setInputField({
-                        ...inputField,
-                        sclass: e.target.value,
-                      });
-                      setInpGrSelected(false);
-                      setFirstEventSelected(false);
-                    }}
-                    aria-label="Default select example"
-                    required
-                  >
-                    <option value="">Select Class</option>
-                    {StdClass.map((item, index) => {
-                      return (
-                        <option key={index} value={item.sclass}>
-                          {item.sclass}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-                <div className="mb-3 col-md-3">
-                  <label className="form-label">Select Group *</label>
-                  <select
-                    className="form-select"
-                    defaultValue={""}
-                    id="group"
-                    onChange={(e) => {
-                      if (event1) {
-                        event1.value = "";
-                        setInputField({
-                          ...inputField,
-                          event1: "",
-                          event1rank: "",
-                          event2: "",
-                          event2rank: "",
-                        });
-                      }
-                      if (event2) {
-                        event2.value = "";
-                        setInputField({
-                          ...inputField,
-                          event1: "",
-                          event1rank: "",
-                          event2: "",
-                          event2rank: "",
-                        });
-                      }
-                      setInpGrSelected(true);
-                      setFirstEventSelected(false);
-                      setInputField({
-                        ...inputField,
-                        group: e.target.value,
-                      });
-                    }}
-                    aria-label="Default select example"
-                  >
-                    <option value="">Select Group</option>
-                    <option value="GROUP-A">GROUP-A</option>
-                    <option value="GROUP-B">GROUP-B</option>
-                    <option value="GROUP-C">GROUP-C</option>
-                  </select>
-                </div>
-                {inpGrSelected && (
+        adminType !== "Administrator" ? (
+          <div className="container">
+            <h4 className="text-center text-primary">
+              Students Name Entry for {titleCase(tawSchoolData.gp)} GP Sports
+            </h4>
+            <h4 className="text-center text-primary">
+              Your School is {titleCase(tawSchoolData.school)}
+            </h4>
+            <p className="text-center text-danger">
+              (*) Marked Fields are Compulsary.
+            </p>
+            <div className="row align-items-end my-4">
+              <div className="mb-3 col-md-3">
+                <label className="form-label">Participant Name *</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Participant Name"
+                  value={inputField.name}
+                  onChange={(e) => {
+                    setInputField({
+                      ...inputField,
+                      name: e.target.value.toUpperCase(),
+                      school: tawSchoolData.school,
+                      gp: tawSchoolData.gp,
+                      udise: tawSchoolData.udise,
+                      entryBy: tawSchoolData.id,
+                    });
+                  }}
+                  required
+                />
+              </div>
+              {inputField.name && (
+                <React.Fragment>
                   <div className="mb-3 col-md-3">
-                    <label className="form-label">
-                      Select First Event Name *
-                    </label>
-                    <select
-                      className="form-select"
-                      id="event1"
-                      defaultValue={""}
+                    <label className="form-label">Gurdian's Name *</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Gurdian's Name"
+                      value={inputField.gurdiansName}
                       onChange={(e) => {
-                        setFirstEventSelected(true);
-                        let event1rank = "";
-                        if (inputField.gender === "BOYS") {
-                          if (inputField.group === "GROUP-A") {
-                            if (e.target.value === "75 METER RUN") {
-                              event1rank = 1;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event1rank = 2;
-                            } else if (e.target.value === "SHUTTLE RACE") {
-                              event1rank = 3;
-                            } else if (e.target.value === "YOGA") {
-                              event1rank = 4;
-                            }
-                          } else if (inputField.group === "GROUP-B") {
-                            if (e.target.value === "100 METER RUN") {
-                              event1rank = 5;
-                            } else if (e.target.value === "200 METER RUN") {
-                              event1rank = 6;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event1rank = 7;
-                            } else if (e.target.value === "HIGH JUMP") {
-                              event1rank = 8;
-                            } else if (e.target.value === "YOGA") {
-                              event1rank = 9;
-                            } else if (e.target.value === "GYMNASTICS") {
-                              event1rank = 10;
-                            }
-                          } else if (inputField.group === "GROUP-C") {
-                            if (e.target.value === "100 METER RUN") {
-                              event1rank = 11;
-                            } else if (e.target.value === "200 METER RUN") {
-                              event1rank = 12;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event1rank = 13;
-                            } else if (e.target.value === "HIGH JUMP") {
-                              event1rank = 14;
-                            } else if (e.target.value === "YOGA") {
-                              event1rank = 15;
-                            } else if (e.target.value === "GYMNASTICS") {
-                              event1rank = 16;
-                            } else if (e.target.value === "FOOTBALL THROWING") {
-                              event1rank = 17;
-                            }
-                          }
-                        } else {
-                          if (inputField.group === "GROUP-A") {
-                            if (e.target.value === "75 METER RUN") {
-                              event1rank = 18;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event1rank = 19;
-                            } else if (e.target.value === "SHUTTLE RACE") {
-                              event1rank = 20;
-                            } else if (e.target.value === "YOGA") {
-                              event1rank = 21;
-                            }
-                          } else if (inputField.group === "GROUP-B") {
-                            if (e.target.value === "100 METER RUN") {
-                              event1rank = 22;
-                            } else if (e.target.value === "200 METER RUN") {
-                              event1rank = 23;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event1rank = 24;
-                            } else if (e.target.value === "HIGH JUMP") {
-                              event1rank = 25;
-                            } else if (e.target.value === "YOGA") {
-                              event1rank = 26;
-                            } else if (e.target.value === "GYMNASTICS") {
-                              event1rank = 27;
-                            }
-                          } else if (inputField.group === "GROUP-C") {
-                            if (e.target.value === "100 METER RUN") {
-                              event1rank = 28;
-                            } else if (e.target.value === "200 METER RUN") {
-                              event1rank = 29;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event1rank = 30;
-                            } else if (e.target.value === "HIGH JUMP") {
-                              event1rank = 31;
-                            } else if (e.target.value === "YOGA") {
-                              event1rank = 32;
-                            } else if (e.target.value === "GYMNASTICS") {
-                              event1rank = 33;
-                            } else if (e.target.value === "FOOTBALL THROWING") {
-                              event1rank = 34;
-                            }
-                          }
-                        }
                         setInputField({
                           ...inputField,
-                          event1: e.target.value,
-                          event1rank: event1rank,
+                          gurdiansName: e.target.value.toUpperCase(),
                         });
                       }}
-                      aria-label="Default select example"
-                    >
-                      <option value="">Select First Event</option>
-                      {inputField.group === "GROUP-A"
-                        ? events.groupA.map((el, ind) => (
-                            <option value={el} key={ind}>
-                              {el}
-                            </option>
-                          ))
-                        : inputField.group === "GROUP-B"
-                        ? events.groupB.map((el, ind) => (
-                            <option value={el} key={ind}>
-                              {el}
-                            </option>
-                          ))
-                        : inputField.group === "GROUP-C"
-                        ? events.groupC.map((el, ind) => (
-                            <option value={el} key={ind}>
-                              {el}
-                            </option>
-                          ))
-                        : ""}
-                    </select>
+                      required
+                    />
                   </div>
-                )}
-                {firstEventSelected && (
                   <div className="mb-3 col-md-3">
-                    <label className="form-label">
-                      Select Second Event Name
-                    </label>
+                    <label className="form-label">Gender *</label>
                     <select
                       className="form-select"
+                      id="gender"
                       defaultValue={""}
-                      id="event2"
                       onChange={(e) => {
-                        let event2rank = "";
-                        if (inputField.gender === "BOYS") {
-                          if (inputField.group === "GROUP-A") {
-                            if (e.target.value === "75 METER RUN") {
-                              event2rank = 1;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event2rank = 2;
-                            } else if (e.target.value === "SHUTTLE RACE") {
-                              event2rank = 3;
-                            } else if (e.target.value === "YOGA") {
-                              event2rank = 4;
-                            }
-                          } else if (inputField.group === "GROUP-B") {
-                            if (e.target.value === "100 METER RUN") {
-                              event2rank = 5;
-                            } else if (e.target.value === "200 METER RUN") {
-                              event2rank = 6;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event2rank = 7;
-                            } else if (e.target.value === "HIGH JUMP") {
-                              event2rank = 8;
-                            } else if (e.target.value === "YOGA") {
-                              event2rank = 9;
-                            } else if (e.target.value === "GYMNASTICS") {
-                              event2rank = 10;
-                            }
-                          } else if (inputField.group === "GROUP-C") {
-                            if (e.target.value === "100 METER RUN") {
-                              event2rank = 11;
-                            } else if (e.target.value === "200 METER RUN") {
-                              event2rank = 12;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event2rank = 13;
-                            } else if (e.target.value === "HIGH JUMP") {
-                              event2rank = 14;
-                            } else if (e.target.value === "YOGA") {
-                              event2rank = 15;
-                            } else if (e.target.value === "GYMNASTICS") {
-                              event2rank = 16;
-                            } else if (e.target.value === "FOOTBALL THROWING") {
-                              event2rank = 17;
-                            }
-                          }
-                        } else {
-                          if (inputField.group === "GROUP-A") {
-                            if (e.target.value === "75 METER RUN") {
-                              event2rank = 18;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event2rank = 19;
-                            } else if (e.target.value === "SHUTTLE RACE") {
-                              event2rank = 20;
-                            } else if (e.target.value === "YOGA") {
-                              event2rank = 21;
-                            }
-                          } else if (inputField.group === "GROUP-B") {
-                            if (e.target.value === "100 METER RUN") {
-                              event2rank = 22;
-                            } else if (e.target.value === "200 METER RUN") {
-                              event2rank = 23;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event2rank = 24;
-                            } else if (e.target.value === "HIGH JUMP") {
-                              event2rank = 25;
-                            } else if (e.target.value === "YOGA") {
-                              event2rank = 26;
-                            } else if (e.target.value === "GYMNASTICS") {
-                              event2rank = 27;
-                            }
-                          } else if (inputField.group === "GROUP-C") {
-                            if (e.target.value === "100 METER RUN") {
-                              event2rank = 28;
-                            } else if (e.target.value === "200 METER RUN") {
-                              event2rank = 29;
-                            } else if (e.target.value === "LONG JUMP") {
-                              event2rank = 30;
-                            } else if (e.target.value === "HIGH JUMP") {
-                              event2rank = 31;
-                            } else if (e.target.value === "YOGA") {
-                              event2rank = 32;
-                            } else if (e.target.value === "GYMNASTICS") {
-                              event2rank = 33;
-                            } else if (e.target.value === "FOOTBALL THROWING") {
-                              event2rank = 34;
-                            }
-                          }
+                        setInpGrSelected(false);
+                        setFirstEventSelected(false);
+                        if (group) {
+                          group.value = "";
                         }
-
-                        setInputField({
-                          ...inputField,
-                          event2: e.target.value,
-                          event2rank: event2rank,
-                        });
-                      }}
-                      aria-label="Default select example"
-                    >
-                      <option value="">Select Second Event</option>
-                      {inputField.group === "GROUP-A"
-                        ? events.groupA
-                            .filter((el) => el !== inputField.event1)
-                            .filter((el) => {
-                              if (inputField.event1 === "YOGA") {
-                                return (
-                                  el !== "75 METER RUN" &&
-                                  el !== "SHUTTLE RACE" &&
-                                  el !== "LONG JUMP"
-                                );
-                              } else {
-                                return el !== "YOGA";
-                              }
-                            })
-                            .map((el, ind) => (
-                              <option value={el} key={ind}>
-                                {el}
-                              </option>
-                            ))
-                        : inputField.group === "GROUP-B"
-                        ? events.groupB
-                            .filter((el) => el !== inputField.event1)
-                            .filter((el) => {
-                              if (inputField.event1 === "YOGA") {
-                                return (
-                                  el !== "100 METER RUN" &&
-                                  el !== "200 METER RUN" &&
-                                  el !== "LONG JUMP" &&
-                                  el !== "HIGH JUMP" &&
-                                  el !== "GYMNASTICS"
-                                );
-                              } else if (inputField.event1 === "GYMNASTICS") {
-                                return (
-                                  el !== "100 METER RUN" &&
-                                  el !== "200 METER RUN" &&
-                                  el !== "LONG JUMP" &&
-                                  el !== "HIGH JUMP" &&
-                                  el !== "YOGA"
-                                );
-                              } else {
-                                return el !== "YOGA" && el !== "GYMNASTICS";
-                              }
-                            })
-                            .map((el, ind) => (
-                              <option value={el} key={ind}>
-                                {el}
-                              </option>
-                            ))
-                        : inputField.group === "GROUP-C"
-                        ? events.groupC
-                            .filter((el) => el !== inputField.event1)
-                            .filter((el) => {
-                              if (inputField.event1 === "YOGA") {
-                                return (
-                                  el !== "100 METER RUN" &&
-                                  el !== "200 METER RUN" &&
-                                  el !== "LONG JUMP" &&
-                                  el !== "HIGH JUMP" &&
-                                  el !== "FOOTBALL THROWING" &&
-                                  el !== "GYMNASTICS"
-                                );
-                              } else if (inputField.event1 === "GYMNASTICS") {
-                                return (
-                                  el !== "100 METER RUN" &&
-                                  el !== "200 METER RUN" &&
-                                  el !== "LONG JUMP" &&
-                                  el !== "HIGH JUMP" &&
-                                  el !== "FOOTBALL THROWING" &&
-                                  el !== "YOGA"
-                                );
-                              } else {
-                                return el !== "YOGA" && el !== "GYMNASTICS";
-                              }
-                            })
-                            .map((el, ind) => (
-                              <option value={el} key={ind}>
-                                {el}
-                              </option>
-                            ))
-                        : ""}
-                    </select>
-                  </div>
-                )}
-
-                {firstEventSelected && (
-                  <div>
-                    <button
-                      type="button"
-                      className="btn btn-success m-1 col-md-1 btn-sm"
-                      onClick={() => {
-                        if (
-                          inputField.name !== "" &&
-                          inputField.name !== undefined &&
-                          inputField.gurdiansName !== "" &&
-                          inputField.gurdiansName !== undefined &&
-                          inputField.birthday !== "" &&
-                          inputField.birthday !== undefined &&
-                          inputField.sclass !== "" &&
-                          inputField.sclass !== undefined &&
-                          inputField.school !== "" &&
-                          inputField.school !== undefined &&
-                          inputField.udise !== "" &&
-                          inputField.udise !== undefined &&
-                          inputField &&
-                          inputField.gp !== undefined &&
-                          inputField.gender !== "" &&
-                          inputField.gender !== undefined &&
-                          inputField.group !== "" &&
-                          inputField.group !== undefined &&
-                          inputField.event1 !== "" &&
-                          inputField.event1 !== undefined &&
-                          inputField.event1rank !== "" &&
-                          inputField.event1 !== undefined
-                        ) {
-                          if (editClicked) {
-                            updateData();
-                          } else {
-                            submitData();
-                          }
-                        } else {
-                          toast.error("Please Select All Required Fields", {
-                            position: "top-right",
-                            autoClose: 1000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
+                        if (event1) {
+                          event1.value = "";
+                          setInputField({
+                            ...inputField,
+                            event1: "",
+                            event1rank: "",
+                            event2: "",
+                            event2rank: "",
                           });
                         }
-                      }}
-                    >
-                      Submit
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-danger m-1 col-md-1 btn-sm"
-                      onClick={() => {
+
+                        if (event2) {
+                          event2.value = "";
+                          setInputField({
+                            ...inputField,
+                            event1: "",
+                            event1rank: "",
+                            event2: "",
+                            event2rank: "",
+                          });
+                        }
                         setInputField({
-                          id: docId,
-                          name: "",
-                          gurdiansName: "",
-                          chestNo: "",
-                          birthday: birthday,
-                          studentId: "",
-                          sclass: "",
-                          school: tawSchoolData.school,
-                          gp: tawSchoolData.gp,
-                          event1: "",
-                          event2: "",
-                          event1rank: "",
-                          event2rank: "",
-                          gender: "",
-                          group: "",
-                          udise: "",
+                          ...inputField,
+                          gender: e.target.value,
+                        });
+                      }}
+                      aria-label="Default select example"
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="BOYS">BOYS</option>
+                      <option value="GIRLS">GIRLS</option>
+                    </select>
+                  </div>
+                  <div className="mb-3 col-md-3">
+                    <label className="form-label">BSP Student ID</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="BSP Student ID"
+                      value={inputField.studentId}
+                      onChange={(e) => {
+                        setInputField({
+                          ...inputField,
+                          studentId: e.target.value,
+                        });
+                      }}
+                      maxLength={14}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3 col-md-3">
+                    <label className="form-label">Date Of Birth: *</label>
+
+                    <input
+                      type="date"
+                      className="form-control"
+                      id="birthday"
+                      value={inputField.birthday}
+                      onChange={(e) => {
+                        setInputField({
+                          ...inputField,
+                          birthday: e.target.value,
+                        });
+                      }}
+                      min={mindob}
+                      max={maxdob}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3 col-md-3">
+                    <label className="form-label">CLASS *</label>
+
+                    <select
+                      className="form-select"
+                      id="stdClass"
+                      defaultValue={""}
+                      onChange={(e) => {
+                        if (group) {
+                          group.value = "";
+                        }
+                        if (event1) {
+                          event1.value = "";
+                          setInputField({
+                            ...inputField,
+                            event1: "",
+                            event1rank: "",
+                            event2: "",
+                            event2rank: "",
+                          });
+                        }
+                        if (event2) {
+                          event2.value = "";
+                          setInputField({
+                            ...inputField,
+                            event1: "",
+                            event1rank: "",
+                            event2: "",
+                            event2rank: "",
+                          });
+                        }
+                        setInputField({
+                          ...inputField,
+                          sclass: e.target.value,
                         });
                         setInpGrSelected(false);
                         setFirstEventSelected(false);
-                        setEditClicked(false);
-                        document.getElementById("gender").value = "";
-                        document.getElementById("group").value = "";
-                        document.getElementById("event1").value = "";
-                        document.getElementById("event2").value = "";
-                        document.getElementById("birthday").value = birthday;
                       }}
+                      aria-label="Default select example"
+                      required
                     >
-                      Reset
-                    </button>
+                      <option value="">Select Class</option>
+                      {StdClass.map((item, index) => {
+                        return (
+                          <option key={index} value={item.sclass}>
+                            {item.sclass}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
-                )}
-              </React.Fragment>
-            )}
+                  <div className="mb-3 col-md-3">
+                    <label className="form-label">Select Group *</label>
+                    <select
+                      className="form-select"
+                      defaultValue={""}
+                      id="group"
+                      onChange={(e) => {
+                        if (event1) {
+                          event1.value = "";
+                          setInputField({
+                            ...inputField,
+                            event1: "",
+                            event1rank: "",
+                            event2: "",
+                            event2rank: "",
+                          });
+                        }
+                        if (event2) {
+                          event2.value = "";
+                          setInputField({
+                            ...inputField,
+                            event1: "",
+                            event1rank: "",
+                            event2: "",
+                            event2rank: "",
+                          });
+                        }
+                        setInpGrSelected(true);
+                        setFirstEventSelected(false);
+                        setInputField({
+                          ...inputField,
+                          group: e.target.value,
+                        });
+                      }}
+                      aria-label="Default select example"
+                    >
+                      <option value="">Select Group</option>
+                      <option value="GROUP-A">GROUP-A</option>
+                      <option value="GROUP-B">GROUP-B</option>
+                      <option value="GROUP-C">GROUP-C</option>
+                    </select>
+                  </div>
+                  {inpGrSelected && (
+                    <div className="mb-3 col-md-3">
+                      <label className="form-label">
+                        Select First Event Name *
+                      </label>
+                      <select
+                        className="form-select"
+                        id="event1"
+                        defaultValue={""}
+                        onChange={(e) => {
+                          setFirstEventSelected(true);
+                          let event1rank = "";
+                          if (inputField.gender === "BOYS") {
+                            if (inputField.group === "GROUP-A") {
+                              if (e.target.value === "75 METER RUN") {
+                                event1rank = 1;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event1rank = 2;
+                              } else if (e.target.value === "SHUTTLE RACE") {
+                                event1rank = 3;
+                              } else if (e.target.value === "YOGA") {
+                                event1rank = 4;
+                              }
+                            } else if (inputField.group === "GROUP-B") {
+                              if (e.target.value === "100 METER RUN") {
+                                event1rank = 5;
+                              } else if (e.target.value === "200 METER RUN") {
+                                event1rank = 6;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event1rank = 7;
+                              } else if (e.target.value === "HIGH JUMP") {
+                                event1rank = 8;
+                              } else if (e.target.value === "YOGA") {
+                                event1rank = 9;
+                              } else if (e.target.value === "GYMNASTICS") {
+                                event1rank = 10;
+                              }
+                            } else if (inputField.group === "GROUP-C") {
+                              if (e.target.value === "100 METER RUN") {
+                                event1rank = 11;
+                              } else if (e.target.value === "200 METER RUN") {
+                                event1rank = 12;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event1rank = 13;
+                              } else if (e.target.value === "HIGH JUMP") {
+                                event1rank = 14;
+                              } else if (e.target.value === "YOGA") {
+                                event1rank = 15;
+                              } else if (e.target.value === "GYMNASTICS") {
+                                event1rank = 16;
+                              } else if (
+                                e.target.value === "FOOTBALL THROWING"
+                              ) {
+                                event1rank = 17;
+                              }
+                            }
+                          } else {
+                            if (inputField.group === "GROUP-A") {
+                              if (e.target.value === "75 METER RUN") {
+                                event1rank = 18;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event1rank = 19;
+                              } else if (e.target.value === "SHUTTLE RACE") {
+                                event1rank = 20;
+                              } else if (e.target.value === "YOGA") {
+                                event1rank = 21;
+                              }
+                            } else if (inputField.group === "GROUP-B") {
+                              if (e.target.value === "100 METER RUN") {
+                                event1rank = 22;
+                              } else if (e.target.value === "200 METER RUN") {
+                                event1rank = 23;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event1rank = 24;
+                              } else if (e.target.value === "HIGH JUMP") {
+                                event1rank = 25;
+                              } else if (e.target.value === "YOGA") {
+                                event1rank = 26;
+                              } else if (e.target.value === "GYMNASTICS") {
+                                event1rank = 27;
+                              }
+                            } else if (inputField.group === "GROUP-C") {
+                              if (e.target.value === "100 METER RUN") {
+                                event1rank = 28;
+                              } else if (e.target.value === "200 METER RUN") {
+                                event1rank = 29;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event1rank = 30;
+                              } else if (e.target.value === "HIGH JUMP") {
+                                event1rank = 31;
+                              } else if (e.target.value === "YOGA") {
+                                event1rank = 32;
+                              } else if (e.target.value === "GYMNASTICS") {
+                                event1rank = 33;
+                              } else if (
+                                e.target.value === "FOOTBALL THROWING"
+                              ) {
+                                event1rank = 34;
+                              }
+                            }
+                          }
+                          setInputField({
+                            ...inputField,
+                            event1: e.target.value,
+                            event1rank: event1rank,
+                          });
+                        }}
+                        aria-label="Default select example"
+                      >
+                        <option value="">Select First Event</option>
+                        {inputField.group === "GROUP-A"
+                          ? events.groupA.map((el, ind) => (
+                              <option value={el} key={ind}>
+                                {el}
+                              </option>
+                            ))
+                          : inputField.group === "GROUP-B"
+                          ? events.groupB.map((el, ind) => (
+                              <option value={el} key={ind}>
+                                {el}
+                              </option>
+                            ))
+                          : inputField.group === "GROUP-C"
+                          ? events.groupC.map((el, ind) => (
+                              <option value={el} key={ind}>
+                                {el}
+                              </option>
+                            ))
+                          : ""}
+                      </select>
+                    </div>
+                  )}
+                  {firstEventSelected && (
+                    <div className="mb-3 col-md-3">
+                      <label className="form-label">
+                        Select Second Event Name
+                      </label>
+                      <select
+                        className="form-select"
+                        defaultValue={""}
+                        id="event2"
+                        onChange={(e) => {
+                          let event2rank = "";
+                          if (inputField.gender === "BOYS") {
+                            if (inputField.group === "GROUP-A") {
+                              if (e.target.value === "75 METER RUN") {
+                                event2rank = 1;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event2rank = 2;
+                              } else if (e.target.value === "SHUTTLE RACE") {
+                                event2rank = 3;
+                              } else if (e.target.value === "YOGA") {
+                                event2rank = 4;
+                              }
+                            } else if (inputField.group === "GROUP-B") {
+                              if (e.target.value === "100 METER RUN") {
+                                event2rank = 5;
+                              } else if (e.target.value === "200 METER RUN") {
+                                event2rank = 6;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event2rank = 7;
+                              } else if (e.target.value === "HIGH JUMP") {
+                                event2rank = 8;
+                              } else if (e.target.value === "YOGA") {
+                                event2rank = 9;
+                              } else if (e.target.value === "GYMNASTICS") {
+                                event2rank = 10;
+                              }
+                            } else if (inputField.group === "GROUP-C") {
+                              if (e.target.value === "100 METER RUN") {
+                                event2rank = 11;
+                              } else if (e.target.value === "200 METER RUN") {
+                                event2rank = 12;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event2rank = 13;
+                              } else if (e.target.value === "HIGH JUMP") {
+                                event2rank = 14;
+                              } else if (e.target.value === "YOGA") {
+                                event2rank = 15;
+                              } else if (e.target.value === "GYMNASTICS") {
+                                event2rank = 16;
+                              } else if (
+                                e.target.value === "FOOTBALL THROWING"
+                              ) {
+                                event2rank = 17;
+                              }
+                            }
+                          } else {
+                            if (inputField.group === "GROUP-A") {
+                              if (e.target.value === "75 METER RUN") {
+                                event2rank = 18;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event2rank = 19;
+                              } else if (e.target.value === "SHUTTLE RACE") {
+                                event2rank = 20;
+                              } else if (e.target.value === "YOGA") {
+                                event2rank = 21;
+                              }
+                            } else if (inputField.group === "GROUP-B") {
+                              if (e.target.value === "100 METER RUN") {
+                                event2rank = 22;
+                              } else if (e.target.value === "200 METER RUN") {
+                                event2rank = 23;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event2rank = 24;
+                              } else if (e.target.value === "HIGH JUMP") {
+                                event2rank = 25;
+                              } else if (e.target.value === "YOGA") {
+                                event2rank = 26;
+                              } else if (e.target.value === "GYMNASTICS") {
+                                event2rank = 27;
+                              }
+                            } else if (inputField.group === "GROUP-C") {
+                              if (e.target.value === "100 METER RUN") {
+                                event2rank = 28;
+                              } else if (e.target.value === "200 METER RUN") {
+                                event2rank = 29;
+                              } else if (e.target.value === "LONG JUMP") {
+                                event2rank = 30;
+                              } else if (e.target.value === "HIGH JUMP") {
+                                event2rank = 31;
+                              } else if (e.target.value === "YOGA") {
+                                event2rank = 32;
+                              } else if (e.target.value === "GYMNASTICS") {
+                                event2rank = 33;
+                              } else if (
+                                e.target.value === "FOOTBALL THROWING"
+                              ) {
+                                event2rank = 34;
+                              }
+                            }
+                          }
+
+                          setInputField({
+                            ...inputField,
+                            event2: e.target.value,
+                            event2rank: event2rank,
+                          });
+                        }}
+                        aria-label="Default select example"
+                      >
+                        <option value="">Select Second Event</option>
+                        {inputField.group === "GROUP-A"
+                          ? events.groupA
+                              .filter((el) => el !== inputField.event1)
+                              .filter((el) => {
+                                if (inputField.event1 === "YOGA") {
+                                  return (
+                                    el !== "75 METER RUN" &&
+                                    el !== "SHUTTLE RACE" &&
+                                    el !== "LONG JUMP"
+                                  );
+                                } else {
+                                  return el !== "YOGA";
+                                }
+                              })
+                              .map((el, ind) => (
+                                <option value={el} key={ind}>
+                                  {el}
+                                </option>
+                              ))
+                          : inputField.group === "GROUP-B"
+                          ? events.groupB
+                              .filter((el) => el !== inputField.event1)
+                              .filter((el) => {
+                                if (inputField.event1 === "YOGA") {
+                                  return (
+                                    el !== "100 METER RUN" &&
+                                    el !== "200 METER RUN" &&
+                                    el !== "LONG JUMP" &&
+                                    el !== "HIGH JUMP" &&
+                                    el !== "GYMNASTICS"
+                                  );
+                                } else if (inputField.event1 === "GYMNASTICS") {
+                                  return (
+                                    el !== "100 METER RUN" &&
+                                    el !== "200 METER RUN" &&
+                                    el !== "LONG JUMP" &&
+                                    el !== "HIGH JUMP" &&
+                                    el !== "YOGA"
+                                  );
+                                } else {
+                                  return el !== "YOGA" && el !== "GYMNASTICS";
+                                }
+                              })
+                              .map((el, ind) => (
+                                <option value={el} key={ind}>
+                                  {el}
+                                </option>
+                              ))
+                          : inputField.group === "GROUP-C"
+                          ? events.groupC
+                              .filter((el) => el !== inputField.event1)
+                              .filter((el) => {
+                                if (inputField.event1 === "YOGA") {
+                                  return (
+                                    el !== "100 METER RUN" &&
+                                    el !== "200 METER RUN" &&
+                                    el !== "LONG JUMP" &&
+                                    el !== "HIGH JUMP" &&
+                                    el !== "FOOTBALL THROWING" &&
+                                    el !== "GYMNASTICS"
+                                  );
+                                } else if (inputField.event1 === "GYMNASTICS") {
+                                  return (
+                                    el !== "100 METER RUN" &&
+                                    el !== "200 METER RUN" &&
+                                    el !== "LONG JUMP" &&
+                                    el !== "HIGH JUMP" &&
+                                    el !== "FOOTBALL THROWING" &&
+                                    el !== "YOGA"
+                                  );
+                                } else {
+                                  return el !== "YOGA" && el !== "GYMNASTICS";
+                                }
+                              })
+                              .map((el, ind) => (
+                                <option value={el} key={ind}>
+                                  {el}
+                                </option>
+                              ))
+                          : ""}
+                      </select>
+                    </div>
+                  )}
+
+                  {firstEventSelected && (
+                    <div>
+                      <button
+                        type="button"
+                        className="btn btn-success m-1 col-md-1 btn-sm"
+                        onClick={() => {
+                          if (
+                            inputField.name !== "" &&
+                            inputField.name !== undefined &&
+                            inputField.gurdiansName !== "" &&
+                            inputField.gurdiansName !== undefined &&
+                            inputField.birthday !== "" &&
+                            inputField.birthday !== undefined &&
+                            inputField.sclass !== "" &&
+                            inputField.sclass !== undefined &&
+                            inputField.school !== "" &&
+                            inputField.school !== undefined &&
+                            inputField.udise !== "" &&
+                            inputField.udise !== undefined &&
+                            inputField &&
+                            inputField.gp !== undefined &&
+                            inputField.gender !== "" &&
+                            inputField.gender !== undefined &&
+                            inputField.group !== "" &&
+                            inputField.group !== undefined &&
+                            inputField.event1 !== "" &&
+                            inputField.event1 !== undefined &&
+                            inputField.event1rank !== "" &&
+                            inputField.event1 !== undefined
+                          ) {
+                            if (editClicked) {
+                              updateData();
+                            } else {
+                              submitData();
+                            }
+                          } else {
+                            toast.error("Please Select All Required Fields", {
+                              position: "top-right",
+                              autoClose: 1000,
+                              hideProgressBar: false,
+                              closeOnClick: true,
+                              pauseOnHover: true,
+                              draggable: true,
+                              progress: undefined,
+                              theme: "light",
+                            });
+                          }
+                        }}
+                      >
+                        Submit
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-danger m-1 col-md-1 btn-sm"
+                        onClick={() => {
+                          setInputField({
+                            id: docId,
+                            name: "",
+                            gurdiansName: "",
+                            chestNo: "",
+                            birthday: birthday,
+                            studentId: "",
+                            sclass: "",
+                            school: tawSchoolData.school,
+                            gp: tawSchoolData.gp,
+                            event1: "",
+                            event2: "",
+                            event1rank: "",
+                            event2rank: "",
+                            gender: "",
+                            group: "",
+                            udise: "",
+                          });
+                          setInpGrSelected(false);
+                          setFirstEventSelected(false);
+                          setEditClicked(false);
+                          document.getElementById("gender").value = "";
+                          document.getElementById("group").value = "";
+                          document.getElementById("event1").value = "";
+                          document.getElementById("event2").value = "";
+                          document.getElementById("birthday").value = birthday;
+                        }}
+                      >
+                        Reset
+                      </button>
+                    </div>
+                  )}
+                </React.Fragment>
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <h3 className="text-center text-danger">
+            This Section is Specially For Teachers and Schools
+          </h3>
+        )
       ) : (
         gpLockData.closeDate !== undefined && (
           <h6 suppressHydrationWarning className="text-center text-danger my-4">

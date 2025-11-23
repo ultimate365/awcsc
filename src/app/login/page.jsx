@@ -276,6 +276,54 @@ const Login = () => {
       toast.error("Invalid Employee ID");
     }
   };
+  const devAdminLogin = async () => {
+    if (!inputField.username) {
+      return toast.error("Please enter Username");
+    }
+    if (!inputField.password) {
+      return toast.error("Please enter Password");
+    }
+    setLoader(true);
+    try {
+      const data = await getDocumentByField(
+        "sportsAdmins",
+        "username",
+        inputField.username.trim().toLowerCase()
+      ).catch((e) => {
+        console.log(e);
+        setLoader(false);
+        toast.error("Invalid Username");
+      });
+      if (data) {
+        if (compare(inputField.password, data.password)) {
+          setLoader(false);
+          encryptObjData("uid", data, 10080);
+          encryptObjData("tid", data, 10080);
+          setCookie("t", data.tname, 10080);
+          setCookie("loggedAt", Date.now(), 10080);
+          setTimeout(() => {
+            setState({
+              USER: data,
+              ACCESS: data.circle,
+              LOGGEDAT: Date.now(),
+              TYPE: "teacher",
+            });
+            navigate.push("/dashboard");
+          }, 500);
+        } else {
+          setLoader(false);
+          toast.error("Invalid Password");
+        }
+      } else {
+        setLoader(false);
+        toast.error("Invalid Username");
+      }
+    } catch (e) {
+      console.log(e);
+      setLoader(false);
+      toast.error("Invalid Employee ID");
+    }
+  };
   const devSchoolLogin = async () => {
     if (!udise) {
       return toast.error("Please enter UDISE");
@@ -431,13 +479,25 @@ const Login = () => {
               Login <i className="bi bi-box-arrow-in-left"></i>
             </button>
             {showAdminLogin && (
-              <button
-                type="submit"
-                className="btn btn-dark m-1"
-                onClick={adminLogin}
-              >
-                Adminstrator Login <i className="bi bi-box-arrow-in-left"></i>
-              </button>
+              <>
+                <button
+                  type="submit"
+                  className="btn btn-dark m-1"
+                  onClick={adminLogin}
+                >
+                  Adminstrator Login <i className="bi bi-box-arrow-in-left"></i>
+                </button>
+                {process.env.NODE_ENV === "development" && (
+                  <button
+                    type="submit"
+                    className="btn btn-danger m-1"
+                    onClick={devAdminLogin}
+                  >
+                    Dev Adminstrator Login{" "}
+                    <i className="bi bi-box-arrow-in-left"></i>
+                  </button>
+                )}
+              </>
             )}
             <button
               type="button"
