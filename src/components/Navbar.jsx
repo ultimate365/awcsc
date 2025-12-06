@@ -472,7 +472,7 @@ const Navbar = () => {
             {/* LOGIN BUTTON WHEN NOT LOGGED IN */}
             {!type && (
               <Link
-                href="/Login"
+                href="/login"
                 className="btn btn-outline-primary d-none d-lg-block"
               >
                 Login
