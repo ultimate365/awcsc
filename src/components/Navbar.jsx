@@ -214,6 +214,12 @@ const Navbar = () => {
       // TEACHER ADMIN
       teacherAdmin: [
         {
+          key: "gp_entry",
+          label: "GP Student Name Entry",
+          to: "/GPStudentNameEntry",
+          show: (ctx) => isTeacher(ctx),
+        },
+        {
           key: "all_teachers",
           label: "All Teachers",
           to: "/AllTeachers",
@@ -241,6 +247,12 @@ const Navbar = () => {
 
       // TEACHER CONVENOR
       teacherConvenor: [
+        {
+          key: "gp_entry",
+          label: "GP Student Name Entry",
+          to: "/GPStudentNameEntry",
+          show: (ctx) => isTeacher(ctx),
+        },
         {
           key: "gp_convenors",
           label: "GP Convenors Page",

@@ -117,29 +117,27 @@ const Dashboard = () => {
         </button>
       )}
       {details ? (
-        teacher?.convenor === "taw" ? (
-          <div className="my-4">
-            <h3 className="text-center">You Can Use The following Section</h3>
-            <button
-              type="button"
-              className="btn btn-success m-1 "
-              onClick={() => {
-                navigate.push("/GPStudentNameEntry");
-              }}
-            >
-              {`Go to Student's Name Entry For ${teacher?.gp} GP Sports`}
-            </button>
-            <button
-              type="button"
-              className="btn btn-info m-1 "
-              onClick={() => {
-                navigate.push("/SetConvenors");
-              }}
-            >
-              Know Our Convenors
-            </button>
-          </div>
-        ) : null
+        <div className="my-4">
+          <h3 className="text-center">You Can Use The following Section</h3>
+          <button
+            type="button"
+            className="btn btn-success m-1 "
+            onClick={() => {
+              navigate.push("/GPStudentNameEntry");
+            }}
+          >
+            {`Go to Student's Name Entry For ${teacher?.gp} GP Sports`}
+          </button>
+          <button
+            type="button"
+            className="btn btn-info m-1 "
+            onClick={() => {
+              navigate.push("/SetConvenors");
+            }}
+          >
+            Know Our Convenors
+          </button>
+        </div>
       ) : null}
       {schid ? (
         <div className="my-4">
