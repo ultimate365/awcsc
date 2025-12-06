@@ -312,7 +312,7 @@ export default function Signup() {
           .then(async () => {
             toast.success("User registered successfully!");
             setLoader(false);
-            router.push("/login");
+            router.push("/Login");
           })
           .catch((e) => {
             console.error(e);
@@ -793,7 +793,7 @@ export default function Signup() {
               <button
                 className="btn"
                 style={{ background: "chocolate", color: "#fff" }}
-                onClick={() => router.push("/login")}
+                onClick={() => router.push("/Login")}
               >
                 Login
               </button>

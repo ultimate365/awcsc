@@ -75,7 +75,7 @@ const OtpForm = () => {
               >
                 Send OTP
               </button>
-              <Link href="/login">
+              <Link href="/Login">
                 <button className="btn btn-danger m-1 px-4">Back</button>
               </Link>
             </div>

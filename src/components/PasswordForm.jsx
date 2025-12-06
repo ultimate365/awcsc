@@ -19,7 +19,6 @@ import CustomInput from "./CustomInput";
 const PasswordForm = (props) => {
   const router = useRouter();
   const [loader, setLoader] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [inputField, setInputField] = useState({
     otpCode: "",
     password: "",
@@ -105,7 +104,7 @@ const PasswordForm = (props) => {
           toast.success("Congrats! You are Password Reset is Successfull!");
 
           setTimeout(() => {
-            router.push("/logout");
+            router.push("/Logout");
           }, 1500);
         } else {
           setLoader(false);
@@ -189,7 +188,7 @@ const PasswordForm = (props) => {
             >
               Submit <i className="bi bi-box-arrow-in-left"></i>
             </button>
-            <Link href="/login">
+            <Link href="/Login">
               <button className="btn btn-danger m-1 px-4">Back</button>
             </Link>
           </div>

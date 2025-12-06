@@ -107,7 +107,7 @@ const Login = () => {
               encryptObjData("nonVerifiedUid", fdata, 10080);
               encryptObjData("nonVerifiedTid", fdata2, 10080);
               setCookie("t", fdata2.tname, 10080);
-              navigate.push("/verifyLogin");
+              navigate.push("/VerifyLogin");
             } else {
               setLoader(false);
               toast.error("Your Account is Disabled!");
@@ -134,7 +134,7 @@ const Login = () => {
 
               // encryptObjData("schid", fdata2, 10080);
               // setCookie("loggedAt", Date.now(), 10080);
-              // navigate.push("/verifyLogin");
+              // navigate.push("/VerifyLogin");
               // setState({
               //   USER: fdata2,
               //   ACCESS: fdata2.convenor,
@@ -142,7 +142,7 @@ const Login = () => {
               //   TYPE: "school",
               // });
               encryptObjData("nonVerifiedSchId", fdata2, 10080);
-              navigate.push("/verifyLogin");
+              navigate.push("/VerifyLogin");
             } else {
               setLoader(false);
               toast.error("Invalid Username or Password!");
@@ -184,7 +184,7 @@ const Login = () => {
           encryptObjData("nonVerifiedUid", data, 10080);
           encryptObjData("nonVerifiedTid", data, 10080);
           setCookie("t", data.tname, 10080);
-          navigate.push("/verifyLogin");
+          navigate.push("/VerifyLogin");
         } else {
           setLoader(false);
           toast.error("Your Account is Disabled!");
@@ -199,7 +199,7 @@ const Login = () => {
     }
   };
   const addUser = () => {
-    navigate.push("/signup");
+    navigate.push("/Signup");
   };
   function removeSpaces(inputString) {
     // Use a regular expression to match all spaces (whitespace characters) and replace them with an empty string
@@ -238,7 +238,7 @@ const Login = () => {
             LOGGEDAT: Date.now(),
             TYPE: "teacher",
           });
-          navigate.push("/dashboard");
+          navigate.push("/Dashboard");
         }, 500);
       } else {
         const newData = await getDocumentByField(
@@ -263,7 +263,7 @@ const Login = () => {
               LOGGEDAT: Date.now(),
               TYPE: "teacher",
             });
-            navigate.push("/dashboard");
+            navigate.push("/Dashboard");
           }, 500);
         } else {
           setLoader(false);
@@ -308,7 +308,7 @@ const Login = () => {
               LOGGEDAT: Date.now(),
               TYPE: "teacher",
             });
-            navigate.push("/dashboard");
+            navigate.push("/Dashboard");
           }, 500);
         } else {
           setLoader(false);
@@ -350,7 +350,7 @@ const Login = () => {
           LOGGEDAT: Date.now(),
           TYPE: "school",
         });
-        navigate.push("/dashboard");
+        navigate.push("/Dashboard");
       }, 500);
     } catch (e) {
       console.log(e);
@@ -365,7 +365,7 @@ const Login = () => {
     const details = getCookie("tid");
     const schdetails = getCookie("schid");
     if (loggedAt && details && schdetails) {
-      navigate.push("/dashboard");
+      navigate.push("/Dashboard");
       if (details) {
         const teacherDetails = decryptObjData("tid");
         setState({
@@ -466,7 +466,7 @@ const Login = () => {
             )}
           </div>
           <div className="mb-3">
-            <Link style={{ textDecoration: "none" }} href={"/forgotPassword"}>
+            <Link style={{ textDecoration: "none" }} href={"/ForgotPassword"}>
               Forgot Password?
             </Link>
           </div>

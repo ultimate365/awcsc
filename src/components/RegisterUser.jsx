@@ -132,7 +132,7 @@ const RegisterUser = ({ sata, setSignUpTrue }) => {
             );
 
             setTimeout(() => {
-              navigate.push("/login");
+              navigate.push("/Login");
             }, 1500);
           } else {
             toast.error(

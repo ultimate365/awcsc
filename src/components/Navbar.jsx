@@ -160,7 +160,7 @@ const Navbar = () => {
         {
           key: "dashboard",
           label: "Dashboard",
-          to: "/dashboard",
+          to: "/Dashboard",
           show: (ctx) => isLogged(ctx),
         },
         {
@@ -172,7 +172,7 @@ const Navbar = () => {
         {
           key: "complain",
           label: "Complain or Suggest Us",
-          to: "/complain",
+          to: "/Complain",
           show: () => true,
         },
       ],
@@ -194,13 +194,13 @@ const Navbar = () => {
         {
           key: "dashboard_school",
           label: "Dashboard",
-          to: "/dashboard",
+          to: "/Dashboard",
           show: (ctx) => isSchool(ctx),
         },
         {
           key: "complain_school",
           label: "Complain or Suggest Us",
-          to: "/complain",
+          to: "/Complain",
           show: (ctx) => isSchool(ctx),
         },
         {
@@ -217,7 +217,7 @@ const Navbar = () => {
           key: "gp_entry",
           label: "GP Student Name Entry",
           to: "/GPStudentNameEntry",
-          show: (ctx) => isTeacher(ctx),
+          show: (ctx) => isSchool(ctx),
         },
         {
           key: "all_teachers",
@@ -251,7 +251,7 @@ const Navbar = () => {
           key: "gp_entry",
           label: "GP Student Name Entry",
           to: "/GPStudentNameEntry",
-          show: (ctx) => isTeacher(ctx),
+          show: (ctx) => isSchool(ctx),
         },
         {
           key: "gp_convenors",
@@ -413,7 +413,7 @@ const Navbar = () => {
 
         {/* LOGIN / LOGOUT */}
         {!type ? (
-          <Link href="/login" className="nav-link" onClick={closeDrawer}>
+          <Link href="/Login" className="nav-link" onClick={closeDrawer}>
             Login
           </Link>
         ) : (
@@ -421,7 +421,7 @@ const Navbar = () => {
             <Link href="/UpdateUP" className="nav-link" onClick={closeDrawer}>
               Update Profile
             </Link>
-            <Link href="/logout" className="nav-link" onClick={closeDrawer}>
+            <Link href="/Logout" className="nav-link" onClick={closeDrawer}>
               Logout
             </Link>
           </>
@@ -484,7 +484,7 @@ const Navbar = () => {
             {/* LOGIN BUTTON WHEN NOT LOGGED IN */}
             {!type && (
               <Link
-                href="/login"
+                href="/Login"
                 className="btn btn-outline-primary d-none d-lg-block"
               >
                 Login
