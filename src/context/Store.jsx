@@ -68,7 +68,7 @@ const GlobalContext = createContext({
     showAdminLogin: false,
     site: "https://awcsc.vercel.app",
     update: "true",
-    showFlag: true,
+    showFlag: false,
   },
   setAppUpdateState: () => {},
 });
@@ -110,7 +110,7 @@ export const GlobalContextProvider = ({ children }) => {
     showAdminLogin: false,
     site: "https://awcsc.vercel.app",
     update: "true",
-    showFlag: true,
+    showFlag: false,
   });
 
   return (
