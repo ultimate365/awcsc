@@ -158,7 +158,7 @@ const Navbar = () => {
           show: () => true,
         },
         {
-          key: "dashboard",
+          key: "Dashboard",
           label: "Dashboard",
           to: "/Dashboard",
           show: (ctx) => isLogged(ctx),
@@ -192,7 +192,7 @@ const Navbar = () => {
           show: (ctx) => isSchool(ctx),
         },
         {
-          key: "dashboard_school",
+          key: "Dashboard_school",
           label: "Dashboard",
           to: "/Dashboard",
           show: (ctx) => isSchool(ctx),
