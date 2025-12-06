@@ -31,6 +31,7 @@ import {
   generateRandomUDISE,
 } from "../../modules/calculatefunctions";
 import { getCollection, updateDocument } from "../../firebase/firestoreHelper";
+import { set } from "mongoose";
 const RegUsers = () => {
   const docID = uuid().split("-")[0];
   const { teachersState, setTeachersState } = useGlobalContext();
@@ -68,6 +69,19 @@ const RegUsers = () => {
   const [adminPassword, setAdminPassword] = useState("");
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [adminID, setAdminID] = useState("");
+  const [showEditSchool, setShowEditSchool] = useState(false);
+  const [schoolField, setSchoolField] = useState({
+    id: "",
+    school: "",
+    udise: "",
+    username: "",
+    gp: "",
+    year: "",
+    hoi: "",
+    convenor: "taw",
+    password: "",
+    phone: "",
+  });
   const [selectedAdmin, setSelectedAdmin] = useState({
     id: `teacher-${docID}`,
     disabled: false,
@@ -365,7 +379,7 @@ const RegUsers = () => {
       sortable: +true,
       wrap: +true,
       center: +true,
-      width: "40%",
+      width: "30%",
     },
     {
       name: "GP",
@@ -390,6 +404,26 @@ const RegUsers = () => {
       width: "15%",
     },
 
+    {
+      name: "Edit School",
+      cell: (row) => {
+        return (
+          <button
+            type="button"
+            className="btn btn-sm btn-primary"
+            onClick={() => {
+              setSchoolField(row);
+              setShowEditSchool(true);
+            }}
+          >
+            Edit
+          </button>
+        );
+      },
+      width: "10%",
+      center: +true,
+      wrap: +true,
+    },
     {
       name: "Reset Password",
       cell: (row) => {
@@ -695,6 +729,30 @@ const RegUsers = () => {
     } catch (error) {
       setLoader(false);
       toast.error("Congrats! School Password Reset Failed!");
+    }
+  };
+  const updateUserSchool = async () => {
+    setLoader(true);
+    try {
+      const docRef = doc(firestore, "userschools", schoolField.id);
+      await updateDoc(docRef, {
+        hoi: schoolField.hoi,
+        username: schoolField.username,
+        phone: schoolField.phone,
+      })
+        .then(() => {
+          setLoader(false);
+          schoolUserData();
+          toast.success("Congrats! School Details Updated Successfully!");
+          setShowEditSchool(false);
+        })
+        .catch((e) => {
+          setLoader(false);
+          toast.error("Congrats! School Details Update Failed!");
+        });
+    } catch (error) {
+      setLoader(false);
+      toast.error("Congrats! School Details Update Failed!");
     }
   };
   const addAdmin = async () => {
@@ -1249,6 +1307,117 @@ const RegUsers = () => {
           <h3 className="text-center text-primary">No Data Found</h3>
         )}
       </div>
+      {showEditSchool && (
+        <div
+          className="modal fade show"
+          tabIndex="-1"
+          role="dialog"
+          style={{ display: "block" }}
+          aria-modal="true"
+        >
+          <div className="modal-dialog modal-xl">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="addNoticeLabel">
+                  Edit School Details
+                </h1>
+                <button
+                  type="button"
+                  className="btn-close"
+                  aria-label="Close"
+                  onClick={() => {
+                    setShowEditSchool(false);
+                  }}
+                ></button>
+              </div>
+              <div className="modal-body modal-xl">
+                <div className="mb-3">
+                  <label className="form-label">Enter School Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter School Name"
+                    value={schoolField.school}
+                    onChange={(e) => {
+                      setSchoolField({
+                        ...schoolField,
+                        school: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Enter HOI Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter HOI Name"
+                    value={schoolField.hoi}
+                    onChange={(e) => {
+                      setSchoolField({
+                        ...schoolField,
+                        hoi: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Enter Username</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter Username"
+                    value={schoolField.username}
+                    onChange={(e) => {
+                      setSchoolField({
+                        ...schoolField,
+                        username: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Enter Phone</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    placeholder="Enter Phone"
+                    value={schoolField.phone}
+                    onChange={(e) => {
+                      e.target.value.toString().length <= 10 &&
+                        setSchoolField({
+                          ...schoolField,
+                          phone: e.target.value,
+                        });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="modal-footer d-flex flex-column">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => {
+                    updateUserSchool();
+                    setShowEditSchool(false);
+                  }}
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    setShowEditSchool(false);
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {loader && <Loader />}
     </div>
   );
