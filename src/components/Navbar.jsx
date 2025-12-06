@@ -1,14 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
+import Image from "next/image";
+import AWCSCLogo from "../images/AWCSC.png";
+
 import { decryptObjData, getCookie } from "../modules/encryption";
 import { titleCase } from "../modules/calculatefunctions";
-import Image from "next/image";
 import { useGlobalContext } from "../context/Store";
 import Loader from "./Loader";
 import { collection, getDocs, query } from "firebase/firestore";
-import { firestore } from "@/context/FirbaseContext";
-
+import { firestore } from "../context/FirbaseContext";
+import Link from "next/link";
+import Header from "./Header";
 const Navbar = () => {
   const {
     state,
@@ -17,623 +19,497 @@ const Navbar = () => {
     setCircleLockState,
     setTeachersState,
     teachersState,
-
     setGpSportsDateState,
+    setAppUpdateState,
   } = useGlobalContext();
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
-  const type = state.TYPE;
-  const access = state.ACCESS;
-  const user = state.USER;
 
-  const storeTeachersData = async () => {
+  const type = state?.TYPE ?? null; // teacher | school | null
+  const access = state?.ACCESS ?? null; // admin | taw | null
+  const user = state?.USER ?? null;
+
+  const [tidObj, setTidObj] = useState(null);
+  const [schObj, setSchObj] = useState(null);
+
+  // ---------------- COOKIE LOADING ----------------
+  useEffect(() => {
+    const tidRaw = getCookie("tid");
+    const schRaw = getCookie("schid");
+
+    if (tidRaw) {
+      try {
+        const decrypted = decryptObjData("tid");
+        setTidObj(decrypted);
+        setState({
+          USER: decrypted,
+          ACCESS: decrypted?.circle,
+          LOGGEDAT: Date.now(),
+          TYPE: "teacher",
+        });
+      } catch {}
+    }
+
+    if (schRaw) {
+      try {
+        const decrypted = decryptObjData("schid");
+        setSchObj(decrypted);
+        setState({
+          USER: decrypted,
+          ACCESS: decrypted?.convenor,
+          LOGGEDAT: Date.now(),
+          TYPE: "school",
+        });
+      } catch {}
+    }
+  }, []);
+
+  // ---------------- FIREBASE FETCH ----------------
+  const storeTeachersData = useCallback(async () => {
     setShowLoader(true);
-    const q = query(collection(firestore, "teachers"));
-    const querySnapshot = await getDocs(q);
-    const data = querySnapshot.docs.map((doc) => ({
-      // doc.data() is never undefined for query doc snapshots
-      ...doc.data(),
-      id: doc.id,
-    }));
+    try {
+      const q = query(collection(firestore, "teachers"));
+      const qs = await getDocs(q);
+      const data = qs.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
 
-    const newDatas = data.sort((a, b) => {
-      // First, compare the "school" keys
-      if (a.school < b.school) {
-        return -1;
-      }
-      if (a.school > b.school) {
-        return 1;
-      }
-      // If "school" keys are equal, compare the "rank" keys
-      return a.rank - b.rank;
-    });
+      const sorted = data.sort((a, b) => {
+        if (a.school < b.school) return -1;
+        if (a.school > b.school) return 1;
+        return (a.rank ?? 0) - (b.rank ?? 0);
+      });
+
+      setTeachersState(sorted);
+    } catch {}
     setShowLoader(false);
-    setTeachersState(newDatas);
-  };
-  const getLockData = async () => {
+  }, []);
+  const getAppData = useCallback(async () => {
+    try {
+      // Fetch other app data if needed
+      const q = query(collection(firestore, "appUpdate"));
+      const qs = await getDocs(q);
+      const data = qs.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setAppUpdateState(data[0]);
+    } catch (error) {
+      // Handle errors if needed
+      console.error("Error fetching app data:", error);
+    }
+  }, []);
+
+  const getLockData = useCallback(async () => {
     try {
       const q = query(collection(firestore, "gpLockData"));
+      setGpLockState((await getDocs(q)).docs.map((d) => d.data()));
+    } catch {}
+  }, []);
 
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        // id: doc.id,
-      }));
-      setGpLockState(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const getGPSportsDate = async () => {
-    try {
-      const q = query(collection(firestore, "gpSportsDate"));
-
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        // id: doc.id,
-      }));
-      setGpSportsDateState(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const getCircleLockData = async () => {
+  const getCircleLockData = useCallback(async () => {
     try {
       const q = query(collection(firestore, "circleLockData"));
-
-      const querySnapshot = await getDocs(q);
-      const data = querySnapshot.docs.map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        // id: doc.id,
-      }));
-      setCircleLockState(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    const details = getCookie("tid");
-    const schdetails = getCookie("schid");
-    if (details) {
-      const tea = decryptObjData("tid");
-      setState({
-        USER: tea,
-        ACCESS: tea?.circle,
-        LOGGEDAT: Date.now(),
-        TYPE: "teacher",
-      });
-    } else if (schdetails) {
-      const sch = decryptObjData("schid");
-      setState({
-        USER: sch,
-        ACCESS: sch?.convenor,
-        LOGGEDAT: Date.now(),
-        TYPE: "school",
-      });
-    }
-    //eslint-disable-next-line
+      setCircleLockState((await getDocs(q)).docs.map((d) => d.data()));
+    } catch {}
   }, []);
+
+  const getGPSportsDate = useCallback(async () => {
+    try {
+      const q = query(collection(firestore, "gpSportsDate"));
+      setGpSportsDateState((await getDocs(q)).docs.map((d) => d.data()));
+    } catch {}
+  }, []);
+
   useEffect(() => {
     getLockData();
     getCircleLockData();
+    getGPSportsDate();
+    getAppData();
 
-    if (teachersState.length === 0) {
+    if (!teachersState || teachersState.length === 0) {
       storeTeachersData();
     }
-    getGPSportsDate();
-    //eslint-disable-next-line
   }, []);
-  const schdetails = getCookie("schid");
-  const handleNavCollapse = () => {
-    if (
-      document
-        .querySelector("#navbarSupportedContent")
-        .classList.contains("show")
-    ) {
-      document
-        .querySelector("#navbarSupportedContent")
-        .classList.remove("show");
+
+  const closeDrawer = () => setDrawerOpen(false);
+
+  // ---------------- DYNAMIC NAVBAR HEIGHT ----------------
+  useEffect(() => {
+    const nav = document.querySelector(".navbar");
+    if (nav) {
+      const h = nav.offsetHeight;
+      document.documentElement.style.setProperty("--nav-height", `${h}px`);
     }
-  };
+  }, []);
 
-  const RenderMenu = () => {
-    if (type !== null) {
-      if (type == "teacher") {
-        if (access === "admin") {
-          return (
-            <>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/"
-                  onClick={handleNavCollapse}
-                >
-                  Home
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/dashboard"
-                  onClick={handleNavCollapse}
-                >
-                  Dashboard
-                </Link>
-              </li>
-              {/* <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/htschool"
-                  onClick={handleNavCollapse}
-                >
-                  htschool
-                </Link>
-              </li> */}
+  // ---------------- MENU DEFINITIONS ----------------
+  const menuDefinitions = useMemo(() => {
+    const isLogged = (ctx) => ctx.type !== null;
+    const isTeacher = (ctx) => ctx.type === "teacher";
+    const isSchool = (ctx) => ctx.type === "school";
+    const hasAccess = (ctx, v) => ctx.access === v;
+    const userHas = (ctx, prop, val) => ctx.user?.[prop] === val;
 
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/SetConvenors"
-                  onClick={handleNavCollapse}
-                >
-                  Convenors
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/GPStudentNameEntry"
-                  onClick={handleNavCollapse}
-                >
-                  GP Student Name Entry
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/GpSportsDirectNameEntry"
-                  onClick={handleNavCollapse}
-                >
-                  GP Sports Direct Name Entry
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/GPConvenorsPage"
-                  onClick={handleNavCollapse}
-                >
-                  GP Convenors Page
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/CircleSportsDirectNameEntry"
-                  onClick={handleNavCollapse}
-                >
-                  Circle Students Direct Name Entry
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/CircleStudentsNameEntry"
-                  onClick={handleNavCollapse}
-                >
-                  Circle Convenors Page
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/AllTeachers"
-                  onClick={handleNavCollapse}
-                >
-                  All Teachers
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/RegUsers"
-                  onClick={handleNavCollapse}
-                >
-                  Registered Users
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/DisplayComplain"
-                  onClick={handleNavCollapse}
-                >
-                  Display Complains
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  href="/complain"
-                  onClick={handleNavCollapse}
-                >
-                  Complain or Suggest Us
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  href="/downloads"
-                  onClick={handleNavCollapse}
-                >
-                  Downloads
-                </Link>
-              </li>
-              <button type="button" className="btn btn-info btn-sm nav-link">
-                Hello {user ? user.tname : schdetails ? schdetails.school : ""}!
-              </button>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  href="/UpdateUP"
-                  onClick={handleNavCollapse}
-                >
-                  Update Profile Details
-                </Link>
-              </li>
-              <div className="row">
-                <li className="nav-item">
-                  <Link
-                    className="nav-link"
-                    href="/logout"
-                    onClick={handleNavCollapse}
-                  >
-                    Logout
-                  </Link>
-                </li>
-              </div>
-            </>
-          );
-        } else if (access === "taw") {
-          return (
-            <>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/"
-                  onClick={handleNavCollapse}
-                >
-                  Home
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/dashboard"
-                  onClick={handleNavCollapse}
-                >
-                  Dashboard
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/SetConvenors"
-                  onClick={handleNavCollapse}
-                >
-                  Convenors
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  aria-current="page"
-                  href="/GPStudentNameEntry"
-                  onClick={handleNavCollapse}
-                >
-                  GP Student Name Entry
-                </Link>
-              </li>
+    return {
+      // COMMON FOR ALL USERS
+      common: [
+        { key: "home", label: "Home", to: "/", show: () => true },
+        {
+          key: "convenors",
+          label: "Convenors",
+          to: "/SetConvenors",
+          show: () => true,
+        },
+        {
+          key: "dashboard",
+          label: "Dashboard",
+          to: "/dashboard",
+          show: (ctx) => isLogged(ctx),
+        },
+        {
+          key: "downloads",
+          label: "Downloads",
+          to: "/Downloads",
+          show: () => true,
+        },
+        {
+          key: "complain",
+          label: "Complain or Suggest Us",
+          to: "/complain",
+          show: () => true,
+        },
+      ],
 
-              {(user.convenor === "admin" || user.gpAssistant === "admin") && (
-                <>
-                  <li className="nav-item">
-                    <Link
-                      className="nav-link"
-                      aria-current="page"
-                      href="/GPConvenorsPage"
-                      onClick={handleNavCollapse}
-                    >
-                      GP Convenors Page
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link
-                      className="nav-link"
-                      aria-current="page"
-                      href="/GpSportsDirectNameEntry"
-                      onClick={handleNavCollapse}
-                    >
-                      GP Sports Direct Name Entry
-                    </Link>
-                  </li>
-                </>
-              )}
-              {user.circleAssistant === "admin" && (
-                <>
-                  <li className="nav-item">
-                    <Link
-                      className="nav-link"
-                      aria-current="page"
-                      href="/CircleStudentsNameEntry"
-                      onClick={handleNavCollapse}
-                    >
-                      Circle Convenors Page
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link
-                      className="nav-link"
-                      aria-current="page"
-                      href="/CircleSportsDirectNameEntry"
-                      onClick={handleNavCollapse}
-                    >
-                      GP To Circle Direct Name Entry
-                    </Link>
-                  </li>
-                </>
-              )}
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  href="/complain"
-                  onClick={handleNavCollapse}
-                >
-                  Complain or Suggest Us
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  href="/downloads"
-                  onClick={handleNavCollapse}
-                >
-                  Downloads
-                </Link>
-              </li>
-              {user.tname !== "" && (
-                <button type="button" className="btn btn-info btn-sm nav-link">
-                  Hello {titleCase(user.tname)}!
-                </button>
-              )}
-              {schdetails && (
-                <button type="button" className="btn btn-info btn-sm nav-link">
-                  Hello {titleCase(schdetails.school)}!
-                </button>
-              )}
-              <li className="nav-item">
-                <Link
-                  className="nav-link"
-                  href="/UpdateUP"
-                  onClick={handleNavCollapse}
-                >
-                  Update Profile Details
-                </Link>
-              </li>
-              <div className="row">
-                <li className="nav-item">
-                  <Link
-                    className="nav-link"
-                    href="/logout"
-                    onClick={handleNavCollapse}
-                  >
-                    Logout
-                  </Link>
-                </li>
-              </div>
-            </>
-          );
-        }
-      } else {
-        return (
+      // SPECIAL FOR SCHOOL USERS
+      schoolMenu: [
+        {
+          key: "gp_entry",
+          label: "GP Student Name Entry",
+          to: "/GPStudentNameEntry",
+          show: (ctx) => isSchool(ctx),
+        },
+        {
+          key: "convenors_school",
+          label: "Convenors",
+          to: "/SetConvenors",
+          show: (ctx) => isSchool(ctx),
+        },
+        {
+          key: "dashboard_school",
+          label: "Dashboard",
+          to: "/dashboard",
+          show: (ctx) => isSchool(ctx),
+        },
+        {
+          key: "complain_school",
+          label: "Complain or Suggest Us",
+          to: "/complain",
+          show: (ctx) => isSchool(ctx),
+        },
+        {
+          key: "update_profile",
+          label: "Update Profile",
+          to: "/UpdateUP",
+          show: (ctx) => isSchool(ctx),
+        },
+      ],
+
+      // TEACHER ADMIN
+      teacherAdmin: [
+        {
+          key: "all_teachers",
+          label: "All Teachers",
+          to: "/AllTeachers",
+          show: (ctx) => isTeacher(ctx) && hasAccess(ctx, "admin"),
+        },
+        {
+          key: "reg_users",
+          label: "Registered Users",
+          to: "/RegUsers",
+          show: (ctx) => isTeacher(ctx) && hasAccess(ctx, "admin"),
+        },
+        {
+          key: "display_complains",
+          label: "Display Complains",
+          to: "/DisplayComplain",
+          show: (ctx) => isTeacher(ctx) && hasAccess(ctx, "admin"),
+        },
+        {
+          key: "update_profile",
+          label: "Update Profile",
+          to: "/UpdateUP",
+          show: (ctx) => isTeacher(ctx),
+        },
+      ],
+
+      // TEACHER CONVENOR
+      teacherConvenor: [
+        {
+          key: "gp_convenors",
+          label: "GP Convenors Page",
+          to: "/GPConvenorsPage",
+          show: (ctx) =>
+            isTeacher(ctx) &&
+            (hasAccess(ctx, "admin") ||
+              userHas(ctx, "convenor", "admin") ||
+              userHas(ctx, "gpAssistant", "admin")),
+        },
+        {
+          key: "gp_direct",
+          label: "GP Direct Entry",
+          to: "/GpSportsDirectNameEntry",
+          show: (ctx) =>
+            isTeacher(ctx) &&
+            (hasAccess(ctx, "admin") || userHas(ctx, "gpAssistant", "admin")),
+        },
+        {
+          key: "circle_convenors",
+          label: "Circle Convenors Page",
+          to: "/CircleStudentsNameEntry",
+          show: (ctx) =>
+            isTeacher(ctx) &&
+            (hasAccess(ctx, "admin") ||
+              userHas(ctx, "circleAssistant", "admin")),
+        },
+        {
+          key: "circle_direct",
+          label: "Circle Direct Entry",
+          to: "/CircleSportsDirectNameEntry",
+          show: (ctx) =>
+            isTeacher(ctx) &&
+            (hasAccess(ctx, "admin") ||
+              userHas(ctx, "circleAssistant", "admin")),
+        },
+        {
+          key: "update_profile",
+          label: "Update Profile",
+          to: "/UpdateUP",
+          show: (ctx) => isTeacher(ctx),
+        },
+      ],
+    };
+  }, []);
+
+  const ctx = { type, access, user, schObj, tidObj };
+
+  // ---------------- GREETING ----------------
+  const greeting = (() => {
+    if (type === "teacher")
+      return `Hello ${titleCase(user?.tname ?? tidObj?.tname)}`;
+    if (type === "school")
+      return `Hello ${titleCase(user?.hoi ?? schObj?.hoi)} (HOI)`;
+    return "Welcome";
+  })();
+
+  // ---------------- DRAWER MENU ----------------
+  const DrawerMenu = () => (
+    <>
+      <div
+        className={`nav-drawer-overlay ${drawerOpen ? "open" : ""}`}
+        onClick={closeDrawer}
+      ></div>
+
+      <div className={`nav-drawer ${drawerOpen ? "open" : ""}`}>
+        {/* PROFILE */}
+        <Image
+          src={AWCSCLogo}
+          alt="Logo"
+          width={80}
+          className="d-block mx-auto App-logo"
+        />
+        <div className="mb-3 p-2 border-bottom">
+          <h6 className="fw-bold mb-0">{greeting}</h6>
+
+          {type === "school" && (
+            <small className="text-muted">
+              HOI of {titleCase(schObj?.school ?? user?.school)}
+            </small>
+          )}
+
+          {type === "teacher" && <small className="text-muted">Teacher</small>}
+        </div>
+
+        {/* COMMON MENU */}
+        {menuDefinitions.common
+          .filter((m) => m.show(ctx))
+          .map((m) => (
+            <Link
+              key={m.key}
+              href={m.to}
+              className="nav-link"
+              onClick={closeDrawer}
+            >
+              {m.label}
+            </Link>
+          ))}
+
+        {/* SCHOOL MENU */}
+        {menuDefinitions.schoolMenu.some((m) => m.show(ctx)) && (
           <>
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                aria-current="page"
-                href="/"
-                onClick={handleNavCollapse}
-              >
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                aria-current="page"
-                href="/dashboard"
-                onClick={handleNavCollapse}
-              >
-                Dashboard
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                aria-current="page"
-                href="/SetConvenors"
-                onClick={handleNavCollapse}
-              >
-                Convenors
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                aria-current="page"
-                href="/GPStudentNameEntry"
-                onClick={handleNavCollapse}
-              >
-                GP Student Name Entry
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                href="/complain"
-                onClick={handleNavCollapse}
-              >
-                Complain or Suggest Us
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                href="/downloads"
-                onClick={handleNavCollapse}
-              >
-                Downloads
-              </Link>
-            </li>
-            {schdetails && (
-              <button type="button" className="btn btn-info btn-sm nav-link">
-                Hello {titleCase(user.hoi)}! HOI of {titleCase(user.school)}!
-              </button>
-            )}
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                href="/UpdateUP"
-                onClick={handleNavCollapse}
-              >
-                Update Profile Details
-              </Link>
-            </li>
-            <div className="row">
-              <li className="nav-item">
+            <div className="fw-bold text-secondary mt-3">School Menu</div>
+            {menuDefinitions.schoolMenu
+              .filter((m) => m.show(ctx))
+              .map((m) => (
                 <Link
+                  key={m.key}
+                  href={m.to}
                   className="nav-link"
-                  href="/logout"
-                  onClick={handleNavCollapse}
+                  onClick={closeDrawer}
+                >
+                  {m.label}
+                </Link>
+              ))}
+          </>
+        )}
+
+        {/* TEACHER ADMIN MENU */}
+        {menuDefinitions.teacherAdmin.some((m) => m.show(ctx)) && (
+          <>
+            <div className="fw-bold text-secondary mt-3">Admin</div>
+            {menuDefinitions.teacherAdmin
+              .filter((m) => m.show(ctx))
+              .map((m) => (
+                <Link
+                  key={m.key}
+                  href={m.to}
+                  className="nav-link"
+                  onClick={closeDrawer}
+                >
+                  {m.label}
+                </Link>
+              ))}
+          </>
+        )}
+
+        {/* TEACHER CONVENOR MENU */}
+        {menuDefinitions.teacherConvenor.some((m) => m.show(ctx)) && (
+          <>
+            <div className="fw-bold text-secondary mt-3">Convenor Tools</div>
+            {menuDefinitions.teacherConvenor
+              .filter((m) => m.show(ctx))
+              .map((m) => (
+                <Link
+                  key={m.key}
+                  href={m.to}
+                  className="nav-link"
+                  onClick={closeDrawer}
+                >
+                  {m.label}
+                </Link>
+              ))}
+          </>
+        )}
+
+        <hr />
+
+        {/* LOGIN / LOGOUT */}
+        {!type ? (
+          <Link href="/login" className="nav-link" onClick={closeDrawer}>
+            Login
+          </Link>
+        ) : (
+          <>
+            <Link href="/UpdateUP" className="nav-link" onClick={closeDrawer}>
+              Update Profile
+            </Link>
+            <Link href="/logout" className="nav-link" onClick={closeDrawer}>
+              Logout
+            </Link>
+          </>
+        )}
+      </div>
+    </>
+  );
+
+  return (
+    <div className="noprint">
+      {/* TOP NAVBAR */}
+      <nav className="navbar navbar-light bg-white shadow-sm sticky-top p-2">
+        <div className="container-fluid d-flex align-items-center justify-content-between">
+          {/* Logo */}
+
+          <Link className="navbar-brand d-flex align-items-center" href="/">
+            <Image src={AWCSCLogo} width={55} alt="Logo" className="App-logo" />
+          </Link>
+          {/* DESKTOP NAV LINKS */}
+          <div className="d-none d-lg-flex align-items-center gap-3">
+            {/* COMMON MENU */}
+            {menuDefinitions.common
+              .filter((m) => m.show(ctx))
+              .map((m) => (
+                <Link key={m.key} href={m.to} className="nav-link">
+                  {m.label}
+                </Link>
+              ))}
+
+            {/* SCHOOL MENU */}
+            {menuDefinitions.schoolMenu
+              .filter((m) => m.show(ctx))
+              .map((m) => (
+                <Link key={m.key} href={m.to} className="nav-link">
+                  {m.label}
+                </Link>
+              ))}
+
+            {/* TEACHER ADMIN */}
+            {menuDefinitions.teacherAdmin
+              .filter((m) => m.show(ctx))
+              .map((m) => (
+                <Link key={m.key} href={m.to} className="nav-link">
+                  {m.label}
+                </Link>
+              ))}
+
+            {/* TEACHER CONVENOR */}
+            {menuDefinitions.teacherConvenor
+              .filter((m) => m.show(ctx))
+              .map((m) => (
+                <Link key={m.key} href={m.to} className="nav-link">
+                  {m.label}
+                </Link>
+              ))}
+          </div>
+
+          {/* RIGHT SIDE BUTTONS */}
+          <div className="d-flex align-items-center gap-2">
+            {/* LOGIN BUTTON WHEN NOT LOGGED IN */}
+            {!type && (
+              <Link
+                href="/Login"
+                className="btn btn-outline-primary d-none d-lg-block"
+              >
+                Login
+              </Link>
+            )}
+
+            {/* GREETING + LOGOUT WHEN LOGGED IN */}
+            {type && (
+              <>
+                <span className="fw-semibold text-dark d-none d-lg-block">
+                  {greeting}
+                </span>
+                <Link
+                  href="/Logout"
+                  className="btn btn-outline-danger d-none d-lg-block"
                 >
                   Logout
                 </Link>
-              </li>
-            </div>
-          </>
-        );
-      }
-    } else {
-      return (
-        <>
-          <li className="nav-item">
-            <Link
-              className="nav-link"
-              aria-current="page"
-              href="/"
-              onClick={handleNavCollapse}
-            >
-              Home
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              className="nav-link"
-              aria-current="page"
-              href="/SetConvenors"
-              onClick={handleNavCollapse}
-            >
-              Convenors
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              className="nav-link"
-              href="/downloads"
-              onClick={handleNavCollapse}
-            >
-              Downloads
-            </Link>
-          </li>
+              </>
+            )}
 
-          <li className="nav-item">
-            <Link
-              className="nav-link"
-              href="/complain"
-              onClick={handleNavCollapse}
+            {/* Hamburger */}
+            <button
+              className="btn btn-outline-secondary d-lg-none"
+              onClick={() => setDrawerOpen((prev) => !prev)}
             >
-              Complain or Suggest Us
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link
-              className="nav-link"
-              href="/login"
-              onClick={handleNavCollapse}
-            >
-              Login
-            </Link>
-          </li>
-        </>
-      );
-    }
-  };
-
-  return (
-    <nav className="navbar align-items-end navbar-expand-lg bg-white px-lg-3 py-lg-2 shadow-sm sticky-top p-2 overflow-auto bg-body-tertiary noprint">
-      <div className="container-fluid">
-        <Link className="navbar-brand" href="/">
-          <Image
-            src={require("../images/AWCSC.png")}
-            alt="LOGO"
-            width={0}
-            height={0}
-            style={{
-              width: 60,
-              height: "auto",
-            }}
-            className="App-logo"
-          />
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <RenderMenu />
-          </ul>
+              ☰
+            </button>
+          </div>
         </div>
-      </div>
+      </nav>
+
+      {/* Drawer */}
+      {drawerOpen && <DrawerMenu />}
+
       {showLoader && <Loader />}
-    </nav>
+    </div>
   );
 };
 

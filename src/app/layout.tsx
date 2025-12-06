@@ -42,7 +42,7 @@ const roboto = localFont({
     },
   ],
   variable: "--font-roboto",
-})
+});
 export const metadata: Metadata = {
   title: "AWC Sports App",
   description: "Welcome To Amta West Circle's Sports Committee's Website.",

@@ -62,6 +62,15 @@ const GlobalContext = createContext({
   setCircleFirstResultState: () => [],
   gpSportsDateState: GPSPORTSDATE,
   setGpSportsDateState: () => [],
+  appUpdateState: {
+    id: "",
+    appVersion: "",
+    showAdminLogin: false,
+    site: "https://awcsc.vercel.app",
+    update: "true",
+    showFlag: true,
+  },
+  setAppUpdateState: () => {},
 });
 export const GlobalContextProvider = ({ children }) => {
   const [state, setState] = useState({
@@ -95,6 +104,14 @@ export const GlobalContextProvider = ({ children }) => {
   const [circleResultState, setCircleResultState] = useState([]);
   const [circleFirstResultState, setCircleFirstResultState] = useState([]);
   const [gpSportsDateState, setGpSportsDateState] = useState(GPSPORTSDATE);
+  const [appUpdateState, setAppUpdateState] = useState({
+    id: "",
+    appVersion: "",
+    showAdminLogin: false,
+    site: "https://awcsc.vercel.app",
+    update: "true",
+    showFlag: true,
+  });
 
   return (
     <GlobalContext.Provider
@@ -149,6 +166,8 @@ export const GlobalContextProvider = ({ children }) => {
         setCircleFirstResultState,
         gpSportsDateState,
         setGpSportsDateState,
+        appUpdateState,
+        setAppUpdateState,
       }}
     >
       <FirebaseProvider>{children}</FirebaseProvider>

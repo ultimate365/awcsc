@@ -343,3 +343,65 @@ table#team-list tr:nth-child(n + 1) td:first-child::before {
     height: auto;
   }
 }
+
+
+
+/* ----- OVERLAY (background blur) ----- */
+.nav-drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 2000; /* LOWER than drawer */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nav-drawer-overlay.open {
+  opacity: 1;
+}
+
+/* ----- DRAWER (WHITE PANEL) ----- */
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100%;
+  background: white;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.25);
+
+  /* dynamic padding for navbar height */
+  padding-top: var(--nav-height, 5px);
+
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px;
+
+  /* IMPORTANT FIX */
+  z-index: 2002 !important;  /* Drawer above overlay */
+
+  transform: translateX(-100%);
+  transition: transform 0.32s ease-in-out;
+  overflow-y: auto;
+}
+
+.nav-drawer.open {
+  transform: translateX(0);
+}
+
+/* Drawer links always visible */
+.nav-drawer .nav-link {
+  display: block;
+  padding: 10px 5px;
+  font-size: 16px;
+  color: #222 !important; /* force readable color */
+}
+
+.nav-drawer .nav-link:hover {
+  background: #f3f3f3;
+  border-radius: 4px;
+}

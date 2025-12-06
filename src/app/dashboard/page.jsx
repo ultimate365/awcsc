@@ -3,16 +3,27 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { useGlobalContext } from "../../context/Store";
+import Loader from "../../components/Loader";
+import { toast } from "react-toastify";
 
 import Typed from "typed.js";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import { titleCase } from "@/modules/calculatefunctions";
+import { updateDocument } from "../../firebase/firestoreHelper";
 
 const Dashboard = () => {
-  const { state, setState, gpSportsDateState } = useGlobalContext();
+  const {
+    state,
+    setState,
+    gpSportsDateState,
+    appUpdateState,
+    setAppUpdateState,
+  } = useGlobalContext();
   const user = state.USER;
   const gp = user?.gp;
   const navigate = useRouter();
+  const [showAppUpdate, setShowAppUpdate] = useState(false);
+  const [appSettings, setAppSettings] = useState(appUpdateState);
   let details = getCookie("tid");
   let schid = getCookie("schid");
   let teacher = {
@@ -30,6 +41,7 @@ const Dashboard = () => {
     teacher = decryptObjData("tid");
   }
   const [gpSpDate, setGpSpDate] = useState("");
+  const [showLoader, setShowLoader] = useState(false);
   const el = useRef(null);
   useEffect(() => {
     if (!details) {
@@ -41,6 +53,13 @@ const Dashboard = () => {
     setGpSpDate(spDate);
     // eslint-disable-next-line
   }, []);
+  const updateAppSettings = async () => {
+    setShowLoader(true);
+    await updateDocument("appUpdate", appSettings.id, appSettings);
+    setAppUpdateState(appSettings);
+    setShowLoader(false);
+    toast.success("App Settings Updated Successfully");
+  };
   useEffect(() => {
     document.title = "AWC Sports App:Dashboard";
 
@@ -87,6 +106,15 @@ const Dashboard = () => {
         <h5 className="text-center text-primary">
           {titleCase(gp)} GP Sports Date: {gpSpDate}
         </h5>
+      )}
+      {teacher?.circle === "admin" && (
+        <button
+          className="btn btn-primary"
+          type="button"
+          onClick={() => setShowAppUpdate(true)}
+        >
+          Flag Settings
+        </button>
       )}
       {details ? (
         teacher?.convenor === "taw" ? (
@@ -136,6 +164,156 @@ const Dashboard = () => {
           </button>
         </div>
       ) : null}
+      {showAppUpdate && (
+        <div
+          className="modal fade show"
+          tabIndex="-1"
+          role="dialog"
+          style={{ display: "block" }}
+          aria-modal="true"
+        >
+          <div className="modal-dialog modal-xl">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="addNoticeLabel">
+                  App Update Settings
+                </h1>
+                <button
+                  type="button"
+                  className="btn-close"
+                  aria-label="Close"
+                  onClick={() => {
+                    setShowAppUpdate(false);
+                  }}
+                ></button>
+              </div>
+              <div className="modal-body modal-xl">
+                <div className="container"></div>
+                <div className="mb-3">
+                  <label className="form-label">App Version</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    placeholder="App Version"
+                    value={appSettings.appVersion}
+                    onChange={(e) => {
+                      setAppSettings({
+                        ...appSettings,
+                        appVersion: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Site Link</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Site Link"
+                    value={appSettings.site}
+                    onChange={(e) => {
+                      setAppSettings({
+                        ...appSettings,
+                        site: e.target.value,
+                      });
+                    }}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Update Available</label>
+                  <select
+                    className="form-select"
+                    aria-label="Default select example"
+                    value={appSettings.update}
+                    onChange={(e) => {
+                      setAppSettings({
+                        ...appSettings,
+                        update: e.target.value,
+                      });
+                    }}
+                  >
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Show Nav Flag</label>
+                  <select
+                    className="form-select"
+                    aria-label="Default select example"
+                    value={appSettings.showFlag}
+                    onChange={(e) => {
+                      setAppSettings({
+                        ...appSettings,
+                        showFlag: e.target.value === "true",
+                      });
+                    }}
+                  >
+                    <option value={true}>Yes</option>
+                    <option value={false}>No</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Admin Login Show</label>
+                  <select
+                    className="form-select"
+                    aria-label="Default select example"
+                    value={appSettings.showAdminLogin}
+                    onChange={(e) => {
+                      setAppSettings({
+                        ...appSettings,
+                        showAdminLogin: e.target.value === "true",
+                      });
+                    }}
+                  >
+                    <option value={true}>Yes</option>
+                    <option value={false}>No</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">App Id</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="App Id"
+                    value={appSettings.id}
+                    onChange={(e) => {
+                      setAppSettings({
+                        ...appSettings,
+                        id: e.target.value,
+                      });
+                    }}
+                    disabled
+                    readOnly
+                  />
+                </div>
+              </div>
+              <div className="modal-footer d-flex flex-column">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => {
+                    updateAppSettings();
+                    setShowAppUpdate(false);
+                  }}
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    setShowAppUpdate(false);
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {showLoader && <Loader />}
     </div>
   );
 };
