@@ -98,9 +98,15 @@ export default function UpdateMobile() {
         };
         const response = await OTPWidget.verifyOTP(data);
         if (response.type === "success") {
-          const docRef = isTeacher
-            ? doc(firestore, "teachers", id)
-            : doc(firestore, "userschools", id);
+          const docRef = doc(
+            firestore,
+            isTeacher
+              ? adminType === "Administrator"
+                ? "sportsAdmins"
+                : "teachers"
+              : "userschools",
+            id
+          );
           await updateDoc(docRef, {
             phone: phone.toString(),
           }).then(() => {
