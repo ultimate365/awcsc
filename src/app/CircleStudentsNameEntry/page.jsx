@@ -241,25 +241,11 @@ const CircleStudentsNameEntry = () => {
         setTeachersState(y);
         await updateDoc(doc(firestore, "teachers", el?.id), {
           circleAssistant: "taw",
-        })
-          .then(async () => {
-            try {
-              await updateDoc(doc(firestore, "sportsUsers", el?.id), {
-                circleAssistant: "taw",
-              });
-            } catch (e) {
-              console.log(e);
-            }
-          })
-          .catch((e) => console.log(e));
+        }).catch((e) => console.log(e));
       });
     await Promise.all(circleAssistantsUpdateNteacherUpdate).then(async () => {
       const createCircleAssistantNupdateTeacherData = assistants.map(
         async (el, ind) => {
-          // await axios.post("/api/updTeacherConvenor", {
-          //   id: el?.id,
-          //   circleAssistant: "admin",
-          // });
           let x = teachersState.filter((item) => item.id === el?.id)[0];
           x.circleAssistant = "admin";
           let y = teachersState.filter((item) => item.id !== el?.id);
@@ -269,14 +255,6 @@ const CircleStudentsNameEntry = () => {
           const docRef = doc(firestore, "teachers", el?.id);
           await updateDoc(docRef, {
             circleAssistant: "admin",
-          }).then(async () => {
-            try {
-              await updateDoc(doc(firestore, "sportsUsers", el?.id), {
-                circleAssistant: "admin",
-              });
-            } catch (e) {
-              console.log(e);
-            }
           });
         }
       );
@@ -299,30 +277,12 @@ const CircleStudentsNameEntry = () => {
     let y = teachersState.filter((item) => item.id !== el?.id);
     y = [...y, x];
     setTeachersState(y);
-    // await axios.post("/api/updTeacherConvenor", {
-    //   id: el?.id,
-    //   circleAssistant: "taw",
-    // });
     setCircleAssistantState(
       circleAssistantState.filter((item) => item?.id !== el?.id)
     );
     await updateDoc(doc(firestore, "teachers", el?.id), {
       circleAssistant: "taw",
-    })
-      .then(async () => {
-        try {
-          await updateDoc(doc(firestore, "sportsUsers", el?.id), {
-            circleAssistant: "taw",
-          }).then(() => {
-            setLoader(false);
-            toast.success("Assistant Removed");
-          });
-        } catch (e) {
-          setLoader(false);
-          toast.success("Assistant Removed");
-        }
-      })
-      .catch((e) => console.log(e));
+    }).catch((e) => console.log(e));
   };
 
   const columns = [
@@ -470,22 +430,9 @@ const CircleStudentsNameEntry = () => {
     teachersState.map(async (el) => {
       await updateDoc(doc(firestore, "teachers", el?.id), {
         circleAssistant: "taw",
-      })
-        .then(async () => {
-          // Updating "userteachers" Database
-          try {
-            await updateDoc(doc(firestore, "sportsUsers", el?.id), {
-              gpAssistant: "taw",
-              circleAssistant: "taw",
-              convenor: "taw",
-            });
-          } catch (error) {
-            console.log(error);
-          }
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      }).catch((e) => {
+        console.log(e);
+      });
     });
     // Updating "gpLockData" Database
     try {

@@ -25,7 +25,6 @@ import {
   maxdob,
   mindob,
 } from "../../modules/constants";
-import bcrypt from "bcryptjs";
 import {
   createDownloadLink,
   DateValueToString,
@@ -33,6 +32,7 @@ import {
   getSubmitDateInput,
   removeDuplicates,
 } from "../../modules/calculatefunctions";
+import SCHOOLS from "../../helpers/schools.json";
 const GPConvenorsPage = () => {
   const {
     setStateArray,
@@ -46,8 +46,6 @@ const GPConvenorsPage = () => {
     setAmtaWestCircleAllResultState,
     allGPAssistantsState,
     setAllGPAssistantsState,
-    userSchoolState,
-    setUserSchoolState,
     gpSportsDateState,
     setGpSportsDateState,
     gpLockState,
@@ -73,7 +71,7 @@ const GPConvenorsPage = () => {
       if (teacherdetails.convenor !== "admin") {
         if (teacherdetails.gpAssistant !== "admin") {
           console.log(teacherdetails.circle);
-          navigate.push("/login");
+          navigate.push("/Login");
         }
       }
     }
@@ -150,13 +148,9 @@ const GPConvenorsPage = () => {
     closeDate: 1728288554977,
   });
   const getSchoolData = async () => {
-    const querySnapshot = await getDocs(
-      query(collection(firestore, "schools"))
-    );
-    const data = querySnapshot.docs.map((doc) => doc.data());
-    setFilteredSchData(data);
+    setFilteredSchData(SCHOOLS);
     setConvenorsGPSchoolData(
-      data?.filter((el) => el?.gp === teacherdetails.gp)
+      SCHOOLS?.filter((el) => el?.gp === teacherdetails.gp)
     );
   };
   const getLockData = async (gp) => {
@@ -226,23 +220,10 @@ const GPConvenorsPage = () => {
             .filter((el) => el?.gp === teacherdetails.gp)
             .filter((el) => el?.gpAssistant === "admin")
         );
-        // await axios.post("/api/updTeacherConvenor", {
-        //   id: el?.id,
-        //   gpAssistant: "taw",
-        // });
+
         await updateDoc(doc(firestore, "teachers", el?.id), {
           gpAssistant: "taw",
-        })
-          .then(async () => {
-            try {
-              await updateDoc(doc(firestore, "sportsUsers", el?.id), {
-                gpAssistant: "taw",
-              });
-            } catch (e) {
-              console.log(e);
-            }
-          })
-          .catch((e) => console.log(e));
+        }).catch((e) => console.log(e));
       });
     await Promise.all(gpAssistantUpdateNteacherUpdate).then(async () => {
       const createGpAssistantNupdateTeacherData = assistants.map(
@@ -256,14 +237,6 @@ const GPConvenorsPage = () => {
           const docRef = doc(firestore, "teachers", el?.id);
           await updateDoc(docRef, {
             gpAssistant: "admin",
-          }).then(async () => {
-            try {
-              await updateDoc(doc(firestore, "sportsUsers", el?.id), {
-                gpAssistant: "admin",
-              });
-            } catch (e) {
-              console.log(e);
-            }
           });
         }
       );
@@ -300,27 +273,17 @@ const GPConvenorsPage = () => {
       gpAssistant: "taw",
     })
       .then(async () => {
-        try {
-          await updateDoc(doc(firestore, "sportsUsers", el?.id), {
-            gpAssistant: "taw",
-          }).then(() => {
-            setLoader(false);
-            toast.success("Assistant Removed", {
-              position: "top-right",
-              autoClose: 1000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-          });
-        } catch (e) {
-          console.log(e);
-          setLoader(false);
-          toast.success("Assistant Removed");
-        }
+        setLoader(false);
+        toast.success("Assistant Removed", {
+          position: "top-right",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       })
       .catch((e) => console.log(e));
   };
@@ -690,42 +653,6 @@ const GPConvenorsPage = () => {
     setGpSpDate(spDate);
     getLockData(gp);
   };
-  const updatePassword = async () => {
-    setLoader(true);
-    const password = bcrypt.hashSync(
-      selectedSchool.id + "@" + selectedSchool.gp.toLowerCase(),
-      10
-    );
-    let x = selectedSchool;
-    x.password = password;
-    // await axios.post("/api/updateuserschools", x);
-    if (userSchoolState.length > 0) {
-      let us = userSchoolState.filter((el) => el.id !== selectedSchool.id);
-      setUserSchoolState([...us, x]);
-    }
-    await updateDoc(doc(firestore, "userschools", selectedSchool.id), {
-      password: password,
-    }).then(() => {
-      setLoader(false);
-      toast.success(
-        `congratulation! ${
-          selectedSchool.school
-        }'s Password Has Been Resetted to ${
-          selectedSchool.id
-        }@${selectedSchool.gp.toLowerCase()} Successfully!`,
-        {
-          position: "top-right",
-          autoClose: 1000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
-      );
-    });
-  };
 
   const updateGPDate = async () => {
     setLoader(true);
@@ -778,12 +705,10 @@ const GPConvenorsPage = () => {
     y = [...y, x];
     setGpLockState(y);
     const docRef = doc(firestore, "gpLockData", id);
-    // await axios.post(`/api/updategpLockData`, x);
     await updateDoc(docRef, entry)
       .then(async () => {
         setLoader(false);
         setLockStatus(true);
-        // getLockData();
         toast.success(
           `congratulation! Student Entry Open For ${teacherdetails.gp} GP Sports Data`,
           {
@@ -817,14 +742,12 @@ const GPConvenorsPage = () => {
     x.entryCloseddBy = teacherdetails.tname;
     let y = gpLockState.filter((item) => item?.id !== id);
     y = [...y, x];
-    // await axios.post(`/api/updategpLockData`, x);
     setGpLockState(y);
     const docRef = doc(firestore, "gpLockData", id);
     await updateDoc(docRef, entry)
       .then(async () => {
         setLoader(false);
         setLockStatus(false);
-        // getLockData();
         toast.success(
           `congratulation! Student Entry Closed For ${teacherdetails.gp} GP Sports Data`,
           {
@@ -1536,40 +1459,6 @@ const GPConvenorsPage = () => {
               selectedSchool.school !== "" &&
               selectedSchool.school !== undefined && (
                 <div className="container my-4">
-                  <h4 className="text-center text-primary">
-                    Username: {selectedSchool.udise}
-                  </h4>
-                  <h4 className="text-center text-primary">
-                    Default Password:{" "}
-                    {selectedSchool.id + "@" + selectedSchool.gp.toLowerCase()}
-                  </h4>
-                  <button
-                    type="button"
-                    className="btn btn-danger m-1"
-                    style={{ width: "auto" }}
-                    onClick={() => {
-                      // eslint-disable-next-line
-                      let confirmReset = confirm(
-                        `Reset ${selectedSchool.school}'s Password to Default Password`
-                      );
-                      if (confirmReset) {
-                        updatePassword();
-                      } else {
-                        toast.error(`Password Not Resetted`, {
-                          position: "top-right",
-                          autoClose: 1500,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                          theme: "light",
-                        });
-                      }
-                    }}
-                  >
-                    Reset Password
-                  </button>
                   <h4 className="text-center text-primary">
                     Displaying {selectedSchool.school}'s Participants
                   </h4>

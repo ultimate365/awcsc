@@ -20,18 +20,11 @@ import {
   BUTTONCOLORS,
   events,
   gpEngNames,
-  gpNames,
   maxdob,
   mindob,
   StdClass,
 } from "../../modules/constants";
-import {
-  createDownloadLink,
-  deleteCollection,
-  removeDuplicates,
-} from "../../modules/calculatefunctions";
 import { useGlobalContext } from "../../context/Store";
-import axios from "axios";
 import { v4 as uuid } from "uuid";
 import SCHOOLS from "../../helpers/schools.json";
 export default function CircleSportsDirectNameEntry() {
@@ -146,32 +139,14 @@ export default function CircleSportsDirectNameEntry() {
   };
 
   const getTeachersData = async () => {
-    try {
-      const querySnapshot = await getDocs(
-        query(collection(firestore, "teachers"))
-      );
-      const data = querySnapshot.docs
-        .map((doc) => doc.data())
-        .sort((a, b) => a?.tname.localeCompare(b?.tname));
-      setAllTeachers(data);
-      setTeachersState(data);
-    } catch (error) {
-      await axios
-        .post("/api/getTeacher")
-        .then((response) => {
-          const data = response.data?.data?.sort((a, b) =>
-            a?.tname.localeCompare(b?.tname)
-          );
-          setLoader(false);
-          setAllTeachers(data);
-          setTeachersState(data);
-        })
-        .catch((error) => {
-          setLoader(false);
-          console.error("Error fetching Result data: ", error);
-        });
-      console.log(error);
-    }
+    const querySnapshot = await getDocs(
+      query(collection(firestore, "teachers"))
+    );
+    const data = querySnapshot.docs
+      .map((doc) => doc.data())
+      .sort((a, b) => a?.tname.localeCompare(b?.tname));
+    setAllTeachers(data);
+    setTeachersState(data);
   };
   const getAllCircleAssistantsData = async () => {
     const q = query(collection(firestore, "allCircleAssistants"));
@@ -301,7 +276,6 @@ export default function CircleSportsDirectNameEntry() {
       item.id === inputField.id ? inputField : item
     );
     setAllGPFirstsState(newData);
-    // await axios.post("/api/updateallGPFirsts", inputField);
     const docRef = doc(firestore, "allGPFirsts", inputField.id);
     await updateDoc(docRef, inputField)
       .then(async () => {
@@ -410,7 +384,6 @@ export default function CircleSportsDirectNameEntry() {
   const deleteParticipant = async (participant) => {
     try {
       setLoader(true);
-      // await axios.post("/api/delallGPFirsts", { id: participant.id });
       await deleteDoc(doc(firestore, "allGPFirsts", participant.id))
         .then(() => {
           setLoader(false);
@@ -439,123 +412,6 @@ export default function CircleSportsDirectNameEntry() {
     }
   };
 
-  const updateAssistantData = async () => {
-    setLoader(true);
-    let all = circleAssistantState;
-    let circleAssistantsUpdateNteacherUpdate = allCircleAssistants
-      .filter((el) => el?.gp === teacherdetails.gp)
-      .map(async (el) => {
-        // await axios.post("/api/updTeacherConvenor", {
-        //   id: el?.id,
-        //   circleAssistant: "taw",
-        // });
-        let x = teachersState.filter((item) => item.id === el?.id)[0];
-        x.circleAssistant = "taw";
-        let y = teachersState.filter((item) => item.id !== el?.id);
-        y = [...y, x];
-        setTeachersState(y);
-        await updateDoc(doc(firestore, "teachers", el?.id), {
-          circleAssistant: "taw",
-        })
-          .then(async () => {
-            all = all.pop((item) => item.id === el?.id);
-            // await axios.post("/api/delallCircleAssistants", {
-            //   id: el?.id,
-            // });
-            await deleteDoc(doc(firestore, "allCircleAssistants", el?.id));
-            try {
-              await updateDoc(doc(firestore, "sportsUsers", el?.id), {
-                circleAssistant: "taw",
-              });
-            } catch (e) {
-              console.log(e);
-            }
-          })
-          .catch((e) => console.log(e));
-      });
-    await Promise.all(circleAssistantsUpdateNteacherUpdate).then(async () => {
-      let createCircleAssistantNupdateTeacherData = assistants.map(
-        async (el, ind) =>
-          await setDoc(doc(firestore, "allCircleAssistants", el?.id), el).then(
-            async () => {
-              // await axios.post("/api/updTeacherConvenor", {
-              //   id: el?.id,
-              //   circleAssistant: "admin",
-              // });
-              // await axios.post("/api/addallGPAssistants", el);
-              let x = teachersState.filter((item) => item.id === el?.id)[0];
-              x.circleAssistant = "admin";
-              let y = teachersState.filter((item) => item.id !== el?.id);
-              y = [...y, x];
-              setTeachersState(y);
-              all = [...all, x];
-              const docRef = doc(firestore, "teachers", el?.id);
-              await updateDoc(docRef, {
-                circleAssistant: "admin",
-              }).then(async () => {
-                try {
-                  await updateDoc(doc(firestore, "sportsUsers", el?.id), {
-                    circleAssistant: "admin",
-                  });
-                } catch (e) {
-                  console.log(e);
-                }
-              });
-            }
-          )
-      );
-      await Promise.all(createCircleAssistantNupdateTeacherData).then(
-        async () => {
-          setCircleAssistantState(all);
-          setLoader(false);
-          toast.success("All GP Assistants Created");
-          setAssistants([]);
-        }
-      );
-    });
-  };
-
-  const removeAssistant = async (el) => {
-    setLoader(true);
-    let x = teachersState.filter((item) => item.id === el?.id)[0];
-    x.circleAssistant = "taw";
-    let y = teachersState.filter((item) => item.id !== el?.id);
-    y = [...y, x];
-    setTeachersState(y);
-    // await axios.post("/api/updTeacherConvenor", {
-    //   id: el?.id,
-    //   circleAssistant: "taw",
-    // });
-    // await axios.post("/api/delallCircleAssistants", {
-    //   id: el?.id,
-    // });
-    setCircleAssistantState(
-      circleAssistantState.filter((item) => item?.id !== el?.id)
-    );
-    await updateDoc(doc(firestore, "teachers", el?.id), {
-      circleAssistant: "taw",
-    })
-      .then(async () => {
-        await deleteDoc(doc(firestore, "allCircleAssistants", el?.id));
-        try {
-          await updateDoc(doc(firestore, "sportsUsers", el?.id), {
-            circleAssistant: "taw",
-          }).then(() => {
-            // getTeachersData();
-            // getAllCircleAssistantsData();
-            setLoader(false);
-            toast.success("Assistant Removed");
-          });
-        } catch (e) {
-          // console.log(e);
-          // getTeachersData();
-          // getAllCircleAssistantsData();
-          setLoader(false);
-          toast.success("Assistant Removed");
-        }
-      })
-      .catch((e) => console.log(e));
-  };
   const columns = [
     {
       name: "Sl",

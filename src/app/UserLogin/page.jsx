@@ -250,7 +250,7 @@ export default function UserLogin() {
     setLoader(true);
     try {
       const data = await getDocumentByField(
-        "sportsUsers",
+        "teachers",
         "empid",
         empid.toUpperCase()
       ).catch((e) => {
@@ -260,7 +260,6 @@ export default function UserLogin() {
       });
       if (data) {
         setLoader(false);
-        encryptObjData("uid", data, 10080);
         encryptObjData("tid", data, 10080);
         setCookie("t", data.tname, 10080);
         setCookie("loggedAt", Date.now(), 10080);
@@ -427,10 +426,10 @@ export default function UserLogin() {
         </div>
       )}
 
+      <h2 className="text-2xl font-bold mb-4">User Login</h2>
       {!otpSent ? (
         !showAdminLogin ? (
           <form autoComplete="off" onSubmit={submitBtn}>
-            <h2 className="text-2xl font-bold mb-4">User Login</h2>
             <div className="mb-3 col-md-6 mx-auto">
               <label htmlFor="" className="form-label">
                 Mobile No. or UDISE Code

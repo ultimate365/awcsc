@@ -1,730 +1,730 @@
 [
   {
-    "id": "school101",
-    "gp": "AMORAGORI",
-    "udise": "19160210302",
-    "school": "AMORAGORI GIRLS PRIMARY SCHOOL",
     "hoi": "SOHINI PAUL",
-    "year": 2026
+    "year": 2026,
+    "gp": "AMORAGORI",
+    "id": "school101",
+    "udise": "19160210302",
+    "school": "AMORAGORI GIRLS PRIMARY SCHOOL"
   },
   {
     "id": "school102",
-    "gp": "AMORAGORI",
-    "udise": "19160210003",
     "school": "BANCHARAM ROY PRIMARY SCHOOL",
+    "udise": "19160210003",
+    "year": 2026,
     "hoi": "RAGHABENDRA KOLEY",
-    "year": 2026
+    "gp": "AMORAGORI"
   },
   {
+    "udise": "19160214202",
+    "hoi": "AMIT RIT",
     "id": "school103",
     "gp": "GAZIPUR",
-    "udise": "19160214202",
     "school": "BAR GAZIPUR PRIMARY SCHOOL",
-    "hoi": "AMIT RIT",
     "year": 2026
   },
   {
-    "id": "school104",
-    "gp": "THALIA",
     "udise": "19160213501",
-    "school": "BER DHAIPUR PRIMARY SCHOOL",
+    "id": "school104",
+    "year": 2026,
+    "gp": "THALIA",
     "hoi": "BIKASH CHANDRA DALUI",
-    "year": 2026
+    "school": "BER DHAIPUR PRIMARY SCHOOL"
   },
   {
-    "id": "school105",
-    "gp": "NOWPARA",
     "udise": "19160214902",
-    "school": "BETAI PC PRIMARY SCHOOL",
+    "year": 2026,
+    "id": "school105",
     "hoi": "SWAPAN DAS",
-    "year": 2026
+    "school": "BETAI PC PRIMARY SCHOOL",
+    "gp": "NOWPARA"
   },
   {
     "id": "school106",
-    "gp": "THALIA",
-    "udise": "19160212801",
     "school": "BHATEGHORI PRIMARY SCHOOL",
+    "gp": "THALIA",
     "hoi": "NILADRI DHALI",
+    "udise": "19160212801",
     "year": 2026
   },
   {
-    "id": "school107",
-    "gp": "THALIA",
     "udise": "19160212802",
+    "id": "school107",
+    "year": 2026,
     "school": "BHATEGHORI SIBTALA PRIMARY SCHOOL",
     "hoi": "SIPRA MAJUMDER",
-    "year": 2026
+    "gp": "THALIA"
   },
   {
-    "id": "school108",
-    "gp": "BKBATI",
     "udise": "19160209001",
-    "school": "BINOLA KRISHNABATI PRIMARY SCHOOL",
+    "year": 2026,
+    "id": "school108",
     "hoi": "MANAS CHAKRABORTY",
-    "year": 2026
+    "gp": "BKBATI",
+    "school": "BINOLA KRISHNABATI PRIMARY SCHOOL"
   },
   {
-    "id": "school109",
-    "gp": "AMORAGORI",
-    "udise": "19160209603",
     "school": "BOALIA B PARA PRIMARY SCHOOL",
+    "year": 2026,
+    "id": "school109",
+    "udise": "19160209603",
     "hoi": "ASHIS KUMAR PARUI",
-    "year": 2026
+    "gp": "AMORAGORI"
   },
   {
-    "id": "school110",
-    "gp": "AMORAGORI",
     "udise": "19160209604",
-    "school": "BOALIA PRIMARY SCHOOL",
     "hoi": "SHYAMAL HAIT",
-    "year": 2026
+    "year": 2026,
+    "gp": "AMORAGORI",
+    "id": "school110",
+    "school": "BOALIA PRIMARY SCHOOL"
   },
   {
-    "id": "school111",
     "gp": "AMORAGORI",
-    "udise": "19160210507",
+    "year": 2026,
     "school": "CHAKJANARDAN PRIMARY SCHOOL",
     "hoi": "AMIT BARAN DIRGHANGI",
-    "year": 2026
+    "udise": "19160210507",
+    "id": "school111"
   },
   {
     "id": "school112",
+    "year": 2026,
     "gp": "AMORAGORI",
     "udise": "19160209804",
     "school": "CHAKSALIKA PRIMARY SCHOOL",
-    "hoi": "DIPANKAR PATRA",
-    "year": 2026
+    "hoi": "DIPANKAR PATRA"
   },
   {
-    "id": "school113",
-    "gp": "AMORAGORI",
     "udise": "19160209803",
-    "school": "CHAKSALIKA RAJBANSHIPARA PRIMARY SCHOOL",
     "hoi": "BHAGYADHAR KARAR",
-    "year": 2026
+    "year": 2026,
+    "gp": "AMORAGORI",
+    "id": "school113",
+    "school": "CHAKSALIKA RAJBANSHIPARA PRIMARY SCHOOL"
   },
   {
-    "id": "school114",
-    "gp": "NOWPARA",
     "udise": "19160215201",
-    "school": "CHARANOWPARA PRIMARY SCHOOL",
+    "id": "school114",
     "hoi": "MRITYUNJAY ASH",
-    "year": 2026
+    "school": "CHARANOWPARA PRIMARY SCHOOL",
+    "year": 2026,
+    "gp": "NOWPARA"
   },
   {
-    "id": "school115",
     "gp": "JHIKIRA",
-    "udise": "19160211401",
-    "school": "CHINGRAJOLE NARAYANI GIRLS PRIMARY SCHOOL",
     "hoi": "ASTAPADA DAS",
-    "year": 2026
+    "id": "school115",
+    "school": "CHINGRAJOLE NARAYANI GIRLS PRIMARY SCHOOL",
+    "year": 2026,
+    "udise": "19160211401"
   },
   {
     "id": "school116",
-    "gp": "JHIKIRA",
     "udise": "19160211502",
     "school": "CHINGRAJOLE VIVEKANANDA PRIMARY SCHOOL",
+    "gp": "JHIKIRA",
     "hoi": "CHANDANA CHAKRABORTI",
     "year": 2026
   },
   {
-    "id": "school117",
-    "gp": "JOYPUR",
-    "udise": "19160212601",
     "school": "DAKSHIN JOYPUR JR BASIC SCHOOL",
-    "hoi": "MANOJ KHOTEL",
-    "year": 2026
+    "year": 2026,
+    "gp": "JOYPUR",
+    "id": "school117",
+    "udise": "19160212601",
+    "hoi": "MANOJ KHOTEL"
   },
   {
-    "id": "school118",
-    "gp": "THALIA",
     "udise": "19160213401",
-    "school": "DHAIPUR PRIMARY SCHOOL",
     "hoi": "PRANAB GAYEN",
-    "year": 2026
+    "year": 2026,
+    "id": "school118",
+    "school": "DHAIPUR PRIMARY SCHOOL",
+    "gp": "THALIA"
   },
   {
     "id": "school119",
     "gp": "JHIKIRA",
-    "udise": "19160211602",
     "school": "DURGAPUR JUNIOR BASIC SCHOOL",
+    "year": 2026,
     "hoi": "SURAJIT KOLEY",
-    "year": 2026
+    "udise": "19160211602"
   },
   {
-    "id": "school120",
     "gp": "GAZIPUR",
-    "udise": "19160214401",
-    "school": "GAZIPUR THAKAMOYEE PRIMARY SCHOOL",
     "hoi": "SAYAN DE",
-    "year": 2026
+    "year": 2026,
+    "school": "GAZIPUR THAKAMOYEE PRIMARY SCHOOL",
+    "udise": "19160214401",
+    "id": "school120"
   },
   {
-    "id": "school121",
     "gp": "AMORAGORI",
     "udise": "19160210506",
+    "year": 2026,
     "school": "GHANASHYAMCHAK PRIMARY SCHOOL",
     "hoi": "APURBA PRODHAN",
-    "year": 2026
+    "id": "school121"
   },
   {
-    "id": "school122",
+    "hoi": "BIKASH CHANDRA JANA",
+    "year": 2026,
     "gp": "JHIKIRA",
     "udise": "19160211301",
     "school": "GHARDUBRA MONIMOHAN PRIMARY SCHOOL",
-    "hoi": "BIKASH CHANDRA JANA",
-    "year": 2026
+    "id": "school122"
   },
   {
+    "year": 2026,
     "id": "school123",
-    "gp": "AMORAGORI",
     "udise": "19160209501",
     "school": "GHOLEDWIPA PRIMARY SCHOOL",
-    "hoi": "UTPAL KUMAR SHEE",
-    "year": 2026
+    "gp": "AMORAGORI",
+    "hoi": "UTPAL KUMAR SHEE"
   },
   {
-    "id": "school124",
-    "gp": "BKBATI",
     "udise": "19160208901",
+    "gp": "BKBATI",
     "school": "HANIDHARA PRIMARY SCHOOL",
-    "hoi": "PALASH KUMAR MONDAL",
-    "year": 2026
+    "id": "school124",
+    "year": 2026,
+    "hoi": "PALASH KUMAR MONDAL"
   },
   {
-    "id": "school125",
-    "gp": "JHIKIRA",
     "udise": "19160211501",
+    "id": "school125",
     "school": "HAZRABERIA PRIMARY SCHOOL",
     "hoi": "SUBHANKAR GHOSH",
-    "year": 2026
+    "year": 2026,
+    "gp": "JHIKIRA"
   },
   {
-    "id": "school126",
     "gp": "NOWPARA",
-    "udise": "19160215002",
-    "school": "JAGALGORI PRIMARY SCHOOL",
     "hoi": "NITYANANDA GOLUI",
-    "year": 2026
+    "year": 2026,
+    "school": "JAGALGORI PRIMARY SCHOOL",
+    "udise": "19160215002",
+    "id": "school126"
   },
   {
-    "id": "school127",
     "gp": "NOWPARA",
+    "hoi": "PRABHANJAN DAS",
+    "id": "school127",
     "udise": "19160215101",
     "school": "JAYANTI PRIMARY SCHOOL",
-    "hoi": "PRABHANJAN DAS",
     "year": 2026
   },
   {
-    "id": "school128",
-    "gp": "JHAMTIA",
-    "udise": "19160202702",
     "school": "JHAMTIA DHARAMPOTA PRIMARY SCHOOL",
+    "year": 2026,
+    "id": "school128",
     "hoi": "SISIR KUMAR PRAMANICK",
-    "year": 2026
+    "udise": "19160202702",
+    "gp": "JHAMTIA"
   },
   {
-    "id": "school129",
-    "gp": "JHAMTIA",
-    "udise": "19160202802",
+    "year": 2026,
     "school": "JHAMTIA DHARAPARA PRIMARY SCHOOL",
+    "udise": "19160202802",
     "hoi": "GOURANGA BODHAK",
-    "year": 2026
+    "id": "school129",
+    "gp": "JHAMTIA"
   },
   {
-    "id": "school130",
     "gp": "JHAMTIA",
+    "year": 2026,
     "udise": "19160202601",
     "school": "JHAMTIA PRIMARY SCHOOL",
     "hoi": "PROSENJIT GHOSH",
-    "year": 2026
+    "id": "school130"
   },
   {
-    "id": "school131",
-    "gp": "JHAMTIA",
-    "udise": "19160202801",
+    "year": 2026,
     "school": "JHAMTIA SELNAPARA PRIMARY SCHOOL",
+    "id": "school131",
     "hoi": "SUSIL KUMAR SAMANTA",
-    "year": 2026
+    "gp": "JHAMTIA",
+    "udise": "19160202801"
   },
   {
-    "id": "school132",
     "gp": "JHIKIRA",
-    "udise": "19160211105",
     "school": "JHIKIRA HIGH ATT PRIMARY SCHOOL",
     "hoi": "PINTU SAU",
-    "year": 2026
+    "year": 2026,
+    "udise": "19160211105",
+    "id": "school132"
   },
   {
-    "id": "school133",
-    "gp": "JHIKIRA",
     "udise": "19160211001",
     "school": "JHIKIRA MOTIMONI GIRLS PRIMARY SCHOOL",
+    "year": 2026,
+    "id": "school133",
     "hoi": "DEBASISH SAMANTA",
-    "year": 2026
+    "gp": "JHIKIRA"
   },
   {
     "id": "school134",
-    "gp": "JHIKIRA",
     "udise": "19160211101",
-    "school": "JHIKIRA MUSLIMPARA PRIMARY SCHOOL",
+    "gp": "JHIKIRA",
     "hoi": "NILIMA CHANDA",
+    "school": "JHIKIRA MUSLIMPARA PRIMARY SCHOOL",
     "year": 2026
   },
   {
-    "id": "school135",
     "gp": "JHIKIRA",
-    "udise": "19160210901",
+    "year": 2026,
     "school": "JHIKIRA SATISH CHANDRA JR BASIC SCHOOL",
     "hoi": "TAPASI ACHARYYA",
-    "year": 2026
+    "udise": "19160210901",
+    "id": "school135"
   },
   {
-    "id": "school136",
-    "gp": "JOYPUR",
     "udise": "19160212301",
     "school": "JOYPUR BAKULTALA PRIMARY SCHOOL",
+    "year": 2026,
     "hoi": "NILADRY SEKHAR KHAN",
-    "year": 2026
+    "id": "school136",
+    "gp": "JOYPUR"
   },
   {
-    "id": "school137",
-    "gp": "JOYPUR",
     "udise": "19160212501",
-    "school": "JOYPUR JOYCHANDI TALA PRIMARY SCHOOL",
     "hoi": "SUDIPTA BHANDARI",
-    "year": 2026
+    "school": "JOYPUR JOYCHANDI TALA PRIMARY SCHOOL",
+    "year": 2026,
+    "gp": "JOYPUR",
+    "id": "school137"
   },
   {
-    "id": "school138",
     "gp": "JOYPUR",
+    "year": 2026,
     "udise": "19160212002",
     "school": "JOYPUR FAKIRDAS HIGH ATT PRIMARY SCHOOL",
     "hoi": "SK RAJIBUL HAQUE",
-    "year": 2026
+    "id": "school138"
   },
   {
+    "udise": "19160212302",
+    "year": 2026,
     "id": "school139",
     "gp": "JOYPUR",
-    "udise": "19160212302",
-    "school": "JOYPUR RAJBANSHI PARA PRIMARY SCHOOL",
     "hoi": "SUJIT GUCHHAIT",
-    "year": 2026
+    "school": "JOYPUR RAJBANSHI PARA PRIMARY SCHOOL"
   },
   {
-    "id": "school140",
-    "gp": "JOYPUR",
     "udise": "19160212101",
     "school": "JOYPUR SANTRAPARA PRIMARY SCHOOL",
+    "year": 2026,
+    "id": "school140",
     "hoi": "SK ASIF MURSHED",
-    "year": 2026
+    "gp": "JOYPUR"
   },
   {
-    "id": "school141",
-    "gp": "JOYPUR",
     "udise": "19160212102",
-    "school": "JOYPUR SURANGAMAYEE GIRLS PRIMARY SCHOOL",
     "hoi": "TANDRA DALUI",
-    "year": 2026
+    "school": "JOYPUR SURANGAMAYEE GIRLS PRIMARY SCHOOL",
+    "year": 2026,
+    "gp": "JOYPUR",
+    "id": "school141"
   },
   {
-    "id": "school142",
+    "hoi": "MRITUNJOY MANNA",
+    "year": 2026,
     "gp": "JHAMTIA",
     "udise": "19160202901",
     "school": "KALASHDIHI PRIMARY SCHOOL",
-    "hoi": "MRITUNJOY MANNA",
-    "year": 2026
+    "id": "school142"
   },
   {
     "id": "school143",
-    "gp": "GAZIPUR",
-    "udise": "19160214102",
+    "year": 2026,
     "school": "KALBANSH GAZENDRA PRIMARY SCHOOL",
     "hoi": "SUSMITA DHAWA",
-    "year": 2026
+    "gp": "GAZIPUR",
+    "udise": "19160214102"
   },
   {
     "id": "school144",
-    "gp": "JHAMTIA",
-    "udise": "19160203401",
     "school": "KAMARGORIA PRIMARY SCHOOL",
     "hoi": "TAPAN KUMAR KOLEY",
-    "year": 2026
-  },
-  {
-    "id": "school145",
     "gp": "JHAMTIA",
-    "udise": "19160202701",
-    "school": "KAMARKHOLA PRIMARY SCHOOL",
-    "hoi": "SAMIR BAG",
-    "year": 2026
+    "year": 2026,
+    "udise": "19160203401"
   },
   {
-    "id": "school146",
+    "udise": "19160202701",
+    "gp": "JHAMTIA",
+    "id": "school145",
+    "hoi": "SAMIR BAG",
+    "year": 2026,
+    "school": "KAMARKHOLA PRIMARY SCHOOL"
+  },
+  {
     "gp": "AMORAGORI",
     "udise": "19160209905",
+    "year": 2026,
     "school": "KANKROLE PREMOMOYEE PRIMARY SCHOOL",
     "hoi": "TAPAS KUMAR GHOSH",
-    "year": 2026
+    "id": "school146"
   },
   {
-    "id": "school147",
-    "gp": "JHAMTIA",
-    "udise": "19160203001",
+    "year": 2026,
     "school": "KHAJURDAHA PRIMARY SCHOOL",
+    "id": "school147",
+    "udise": "19160203001",
     "hoi": "PANKAJ KUMAR MONDAL",
-    "year": 2026
+    "gp": "JHAMTIA"
   },
   {
-    "id": "school148",
-    "gp": "GAZIPUR",
-    "udise": "19160213801",
-    "school": "KHORIOP HIGH ATT PRIMARY SCHOOL",
     "hoi": "SUDIPTA DAS",
+    "school": "KHORIOP HIGH ATT PRIMARY SCHOOL",
+    "udise": "19160213801",
+    "gp": "GAZIPUR",
+    "id": "school148",
     "year": 2026
   },
   {
-    "id": "school149",
     "gp": "GAZIPUR",
     "udise": "19160213902",
-    "school": "KHOROP SOUTH PRIMARY",
+    "id": "school149",
     "hoi": "SUJATA MANNA",
-    "year": 2026
+    "year": 2026,
+    "school": "KHOROP SOUTH PRIMARY"
   },
   {
-    "id": "school150",
-    "gp": "BKBATI",
     "udise": "19160208701",
     "school": "KUNDULIA TAPASILI PRIMARY SCHOOL",
-    "hoi": "SNEHASHIS JANA",
-    "year": 2026
+    "year": 2026,
+    "gp": "BKBATI",
+    "id": "school150",
+    "hoi": "SNEHASHIS JANA"
   },
   {
-    "id": "school151",
-    "gp": "AMORAGORI",
-    "udise": "19160209401",
+    "year": 2026,
     "school": "MAHAKALPUR MC HIGH ATT PRIMARY SCHOOL",
-    "hoi": "NIRMALYA DAS",
-    "year": 2026
+    "gp": "AMORAGORI",
+    "id": "school151",
+    "udise": "19160209401",
+    "hoi": "NIRMALYA DAS"
   },
   {
-    "id": "school152",
     "gp": "THALIA",
+    "id": "school152",
+    "year": 2026,
     "udise": "19160213602",
-    "school": "MAINAN PRIMARY SCHOOL",
     "hoi": "NIRMAL DAS",
-    "year": 2026
+    "school": "MAINAN PRIMARY SCHOOL"
   },
   {
-    "id": "school153",
+    "hoi": "HEMANTA KUMAR SADHUKHAN",
+    "year": 2026,
     "gp": "AMORAGORI",
     "udise": "19160209502",
-    "school": "MANUCHAK ORIENTED PRIMARY SCHOOL",
-    "hoi": "HEMANTA KUMAR SADHUKHAN",
-    "year": 2026
+    "id": "school153",
+    "school": "MANUCHAK ORIENTED PRIMARY SCHOOL"
   },
   {
+    "school": "MENOKA SMRITI VIDYAMANDIR JR BASIC",
+    "year": 2026,
     "id": "school154",
     "gp": "AMORAGORI",
-    "udise": "19160210502",
-    "school": "MENOKA SMRITI VIDYAMANDIR JR BASIC",
     "hoi": "SK GOLAM EAJDANI",
-    "year": 2026
+    "udise": "19160210502"
   },
   {
-    "id": "school155",
     "gp": "AMORAGORI",
+    "id": "school155",
+    "year": 2026,
     "udise": "19160209703",
-    "school": "NAKUBAR PRIMARY SCHOOL",
     "hoi": "DEBABRATA DAS",
-    "year": 2026
+    "school": "NAKUBAR PRIMARY SCHOOL"
   },
   {
-    "id": "school156",
     "gp": "BKBATI",
     "udise": "19160209102",
-    "school": "NISCHINTAPUR PRIMARY SCHOOL",
     "hoi": "KARTICK CHANDRA MAITI",
-    "year": 2026
+    "id": "school156",
+    "year": 2026,
+    "school": "NISCHINTAPUR PRIMARY SCHOOL"
   },
   {
     "id": "school157",
-    "gp": "NOWPARA",
-    "udise": "19160215403",
     "school": "NOWPARA GAZIPUR PRIMARY SCHOOL",
+    "udise": "19160215403",
     "hoi": "PALASH KUMAR DALUI",
-    "year": 2026
+    "year": 2026,
+    "gp": "NOWPARA"
   },
   {
-    "id": "school158",
-    "gp": "NOWPARA",
     "udise": "19160215301",
     "school": "NOWPARA JUNIOR BASIC SCHOOL",
+    "year": 2026,
+    "id": "school158",
     "hoi": "SUBIR MANNA",
-    "year": 2026
+    "gp": "NOWPARA"
   },
   {
-    "id": "school159",
-    "gp": "AMORAGORI",
     "udise": "19160210204",
-    "school": "NUTANGRAM PRIMARY SCHOOL",
+    "gp": "AMORAGORI",
+    "id": "school159",
     "hoi": "SISIRKANA BERA",
+    "school": "NUTANGRAM PRIMARY SCHOOL",
     "year": 2026
   },
   {
+    "udise": "19160211201",
     "id": "school160",
     "gp": "JHIKIRA",
-    "udise": "19160211201",
-    "school": "PAIKBASA PRIMARY SCHOOL",
+    "year": 2026,
     "hoi": "SAIKAT MONDAL",
-    "year": 2026
+    "school": "PAIKBASA PRIMARY SCHOOL"
   },
   {
-    "id": "school161",
-    "gp": "GAZIPUR",
-    "udise": "19160214504",
     "school": "PASCHIM GAZIPUR II PRIMARY SCHOOL",
+    "year": 2026,
+    "udise": "19160214504",
+    "id": "school161",
     "hoi": "AMIYA KUMAR RIT",
-    "year": 2026
+    "gp": "GAZIPUR"
   },
   {
     "id": "school162",
-    "gp": "NOWPARA",
-    "udise": "19160215503",
+    "year": 2026,
     "school": "PASCHIM NOWPARA PRIMARY SCHOOL",
+    "gp": "NOWPARA",
     "hoi": "MANTU MALICK",
-    "year": 2026
+    "udise": "19160215503"
   },
   {
-    "id": "school163",
     "gp": "JHAMTIA",
     "udise": "19160203201",
-    "school": "PASCHIM SAURIA PRIMARY SCHOOL",
     "hoi": "ABHISHEK CHATTERJEE",
-    "year": 2026
+    "id": "school163",
+    "year": 2026,
+    "school": "PASCHIM SAURIA PRIMARY SCHOOL"
   },
   {
-    "id": "school164",
-    "gp": "BKBATI",
-    "udise": "19160208702",
     "school": "RANJOYBAR MUZAFFAR AHMED PRIMARY SCHOOL",
-    "hoi": "BHOLANATH DALUI",
-    "year": 2026
+    "udise": "19160208702",
+    "year": 2026,
+    "gp": "BKBATI",
+    "id": "school164",
+    "hoi": "BHOLANATH DALUI"
   },
   {
     "id": "school165",
-    "gp": "BKBATI",
-    "udise": "19160208801",
+    "year": 2026,
     "school": "RANJOYBAR PRIMARY SCHOOL",
+    "udise": "19160208801",
     "hoi": "ARATI PATRA",
-    "year": 2026
+    "gp": "BKBATI"
   },
   {
-    "id": "school166",
-    "gp": "AMORAGORI",
     "udise": "19160210103",
+    "gp": "AMORAGORI",
     "school": "RAUTARA PRIMARY SCHOOL",
     "hoi": "PRANAB KUMAR POREY",
+    "id": "school166",
     "year": 2026
   },
   {
+    "hoi": "MITHUN CHAKRABORTY",
     "id": "school167",
-    "gp": "BKBATI",
+    "year": 2026,
     "udise": "19160208501",
     "school": "SAHARABERIA PRIMARY SCHOOL",
-    "hoi": "MITHUN CHAKRABORTY",
-    "year": 2026
+    "gp": "BKBATI"
   },
   {
-    "id": "school168",
-    "gp": "BKBATI",
-    "udise": "19160208601",
     "school": "SAHARABERIA SUKANTA PRIMARY SCHOOL",
     "hoi": "AVIJIT KANRAR",
-    "year": 2026
+    "gp": "BKBATI",
+    "id": "school168",
+    "year": 2026,
+    "udise": "19160208601"
   },
   {
+    "school": "SANURIA ORIENTED PRIMARY SCHOOL",
+    "year": 2026,
     "id": "school169",
     "gp": "JHAMTIA",
-    "udise": "19160203101",
-    "school": "SANURIA ORIENTED PRIMARY SCHOOL",
     "hoi": "TAPAS PATRA",
-    "year": 2026
+    "udise": "19160203101"
   },
   {
-    "id": "school170",
-    "gp": "JHAMTIA",
-    "udise": "19160203202",
-    "school": "SATPOTA PRIMARY SCHOOL",
     "hoi": "GAUTAM CHAKRABORTTY",
-    "year": 2026
+    "gp": "JHAMTIA",
+    "year": 2026,
+    "school": "SATPOTA PRIMARY SCHOOL",
+    "udise": "19160203202",
+    "id": "school170"
   },
   {
-    "id": "school171",
-    "gp": "THALIA",
-    "udise": "19160213301",
     "school": "SEHAGORI PRIMARY SCHOOL",
-    "hoi": "DEBOSREE MAITY",
-    "year": 2026
+    "year": 2026,
+    "gp": "THALIA",
+    "id": "school171",
+    "udise": "19160213301",
+    "hoi": "SANGHAMITRA MAITY"
   },
   {
-    "id": "school172",
-    "gp": "THALIA",
-    "udise": "19160213302",
     "school": "SEHAGORI RAJBANSHIPARA PRIMARY SCHOOL",
+    "udise": "19160213302",
+    "id": "school172",
     "hoi": "MINTU MALIK",
-    "year": 2026
+    "year": 2026,
+    "gp": "THALIA"
   },
   {
     "id": "school173",
-    "gp": "JHIKIRA",
-    "udise": "19160211802",
-    "school": "SHIBGACHIA PRIMARY SCHOOL",
     "hoi": "PARTHO SARATHI HAZRA",
-    "year": 2026
+    "udise": "19160211802",
+    "year": 2026,
+    "gp": "JHIKIRA",
+    "school": "SHIBGACHIA PRIMARY SCHOOL"
   },
   {
-    "id": "school174",
-    "gp": "JHIKIRA",
-    "udise": "19160211803",
+    "year": 2026,
     "school": "SIBGACHIA HORIZON PRIMARY SCHOOL",
+    "udise": "19160211803",
     "hoi": "SALIL KUMAR CHAKRABORTTY",
-    "year": 2026
+    "id": "school174",
+    "gp": "JHIKIRA"
   },
   {
-    "id": "school175",
     "gp": "JHIKIRA",
-    "udise": "19160211702",
     "school": "SOUTH SIBGACHIA PRIMARY SCHOOL",
+    "udise": "19160211702",
+    "id": "school175",
     "hoi": "PRASUN HAZRA",
     "year": 2026
   },
   {
     "id": "school176",
     "gp": "JHAMTIA",
+    "year": 2026,
     "udise": "19160202902",
     "school": "TELIBERIA PRIMARY SCHOOL",
-    "hoi": "KANIKA PANJA",
-    "year": 2026
+    "hoi": "KANIKA PANJA"
   },
   {
-    "id": "school177",
-    "gp": "BKBATI",
-    "udise": "19160209002",
-    "school": "THALIA HARA CHAND PRIMARY SCHOOL",
     "hoi": "AMIYA KUMAR KOLEY",
-    "year": 2026
+    "year": 2026,
+    "id": "school177",
+    "udise": "19160209002",
+    "gp": "BKBATI",
+    "school": "THALIA HARA CHAND PRIMARY SCHOOL"
   },
   {
-    "id": "school178",
-    "gp": "THALIA",
     "udise": "19160213101",
+    "gp": "THALIA",
+    "id": "school178",
     "school": "THALIA SIBTOLA PRIMARY SCHOOL",
     "hoi": "HEMANTA KUMAR MISRA",
     "year": 2026
   },
   {
-    "id": "school179",
-    "gp": "GAZIPUR",
     "udise": "19160214603",
-    "school": "UTTAR GAZIPUR PRIMARY SCHOOL",
     "hoi": "MUNMUN CHANDRA",
-    "year": 2026
+    "school": "UTTAR GAZIPUR PRIMARY SCHOOL",
+    "year": 2026,
+    "gp": "GAZIPUR",
+    "id": "school179"
   },
   {
-    "id": "school180",
-    "gp": "JOYPUR",
-    "udise": "19160212001",
-    "school": "UTTAR JOYPUR PRIMARY SCHOOL",
     "hoi": "RINA ADAK",
-    "year": 2026
+    "gp": "JOYPUR",
+    "year": 2026,
+    "school": "UTTAR JOYPUR PRIMARY SCHOOL",
+    "id": "school180",
+    "udise": "19160212001"
   },
   {
+    "year": 2026,
+    "school": "UTTAR KALBANSH KISHOR MOHAN PRIMARY SCHOOL",
+    "hoi": "SAILEN NEBU",
     "id": "school181",
     "gp": "GAZIPUR",
-    "udise": "19160214101",
-    "school": "UTTAR KALBANSH KISHORI MOHAN PRIMARY SCHOOL",
-    "hoi": "SAILEN NEBU",
-    "year": 2026
+    "udise": "19160214101"
   },
   {
-    "id": "school182",
-    "gp": "AMORAGORI",
-    "udise": "19160209904",
     "school": "UTTAR KANKROLE PRIMARY SCHOOL",
+    "year": 2026,
+    "udise": "19160209904",
     "hoi": "KAMAL KUMAR DHARA",
-    "year": 2026
+    "id": "school182",
+    "gp": "AMORAGORI"
   },
   {
     "id": "school183",
-    "gp": "THALIA",
-    "udise": "19160213201",
-    "school": "UTTAR SEHAGORI PRIMARY SCHOOL",
-    "hoi": "SK MAIDUL ISLAM",
-    "year": 2026
-  },
-  {
-    "id": "school184",
-    "school": "BETAI VIDYASAGAR SSK",
-    "udise": "19160214801",
-    "gp": "NOWPARA",
     "year": 2026,
-    "hoi": "SSK DIDI"
+    "school": "UTTAR SEHAGORI PRIMARY SCHOOL",
+    "udise": "19160213201",
+    "gp": "THALIA",
+    "hoi": "SK MAIDUL ISLAM"
   },
   {
-    "id": "school185",
+    "school": "BETAI VIDYASAGAR SSK",
+    "hoi": "SSK DIDI",
+    "year": 2025,
+    "gp": "NOWPARA",
+    "id": "school184",
+    "udise": "19160214801"
+  },
+  {
+    "gp": "AMORAGORI",
+    "year": 2025,
     "school": "DAKSHIN KANKROL BHUINYAPARA SSK",
     "udise": "19160210203",
-    "gp": "AMORAGORI",
-    "year": 2026,
-    "hoi": "SSK DIDI"
+    "hoi": "SSK DIDI",
+    "id": "school185"
   },
   {
-    "id": "school186",
+    "year": 2025,
     "school": "DAKSHIN SAURIA NAZRUL SSK",
-    "udise": "19160203103",
+    "hoi": "SSK DIDI",
+    "id": "school186",
     "gp": "JHAMTIA",
-    "year": 2026,
-    "hoi": "SSK DIDI"
+    "udise": "19160203103"
   },
   {
     "id": "school187",
+    "year": 2025,
     "school": "MAINAN SSK",
     "udise": "19160213704",
-    "gp": "THALIA",
-    "year": 2026,
-    "hoi": "SABITA MANNA"
+    "hoi": "SABITA MANNA",
+    "gp": "THALIA"
   },
   {
+    "year": 2025,
+    "hoi": "SSK DIDI",
     "id": "school188",
-    "school": "NISCHINTYAPUR AMARTYA SEN SSK",
-    "udise": "19160209202",
     "gp": "BKBATI",
-    "year": 2026,
-    "hoi": "SSK DIDI"
+    "school": "NISCHINTYAPUR AMARTYA SEN SSK",
+    "udise": "19160209202"
   },
   {
+    "hoi": "SSK DIDI",
+    "year": 2025,
     "id": "school189",
-    "school": "PASCHIM KAMAR GORIA SSK",
     "udise": "19160203301",
     "gp": "JHAMTIA",
-    "year": 2026,
-    "hoi": "SSK DIDI"
+    "school": "PASCHIM KAMAR GORIA SSK"
   },
   {
     "id": "school190",
-    "school": "RANJOYBAR SSK",
     "udise": "19160208804",
+    "school": "RANJOYBAR SSK",
     "gp": "BKBATI",
-    "year": 2026,
+    "year": 2025,
     "hoi": "SSK DIDI"
   },
   {
-    "id": "school191",
-    "school": "SEHAGORI PASCHIM PARA SSK",
     "udise": "19160213304",
+    "year": 2025,
+    "hoi": "SUKLA GAYEN",
+    "id": "school191",
     "gp": "THALIA",
-    "year": 2026,
-    "hoi": "SUKLA GAYEN"
+    "school": "SEHAGORI PASCHIM PARA SSK"
   }
 ]

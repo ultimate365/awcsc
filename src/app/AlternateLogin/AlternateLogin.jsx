@@ -1,87 +1,62 @@
 "use client";
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { useGlobalContext } from "../../context/Store";
 import { encryptObjData, setCookie } from "../../modules/encryption";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
-import axios from "axios";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { firestore } from "../../context/FirbaseContext";
+import { OTPWidget } from "@msg91comm/sendotp-sdk";
+import { getDocumentByField } from "../../firebase/firestoreHelper";
 export default function AlternateLogin() {
+  const widgetId = process.env.NEXT_PUBLIC_MSG91_WIDGET_ID;
+  const authToken = process.env.NEXT_PUBLIC_MSG91_AUTH_TOKEN;
+
+  useEffect(() => {
+    OTPWidget.initializeWidget(widgetId, authToken);
+  }, []);
   const { setState } = useGlobalContext();
   const formRef = useRef(null);
   const navigate = useRouter();
-  const [phone, setPhone] = useState(null);
-  const [name, setName] = useState(null);
+
   const [displayLoader, setDisplayLoader] = useState(false);
   const [mobileOTP, setMobileOTP] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [showRetryBtn, setShowRetryBtn] = useState(false);
-  const [tData, setTData] = useState({});
-  const [uData, setUData] = useState({});
   const searchParams = useSearchParams();
-  const username = searchParams.get("username");
+  const phone = searchParams.get("phone");
   const type = searchParams.get("type");
   const redirectURL = searchParams.get("redirectURL");
-
-  const getUserData = async () => {
-    try {
-      setDisplayLoader(true);
-      const collectionRef = collection(firestore, "sportsUsers");
-      const q = query(collectionRef, where("username", "==", username));
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.docs.length > 0) {
-        let fdata = querySnapshot.docs[0].data();
-
-        if (!fdata.disabled) {
-          setDisplayLoader(false);
-          toast.success("Congrats! You are Logined Successfully!");
-          const collectionRef2 = collection(firestore, "teachers");
-          const q2 = query(collectionRef2, where("empid", "==", fdata.empid));
-          const querySnapshot2 = await getDocs(q2);
-          let fdata2 = querySnapshot2.docs[0].data();
-          setPhone(fdata2.phone);
-          setName(fdata2.tname);
-          setTData(fdata2);
-          setUData(fdata);
-        } else {
-          setDisplayLoader(false);
-          toast.error("Your Account is Disabled!");
-        }
-      } else {
-        const collectionRef2 = collection(firestore, "userschools");
-        const q2 = query(collectionRef2, where("username", "==", username));
-        const querySnapshot2 = await getDocs(q2);
-
-        if (querySnapshot2.docs.length > 0) {
-          let fdata2 = querySnapshot2.docs[0].data();
-          setDisplayLoader(false);
-          setPhone(fdata2.phone);
-          setName(fdata2.hoi);
-          setUData(fdata2);
-          toast.success("Congrats! You are Logined Successfully!");
-        } else {
-          setDisplayLoader(false);
-          toast.error("Invalid Username or Password!");
-        }
-      }
-    } catch (error) {
+  const [reqId, setReqId] = useState("");
+  const sendVerificationOTP = async () => {
+    setDisplayLoader(true);
+    const data = {
+      identifier: `91${phone}`,
+    };
+    const response = await OTPWidget.sendOTP(data);
+    if (response.type === "success") {
+      setReqId(response.message);
+      toast.success("OTP sent to your Mobile Number!");
       setDisplayLoader(false);
-      toast.error("Error Occurred: " + error.message);
+      setOtpSent(true);
+      setShowRetryBtn(false);
+      setTimeout(() => {
+        setShowRetryBtn(true);
+      }, 30000);
+    } else {
+      setShowRetryBtn(true);
+      toast.error("Failed to send OTP!");
+      setDisplayLoader(false);
     }
   };
-
-  const sendVerificationOTP = async (phone, name) => {
+  const resendOTP = async () => {
     setDisplayLoader(true);
-    const res = await axios.post("/api/sendMobileOTP", {
-      phone,
-      name,
-    });
-    const record = res.data;
-    if (record.success) {
+    const data = {
+      reqId: reqId,
+      retryChannel: 11,
+    };
+    const response = await OTPWidget.retryOTP(data);
+    if (response.type === "success") {
       toast.success("OTP sent to your Mobile Number!");
       setDisplayLoader(false);
       setOtpSent(true);
@@ -99,40 +74,41 @@ export default function AlternateLogin() {
     e.preventDefault();
     if (mobileOTP !== "" && mobileOTP.length === 6) {
       setDisplayLoader(true);
-      const res = await axios.post("/api/verifyMobileOTP", {
-        phone,
-        phoneCode: mobileOTP,
-      });
-      const record = res.data;
-      if (record.success) {
+      const data = {
+        otp: mobileOTP,
+        reqId: reqId,
+      };
+      const response = await OTPWidget.verifyOTP(data);
+      if (response.type === "success") {
         toast.success("Your Mobile Number is successfully verified!");
         setDisplayLoader(false);
         if (type === "teacher") {
-          encryptObjData("uid", uData, 10080);
-          encryptObjData("tid", tData, 10080);
-          setCookie("t", tData.tname, 10080);
+          const data = await getDocumentByField("teachers", "phone", phone);
+          encryptObjData("tid", data, 10080);
+          setCookie("t", data.tname, 10080);
           setCookie("loggedAt", Date.now(), 10080);
 
           setTimeout(() => {
             setState({
-              USER: uData,
-              ACCESS: tData.circle,
+              USER: data,
+              ACCESS: data.circle,
               LOGGEDAT: Date.now(),
               TYPE: "teacher",
             });
-            navigate.push(redirectURL ? `/${redirectURL}` : "/dashboard");
+            navigate.push(redirectURL ? `/${redirectURL}` : "/Dashboard");
           }, 500);
         } else {
-          encryptObjData("schid", uData, 10080);
+          const data = await getDocumentByField("userschools", "phone", phone);
+          encryptObjData("schid", data, 10080);
           setCookie("loggedAt", Date.now(), 10080);
           setTimeout(() => {
             setState({
-              USER: uData,
-              ACCESS: uData.convenor,
+              USER: data,
+              ACCESS: data.circle,
               LOGGEDAT: Date.now(),
               TYPE: "school",
             });
-            navigate.push(redirectURL ? `/${redirectURL}` : "/dashboard");
+            navigate.push(redirectURL ? `/${redirectURL}` : "/Dashboard");
           }, 500);
         }
       } else {
@@ -146,10 +122,10 @@ export default function AlternateLogin() {
   };
 
   useEffect(() => {
-    if (!username && !type) {
-      navigate.push("/logout");
+    if (!phone && !type) {
+      navigate.push("/Logout");
     }
-    getUserData();
+
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -166,7 +142,7 @@ export default function AlternateLogin() {
         <button
           type="button"
           className="btn btn-primary m-1"
-          onClick={() => sendVerificationOTP(phone, name)}
+          onClick={() => sendVerificationOTP()}
         >
           Send Verification OTP
         </button>
@@ -174,7 +150,7 @@ export default function AlternateLogin() {
         <div>
           {/* <p>Please check your OTP on Our Telegram Group</p> */}
           <p>
-            Please check your Telegram App on +91-
+            Please check your Mobile +91-
             {`${phone?.slice(0, 4)}XXXX${phone?.slice(8, 10)}`} for an OTP.
           </p>
           <div className="col-md-6 mx-auto">
@@ -215,7 +191,7 @@ export default function AlternateLogin() {
               <button
                 type="button"
                 className="btn btn-primary m-1"
-                onClick={() => sendVerificationOTP(phone, name)}
+                onClick={resendOTP}
               >
                 Resend OTP
               </button>

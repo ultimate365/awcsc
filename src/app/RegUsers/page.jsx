@@ -719,15 +719,6 @@ const RegUsers = () => {
         theme="light"
       />
       <div>
-        {/* <button
-          type="button"
-          className="btn btn-primary m-2"
-          onClick={() => {
-            createDownloadLink(data, "sportsUsers");
-          }}
-        >
-          Download User Teacher's Data
-        </button> */}
         <button
           type="button"
           className="btn btn-success m-2"

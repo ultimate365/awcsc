@@ -14,12 +14,10 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../../context/FirbaseContext";
 import { toast } from "react-toastify";
-import bcrypt from "bcryptjs";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import { gpEngNames } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
-import axios from "axios";
 import { createDownloadLink } from "@/modules/calculatefunctions";
 const AllTeachers = () => {
   const { teachersState, setTeachersState, schoolState } = useGlobalContext();
@@ -191,7 +189,7 @@ const AllTeachers = () => {
   useEffect(() => {
     if (!details) {
       if (teacherdetails.circle !== "admin") {
-        navigate.push("/logout");
+        navigate.push("/Logout");
       }
     }
     // eslint-disable-next-line
