@@ -302,7 +302,13 @@ const Navbar = () => {
             </small>
           )}
 
-          {type === "teacher" && <small className="text-muted">Teacher</small>}
+          {type === "teacher" && (
+            <small className="text-muted">
+              {`${tidObj?.desig ?? user?.tname} of ${titleCase(
+                tidObj?.school ?? user?.school
+              )} GP ${tidObj?.gp ?? user?.gp}` ?? user?.tname}
+            </small>
+          )}
         </div>
 
         {/* COMMON MENU */}
