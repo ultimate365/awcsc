@@ -150,7 +150,7 @@ const RegUsers = () => {
   useEffect(() => {
     if (!details) {
       if (teacherdetails.circle !== "admin") {
-        navigate.push("/logout");
+        navigate.push("/Logout");
       }
     }
     // eslint-disable-next-line
