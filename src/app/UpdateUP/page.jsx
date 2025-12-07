@@ -60,10 +60,10 @@ const UpdateUP = () => {
   const [showEmailRetryBtn, setShowEmailRetryBtn] = useState(false);
   const [reqId, setReqId] = useState("");
   const checkUser = () => {
-    let details = getCookie("uid");
+    let details = getCookie("tid");
     let schdetails = getCookie("schid");
     if (details) {
-      userdetails = decryptObjData("uid");
+      userdetails = decryptObjData("tid");
       setIsTeacher(true);
       setId(userdetails.id);
       setUsername(userdetails.username);
@@ -98,7 +98,7 @@ const UpdateUP = () => {
         TYPE: "school",
       });
     } else {
-      navigate.push("/logout");
+      navigate.push("/Logout");
     }
   };
 
@@ -198,7 +198,7 @@ const UpdateUP = () => {
             theme: "light",
           });
           setTimeout(() => {
-            navigate.push("/logout");
+            navigate.push("/Logout");
           }, 1500);
         });
       }
@@ -231,7 +231,7 @@ const UpdateUP = () => {
               theme: "light",
             });
             setTimeout(() => {
-              navigate.push("/logout");
+              navigate.push("/Logout");
             }, 1500);
           });
         } catch (e) {
@@ -331,7 +331,7 @@ const UpdateUP = () => {
               toast.success("Your Mobile Number is successfully verified!");
               setLoader(false);
               setTimeout(async () => {
-                navigate.push("/logout");
+                navigate.push("/Logout");
                 setState({
                   USER: {},
                   ACCESS: null,
@@ -401,7 +401,7 @@ const UpdateUP = () => {
             toast.success("Your Email is successfully verified!");
             setLoader(false);
             setTimeout(async () => {
-              navigate.push("/logout");
+              navigate.push("/Logout");
               setState({
                 USER: {},
                 ACCESS: null,

@@ -204,9 +204,9 @@ const Navbar = () => {
           show: (ctx) => isSchool(ctx),
         },
         {
-          key: "update_profile",
-          label: "Update Profile",
-          to: "/UpdateUP",
+          key: "update_mobile",
+          label: "Update Mobile",
+          to: "/UpdateMobile",
           show: (ctx) => isSchool(ctx),
         },
       ],
@@ -238,9 +238,9 @@ const Navbar = () => {
           show: (ctx) => isTeacher(ctx) && hasAccess(ctx, "admin"),
         },
         {
-          key: "update_profile",
-          label: "Update Profile",
-          to: "/UpdateUP",
+          key: "update_mobile",
+          label: "Update Mobile",
+          to: "/UpdateMobile",
           show: (ctx) => isTeacher(ctx),
         },
       ],
@@ -290,9 +290,9 @@ const Navbar = () => {
               userHas(ctx, "circleAssistant", "admin")),
         },
         {
-          key: "update_profile",
-          label: "Update Profile",
-          to: "/UpdateUP",
+          key: "update_mobile",
+          label: "Update Mobile",
+          to: "/UpdateMobile",
           show: (ctx) => isTeacher(ctx),
         },
       ],
@@ -413,13 +413,17 @@ const Navbar = () => {
 
         {/* LOGIN / LOGOUT */}
         {!type ? (
-          <Link href="/Login" className="nav-link" onClick={closeDrawer}>
+          <Link href="/UserLogin" className="nav-link" onClick={closeDrawer}>
             Login
           </Link>
         ) : (
           <>
-            <Link href="/UpdateUP" className="nav-link" onClick={closeDrawer}>
-              Update Profile
+            <Link
+              href="/UpdateMobile"
+              className="nav-link"
+              onClick={closeDrawer}
+            >
+              Update Mobile
             </Link>
             <Link href="/Logout" className="nav-link" onClick={closeDrawer}>
               Logout
@@ -484,7 +488,7 @@ const Navbar = () => {
             {/* LOGIN BUTTON WHEN NOT LOGGED IN */}
             {!type && (
               <Link
-                href="/Login"
+                href="/UserLogin"
                 className="btn btn-outline-primary d-none d-lg-block"
               >
                 Login

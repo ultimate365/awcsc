@@ -32,6 +32,7 @@ const Dashboard = () => {
     gp: "",
     circle: "",
     desig: "",
+    type: "",
   };
 
   if (schid) {
@@ -107,7 +108,7 @@ const Dashboard = () => {
           {titleCase(gp)} GP Sports Date: {gpSpDate}
         </h5>
       )}
-      {teacher?.circle === "admin" && (
+      {teacher?.circle === "admin" && teacher.type !== "Administrator" && (
         <button
           className="btn btn-primary"
           type="button"

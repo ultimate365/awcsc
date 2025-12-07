@@ -8,7 +8,7 @@ const LogOut = () => {
   const { setState } = useGlobalContext();
   useEffect(() => {
     deleteAllCookies();
-    navigate.push("/Login");
+    navigate.push("/UserLogin");
     setState({
       USER: {},
       ACCESS: null,

@@ -20,7 +20,6 @@ import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import axios from "axios";
 const Complain = () => {
-  let userdetails;
   let teacherdetails = {
     id: "",
     tname: "",
@@ -31,7 +30,6 @@ const Complain = () => {
   let details = getCookie("tid");
   if (details) {
     teacherdetails = decryptObjData("tid");
-    userdetails = decryptObjData("uid");
   }
 
   const [docId, setDocId] = useState(
@@ -133,9 +131,7 @@ const Complain = () => {
     document.title = "AWC Sports App:Request Or Complain";
     // eslint-disable-next-line
   }, [inputField, docId]);
-  useEffect(() => {
-    // eslint-disable-next-line
-  }, [userdetails, teacherdetails]);
+
   const changeData = (e) =>
     setInputField({ ...inputField, [e.target.name]: e.target.value });
   // console.log(inputField);
