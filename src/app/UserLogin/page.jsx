@@ -26,8 +26,11 @@ export default function UserLogin() {
   const [userData, setUserData] = useState({});
   const [otpSent, setOtpSent] = useState(false);
   const [showRetryBtn, setShowRetryBtn] = useState(false);
-  const [countdown, setCountdown] = useState(0);
   const [reqId, setReqId] = useState("");
+  const [showDevTechField, setShowDevTechField] = useState(false);
+  const [empid, setEmpid] = useState("");
+  const [udise, setUdise] = useState("");
+  const [showDevSchoolField, setShowDevSchoolField] = useState(false);
   function removeSpaces(inputString) {
     // Use a regular expression to match all spaces (whitespace characters) and replace them with an empty string
     return inputString.replace(/\s/g, "");
@@ -240,6 +243,147 @@ export default function UserLogin() {
       toast.error("Please enter a Valid 6 Digit OTP");
     }
   };
+  const devTeacherLogin = async () => {
+    if (!empid) {
+      return toast.error("Please enter Employee ID");
+    }
+    setLoader(true);
+    try {
+      const data = await getDocumentByField(
+        "sportsUsers",
+        "empid",
+        empid.toUpperCase()
+      ).catch((e) => {
+        console.log(e);
+        setLoader(false);
+        toast.error("Invalid Employee ID");
+      });
+      if (data) {
+        setLoader(false);
+        encryptObjData("uid", data, 10080);
+        encryptObjData("tid", data, 10080);
+        setCookie("t", data.tname, 10080);
+        setCookie("loggedAt", Date.now(), 10080);
+        setTimeout(() => {
+          setState({
+            USER: data,
+            ACCESS: data.circle,
+            LOGGEDAT: Date.now(),
+            TYPE: "teacher",
+          });
+          navigate.push("/Dashboard");
+        }, 500);
+      } else {
+        const newData = await getDocumentByField(
+          "teachers",
+          "empid",
+          empid.toUpperCase()
+        ).catch((e) => {
+          console.log(e);
+          setLoader(false);
+          toast.error("Invalid Employee ID");
+        });
+        if (newData) {
+          setLoader(false);
+          encryptObjData("uid", newData, 10080);
+          encryptObjData("tid", newData, 10080);
+          setCookie("t", newData.tname, 10080);
+          setCookie("loggedAt", Date.now(), 10080);
+          setTimeout(() => {
+            setState({
+              USER: newData,
+              ACCESS: newData.circle,
+              LOGGEDAT: Date.now(),
+              TYPE: "teacher",
+            });
+            navigate.push("/Dashboard");
+          }, 500);
+        } else {
+          setLoader(false);
+          toast.error("Invalid Employee ID");
+        }
+      }
+    } catch (e) {
+      console.log(e);
+      setLoader(false);
+      toast.error("Invalid Employee ID");
+    }
+  };
+  const devAdminLogin = async () => {
+    setLoader(true);
+    try {
+      const data = await getDocumentByField(
+        "sportsAdmins",
+        "phone",
+        inputField.toString()
+      ).catch((e) => {
+        console.log(e);
+        setLoader(false);
+        toast.error("Invalid Mobile Number");
+      });
+      if (data) {
+        setLoader(false);
+        encryptObjData("uid", data, 10080);
+        encryptObjData("tid", data, 10080);
+        setCookie("t", data.tname, 10080);
+        setCookie("loggedAt", Date.now(), 10080);
+        setTimeout(() => {
+          setState({
+            USER: data,
+            ACCESS: data.circle,
+            LOGGEDAT: Date.now(),
+            TYPE: "teacher",
+          });
+          navigate.push("/Dashboard");
+        }, 500);
+      }
+    } catch (e) {
+      console.log(e);
+      setLoader(false);
+      toast.error("Invalid Employee ID");
+    }
+  };
+  const devSchoolLogin = async () => {
+    if (!udise) {
+      return toast.error("Please enter UDISE");
+    }
+    setLoader(true);
+    try {
+      const data = await getDocumentByField(
+        "userschools",
+        "udise",
+        udise.toString()
+      ).catch((e) => {
+        console.log(e);
+        setLoader(false);
+        toast.error("Invalid UDISE");
+      });
+
+      setLoader(false);
+      encryptObjData("schid", data, 10080);
+      setCookie("loggedAt", Date.now(), 10080);
+      setTimeout(() => {
+        setState({
+          USER: data,
+          ACCESS: data.convenor,
+          LOGGEDAT: Date.now(),
+          TYPE: "school",
+        });
+        navigate.push("/Dashboard");
+      }, 500);
+    } catch (e) {
+      console.log(e);
+      setLoader(false);
+      toast.error("Invalid UDISE");
+    }
+  };
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      empid.length === 8 && devTeacherLogin();
+      udise.toString().length === 11 && devSchoolLogin();
+    }
+    // eslint-disable-next-line
+  }, [empid, udise]);
   return (
     <div className="container text-black p-2">
       <ToastContainer
@@ -346,6 +490,16 @@ export default function UserLogin() {
               >
                 Submit
               </button>
+              {process.env.NODE_ENV === "development" && (
+                <button
+                  type="submit"
+                  className="btn btn-danger m-1"
+                  onClick={devAdminLogin}
+                >
+                  Dev Adminstrator Login{" "}
+                  <i className="bi bi-box-arrow-in-left"></i>
+                </button>
+              )}
             </div>
           </form>
         )
@@ -387,6 +541,103 @@ export default function UserLogin() {
               Resend OTP
             </button>
           )}
+        </div>
+      )}
+      {process.env.NODE_ENV === "development" && (
+        <div className="bg-info bg-opacity-10 p-4 rounded-4 my-4">
+          {showDevTechField && (
+            <div>
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  Employee ID
+                </label>
+                <input
+                  type="text"
+                  name="empid"
+                  id="empid"
+                  placeholder="Enter Employee ID"
+                  className="form-control"
+                  value={empid}
+                  maxLength={8}
+                  onChange={(e) => setEmpid(e.target.value)}
+                />
+              </div>
+              <button
+                type="button"
+                className="btn btn-primary m-1"
+                onClick={devTeacherLogin}
+              >
+                Teacher Login
+                <i className="bi bi-box-arrow-in-left"></i>
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary m-1"
+                onClick={() => setShowDevTechField(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+          {showDevSchoolField && (
+            <div>
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  UDISE
+                </label>
+                <input
+                  type="number"
+                  name="udise"
+                  id="udise"
+                  placeholder="Enter UDISE"
+                  className="form-control"
+                  value={udise}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 11) {
+                      setUdise(e.target.value);
+                    }
+                  }}
+                />
+              </div>
+              <button
+                type="button"
+                className="btn btn-success m-1"
+                onClick={devSchoolLogin}
+              >
+                School Login <i className="bi bi-box-arrow-in-left"></i>
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary m-1"
+                onClick={() => setShowDevSchoolField(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+          <div>
+            <button
+              type="button"
+              className="btn btn-primary m-1"
+              onClick={() => {
+                setShowDevTechField(true);
+                setShowDevSchoolField(false);
+              }}
+            >
+              Dev Teacher Login
+              <i className="bi bi-box-arrow-in-left"></i>
+            </button>
+            <button
+              type="button"
+              className="btn btn-success m-1"
+              onClick={() => {
+                setShowDevTechField(false);
+                setShowDevSchoolField(true);
+              }}
+            >
+              Dev School Login <i className="bi bi-box-arrow-in-left"></i>
+            </button>
+          </div>
         </div>
       )}
     </div>

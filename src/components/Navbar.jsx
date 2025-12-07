@@ -139,6 +139,8 @@ const Navbar = () => {
     }
   }, []);
 
+  const ctx = { type, access, user, schObj, tidObj };
+
   // ---------------- MENU DEFINITIONS ----------------
   const menuDefinitions = useMemo(() => {
     const isLogged = (ctx) => ctx.type !== null;
@@ -147,159 +149,124 @@ const Navbar = () => {
     const hasAccess = (ctx, v) => ctx.access === v;
     const userHas = (ctx, prop, val) => ctx.user?.[prop] === val;
 
-    return {
+    const allMenus = [
       // COMMON FOR ALL USERS
-      common: [
-        { key: "home", label: "Home", to: "/", show: () => true },
-        {
-          key: "convenors",
-          label: "Convenors",
-          to: "/SetConvenors",
-          show: () => true,
-        },
-        {
-          key: "Dashboard",
-          label: "Dashboard",
-          to: "/Dashboard",
-          show: (ctx) => isLogged(ctx),
-        },
-        {
-          key: "downloads",
-          label: "Downloads",
-          to: "/Downloads",
-          show: () => true,
-        },
-        {
-          key: "complain",
-          label: "Complain or Suggest Us",
-          to: "/Complain",
-          show: () => true,
-        },
-      ],
+      { key: "home", label: "Home", to: "/", show: () => true },
+      {
+        key: "convenors",
+        label: "Convenors",
+        to: "/SetConvenors",
+        show: () => true,
+      },
+      {
+        key: "Dashboard",
+        label: "Dashboard",
+        to: "/Dashboard",
+        show: (ctx) => isLogged(ctx),
+      },
+      {
+        key: "downloads",
+        label: "Downloads",
+        to: "/Downloads",
+        show: () => true,
+      },
+      {
+        key: "complain",
+        label: "Complain or Suggest Us",
+        to: "/Complain",
+        show: () => true,
+      },
 
-      // SPECIAL FOR SCHOOL USERS
-      schoolMenu: [
-        {
-          key: "gp_entry",
-          label: "GP Student Name Entry",
-          to: "/GPStudentNameEntry",
-          show: (ctx) => isSchool(ctx),
-        },
-        {
-          key: "convenors_school",
-          label: "Convenors",
-          to: "/SetConvenors",
-          show: (ctx) => isSchool(ctx),
-        },
-        {
-          key: "Dashboard_school",
-          label: "Dashboard",
-          to: "/Dashboard",
-          show: (ctx) => isSchool(ctx),
-        },
-        {
-          key: "complain_school",
-          label: "Complain or Suggest Us",
-          to: "/Complain",
-          show: (ctx) => isSchool(ctx),
-        },
-        {
-          key: "update_mobile",
-          label: "Update Mobile",
-          to: "/UpdateMobile",
-          show: (ctx) => isSchool(ctx),
-        },
-      ],
+      // USER SPECIFIC
+      {
+        key: "update_mobile",
+        label: "Update Mobile",
+        to: "/UpdateMobile",
+        show: (ctx) => isLogged(ctx),
+      },
+
+      // SCHOOL
+      {
+        key: "gp_entry_school",
+        label: "GP Student Name Entry",
+        to: "/GPStudentNameEntry",
+        show: (ctx) => isSchool(ctx),
+      },
+
+      // TEACHER
+      {
+        key: "gp_entry_teacher",
+        label: "GP Student Name Entry",
+        to: "/GPStudentNameEntry",
+        show: (ctx) => isTeacher(ctx),
+      },
 
       // TEACHER ADMIN
-      teacherAdmin: [
-        {
-          key: "gp_entry",
-          label: "GP Student Name Entry",
-          to: "/GPStudentNameEntry",
-          show: (ctx) => isSchool(ctx),
-        },
-        {
-          key: "all_teachers",
-          label: "All Teachers",
-          to: "/AllTeachers",
-          show: (ctx) => isTeacher(ctx) && hasAccess(ctx, "admin"),
-        },
-        {
-          key: "reg_users",
-          label: "Registered Users",
-          to: "/RegUsers",
-          show: (ctx) => isTeacher(ctx) && hasAccess(ctx, "admin"),
-        },
-        {
-          key: "display_complains",
-          label: "Display Complains",
-          to: "/DisplayComplain",
-          show: (ctx) => isTeacher(ctx) && hasAccess(ctx, "admin"),
-        },
-        {
-          key: "update_mobile",
-          label: "Update Mobile",
-          to: "/UpdateMobile",
-          show: (ctx) => isTeacher(ctx),
-        },
-      ],
+      {
+        key: "all_teachers",
+        label: "All Teachers",
+        to: "/AllTeachers",
+        show: (ctx) => isTeacher(ctx) && hasAccess(ctx, "admin"),
+      },
+      {
+        key: "reg_users",
+        label: "Registered Users",
+        to: "/RegUsers",
+        show: (ctx) => isTeacher(ctx) && hasAccess(ctx, "admin"),
+      },
+      {
+        key: "display_complains",
+        label: "Display Complains",
+        to: "/DisplayComplain",
+        show: (ctx) => isTeacher(ctx) && hasAccess(ctx, "admin"),
+      },
 
       // TEACHER CONVENOR
-      teacherConvenor: [
-        {
-          key: "gp_entry",
-          label: "GP Student Name Entry",
-          to: "/GPStudentNameEntry",
-          show: (ctx) => isSchool(ctx),
-        },
-        {
-          key: "gp_convenors",
-          label: "GP Convenors Page",
-          to: "/GPConvenorsPage",
-          show: (ctx) =>
-            isTeacher(ctx) &&
-            (hasAccess(ctx, "admin") ||
-              userHas(ctx, "convenor", "admin") ||
-              userHas(ctx, "gpAssistant", "admin")),
-        },
-        {
-          key: "gp_direct",
-          label: "GP Direct Entry",
-          to: "/GpSportsDirectNameEntry",
-          show: (ctx) =>
-            isTeacher(ctx) &&
-            (hasAccess(ctx, "admin") || userHas(ctx, "gpAssistant", "admin")),
-        },
-        {
-          key: "circle_convenors",
-          label: "Circle Convenors Page",
-          to: "/CircleStudentsNameEntry",
-          show: (ctx) =>
-            isTeacher(ctx) &&
-            (hasAccess(ctx, "admin") ||
-              userHas(ctx, "circleAssistant", "admin")),
-        },
-        {
-          key: "circle_direct",
-          label: "Circle Direct Entry",
-          to: "/CircleSportsDirectNameEntry",
-          show: (ctx) =>
-            isTeacher(ctx) &&
-            (hasAccess(ctx, "admin") ||
-              userHas(ctx, "circleAssistant", "admin")),
-        },
-        {
-          key: "update_mobile",
-          label: "Update Mobile",
-          to: "/UpdateMobile",
-          show: (ctx) => isTeacher(ctx),
-        },
-      ],
-    };
-  }, []);
+      {
+        key: "gp_convenors",
+        label: "GP Convenors Page",
+        to: "/GPConvenorsPage",
+        show: (ctx) =>
+          isTeacher(ctx) &&
+          (hasAccess(ctx, "admin") ||
+            userHas(ctx, "convenor", "admin") ||
+            userHas(ctx, "gpAssistant", "admin")),
+      },
+      {
+        key: "gp_direct",
+        label: "GP Direct Entry",
+        to: "/GpSportsDirectNameEntry",
+        show: (ctx) =>
+          isTeacher(ctx) &&
+          (hasAccess(ctx, "admin") || userHas(ctx, "gpAssistant", "admin")),
+      },
+      {
+        key: "circle_convenors",
+        label: "Circle Convenors Page",
+        to: "/CircleStudentsNameEntry",
+        show: (ctx) =>
+          isTeacher(ctx) &&
+          (hasAccess(ctx, "admin") || userHas(ctx, "circleAssistant", "admin")),
+      },
+      {
+        key: "circle_direct",
+        label: "Circle Direct Entry",
+        to: "/CircleSportsDirectNameEntry",
+        show: (ctx) =>
+          isTeacher(ctx) &&
+          (hasAccess(ctx, "admin") || userHas(ctx, "circleAssistant", "admin")),
+      },
+    ];
 
-  const ctx = { type, access, user, schObj, tidObj };
+    const uniqueKeys = new Set();
+    return allMenus.filter((m) => {
+      if (m.show(ctx) && !uniqueKeys.has(m.to)) {
+        uniqueKeys.add(m.to);
+        return true;
+      }
+      return false;
+    });
+  }, [type, access, user, schObj, tidObj]);
 
   // ---------------- GREETING ----------------
   const greeting = (() => {
@@ -339,75 +306,16 @@ const Navbar = () => {
         </div>
 
         {/* COMMON MENU */}
-        {menuDefinitions.common
-          .filter((m) => m.show(ctx))
-          .map((m) => (
-            <Link
-              key={m.key}
-              href={m.to}
-              className="nav-link"
-              onClick={closeDrawer}
-            >
-              {m.label}
-            </Link>
-          ))}
-
-        {/* SCHOOL MENU */}
-        {menuDefinitions.schoolMenu.some((m) => m.show(ctx)) && (
-          <>
-            <div className="fw-bold text-secondary mt-3">School Menu</div>
-            {menuDefinitions.schoolMenu
-              .filter((m) => m.show(ctx))
-              .map((m) => (
-                <Link
-                  key={m.key}
-                  href={m.to}
-                  className="nav-link"
-                  onClick={closeDrawer}
-                >
-                  {m.label}
-                </Link>
-              ))}
-          </>
-        )}
-
-        {/* TEACHER ADMIN MENU */}
-        {menuDefinitions.teacherAdmin.some((m) => m.show(ctx)) && (
-          <>
-            <div className="fw-bold text-secondary mt-3">Admin</div>
-            {menuDefinitions.teacherAdmin
-              .filter((m) => m.show(ctx))
-              .map((m) => (
-                <Link
-                  key={m.key}
-                  href={m.to}
-                  className="nav-link"
-                  onClick={closeDrawer}
-                >
-                  {m.label}
-                </Link>
-              ))}
-          </>
-        )}
-
-        {/* TEACHER CONVENOR MENU */}
-        {menuDefinitions.teacherConvenor.some((m) => m.show(ctx)) && (
-          <>
-            <div className="fw-bold text-secondary mt-3">Convenor Tools</div>
-            {menuDefinitions.teacherConvenor
-              .filter((m) => m.show(ctx))
-              .map((m) => (
-                <Link
-                  key={m.key}
-                  href={m.to}
-                  className="nav-link"
-                  onClick={closeDrawer}
-                >
-                  {m.label}
-                </Link>
-              ))}
-          </>
-        )}
+        {menuDefinitions.map((m) => (
+          <Link
+            key={m.key}
+            href={m.to}
+            className="nav-link"
+            onClick={closeDrawer}
+          >
+            {m.label}
+          </Link>
+        ))}
 
         <hr />
 
@@ -446,41 +354,11 @@ const Navbar = () => {
           </Link>
           {/* DESKTOP NAV LINKS */}
           <div className="d-none d-lg-flex align-items-center gap-3">
-            {/* COMMON MENU */}
-            {menuDefinitions.common
-              .filter((m) => m.show(ctx))
-              .map((m) => (
-                <Link key={m.key} href={m.to} className="nav-link">
-                  {m.label}
-                </Link>
-              ))}
-
-            {/* SCHOOL MENU */}
-            {menuDefinitions.schoolMenu
-              .filter((m) => m.show(ctx))
-              .map((m) => (
-                <Link key={m.key} href={m.to} className="nav-link">
-                  {m.label}
-                </Link>
-              ))}
-
-            {/* TEACHER ADMIN */}
-            {menuDefinitions.teacherAdmin
-              .filter((m) => m.show(ctx))
-              .map((m) => (
-                <Link key={m.key} href={m.to} className="nav-link">
-                  {m.label}
-                </Link>
-              ))}
-
-            {/* TEACHER CONVENOR */}
-            {menuDefinitions.teacherConvenor
-              .filter((m) => m.show(ctx))
-              .map((m) => (
-                <Link key={m.key} href={m.to} className="nav-link">
-                  {m.label}
-                </Link>
-              ))}
+            {menuDefinitions.map((m) => (
+              <Link key={m.key} href={m.to} className="nav-link">
+                {m.label}
+              </Link>
+            ))}
           </div>
 
           {/* RIGHT SIDE BUTTONS */}
