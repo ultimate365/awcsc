@@ -1,22 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { firestore } from "../../context/FirbaseContext";
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  where,
-  updateDoc,
-} from "firebase/firestore";
-import bcrypt from "bcryptjs";
+import { doc, updateDoc } from "firebase/firestore";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import Loader from "../../components/Loader";
 import { useGlobalContext } from "../../context/Store";
-import axios from "axios";
 import { OTPWidget } from "@msg91comm/sendotp-sdk";
 
 export default function UpdateMobile() {
@@ -34,29 +25,11 @@ export default function UpdateMobile() {
   const [adminType, setAdminType] = useState(user.type);
   const [isTeacher, setIsTeacher] = useState(true);
   const [id, setId] = useState("");
-  const [username, setUsername] = useState("");
-  const [inputField, setInputField] = useState({
-    username: username,
-    password: "",
-    cpassword: "",
-    id: id,
-  });
-  const [errField, setErrField] = useState({
-    usernameErr: "",
-    passwordErr: "",
-    cpasswordErr: "",
-  });
-  const [showBtns, setShowBtns] = useState(true);
-  const [showMobile, setShowMobile] = useState(false);
-  const [showEmail, setShowEmail] = useState(false);
+
   const [mobileOTPSent, setMobileOTPSent] = useState(false);
-  const [emailOTPSent, setEmailOTPSent] = useState(false);
   const [mobileOTP, setMobileOTP] = useState("");
-  const [emailOTP, setEmailOTP] = useState("");
   const [showRetryBtn, setShowRetryBtn] = useState(false);
   const [phone, setPhone] = useState(user.phone);
-  const [email, setEmail] = useState(user.email);
-  const [showEmailRetryBtn, setShowEmailRetryBtn] = useState(false);
   const [reqId, setReqId] = useState("");
   const checkUser = () => {
     let details = getCookie("tid");
@@ -65,13 +38,6 @@ export default function UpdateMobile() {
       userdetails = decryptObjData("tid");
       setIsTeacher(true);
       setId(userdetails.id);
-      setUsername(userdetails.username);
-      setInputField({
-        username: userdetails.username,
-        id: userdetails.id,
-        password: "",
-        cpassword: "",
-      });
       setState({
         USER: userdetails,
         ACCESS: userdetails?.circle,
@@ -83,13 +49,6 @@ export default function UpdateMobile() {
       userdetails = decryptObjData("schid");
       setIsTeacher(false);
       setId(userdetails.id);
-      setUsername(userdetails.username);
-      setInputField({
-        username: userdetails.username,
-        id: userdetails.id,
-        password: "",
-        cpassword: "",
-      });
       setState({
         USER: userdetails,
         ACCESS: userdetails?.convenor,
@@ -102,35 +61,57 @@ export default function UpdateMobile() {
   };
   const changePhone = async (e) => {
     e.preventDefault();
-
-    if (adminType === "Administrator") {
-      toast.error("*** This Section is not For You");
-      return;
-    } else {
+    setLoader(true);
+    try {
+      const data = {
+        identifier: `91${phone}`,
+      };
+      const response = await OTPWidget.sendOTP(data);
+      if (response.type === "success") {
+        setReqId(response.message);
+        toast.success("OTP sent to your Mobile Number!");
+        setLoader(false);
+        setMobileOTPSent(true);
+        setShowRetryBtn(false);
+        setTimeout(() => {
+          setShowRetryBtn(true);
+        }, 30000);
+      } else {
+        setShowRetryBtn(true);
+        toast.error("Failed to send OTP!");
+        setLoader(false);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong!");
+      setLoader(false);
+    }
+  };
+  const verifyMobileOTP = async (e) => {
+    e.preventDefault();
+    if (mobileOTP !== "" && mobileOTP.toString().length === 6) {
       setLoader(true);
       try {
-        // const res = await axios.post(`/api/sendMobileOTP`, {
-        //   phone,
-        //   name: user.tname,
-        // });
-        // const record = res.data;
-        // if (record.success) {
         const data = {
-          identifier: `91${phone}`,
+          otp: mobileOTP.toString(),
+          reqId: reqId,
         };
-        const response = await OTPWidget.sendOTP(data);
+        const response = await OTPWidget.verifyOTP(data);
         if (response.type === "success") {
-          setReqId(response.message);
-          toast.success("OTP sent to your Mobile Number!");
-          setLoader(false);
-          setMobileOTPSent(true);
-          setShowRetryBtn(false);
-          setTimeout(() => {
-            setShowRetryBtn(true);
-          }, 30000);
+          const docRef = isTeacher
+            ? doc(firestore, "teachers", id)
+            : doc(firestore, "userschools", id);
+          await updateDoc(docRef, {
+            phone: phone.toString(),
+          }).then(() => {
+            toast.success("Your Mobile Number is successfully verified!");
+            setLoader(false);
+            setTimeout(async () => {
+              navigate.push("/Logout");
+            }, 200);
+          });
         } else {
-          setShowRetryBtn(true);
-          toast.error("Failed to send OTP!");
+          toast.error("Please enter a Valid 6 Digit OTP");
           setLoader(false);
         }
       } catch (error) {
@@ -140,53 +121,12 @@ export default function UpdateMobile() {
       }
     }
   };
-  const verifyMobileOTP = async (e) => {
-    e.preventDefault();
-    if (adminType === "Administrator") {
-      toast.error("*** This Section is not For You");
-      return;
-    } else {
-      if (mobileOTP !== "" && mobileOTP.toString().length === 6) {
-        setLoader(true);
-        try {
-          const data = {
-            otp: mobileOTP.toString(),
-            reqId: reqId,
-          };
-          const response = await OTPWidget.verifyOTP(data);
-          if (response.type === "success") {
-            const docRef = isTeacher
-              ? doc(firestore, "sportsUsers", id)
-              : doc(firestore, "userschools", id);
-            await updateDoc(docRef, {
-              phone: phone.toString(),
-            }).then(() => {
-              toast.success("Your Mobile Number is successfully verified!");
-              setLoader(false);
-              setTimeout(async () => {
-                navigate.push("/Logout");
-              }, 200);
-            });
-          } else {
-            toast.error("Please enter a Valid 6 Digit OTP");
-            setLoader(false);
-          }
-        } catch (error) {
-          console.log(error);
-          toast.error("Something Went Wrong!");
-          setLoader(false);
-        }
-      }
-    }
-  };
   useEffect(() => {
     document.title = "WBTPTA Sports App:Update Mobile Number";
     checkUser();
     // eslint-disable-next-line
   }, []);
-  useEffect(() => {
-    // eslint-disable-next-line
-  }, [isTeacher, username, id, inputField]);
+
   return (
     <div className="container text-black p-2">
       <form autoComplete="off">
@@ -255,21 +195,11 @@ export default function UpdateMobile() {
                   Retry
                 </button>
               )}
-              <button
-                type="button"
-                className="btn btn-danger m-1"
-                onClick={() => {
-                  setShowMobile(false);
-                  setShowBtns(true);
-                }}
-              >
-                <i className="bi bi-box-arrow-in-right"></i>
-                Cancel
-              </button>
             </div>
           </div>
         )}
       </form>
+      {loader && <Loader />}
     </div>
   );
 }
