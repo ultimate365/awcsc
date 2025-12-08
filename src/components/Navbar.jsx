@@ -306,7 +306,7 @@ const Navbar = () => {
             <div>
               <div>
                 <small className="text-muted">
-                  {`${tidObj?.desig ?? user?.tname} of`}
+                  {`${tidObj?.desig ?? user?.desig} of`}
                 </small>
               </div>
               <div>
