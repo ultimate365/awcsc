@@ -543,7 +543,7 @@ export default function UserLogin() {
         </div>
       )}
       {process.env.NODE_ENV === "development" && (
-        <div className="bg-info bg-opacity-10 p-4 rounded-4 my-4">
+        <div className="bg-info bg-opacity-10 p-4 rounded-4 my-4 col-md-6 mx-auto">
           {showDevTechField && (
             <div>
               <div className="mb-3">

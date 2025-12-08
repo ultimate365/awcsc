@@ -18,12 +18,9 @@ import bcrypt from "bcryptjs";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import {
-  comparePassword,
   createDownloadLink,
   DateValueToString,
 } from "@/modules/calculatefunctions";
-import { useGlobalContext } from "../../context/Store";
-import axios from "axios";
 import { v4 as uuid } from "uuid";
 import {
   generateID,
@@ -51,21 +48,12 @@ const RegUsers = () => {
     schdetails = decryptObjData("schid");
   }
 
-  const [showTable, setShowTable] = useState(false);
-  const [search, setSearch] = useState("");
-  const [showSchoolTable, setShowSchoolTable] = useState(false);
   const [searchSchool, setSearchSchool] = useState("");
-  const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
   const [adminsData, setAdminsData] = useState([]);
   const [schoolData, setSchoolData] = useState([]);
   const [filterSchoolData, setFilterSchoolData] = useState([]);
   const [loader, setLoader] = useState(false);
   const [showInput, setShowInput] = useState(false);
-  const [showAdminPassWord, setShowAdminPassWord] = useState(false);
-  const [adminPassword, setAdminPassword] = useState("");
-  const [showAdminLogin, setShowAdminLogin] = useState(false);
-  const [adminID, setAdminID] = useState("");
   const [showEditSchool, setShowEditSchool] = useState(false);
   const [schoolField, setSchoolField] = useState({
     id: "",
@@ -145,7 +133,6 @@ const RegUsers = () => {
     }));
     setSchoolData(data);
     setFilterSchoolData(data);
-    setShowSchoolTable(true);
   };
   useEffect(() => {
     if (!details) {
@@ -163,190 +150,19 @@ const RegUsers = () => {
   }, []);
 
   useEffect(() => {
-    const result = data.filter((el) => {
-      return el?.tname?.toLowerCase().match(search.toLowerCase());
-    });
-    setFilteredData(result);
-    // eslint-disable-next-line
-  }, [search, data]);
-  useEffect(() => {
     const resultSchool = schoolData.filter((el) => {
       return el.school.toLowerCase().match(searchSchool.toLowerCase());
     });
     setFilterSchoolData(resultSchool);
     // eslint-disable-next-line
   }, [searchSchool, schoolData]);
-  // const columns = [
-  //   {
-  //     name: "Sl",
-  //     selector: (row, index) => data.findIndex((i) => i.id === row?.id) + 1,
-  //     sortable: +true,
-  //     center: +true,
-  //   },
-  //   {
-  //     name: "Teacher Name",
-  //     selector: (row) => row.tname,
-  //     sortable: +true,
-  //     wrap: +true,
-  //     center: +true,
-  //   },
 
-  //   {
-  //     name: "School Name",
-  //     selector: (row) => row.school,
-  //     sortable: +true,
-  //     wrap: +true,
-  //     center: +true,
-  //   },
-  //   {
-  //     name: "Username",
-  //     selector: (row) => row.username,
-  //     sortable: +true,
-  //     wrap: +true,
-  //     center: +true,
-  //   },
-  //   {
-  //     name: "Email",
-  //     selector: (row) => row.email,
-  //     sortable: +true,
-  //     wrap: +true,
-  //     center: +true,
-  //   },
-
-  //   {
-  //     name: "Access",
-  //     selector: (row) => row.circle,
-  //     sortable: +true,
-  //     center: +true,
-  //   },
-  //   {
-  //     name: "Registered On",
-  //     selector: (row) => DateValueToString(row.createdAt),
-  //     wrap: +true,
-  //     center: +true,
-  //   },
-  //   {
-  //     name: "Delete User",
-  //     cell: (row) => (
-  //       <button
-  //         type="button"
-  //         className="btn btn-danger"
-  //         onClick={() => {
-  //           // eslint-disable-next-line
-  //           let message = confirm(`Are You Sure To Delete User ${row.tname}`);
-  //           message
-  //             ? adminType === "Administrator" && row.circle === "admin"
-  //               ? toast.error("Access Denied")
-  //               : deleteUser(row)
-  //             : alert("Teacher Not Deleted");
-  //         }}
-  //       >
-  //         Delete
-  //       </button>
-  //     ),
-  //     center: +true,
-  //   },
-  //   {
-  //     name: "Update User Login",
-  //     cell: (row) =>
-  //       row.disabled ? (
-  //         <button
-  //           type="button"
-  //           className="btn btn-sm btn-success"
-  //           onClick={() => {
-  //             // eslint-disable-next-line
-  //             let message = confirm(
-  //               `Are You Sure To Restore User ${row.tname}'s Login? `
-  //             );
-  //             message
-  //               ? adminType === "Administrator" && row.circle === "admin"
-  //                 ? toast.error("Access Denied")
-  //                 : restoreUser(row.id)
-  //               : alert("User Login Not Restored!");
-  //           }}
-  //         >
-  //           Unlock User
-  //         </button>
-  //       ) : (
-  //         <button
-  //           type="button"
-  //           className="btn btn-sm btn-warning"
-  //           onClick={() => {
-  //             // eslint-disable-next-line
-  //             let message = confirm(
-  //               `Are You Sure To Disable User ${row.tname}'s Login? `
-  //             );
-  //             message
-  //               ? adminType === "Administrator" && row.circle === "admin"
-  //                 ? toast.error("Access Denied")
-  //                 : disableUser(row.id)
-  //               : alert("User Login Not Disabled!");
-  //           }}
-  //         >
-  //           Lock User
-  //         </button>
-  //       ),
-  //     center: +true,
-  //   },
-  //   {
-  //     name: "Reset Password",
-  //     cell: (row) =>
-  //       comparePassword(row.pan.toLowerCase(), row.password) ? (
-  //         <button
-  //           type="button"
-  //           className="btn btn-sm btn-success"
-  //           style={{ fontSize: 9 }}
-  //           onClick={() => {
-  //             // eslint-disable-next-line
-  //             alert(
-  //               `Password of ${
-  //                 row.tname
-  //               } is PAN in Lowercase i.e. ${row.pan.toLowerCase()}? `
-  //             );
-  //           }}
-  //         >
-  //           Show Password
-  //         </button>
-  //       ) : (
-  //         <button
-  //           type="button"
-  //           className="btn btn-sm btn-warning"
-  //           style={{ fontSize: 9 }}
-  //           onClick={() => {
-  //             // eslint-disable-next-line
-  //             let message = confirm(
-  //               `Are You Sure To Reset Password of ${
-  //                 row.tname
-  //               } to PAN in Lowercase i.e. ${row.pan.toLowerCase()}? `
-  //             );
-  //             message
-  //               ? adminType === "Administrator" && row.circle === "admin"
-  //                 ? toast.error("Access Denied")
-  //                 : resetPassword(row)
-  //               : toast.error("User Password Not Resetted!", {
-  //                   position: "top-right",
-  //                   autoClose: 1500,
-  //                   hideProgressBar: false,
-  //                   closeOnClick: true,
-  //                   pauseOnHover: true,
-  //                   draggable: true,
-  //                   progress: undefined,
-  //                   theme: "light",
-  //                 });
-  //           }}
-  //         >
-  //           Reset Password
-  //         </button>
-  //       ),
-  //     center: +true,
-  //   },
-  // ];
   const schoolColumns = [
     {
       name: "Sl",
       selector: (row, index) =>
         schoolData.findIndex((i) => i.id === row?.id) + 1,
-      width: "10%",
+      width: "16%",
       sortable: +true,
       center: +true,
     },
@@ -356,7 +172,7 @@ const RegUsers = () => {
       sortable: +true,
       wrap: +true,
       center: +true,
-      width: "30%",
+      width: "40%",
     },
     {
       name: "GP",
@@ -364,25 +180,11 @@ const RegUsers = () => {
       sortable: +true,
       wrap: +true,
       center: +true,
-      width: "10%",
+      width: "20%",
     },
-    // {
-    //   name: "Username",
-    //   selector: (row) => row.username,
-    //   wrap: +true,
-    //   center: +true,
-    //   width: "10%",
-    // },
-    // {
-    //   name: "Default Password",
-    //   selector: (row) => `${row.id}@${row.gp.toLowerCase()}`,
-    //   wrap: +true,
-    //   center: +true,
-    //   width: "15%",
-    // },
 
     {
-      name: "Edit School",
+      name: "Edit",
       cell: (row) => {
         return (
           <button
@@ -397,7 +199,7 @@ const RegUsers = () => {
           </button>
         );
       },
-      width: "10%",
+      width: "24%",
       center: +true,
       wrap: +true,
     },
@@ -729,47 +531,7 @@ const RegUsers = () => {
           Download User School's Data
         </button>
       </div>
-      <button
-        type="button"
-        className="btn btn-primary"
-        onClick={() => setShowTable(!showTable)}
-      >
-        {showTable ? "Hide Users" : "Show Users"}
-      </button>
-      {showTable && !showInput && (
-        <>
-          <h3 className="text-center text-primary">
-            Displaying Users Database
-          </h3>
-
-          <DataTable
-            columns={columns}
-            data={filteredData}
-            pagination
-            highlightOnHover
-            fixedHeader
-            subHeader
-            subHeaderComponent={
-              <input
-                type="text"
-                placeholder="Search"
-                className="w-25 form-control"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            }
-            subHeaderAlign="right"
-          />
-        </>
-      )}
-      <button
-        type="button"
-        className="btn btn-primary m-2"
-        onClick={() => setShowSchoolTable(!showSchoolTable)}
-      >
-        {showSchoolTable ? "Hide School Users" : "Show School Users"}
-      </button>
-      {showSchoolTable && !showInput && (
+      {!showInput && (
         <>
           <h3 className="text-center text-primary">
             Displaying School Users Database

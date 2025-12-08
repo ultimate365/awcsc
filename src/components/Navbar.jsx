@@ -303,11 +303,24 @@ const Navbar = () => {
           )}
 
           {type === "teacher" && (
-            <small className="text-muted">
-              {`${tidObj?.desig ?? user?.tname} of ${titleCase(
-                tidObj?.school ?? user?.school
-              )} GP ${tidObj?.gp ?? user?.gp}` ?? user?.tname}
-            </small>
+            <div>
+              <div>
+                <small className="text-muted">
+                  {`${tidObj?.desig ?? user?.tname} of`}
+                </small>
+              </div>
+              <div>
+                <small className="text-muted">
+                  {`${titleCase(tidObj?.school ?? user?.school)}` ??
+                    user?.tname}
+                </small>
+              </div>
+              <div>
+                <small className="text-muted">
+                  {`GP- ${tidObj?.gp ?? user?.gp}` ?? user?.tname}
+                </small>
+              </div>
+            </div>
           )}
         </div>
 

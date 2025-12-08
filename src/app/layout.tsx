@@ -65,7 +65,7 @@ export default function RootLayout({
             <Navbar />
           </div>
           <div className="my-2">{children}</div>
-          <Footer />
+          {/* <Footer /> */}
           <BootstrapClient />
           <ToastContainer
             position="top-right"
