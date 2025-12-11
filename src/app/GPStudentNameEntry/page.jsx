@@ -830,12 +830,14 @@ const GPStudentNameEntry = () => {
         gp: teacherdetails.gp,
         school: teacherdetails.school,
         udise: teacherdetails.udise,
+        id: teacherdetails.id,
       });
     } else if (schdetails.udise !== "") {
       setTawSchoolData({
         gp: schdetails.gp,
         school: schdetails.school,
         udise: schdetails.udise,
+        id: schdetails.id,
       });
     }
 
