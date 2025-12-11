@@ -136,7 +136,7 @@ export default function VerifyLogin() {
 
   useEffect(() => {
     if (!nonVerifiedTid && !nonVerifiedSchId) {
-      navigate.push("/logout");
+      navigate.push("/Logout");
     }
     if (nonVerifiedSchId) {
       const schoolData = decryptObjData("nonVerifiedSchId");

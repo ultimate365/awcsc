@@ -47,7 +47,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!details) {
       if (!schid) {
-        navigate.push("/logout");
+        navigate.push("/Logout");
       }
     }
     const spDate = gpSportsDateState.filter((item) => item.gp === gp)[0].date;

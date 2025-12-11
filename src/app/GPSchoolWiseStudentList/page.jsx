@@ -64,7 +64,7 @@ const GPSchoolWiseStudentList = () => {
   useEffect(() => {
     if (!details) {
       if (!schdetails) {
-        navigate.push("/logout");
+        navigate.push("/Logout");
       }
     }
   }, []);

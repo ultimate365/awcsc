@@ -36,7 +36,7 @@ const GPSportsEventWiseName = () => {
         teacherdetails.circle !== "admin" ||
         teacherdetails.convenor !== "admin"
       ) {
-        navigate.push("/logout");
+        navigate.push("/Logout");
       }
     }
     // eslint-disable-next-line

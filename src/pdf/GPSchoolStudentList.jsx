@@ -244,7 +244,9 @@ export default function GPSchoolStudentList({
                     height: 30,
                   }}
                 >
-                  <Text style={styles.text}>{el?.birthday}</Text>
+                  <Text style={styles.text}>
+                    {getSubmitDateInput(el?.birthday)}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -497,7 +499,9 @@ export default function GPSchoolStudentList({
                     height: 30,
                   }}
                 >
-                  <Text style={styles.text}>{el?.birthday}</Text>
+                  <Text style={styles.text}>
+                    {getSubmitDateInput(el?.birthday)}
+                  </Text>
                 </View>
                 <View
                   style={{

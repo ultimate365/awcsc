@@ -74,7 +74,7 @@ const GPStudentNameEntry = () => {
   useEffect(() => {
     if (!details) {
       if (schdetails.udise === "") {
-        navigate.push("/logout");
+        navigate.push("/Logout");
       }
     }
     // eslint-disable-next-line

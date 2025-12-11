@@ -491,7 +491,7 @@ const CircleResultSection = () => {
         teacherdetails.circle !== "admin" ||
         teacherdetails.convenor !== "admin"
       ) {
-        navigate.push("/logout");
+        navigate.push("/Logout");
       }
     }
 
