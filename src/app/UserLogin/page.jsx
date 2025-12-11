@@ -322,7 +322,6 @@ export default function UserLogin() {
       });
       if (data) {
         setLoader(false);
-        encryptObjData("uid", data, 10080);
         encryptObjData("tid", data, 10080);
         setCookie("t", data.tname, 10080);
         setCookie("loggedAt", Date.now(), 10080);
