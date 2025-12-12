@@ -160,7 +160,18 @@ export default function GPSchoolStudentList({
               </View>
               <View
                 style={{
-                  width: "25%",
+                  width: "8%",
+                  borderRightWidth: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: 30,
+                }}
+              >
+                <Text style={styles.text}>Group</Text>
+              </View>
+              <View
+                style={{
+                  width: "17%",
                   borderRightWidth: 0,
                   justifyContent: "center",
                   alignItems: "center",
@@ -261,7 +272,18 @@ export default function GPSchoolStudentList({
                 </View>
                 <View
                   style={{
-                    width: "25%",
+                    width: "8%",
+                    borderRightWidth: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: 30,
+                  }}
+                >
+                  <Text style={styles.text}>{el?.group}</Text>
+                </View>
+                <View
+                  style={{
+                    width: "17%",
                     borderRightWidth: 0,
                     justifyContent: "center",
                     alignItems: "center",
@@ -415,7 +437,18 @@ export default function GPSchoolStudentList({
               </View>
               <View
                 style={{
-                  width: "25%",
+                  width: "8%",
+                  borderRightWidth: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: 30,
+                }}
+              >
+                <Text style={styles.text}>Group</Text>
+              </View>
+              <View
+                style={{
+                  width: "17%",
                   borderRightWidth: 1,
                   justifyContent: "center",
                   alignItems: "center",
@@ -431,7 +464,7 @@ export default function GPSchoolStudentList({
                 style={[
                   styles.rowStartView,
                   {
-                    borderBottomWidth: ind === BoysData?.length - 1 ? 0 : 1,
+                    borderBottomWidth: ind === GirlsData?.length - 1 ? 0 : 1,
                   },
                 ]}
               >
@@ -516,7 +549,18 @@ export default function GPSchoolStudentList({
                 </View>
                 <View
                   style={{
-                    width: "25%",
+                    width: "8%",
+                    borderRightWidth: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: 30,
+                  }}
+                >
+                  <Text style={styles.text}>{el?.group}</Text>
+                </View>
+                <View
+                  style={{
+                    width: "17%",
                     borderRightWidth: 0,
                     justifyContent: "center",
                     alignItems: "center",
