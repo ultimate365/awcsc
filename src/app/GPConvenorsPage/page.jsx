@@ -33,7 +33,16 @@ import {
   removeDuplicates,
 } from "../../modules/calculatefunctions";
 import SCHOOLS from "../../helpers/schools.json";
+import dynamic from "next/dynamic";
+import GPSchoolStudentList from "../../pdf/GPSchoolStudentList";
 const GPConvenorsPage = () => {
+  const PDFDownloadLink = dynamic(
+    () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+    {
+      ssr: false,
+      loading: () => <p>Loading...</p>,
+    }
+  );
   const {
     setStateArray,
     setYourStateObject,
@@ -147,6 +156,7 @@ const GPConvenorsPage = () => {
     id: "0eb11c9f-ca67-4388-b4f6-61aa5b646d9b-0",
     closeDate: 1728288554977,
   });
+  const [showDld, setShowDld] = useState(false);
   const getSchoolData = async () => {
     setFilteredSchData(SCHOOLS);
     setConvenorsGPSchoolData(
@@ -1463,17 +1473,62 @@ const GPConvenorsPage = () => {
                     Displaying {selectedSchool.school}'s Participants
                   </h4>
                   {selectSchoolsParticipants.length > 0 && (
-                    <button
-                      type="button"
-                      className="btn btn-success m-1"
-                      style={{ width: "auto" }}
-                      onClick={() => {
-                        setStateArray(selectSchoolsParticipants);
-                        navigate.push(`/GPSchoolWiseStudentList`);
-                      }}
-                    >
-                      Print List
-                    </button>
+                    <div>
+                      <button
+                        type="button"
+                        className="btn btn-success m-1"
+                        style={{ width: "auto" }}
+                        onClick={() => {
+                          setStateArray(selectSchoolsParticipants);
+                          navigate.push(`/GPSchoolWiseStudentList`);
+                        }}
+                      >
+                        Print List
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-primary m-1 btn-sm"
+                        onClick={() => setShowDld(!showDld)}
+                      >
+                        {showDld ? "Hide Download" : "Download List"}
+                      </button>
+                      {showDld && (
+                        <div className="my-4">
+                          <PDFDownloadLink
+                            document={
+                              <GPSchoolStudentList
+                                studentData={selectSchoolsParticipants}
+                                gp={selectSchoolsParticipants[0].gp}
+                                school={selectSchoolsParticipants[0].school}
+                                udise={selectSchoolsParticipants[0].udise}
+                              />
+                            }
+                            fileName={`${selectSchoolsParticipants[0].school} GP Sports Student List.pdf`}
+                            style={{
+                              textDecoration: "none",
+                              padding: "10px",
+                              color: "#fff",
+                              backgroundColor: "navy",
+                              border: "1px solid #4a4a4a",
+                              width: "40%",
+                              borderRadius: 10,
+                              margin: 20,
+                              textAlign: "center",
+                            }}
+                          >
+                            {({ blob, url, loading, error }) =>
+                              loading ? "Loading..." : "Download Student List"
+                            }
+                          </PDFDownloadLink>
+                          {/* <GPSchoolStudentList
+                                  studentData={selectSchoolsParticipants}
+                                  gp={tawSchoolData.gp}
+                                  school={tawSchoolData.school}
+                                  udise={tawSchoolData.udise}
+                                /> */}
+                        </div>
+                      )}
+                    </div>
                   )}
                   <div className="my-4">
                     <DataTable
