@@ -1500,7 +1500,6 @@ const GPConvenorsPage = () => {
                                 studentData={selectSchoolsParticipants}
                                 gp={selectSchoolsParticipants[0].gp}
                                 school={selectSchoolsParticipants[0].school}
-                                udise={selectSchoolsParticipants[0].udise}
                               />
                             }
                             fileName={`${selectSchoolsParticipants[0].school} GP Sports Student List.pdf`}

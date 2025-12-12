@@ -26,7 +26,7 @@ export default function PrintTreeList() {
     if (teacherdetails.circle !== "admin") {
       if (teacherdetails.convenor !== "admin") {
         if (teacherdetails.gpAssistant !== "admin") {
-          navigate.push("/login");
+          navigate.push("/Login");
         }
       }
     }

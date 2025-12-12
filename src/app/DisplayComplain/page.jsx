@@ -33,7 +33,7 @@ const DisplayComplain = () => {
   }
   useEffect(() => {
     if (teacherdetails.circle !== "admin") {
-      navigate.push("/login");
+      navigate.push("/Login");
     }
     // eslint-disable-next-line
   }, []);

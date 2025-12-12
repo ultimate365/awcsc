@@ -128,6 +128,58 @@ export const EVENTS_GROUPS = [
   "C",
   "C",
 ];
+export const eventRanks = {
+  BOYS: {
+    "GROUP-A": {
+      "75 METER RUN": 1,
+      "LONG JUMP": 2,
+      "SHUTTLE RACE": 3,
+      YOGA: 4,
+    },
+    "GROUP-B": {
+      "100 METER RUN": 5,
+      "200 METER RUN": 6,
+      "LONG JUMP": 7,
+      "HIGH JUMP": 8,
+      YOGA: 9,
+      GYMNASTICS: 10,
+    },
+    "GROUP-C": {
+      "100 METER RUN": 11,
+      "200 METER RUN": 12,
+      "LONG JUMP": 13,
+      "HIGH JUMP": 14,
+      YOGA: 15,
+      GYMNASTICS: 16,
+      "FOOTBALL THROWING": 17,
+    },
+  },
+  GIRLS: {
+    "GROUP-A": {
+      "75 METER RUN": 18,
+      "LONG JUMP": 19,
+      "SHUTTLE RACE": 20,
+      YOGA: 21,
+    },
+    "GROUP-B": {
+      "100 METER RUN": 22,
+      "200 METER RUN": 23,
+      "LONG JUMP": 24,
+      "HIGH JUMP": 25,
+      YOGA: 26,
+      GYMNASTICS: 27,
+    },
+    "GROUP-C": {
+      "100 METER RUN": 28,
+      "200 METER RUN": 29,
+      "LONG JUMP": 30,
+      "HIGH JUMP": 31,
+      YOGA: 32,
+      GYMNASTICS: 33,
+      "FOOTBALL THROWING": 34,
+    },
+  },
+};
 export const gpEngNames = [
   "AMORAGORI",
   "BKBATI",

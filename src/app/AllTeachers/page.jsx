@@ -167,23 +167,30 @@ const AllTeachers = () => {
   ];
 
   const updateTeacher = async () => {
-    setLoader(true);
-    const docRef = doc(firestore, "teachers", inputField.id);
-    await updateDoc(docRef, inputField);
-    let x = teachersState.filter((item) => item.id !== inputField.id);
-    x = [...x, inputField].sort((a, b) => {
-      if (a?.school < b?.school) {
-        return -1;
-      }
-      if (a?.school > b?.school) {
-        return 1;
-      }
-      return a?.rank - b?.rank;
-    });
-    setTeachersState(x);
-    toast.success("Teacher Details Updated Successfully!");
-    setShowModal(false);
-    setLoader(false);
+    try {
+      setLoader(true);
+      const docRef = doc(firestore, "teachers", inputField.id);
+      await updateDoc(docRef, inputField);
+      let x = teachersState.filter((item) => item.id !== inputField.id);
+      x = [...x, inputField].sort((a, b) => {
+        if (a?.school < b?.school) {
+          return -1;
+        }
+        if (a?.school > b?.school) {
+          return 1;
+        }
+        return a?.rank - b?.rank;
+      });
+      setTeachersState(x);
+      toast.success("Teacher Details Updated Successfully!");
+      setShowModal(false);
+      setLoader(false);
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+      setLoader(false);
+      setShowModal(false);
+    }
   };
 
   useEffect(() => {

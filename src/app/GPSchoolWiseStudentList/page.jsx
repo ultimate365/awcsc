@@ -130,7 +130,6 @@ const GPSchoolWiseStudentList = () => {
             </div>
           </div>
           <div className="container-fluid">
-            {" "}
             <table className="table table-bordered border-black">
               <thead>
                 <tr>
@@ -140,7 +139,7 @@ const GPSchoolWiseStudentList = () => {
                   <th>পিতার / অভিভাবকের নাম</th>
                   <th>জন্মতারিখ</th>
                   <th>শ্রেনী</th>
-                  <th>বিদ্যালয়ের নাম</th>
+                  <th>BSP Student ID</th>
                   <th>প্রতিযোগিতার নাম</th>
                 </tr>
                 <tr>
@@ -159,7 +158,7 @@ const GPSchoolWiseStudentList = () => {
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
                       <td>{el?.sclass}</td>
-                      <td>{el?.school}</td>
+                      <td>{el?.studentId}</td>
                       <td>
                         {el?.event1}
                         {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -182,7 +181,7 @@ const GPSchoolWiseStudentList = () => {
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
                       <td>{el?.sclass}</td>
-                      <td>{el?.school}</td>
+                      <td>{el?.studentId}</td>
                       <td>
                         {el?.event1}
                         {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -209,7 +208,7 @@ const GPSchoolWiseStudentList = () => {
                       <td>{el?.gurdiansName}</td>
                       <td>{getSubmitDateInput(el?.birthday)}</td>
                       <td>{el?.sclass}</td>
-                      <td>{el?.school}</td>
+                      <td>{el?.studentId}</td>
                       <td>
                         {el?.event1}
                         {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -230,10 +229,10 @@ const GPSchoolWiseStudentList = () => {
             </div>
             <div className="col-md-3 justify-content-center align-items-center">
               <h6 className="text-center text-black m-0 p-1">
-                বিদ্যালয় প্রধানের সীলসহ স্বাক্ষর
+                ...............................................
               </h6>
               <h6 className="text-center text-black m-0 p-1">
-                ...............................................
+                বিদ্যালয় প্রধানের সীলসহ স্বাক্ষর
               </h6>
             </div>
           </div>
@@ -293,7 +292,7 @@ const GPSchoolWiseStudentList = () => {
                 <th>পিতার / অভিভাবকের নাম</th>
                 <th>জন্মতারিখ</th>
                 <th>শ্রেনী</th>
-                <th>বিদ্যালয়ের নাম</th>
+                <th>BSP Student ID</th>
                 <th>প্রতিযোগিতার নাম</th>
               </tr>
               <tr>
@@ -312,7 +311,7 @@ const GPSchoolWiseStudentList = () => {
                     <td>{el?.gurdiansName}</td>
                     <td>{getSubmitDateInput(el?.birthday)}</td>
                     <td>{el?.sclass}</td>
-                    <td>{el?.school}</td>
+                    <td>{el?.studentId}</td>
                     <td>
                       {el?.event1}
                       {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -335,7 +334,7 @@ const GPSchoolWiseStudentList = () => {
                     <td>{el?.gurdiansName}</td>
                     <td>{getSubmitDateInput(el?.birthday)}</td>
                     <td>{el?.sclass}</td>
-                    <td>{el?.school}</td>
+                    <td>{el?.studentId}</td>
                     <td>
                       {el?.event1}
                       {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -362,7 +361,7 @@ const GPSchoolWiseStudentList = () => {
                     <td>{el?.gurdiansName}</td>
                     <td>{getSubmitDateInput(el?.birthday)}</td>
                     <td>{el?.sclass}</td>
-                    <td>{el?.school}</td>
+                    <td>{el?.studentId}</td>
                     <td>
                       {el?.event1}
                       {el?.event2 !== "" ? `, ${el?.event2}` : ""}
@@ -382,10 +381,10 @@ const GPSchoolWiseStudentList = () => {
             </div>
             <div className="col-md-3 justify-content-center align-items-center">
               <h6 className="text-center text-black m-0 p-1">
-                বিদ্যালয় প্রধানের সীলসহ স্বাক্ষর
+                ...............................................
               </h6>
               <h6 className="text-center text-black m-0 p-1">
-                ...............................................
+                বিদ্যালয় প্রধানের সীলসহ স্বাক্ষর
               </h6>
             </div>
           </div>

@@ -73,7 +73,7 @@ const GPAllStudents = () => {
     if (teacherdetails.circle !== "admin") {
       if (teacherdetails.convenor !== "admin") {
         if (selectedGPAssistant !== "admin") {
-          navigate.push("/login");
+          navigate.push("/Login");
         }
       }
     }

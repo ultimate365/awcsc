@@ -23,7 +23,7 @@
     "firebase": "^12.5.0",
     "firebase-admin": "^13.6.0",
     "mongoose": "^8.19.3",
-    "next": "^16.0.7",
+    "next": "16.0.10",
     "nodemailer": "^7.0.10",
     "npm-check-updates": "^19.1.2",
     "papaparse": "^5.5.3",

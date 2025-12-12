@@ -19,12 +19,7 @@ import { useGlobalContext } from "../context/Store";
 const width = 2480;
 const height = 3508;
 
-export default function GPSchoolStudentList({
-  studentData,
-  gp,
-  school,
-  udise,
-}) {
+export default function GPSchoolStudentList({ studentData, gp, school }) {
   const { gpSportsDateState } = useGlobalContext();
   const data = studentData?.sort((a, b) => {
     if (a.event1rank < b.event1rank) return -1;

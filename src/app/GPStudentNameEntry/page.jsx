@@ -13,7 +13,7 @@ import {
   where,
 } from "firebase/firestore";
 import { firestore } from "../../context/FirbaseContext";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Loader from "../../components/Loader";
 import { v4 as uuid } from "uuid";
 import { decryptObjData, getCookie } from "../../modules/encryption";
@@ -24,6 +24,7 @@ import {
   events,
   maxdob,
   mindob,
+  eventRanks,
 } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
 import dynamic from "next/dynamic";
@@ -899,6 +900,47 @@ const GPStudentNameEntry = () => {
   //   // eslint-disable-next-line
   // }, [resultSearch]);
 
+  const getFilteredEvents = (group, event1) => {
+    const groupEvents = events[group.replace("GROUP-", "group").toLowerCase()];
+    if (!groupEvents) return [];
+
+    let filtered = groupEvents.filter((el) => el !== event1);
+
+    const specialEvents = {
+      YOGA: ["GYMNASTICS", "FOOTBALL THROWING"],
+      GYMNASTICS: ["YOGA", "FOOTBALL THROWING"],
+    };
+
+    if (group === "GROUP-A") {
+      if (event1 === "YOGA") {
+        return [];
+      } else {
+        return filtered.filter((el) => el !== "YOGA");
+      }
+    }
+
+    if (specialEvents[event1]) {
+      return filtered.filter((el) => !specialEvents[event1].includes(el));
+    }
+
+    if (group === "GROUP-B") {
+      if (event1 !== "YOGA" && event1 !== "GYMNASTICS") {
+        return filtered.filter((el) => el !== "YOGA" && el !== "GYMNASTICS");
+      }
+    }
+
+    if (group === "GROUP-C") {
+      if (
+        event1 !== "YOGA" &&
+        event1 !== "GYMNASTICS" &&
+        event1 !== "FOOTBALL THROWING"
+      ) {
+        return filtered.filter((el) => el !== "YOGA" && el !== "GYMNASTICS");
+      }
+    }
+
+    return filtered;
+  };
   return (
     <div className="container text-center my-5">
       {gpSpDate && (
@@ -973,7 +1015,6 @@ const GPStudentNameEntry = () => {
                 studentData={selectSchoolsParticipants}
                 gp={tawSchoolData.gp}
                 school={tawSchoolData.school}
-                udise={tawSchoolData.udise}
               />
             }
             fileName={`${tawSchoolData.school} GP Sports Student List.pdf`}
@@ -1274,100 +1315,16 @@ const GPStudentNameEntry = () => {
                         defaultValue={""}
                         onChange={(e) => {
                           setFirstEventSelected(true);
-                          let event1rank = "";
-                          if (inputField.gender === "BOYS") {
-                            if (inputField.group === "GROUP-A") {
-                              if (e.target.value === "75 METER RUN") {
-                                event1rank = 1;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event1rank = 2;
-                              } else if (e.target.value === "SHUTTLE RACE") {
-                                event1rank = 3;
-                              } else if (e.target.value === "YOGA") {
-                                event1rank = 4;
-                              }
-                            } else if (inputField.group === "GROUP-B") {
-                              if (e.target.value === "100 METER RUN") {
-                                event1rank = 5;
-                              } else if (e.target.value === "200 METER RUN") {
-                                event1rank = 6;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event1rank = 7;
-                              } else if (e.target.value === "HIGH JUMP") {
-                                event1rank = 8;
-                              } else if (e.target.value === "YOGA") {
-                                event1rank = 9;
-                              } else if (e.target.value === "GYMNASTICS") {
-                                event1rank = 10;
-                              }
-                            } else if (inputField.group === "GROUP-C") {
-                              if (e.target.value === "100 METER RUN") {
-                                event1rank = 11;
-                              } else if (e.target.value === "200 METER RUN") {
-                                event1rank = 12;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event1rank = 13;
-                              } else if (e.target.value === "HIGH JUMP") {
-                                event1rank = 14;
-                              } else if (e.target.value === "YOGA") {
-                                event1rank = 15;
-                              } else if (e.target.value === "GYMNASTICS") {
-                                event1rank = 16;
-                              } else if (
-                                e.target.value === "FOOTBALL THROWING"
-                              ) {
-                                event1rank = 17;
-                              }
-                            }
-                          } else {
-                            if (inputField.group === "GROUP-A") {
-                              if (e.target.value === "75 METER RUN") {
-                                event1rank = 18;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event1rank = 19;
-                              } else if (e.target.value === "SHUTTLE RACE") {
-                                event1rank = 20;
-                              } else if (e.target.value === "YOGA") {
-                                event1rank = 21;
-                              }
-                            } else if (inputField.group === "GROUP-B") {
-                              if (e.target.value === "100 METER RUN") {
-                                event1rank = 22;
-                              } else if (e.target.value === "200 METER RUN") {
-                                event1rank = 23;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event1rank = 24;
-                              } else if (e.target.value === "HIGH JUMP") {
-                                event1rank = 25;
-                              } else if (e.target.value === "YOGA") {
-                                event1rank = 26;
-                              } else if (e.target.value === "GYMNASTICS") {
-                                event1rank = 27;
-                              }
-                            } else if (inputField.group === "GROUP-C") {
-                              if (e.target.value === "100 METER RUN") {
-                                event1rank = 28;
-                              } else if (e.target.value === "200 METER RUN") {
-                                event1rank = 29;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event1rank = 30;
-                              } else if (e.target.value === "HIGH JUMP") {
-                                event1rank = 31;
-                              } else if (e.target.value === "YOGA") {
-                                event1rank = 32;
-                              } else if (e.target.value === "GYMNASTICS") {
-                                event1rank = 33;
-                              } else if (
-                                e.target.value === "FOOTBALL THROWING"
-                              ) {
-                                event1rank = 34;
-                              }
-                            }
-                          }
+                          const event1rank =
+                            eventRanks[inputField.gender]?.[inputField.group]?.[
+                              e.target.value
+                            ] || "";
                           setInputField({
                             ...inputField,
                             event1: e.target.value,
                             event1rank: event1rank,
+                            event2: "",
+                            event2rank: "",
                           });
                         }}
                         aria-label="Default select example"
@@ -1405,97 +1362,10 @@ const GPStudentNameEntry = () => {
                         defaultValue={""}
                         id="event2"
                         onChange={(e) => {
-                          let event2rank = "";
-                          if (inputField.gender === "BOYS") {
-                            if (inputField.group === "GROUP-A") {
-                              if (e.target.value === "75 METER RUN") {
-                                event2rank = 1;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event2rank = 2;
-                              } else if (e.target.value === "SHUTTLE RACE") {
-                                event2rank = 3;
-                              } else if (e.target.value === "YOGA") {
-                                event2rank = 4;
-                              }
-                            } else if (inputField.group === "GROUP-B") {
-                              if (e.target.value === "100 METER RUN") {
-                                event2rank = 5;
-                              } else if (e.target.value === "200 METER RUN") {
-                                event2rank = 6;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event2rank = 7;
-                              } else if (e.target.value === "HIGH JUMP") {
-                                event2rank = 8;
-                              } else if (e.target.value === "YOGA") {
-                                event2rank = 9;
-                              } else if (e.target.value === "GYMNASTICS") {
-                                event2rank = 10;
-                              }
-                            } else if (inputField.group === "GROUP-C") {
-                              if (e.target.value === "100 METER RUN") {
-                                event2rank = 11;
-                              } else if (e.target.value === "200 METER RUN") {
-                                event2rank = 12;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event2rank = 13;
-                              } else if (e.target.value === "HIGH JUMP") {
-                                event2rank = 14;
-                              } else if (e.target.value === "YOGA") {
-                                event2rank = 15;
-                              } else if (e.target.value === "GYMNASTICS") {
-                                event2rank = 16;
-                              } else if (
-                                e.target.value === "FOOTBALL THROWING"
-                              ) {
-                                event2rank = 17;
-                              }
-                            }
-                          } else {
-                            if (inputField.group === "GROUP-A") {
-                              if (e.target.value === "75 METER RUN") {
-                                event2rank = 18;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event2rank = 19;
-                              } else if (e.target.value === "SHUTTLE RACE") {
-                                event2rank = 20;
-                              } else if (e.target.value === "YOGA") {
-                                event2rank = 21;
-                              }
-                            } else if (inputField.group === "GROUP-B") {
-                              if (e.target.value === "100 METER RUN") {
-                                event2rank = 22;
-                              } else if (e.target.value === "200 METER RUN") {
-                                event2rank = 23;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event2rank = 24;
-                              } else if (e.target.value === "HIGH JUMP") {
-                                event2rank = 25;
-                              } else if (e.target.value === "YOGA") {
-                                event2rank = 26;
-                              } else if (e.target.value === "GYMNASTICS") {
-                                event2rank = 27;
-                              }
-                            } else if (inputField.group === "GROUP-C") {
-                              if (e.target.value === "100 METER RUN") {
-                                event2rank = 28;
-                              } else if (e.target.value === "200 METER RUN") {
-                                event2rank = 29;
-                              } else if (e.target.value === "LONG JUMP") {
-                                event2rank = 30;
-                              } else if (e.target.value === "HIGH JUMP") {
-                                event2rank = 31;
-                              } else if (e.target.value === "YOGA") {
-                                event2rank = 32;
-                              } else if (e.target.value === "GYMNASTICS") {
-                                event2rank = 33;
-                              } else if (
-                                e.target.value === "FOOTBALL THROWING"
-                              ) {
-                                event2rank = 34;
-                              }
-                            }
-                          }
-
+                          const event2rank =
+                            eventRanks[inputField.gender]?.[inputField.group]?.[
+                              e.target.value
+                            ] || "";
                           setInputField({
                             ...inputField,
                             event2: e.target.value,
@@ -1505,86 +1375,14 @@ const GPStudentNameEntry = () => {
                         aria-label="Default select example"
                       >
                         <option value="">Select Second Event</option>
-                        {inputField.group === "GROUP-A"
-                          ? events.groupA
-                              .filter((el) => el !== inputField.event1)
-                              .filter((el) => {
-                                if (inputField.event1 === "YOGA") {
-                                  return (
-                                    el !== "75 METER RUN" &&
-                                    el !== "SHUTTLE RACE" &&
-                                    el !== "LONG JUMP"
-                                  );
-                                } else {
-                                  return el !== "YOGA";
-                                }
-                              })
-                              .map((el, ind) => (
-                                <option value={el} key={ind}>
-                                  {el}
-                                </option>
-                              ))
-                          : inputField.group === "GROUP-B"
-                          ? events.groupB
-                              .filter((el) => el !== inputField.event1)
-                              .filter((el) => {
-                                if (inputField.event1 === "YOGA") {
-                                  return (
-                                    el !== "100 METER RUN" &&
-                                    el !== "200 METER RUN" &&
-                                    el !== "LONG JUMP" &&
-                                    el !== "HIGH JUMP" &&
-                                    el !== "GYMNASTICS"
-                                  );
-                                } else if (inputField.event1 === "GYMNASTICS") {
-                                  return (
-                                    el !== "100 METER RUN" &&
-                                    el !== "200 METER RUN" &&
-                                    el !== "LONG JUMP" &&
-                                    el !== "HIGH JUMP" &&
-                                    el !== "YOGA"
-                                  );
-                                } else {
-                                  return el !== "YOGA" && el !== "GYMNASTICS";
-                                }
-                              })
-                              .map((el, ind) => (
-                                <option value={el} key={ind}>
-                                  {el}
-                                </option>
-                              ))
-                          : inputField.group === "GROUP-C"
-                          ? events.groupC
-                              .filter((el) => el !== inputField.event1)
-                              .filter((el) => {
-                                if (inputField.event1 === "YOGA") {
-                                  return (
-                                    el !== "100 METER RUN" &&
-                                    el !== "200 METER RUN" &&
-                                    el !== "LONG JUMP" &&
-                                    el !== "HIGH JUMP" &&
-                                    el !== "FOOTBALL THROWING" &&
-                                    el !== "GYMNASTICS"
-                                  );
-                                } else if (inputField.event1 === "GYMNASTICS") {
-                                  return (
-                                    el !== "100 METER RUN" &&
-                                    el !== "200 METER RUN" &&
-                                    el !== "LONG JUMP" &&
-                                    el !== "HIGH JUMP" &&
-                                    el !== "FOOTBALL THROWING" &&
-                                    el !== "YOGA"
-                                  );
-                                } else {
-                                  return el !== "YOGA" && el !== "GYMNASTICS";
-                                }
-                              })
-                              .map((el, ind) => (
-                                <option value={el} key={ind}>
-                                  {el}
-                                </option>
-                              ))
-                          : ""}
+                        {getFilteredEvents(
+                          inputField.group,
+                          inputField.event1
+                        ).map((el, ind) => (
+                          <option value={el} key={ind}>
+                            {el}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   )}
@@ -1595,6 +1393,34 @@ const GPStudentNameEntry = () => {
                         type="button"
                         className="btn btn-success m-1 col-md-1 btn-sm"
                         onClick={() => {
+                          if (
+                            selectSchoolsParticipants.some((p) => {
+                              if (editClicked && p.id === inputField.id)
+                                return false;
+                              const hasEvent1 =
+                                p.event1 === inputField.event1 ||
+                                p.event2 === inputField.event1;
+                              const hasEvent2 =
+                                inputField.event2 &&
+                                (p.event1 === inputField.event2 ||
+                                  p.event2 === inputField.event2);
+                              return (
+                                p.gender === inputField.gender &&
+                                p.group === inputField.group &&
+                                (hasEvent1 || hasEvent2)
+                              );
+                            })
+                          ) {
+                            toast.error(
+                              "A participant with the same gender, group, and event already exists.",
+                              {
+                                position: "top-right",
+                                autoClose: 2500,
+                              }
+                            );
+                            return;
+                          }
+
                           if (
                             inputField.name !== "" &&
                             inputField.name !== undefined &&
@@ -1746,6 +1572,18 @@ const GPStudentNameEntry = () => {
           </div>
         </div>
       )} */}
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       {loader && <Loader />}
     </div>
   );
