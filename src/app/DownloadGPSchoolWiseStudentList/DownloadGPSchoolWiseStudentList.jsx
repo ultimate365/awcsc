@@ -176,7 +176,7 @@ const DownloadGPSchoolWiseStudentList = () => {
                 <tr>
                   <th colSpan={9}>
                     বিভাগ 'ক' বালক (জন্মতারিখ{" "}
-                    {`01-01-${new Date().getFullYear() - 7}`} বা তারপর)
+                    {`01-01-${new Date().getFullYear() - 6}`} বা তারপর)
                   </th>
                 </tr>
                 {boysGrAData
@@ -199,7 +199,7 @@ const DownloadGPSchoolWiseStudentList = () => {
                 <tr>
                   <th colSpan={9}>
                     বিভাগ 'খ' বালক (জন্মতারিখ{" "}
-                    {`01-01-${new Date().getFullYear() - 9}`} বা তারপর)
+                    {`01-01-${new Date().getFullYear() - 8}`} বা তারপর)
                   </th>
                 </tr>
                 {boysGrBData
@@ -222,7 +222,7 @@ const DownloadGPSchoolWiseStudentList = () => {
                 <tr>
                   <th colSpan={9}>
                     বিভাগ 'গ' বালক (জন্মতারিখ{" "}
-                    {`01-01-${new Date().getFullYear() - 11}`} বা তারপর)
+                    {`01-01-${new Date().getFullYear() - 10}`} বা তারপর)
                   </th>
                 </tr>
                 {boysGrCData
@@ -329,7 +329,7 @@ const DownloadGPSchoolWiseStudentList = () => {
               <tr>
                 <th colSpan={9}>
                   বিভাগ 'ক' বালিকা (জন্মতারিখ{" "}
-                  {`01-01-${new Date().getFullYear() - 7}`} বা তারপর)
+                  {`01-01-${new Date().getFullYear() - 6}`} বা তারপর)
                 </th>
               </tr>
               {girlsGrAData
@@ -352,7 +352,7 @@ const DownloadGPSchoolWiseStudentList = () => {
               <tr>
                 <th colSpan={9}>
                   বিভাগ 'খ' বালিকা (জন্মতারিখ{" "}
-                  {`01-01-${new Date().getFullYear() - 9}`} বা তারপর)
+                  {`01-01-${new Date().getFullYear() - 8}`} বা তারপর)
                 </th>
               </tr>
               {girlsGrBData
@@ -375,7 +375,7 @@ const DownloadGPSchoolWiseStudentList = () => {
               <tr>
                 <th colSpan={9}>
                   বিভাগ 'গ' বালিকা (জন্মতারিখ{" "}
-                  {`01-01-${new Date().getFullYear() - 11}`} বা তারপর)
+                  {`01-01-${new Date().getFullYear() - 10}`} বা তারপর)
                 </th>
               </tr>
               {girlsGrCData
