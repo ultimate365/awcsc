@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
 import DataTable from "react-data-table-component";
 import { firestore } from "../../context/FirbaseContext";
@@ -1358,6 +1358,18 @@ const CircleResultSection = () => {
       )}
 
       {loader && <Loader />}
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import DataTable from "react-data-table-component";
 import { firestore } from "../../context/FirbaseContext";
 import {
@@ -1070,6 +1070,18 @@ const GPResultSection = () => {
         </h6>
       )}
       {loader && <Loader />}
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

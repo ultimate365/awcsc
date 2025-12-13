@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import PasswordForm from "../../components/PasswordForm";
 import Loader from "../../components/Loader";
@@ -84,6 +84,18 @@ const OtpForm = () => {
           <PasswordForm email={emailRef.current.value} />
         )}
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

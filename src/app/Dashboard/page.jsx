@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 import { useGlobalContext } from "../../context/Store";
 import Loader from "../../components/Loader";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 import Typed from "typed.js";
 import { decryptObjData, getCookie } from "../../modules/encryption";
@@ -313,6 +313,18 @@ const Dashboard = () => {
         </div>
       )}
       {showLoader && <Loader />}
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 };

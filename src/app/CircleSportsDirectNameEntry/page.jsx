@@ -12,7 +12,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { firestore } from "../../context/FirbaseContext";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import {
@@ -1428,6 +1428,18 @@ export default function CircleSportsDirectNameEntry() {
           </div>
         </div>
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }

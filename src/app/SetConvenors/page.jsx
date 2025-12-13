@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { firestore } from "../../context/FirbaseContext";
 import { useGlobalContext } from "../../context/Store";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
 import {
@@ -1361,6 +1361,18 @@ const SetConvenors = () => {
         fixedHeader
         responsive
         striped
+      />
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="light"
       />
     </div>
   );
