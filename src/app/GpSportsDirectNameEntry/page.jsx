@@ -72,43 +72,20 @@ export default function GpSportsDirectNameEntry() {
   let event2;
 
   const getFilteredEvents = (group, event1) => {
-    const groupEvents = events[group.replace("GROUP-", "group").toLowerCase()];
+    const groupKey = group.replace("GROUP-", "group").toLowerCase();
+    const groupEvents = events[groupKey];
     if (!groupEvents) return [];
 
-    let filtered = groupEvents.filter((el) => el !== event1);
-
-    const specialEvents = {
-      YOGA: ["GYMNASTICS", "FOOTBALL THROWING"],
-      GYMNASTICS: ["YOGA", "FOOTBALL THROWING"],
-    };
-
-    if (group === "GROUP-A") {
-      if (event1 === "YOGA") {
-        return [];
-      } else {
-        return filtered.filter((el) => el !== "YOGA");
-      }
+    if (event1 === "YOGA" || event1 === "GYMNASTICS") {
+      return [];
     }
 
-    if (specialEvents[event1]) {
-      return filtered.filter((el) => !specialEvents[event1].includes(el));
-    }
+    let filtered = groupEvents.filter(
+      (el) => el !== event1 && el !== "YOGA" && el !== "GYMNASTICS"
+    );
 
-    if (group === "GROUP-B") {
-      if (event1 !== "YOGA" && event1 !== "GYMNASTICS") {
-        return filtered.filter((el) => el !== "YOGA" && el !== "GYMNASTICS");
-      }
-    }
-
-    if (group === "GROUP-C") {
-      if (
-        event1 !== "YOGA" &&
-        event1 !== "GYMNASTICS" &&
-        event1 !== "FOOTBALL THROWING"
-      ) {
-        return filtered.filter((el) => el !== "YOGA" && el !== "GYMNASTICS");
-      }
-    }
+    // For GROUP-C, if FOOTBALL THROWING is selected, it's the only athletic event allowed.
+    if (group === "GROUP-C" && event1 === "FOOTBALL THROWING") return [];
 
     return filtered;
   };
@@ -860,7 +837,7 @@ export default function GpSportsDirectNameEntry() {
                                 const event1rank =
                                   eventRanks[inputField.gender]?.[
                                     inputField.group
-                                  ]?.[e.target.value] || "";
+                                  ]?.[e.target.value];
                                 setInputField({
                                   ...inputField,
                                   event1: e.target.value,
@@ -907,7 +884,7 @@ export default function GpSportsDirectNameEntry() {
                                 const event2rank =
                                   eventRanks[inputField.gender]?.[
                                     inputField.group
-                                  ]?.[e.target.value] || "";
+                                  ]?.[e.target.value];
                                 setInputField({
                                   ...inputField,
                                   event2: e.target.value,
