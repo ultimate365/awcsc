@@ -581,67 +581,6 @@ export default function GpSportsDirectNameEntry() {
                     {inputField.name && (
                       <React.Fragment>
                         <div className="mb-3 col-md-3">
-                          <label className="form-label">Gurdian's Name *</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Gurdian's Name"
-                            value={inputField.gurdiansName}
-                            onChange={(e) => {
-                              setInputField({
-                                ...inputField,
-                                gurdiansName: e.target.value.toUpperCase(),
-                              });
-                            }}
-                            required
-                          />
-                        </div>
-                        <div className="mb-3 col-md-3">
-                          <label className="form-label">Gender *</label>
-                          <select
-                            className="form-select"
-                            id="gender"
-                            defaultValue={""}
-                            onChange={(e) => {
-                              setInpGrSelected(false);
-                              setFirstEventSelected(false);
-                              if (group) {
-                                group.value = "";
-                              }
-                              if (event1) {
-                                event1.value = "";
-                                setInputField({
-                                  ...inputField,
-                                  event1: "",
-                                  event1rank: "",
-                                  event2: "",
-                                  event2rank: "",
-                                });
-                              }
-
-                              if (event2) {
-                                event2.value = "";
-                                setInputField({
-                                  ...inputField,
-                                  event1: "",
-                                  event1rank: "",
-                                  event2: "",
-                                  event2rank: "",
-                                });
-                              }
-                              setInputField({
-                                ...inputField,
-                                gender: e.target.value,
-                              });
-                            }}
-                            aria-label="Default select example"
-                          >
-                            <option value="">Select Gender</option>
-                            <option value="BOYS">BOYS</option>
-                            <option value="GIRLS">GIRLS</option>
-                          </select>
-                        </div>
-                        <div className="mb-3 col-md-3">
                           <label className="form-label">BSP Student ID</label>
                           <input
                             type="text"
@@ -655,6 +594,22 @@ export default function GpSportsDirectNameEntry() {
                               });
                             }}
                             maxLength={14}
+                            required
+                          />
+                        </div>
+                        <div className="mb-3 col-md-3">
+                          <label className="form-label">Gurdian's Name *</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Gurdian's Name"
+                            value={inputField.gurdiansName}
+                            onChange={(e) => {
+                              setInputField({
+                                ...inputField,
+                                gurdiansName: e.target.value.toUpperCase(),
+                              });
+                            }}
                             required
                           />
                         </div>
@@ -726,6 +681,51 @@ export default function GpSportsDirectNameEntry() {
                                 </option>
                               );
                             })}
+                          </select>
+                        </div>
+                        <div className="mb-3 col-md-3">
+                          <label className="form-label">Gender *</label>
+                          <select
+                            className="form-select"
+                            id="gender"
+                            defaultValue={""}
+                            onChange={(e) => {
+                              setInpGrSelected(false);
+                              setFirstEventSelected(false);
+                              if (group) {
+                                group.value = "";
+                              }
+                              if (event1) {
+                                event1.value = "";
+                                setInputField({
+                                  ...inputField,
+                                  event1: "",
+                                  event1rank: "",
+                                  event2: "",
+                                  event2rank: "",
+                                });
+                              }
+
+                              if (event2) {
+                                event2.value = "";
+                                setInputField({
+                                  ...inputField,
+                                  event1: "",
+                                  event1rank: "",
+                                  event2: "",
+                                  event2rank: "",
+                                });
+                              }
+                              setInputField({
+                                ...inputField,
+                                gender: e.target.value,
+                              });
+                            }}
+                            aria-label="Default select example"
+                          >
+                            <option value="">Select Gender</option>
+                            <option value="BOYS">BOYS</option>
+                            <option value="GIRLS">GIRLS</option>
                           </select>
                         </div>
                         <div className="mb-3 col-md-3">
