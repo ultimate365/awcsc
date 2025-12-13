@@ -313,35 +313,9 @@ const GPStudentNameEntry = () => {
     setFilteredResult(data1);
   };
 
-  const getAllCircleResult = async () => {
-    setLoader(true);
-    const q1 = query(collection(firestore, `AmtaWestCircleAllResult`));
-    const querySnapshot1 = await getDocs(q1);
-    const data1 = querySnapshot1.docs
-      .map((doc) => ({
-        // doc.data() is never undefined for query doc snapshots
-        ...doc.data(),
-        // id: doc.id,
-      }))
-
-      .sort((a, b) => {
-        if (a.gp < b.gp) return -1;
-        if (a.gp > b.gp) return 1;
-        if (a.gender < b.gender) return -1;
-        if (a.gender > b.gender) return 1;
-        if (a.event1rank < b.event1rank) return -1;
-        if (a.event1rank > b.event1rank) return 1;
-        return 0;
-      });
-    setLoader(false);
-    setAllCircleResult(data1);
-    setresultFilteredData(data1);
-    setShowCircleResult(true);
-  };
-
-  const submitData = async () => {
-    setLoader(true);
-    const upLoadedResult = {
+  const createStudentDataObject = () => {
+    // This helper function builds the student object, centralizing the complex event sorting logic.
+    return {
       id: inputField.id,
       name: inputField.name,
       gurdiansName: inputField.gurdiansName,
@@ -401,6 +375,37 @@ const GPStudentNameEntry = () => {
       entryBy: inputField.entryBy,
       updatedBy: tawSchoolData.id,
     };
+  };
+
+  const getAllCircleResult = async () => {
+    setLoader(true);
+    const q1 = query(collection(firestore, `AmtaWestCircleAllResult`));
+    const querySnapshot1 = await getDocs(q1);
+    const data1 = querySnapshot1.docs
+      .map((doc) => ({
+        // doc.data() is never undefined for query doc snapshots
+        ...doc.data(),
+        // id: doc.id,
+      }))
+
+      .sort((a, b) => {
+        if (a.gp < b.gp) return -1;
+        if (a.gp > b.gp) return 1;
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
+        return 0;
+      });
+    setLoader(false);
+    setAllCircleResult(data1);
+    setresultFilteredData(data1);
+    setShowCircleResult(true);
+  };
+
+  const submitData = async () => {
+    setLoader(true);
+    const upLoadedResult = createStudentDataObject();
     setSelectedGpStudentState([...selectedGpStudentState, upLoadedResult]);
     // await axios.post("/api/addgpSportsStudentData", upLoadedResult);
     await setDoc(
@@ -453,64 +458,7 @@ const GPStudentNameEntry = () => {
       (student) => student.id !== inputField.id
     );
 
-    const updatedResult = {
-      id: inputField.id,
-      name: inputField.name,
-      gurdiansName: inputField.gurdiansName,
-      chestNo: inputField.chestNo,
-      birthday: inputField.birthday,
-      studentId: inputField.studentId,
-      sclass: inputField.sclass,
-      school: inputField.school,
-      gp: inputField.gp,
-      event1:
-        inputField.event2rank === "" || inputField.event2 === ""
-          ? inputField.event1
-          : inputField.event1rank < inputField.event2rank
-          ? inputField.event1
-          : inputField.event1rank > inputField.event2rank
-          ? inputField.event2
-          : inputField.event2,
-      event2:
-        inputField.event2 === ""
-          ? ""
-          : inputField.event2rank !== "" && inputField.event2 === ""
-          ? ""
-          : inputField.event1rank < inputField.event2rank
-          ? inputField.event2
-          : inputField.event1rank > inputField.event2rank
-          ? inputField.event1
-          : inputField.event1rank === ""
-          ? inputField.event1
-          : inputField.event2rank === ""
-          ? ""
-          : inputField.event1,
-      event1rank:
-        inputField.event2rank === "" || inputField.event2 === ""
-          ? inputField.event1rank
-          : inputField.event1rank < inputField.event2rank
-          ? inputField.event1rank
-          : inputField.event1rank > inputField.event2rank
-          ? inputField.event2rank
-          : inputField.event2rank,
-      event2rank:
-        inputField.event2rank === "" || inputField.event2 === ""
-          ? ""
-          : inputField.event1rank < inputField.event2rank
-          ? inputField.event2rank
-          : inputField.event1rank > inputField.event2rank
-          ? inputField.event1rank
-          : inputField.event1rank === ""
-          ? inputField.event1rank
-          : inputField.event2rank === ""
-          ? ""
-          : inputField.event1rank,
-      gender: inputField.gender,
-      group: inputField.group,
-      udise: inputField.udise,
-      entryBy: inputField.entryBy,
-      updatedBy: tawSchoolData.id,
-    };
+    const updatedResult = createStudentDataObject();
     let x = selectedGpStudentState.filter((item) => item.id !== inputField.id);
     x = [...x, updatedResult];
     setSelectedGpStudentState(x);
@@ -901,7 +849,8 @@ const GPStudentNameEntry = () => {
   // }, [resultSearch]);
 
   const getFilteredEvents = (group, event1) => {
-    const groupKey = group.replace("GROUP-", "group").toLowerCase();
+    const keySuffix = group.split("-")[1]; // "A", "B", or "C"
+    const groupKey = "group" + keySuffix; // "groupA", "groupB", "groupC"
     const groupEvents = events[groupKey];
     if (!groupEvents) return [];
 

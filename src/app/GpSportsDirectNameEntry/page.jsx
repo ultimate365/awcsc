@@ -72,7 +72,8 @@ export default function GpSportsDirectNameEntry() {
   let event2;
 
   const getFilteredEvents = (group, event1) => {
-    const groupKey = group.replace("GROUP-", "group").toLowerCase();
+    const keySuffix = group.split("-")[1]; // "A", "B", or "C"
+    const groupKey = "group" + keySuffix; // "groupA", "groupB", "groupC"
     const groupEvents = events[groupKey];
     if (!groupEvents) return [];
 
@@ -89,7 +90,6 @@ export default function GpSportsDirectNameEntry() {
 
     return filtered;
   };
-
   const getLockData = async (gpName) => {
     const data = gpLockState;
     setLockData(data);
@@ -247,9 +247,10 @@ export default function GpSportsDirectNameEntry() {
       wrap: true,
     },
   ];
-  const submitData = async () => {
-    setLoader(true);
-    const upLoadedResult = {
+
+  const createStudentDataObject = () => {
+    // This helper function builds the student object, centralizing the complex event sorting logic.
+    return {
       id: inputField.id,
       name: inputField.name,
       gurdiansName: inputField.gurdiansName,
@@ -261,8 +262,6 @@ export default function GpSportsDirectNameEntry() {
       gp: inputField.gp,
       event1:
         inputField.event2rank === "" || inputField.event2 === ""
-          ? inputField.event1
-          : inputField.event2rank === ""
           ? inputField.event1
           : inputField.event1rank < inputField.event2rank
           ? inputField.event1
@@ -309,6 +308,11 @@ export default function GpSportsDirectNameEntry() {
       entryBy: inputField.entryBy,
       updatedBy: teacher.id,
     };
+  };
+
+  const submitData = async () => {
+    setLoader(true);
+    const upLoadedResult = createStudentDataObject();
     setGpStudentState([...gpStudentState, upLoadedResult]);
     await setDoc(
       doc(firestore, "gpSportsStudentData", inputField.id),
@@ -352,64 +356,7 @@ export default function GpSportsDirectNameEntry() {
   const updateData = async () => {
     setLoader(true);
 
-    const updatedResult = {
-      id: inputField.id,
-      name: inputField.name,
-      gurdiansName: inputField.gurdiansName,
-      chestNo: inputField.chestNo,
-      birthday: inputField.birthday,
-      studentId: inputField.studentId,
-      sclass: inputField.sclass,
-      school: inputField.school,
-      gp: inputField.gp,
-      event1:
-        inputField.event2rank === "" || inputField.event2 === ""
-          ? inputField.event1
-          : inputField.event1rank < inputField.event2rank
-          ? inputField.event1
-          : inputField.event1rank > inputField.event2rank
-          ? inputField.event2
-          : inputField.event2,
-      event2:
-        inputField.event2 === ""
-          ? ""
-          : inputField.event2rank !== "" && inputField.event2 === ""
-          ? ""
-          : inputField.event1rank < inputField.event2rank
-          ? inputField.event2
-          : inputField.event1rank > inputField.event2rank
-          ? inputField.event1
-          : inputField.event1rank === ""
-          ? inputField.event1
-          : inputField.event2rank === ""
-          ? ""
-          : inputField.event1,
-      event1rank:
-        inputField.event2rank === "" || inputField.event2 === ""
-          ? inputField.event1rank
-          : inputField.event1rank < inputField.event2rank
-          ? inputField.event1rank
-          : inputField.event1rank > inputField.event2rank
-          ? inputField.event2rank
-          : inputField.event2rank,
-      event2rank:
-        inputField.event2rank === "" || inputField.event2 === ""
-          ? ""
-          : inputField.event1rank < inputField.event2rank
-          ? inputField.event2rank
-          : inputField.event1rank > inputField.event2rank
-          ? inputField.event1rank
-          : inputField.event1rank === ""
-          ? inputField.event1rank
-          : inputField.event2rank === ""
-          ? ""
-          : inputField.event1rank,
-      gender: inputField.gender,
-      group: inputField.group,
-      udise: inputField.udise,
-      entryBy: inputField.entryBy,
-      updatedBy: teacher.id,
-    };
+    const updatedResult = createStudentDataObject();
     const newData = gpStudentState.map((item) =>
       item.id === inputField.id ? updatedResult : item
     );
