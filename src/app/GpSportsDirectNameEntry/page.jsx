@@ -71,6 +71,48 @@ export default function GpSportsDirectNameEntry() {
   let event1;
   let event2;
 
+  const getFilteredEvents = (group, event1) => {
+    const groupEvents = events[group.replace("GROUP-", "group").toLowerCase()];
+    if (!groupEvents) return [];
+
+    let filtered = groupEvents.filter((el) => el !== event1);
+
+    const specialEvents = {
+      YOGA: ["GYMNASTICS", "FOOTBALL THROWING"],
+      GYMNASTICS: ["YOGA", "FOOTBALL THROWING"],
+    };
+
+    if (group === "GROUP-A") {
+      if (event1 === "YOGA") {
+        return [];
+      } else {
+        return filtered.filter((el) => el !== "YOGA");
+      }
+    }
+
+    if (specialEvents[event1]) {
+      return filtered.filter((el) => !specialEvents[event1].includes(el));
+    }
+
+    if (group === "GROUP-B") {
+      if (event1 !== "YOGA" && event1 !== "GYMNASTICS") {
+        return filtered.filter((el) => el !== "YOGA" && el !== "GYMNASTICS");
+      }
+    }
+
+    if (group === "GROUP-C") {
+      if (
+        event1 !== "YOGA" &&
+        event1 !== "GYMNASTICS" &&
+        event1 !== "FOOTBALL THROWING"
+      ) {
+        return filtered.filter((el) => el !== "YOGA" && el !== "GYMNASTICS");
+      }
+    }
+
+    return filtered;
+  };
+
   const getLockData = async (gpName) => {
     const data = gpLockState;
     setLockData(data);
