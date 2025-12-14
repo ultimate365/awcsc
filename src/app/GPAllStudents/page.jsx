@@ -22,6 +22,8 @@ const GPAllStudents = () => {
     setSelectedGpStudentState,
   } = useGlobalContext();
   const data = yourStateObject?.data?.sort((a, b) => {
+    if (a.school < b.school) return -1;
+    if (a.school > b.school) return 1;
     if (a.gp < b.gp) return -1;
     if (a.gp > b.gp) return 1;
     if (a.gender < b.gender) return -1;
@@ -88,6 +90,8 @@ const GPAllStudents = () => {
     const actions = data
       .filter((el) => el?.gp === selectedGP)
       .sort((a, b) => {
+        if (a.school < b.school) return -1;
+        if (a.school > b.school) return 1;
         if (a.gp < b.gp) return -1;
         if (a.gp > b.gp) return 1;
         if (a.gender < b.gender) return -1;

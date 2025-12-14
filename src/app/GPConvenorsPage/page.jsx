@@ -306,6 +306,8 @@ const GPConvenorsPage = () => {
     const data = querySnapshot.docs
       .map((doc) => doc.data())
       .sort((a, b) => {
+        if (a.school < b.school) return -1;
+        if (a.school > b.school) return 1;
         if (a.gp < b.gp) return -1;
         if (a.gp > b.gp) return 1;
         if (a.gender < b.gender) return -1;
