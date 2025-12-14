@@ -450,6 +450,8 @@ const GPConvenorsPage = () => {
           setGpStudentState(x);
           setAllParticipants(x);
           setFilteredGPData(x);
+          const y = filteredData.filter((item) => item.id !== participant.id);
+          setFilteredData(y);
           // getAllParticipant();
           toast.success("Participant Deleted Successfully", {
             position: "top-right",
