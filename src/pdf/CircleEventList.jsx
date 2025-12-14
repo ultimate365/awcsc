@@ -954,7 +954,7 @@ export default function CircleEventList({ myData }) {
                         : 1,
                   }}
                 >
-                  <Text style={styles.text}>Chest No.</Text>
+                  <Text style={styles.text}>Name with Chest No.</Text>
                 </View>
                 {(engEventName === "LONG JUMP" ||
                   engEventName === "FOOTBALL THROWING" ||
@@ -1856,7 +1856,7 @@ export default function CircleEventList({ myData }) {
                         : 1,
                   }}
                 >
-                  <Text style={styles.text}>Chest No.</Text>
+                  <Text style={styles.text}>Name with Chest No.</Text>
                 </View>
                 {(engEventName === "LONG JUMP" ||
                   engEventName === "FOOTBALL THROWING" ||

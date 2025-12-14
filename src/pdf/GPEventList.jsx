@@ -951,7 +951,7 @@ export default function GPEventList({ myData, date }) {
                     alignItems: "center",
                   }}
                 >
-                  <Text style={styles.text}>Chest No.</Text>
+                  <Text style={styles.text}>Name with Chest No.</Text>
                 </View>
               </View>
               <View style={styles.rowStartView}>
@@ -1726,7 +1726,7 @@ export default function GPEventList({ myData, date }) {
                     alignItems: "center",
                   }}
                 >
-                  <Text style={styles.text}>Chest No.</Text>
+                  <Text style={styles.text}>Name with Chest No.</Text>
                 </View>
               </View>
               <View style={styles.rowStartView}>
