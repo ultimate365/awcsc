@@ -31,23 +31,18 @@ export default function GPEventList({ myData }) {
   const BoysData = data?.filter((el) => el?.gender === "BOYS");
   const GirlsData = data?.filter((el) => el?.gender === "GIRLS");
   const schoolData = myData?.school?.sort((a, b) => {
-    const schoolData = myData?.school?.sort((a, b) => {
-      if (a.school < b.school) return -1;
-      if (a.school > b.school) return 1;
-      return 0;
-    });
+    if (a.school < b.school) return -1;
+    if (a.school > b.school) return 1;
+    return 0;
   });
   const [allData, setAllData] = useState(data);
   const [gpSchools, setGpSchools] = useState(schoolData);
   const [thisGp, setThisGp] = useState("");
   const [engGP, setEngGP] = useState("");
   const { group, engEventName, gp } = myData;
-  const [gpSportsDate, setGpSportsDate] = useState("");
   useEffect(() => {
     setThisGp(gpNames.filter((el) => el.englishName === gp)[0]?.bengaliName);
     setEngGP(gpNames.filter((el) => el.englishName === gp)[0]?.englishName);
-    const spDate = gpSportsDateState.filter((item) => item.gp === gp)[0].date;
-    setGpSportsDate(spDate);
     // eslint-disable-next-line
   }, [allData, gpSchools]);
   return (
@@ -76,7 +71,10 @@ export default function GPEventList({ myData }) {
                 <Text style={styles.textBold}>Sl No.: </Text>
               </View>
               <View style={{ marginLeft: "70%" }}>
-                <Text style={styles.textBold}>Date: {gpSportsDate}</Text>
+                <Text style={styles.textBold}>
+                  Date:{" "}
+                  {gpSportsDateState.filter((item) => item.gp === gp)[0].date}
+                </Text>
               </View>
             </View>
             <View
@@ -190,7 +188,10 @@ export default function GPEventList({ myData }) {
                 <Text style={styles.textBold}>Sl No.: </Text>
               </View>
               <View style={{ marginLeft: "70%" }}>
-                <Text style={styles.textBold}>Date: {gpSportsDate}</Text>
+                <Text style={styles.textBold}>
+                  Date:{" "}
+                  {gpSportsDateState.filter((item) => item.gp === gp)[0].date}
+                </Text>
               </View>
             </View>
             <View
@@ -310,7 +311,10 @@ export default function GPEventList({ myData }) {
                 <Text style={styles.textBold}>Sl No.: </Text>
               </View>
               <View style={{ marginLeft: "70%" }}>
-                <Text style={styles.textBold}>Date: {gpSportsDate}</Text>
+                <Text style={styles.textBold}>
+                  Date:{" "}
+                  {gpSportsDateState.filter((item) => item.gp === gp)[0].date}
+                </Text>
               </View>
             </View>
             <View
@@ -1083,7 +1087,10 @@ export default function GPEventList({ myData }) {
                 <Text style={styles.textBold}>Sl No.: </Text>
               </View>
               <View style={{ marginLeft: "70%" }}>
-                <Text style={styles.textBold}>Date: {gpSportsDate}</Text>
+                <Text style={styles.textBold}>
+                  Date:{" "}
+                  {gpSportsDateState.filter((item) => item.gp === gp)[0].date}
+                </Text>
               </View>
             </View>
             <View
