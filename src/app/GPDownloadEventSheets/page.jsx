@@ -39,8 +39,10 @@ export default function GPDownloadEventSheets() {
   const [gpSchools, setGpSchools] = useState(schoolData);
 
   const [thisGp, setThisGp] = useState("");
-  const { group, engEventName, gp } = myStateObject;
-  const spDate = gpSportsDateState.filter((item) => item.gp === gp)[0].date;
+  const [spDate, setSpDate] = useState("");
+  const [group, setGroup] = useState("");
+  const [engEventName, setEngEventName] = useState("");
+  const [gp, setGp] = useState("");
   let teacherdetails;
   let details = getCookie("tid");
   let schdetails = getCookie("schid");
@@ -64,8 +66,22 @@ export default function GPDownloadEventSheets() {
   }, []);
   useEffect(() => {
     setThisGp(gpNames.filter((el) => el.englishName === gp)[0]?.bengaliName);
+    if (myStateObject) {
+      const {
+        group: myGroup,
+        engEventName: myEngEventName,
+        gp: myGp,
+      } = myStateObject;
+      setGroup(myGroup);
+      setEngEventName(myEngEventName);
+      setGp(myGp);
+      const filteredDate = gpSportsDateState.find((item) => item.gp === myGp);
+      if (filteredDate) {
+        setSpDate(filteredDate.date);
+      }
+    }
     // eslint-disable-next-line
-  }, [allData, gpSchools, thisGp]);
+  }, [allData, gpSchools, gp, myStateObject, gpSportsDateState]);
 
   return (
     <div className="container-fluid my-5">
@@ -78,23 +94,23 @@ export default function GPDownloadEventSheets() {
           Go Back
         </button>
       </div>
-      <PDFDownloadLink
-        document={<GPEventList myData={myStateObject} date={spDate} />}
-        fileName={`${gp} GP Event Sheets of ${group}, ${engEventName}`}
-        style={{
-          textDecoration: "none",
-          padding: "10px",
-          color: "#fff",
-          backgroundColor: "navy",
-          border: "1px solid #4a4a4a",
-          width: "40%",
-          borderRadius: 10,
-        }}
-      >
-        {({ blob, url, loading, error }) =>
-          loading ? "Loading..." : "Download Event Sheet"
-        }
-      </PDFDownloadLink>
+      {spDate && (
+        <PDFDownloadLink
+          document={<GPEventList myData={myStateObject} date={spDate} />}
+          fileName={`${gp} GP Event Sheets of ${group}, ${engEventName}`}
+          style={{
+            textDecoration: "none",
+            padding: "10px",
+            color: "#fff",
+            backgroundColor: "navy",
+            border: "1px solid #4a4a4a",
+            width: "40%",
+            borderRadius: 10,
+          }}
+        >
+          {({ loading }) => (loading ? "Loading..." : "Download Event Sheet")}
+        </PDFDownloadLink>
+      )}
     </div>
   );
 }
