@@ -12,11 +12,9 @@ import {
 } from "@react-pdf/renderer";
 import { gpNames } from "../modules/constants";
 import { enToBnNumber } from "../modules/calculatefunctions";
-import { useGlobalContext } from "../context/Store";
 const width = 2480;
 const height = 3508;
-export default function GPEventList({ myData }) {
-  const { gpSportsDateState } = useGlobalContext();
+export default function GPEventList({ myData, date }) {
   const data = myData?.data?.sort((a, b) => {
     if (a.gp < b.gp) return -1;
     if (a.gp > b.gp) return 1;
@@ -71,10 +69,7 @@ export default function GPEventList({ myData }) {
                 <Text style={styles.textBold}>Sl No.: </Text>
               </View>
               <View style={{ marginLeft: "70%" }}>
-                <Text style={styles.textBold}>
-                  Date:{" "}
-                  {gpSportsDateState.filter((item) => item.gp === gp)[0].date}
-                </Text>
+                <Text style={styles.textBold}>Date: {date}</Text>
               </View>
             </View>
             <View
@@ -188,10 +183,7 @@ export default function GPEventList({ myData }) {
                 <Text style={styles.textBold}>Sl No.: </Text>
               </View>
               <View style={{ marginLeft: "70%" }}>
-                <Text style={styles.textBold}>
-                  Date:{" "}
-                  {gpSportsDateState.filter((item) => item.gp === gp)[0].date}
-                </Text>
+                <Text style={styles.textBold}>Date: {date}</Text>
               </View>
             </View>
             <View
@@ -311,10 +303,7 @@ export default function GPEventList({ myData }) {
                 <Text style={styles.textBold}>Sl No.: </Text>
               </View>
               <View style={{ marginLeft: "70%" }}>
-                <Text style={styles.textBold}>
-                  Date:{" "}
-                  {gpSportsDateState.filter((item) => item.gp === gp)[0].date}
-                </Text>
+                <Text style={styles.textBold}>Date: {date}</Text>
               </View>
             </View>
             <View
@@ -1087,10 +1076,7 @@ export default function GPEventList({ myData }) {
                 <Text style={styles.textBold}>Sl No.: </Text>
               </View>
               <View style={{ marginLeft: "70%" }}>
-                <Text style={styles.textBold}>
-                  Date:{" "}
-                  {gpSportsDateState.filter((item) => item.gp === gp)[0].date}
-                </Text>
+                <Text style={styles.textBold}>Date: {date}</Text>
               </View>
             </View>
             <View

@@ -15,7 +15,7 @@ export default function GPDownloadEventSheets() {
       loading: () => <p>Loading...</p>,
     }
   );
-  const { myStateObject } = useGlobalContext();
+  const { myStateObject, gpSportsDateState } = useGlobalContext();
   const data = myStateObject?.data?.sort((a, b) => {
     if (a.gp < b.gp) return -1;
     if (a.gp > b.gp) return 1;
@@ -40,7 +40,7 @@ export default function GPDownloadEventSheets() {
 
   const [thisGp, setThisGp] = useState("");
   const { group, engEventName, gp } = myStateObject;
-  const [feildSheetsClicked, setFeildSheetsClicked] = useState(false);
+  const spDate = gpSportsDateState.filter((item) => item.gp === gp)[0].date;
   let teacherdetails;
   let details = getCookie("tid");
   let schdetails = getCookie("schid");
@@ -79,7 +79,7 @@ export default function GPDownloadEventSheets() {
         </button>
       </div>
       <PDFDownloadLink
-        document={<GPEventList myData={myStateObject} />}
+        document={<GPEventList myData={myStateObject} date={spDate} />}
         fileName={`${gp} GP Event Sheets of ${group}, ${engEventName}`}
         style={{
           textDecoration: "none",
