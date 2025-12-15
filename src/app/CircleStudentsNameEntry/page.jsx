@@ -698,8 +698,12 @@ const CircleStudentsNameEntry = () => {
           doc(firestore, "circleLockData", selectedGPLock?.id),
           selectedGPLock
         ).then((e) => {
-          console.log("Entry of " + gp + " Lock State Changed successfully");
-          toast.success("Entry of " + gp + " Lock State Changed successfully");
+          console.log(
+            "Entry of " + item?.gp + " Lock State Changed successfully"
+          );
+          toast.success(
+            "Entry of " + item?.gp + " Lock State Changed successfully"
+          );
           setLoader(false);
         });
       } catch (e) {
