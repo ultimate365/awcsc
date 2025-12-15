@@ -533,12 +533,12 @@ const CircleStudentsNameEntry = () => {
     let x = gpLockState.filter((item) => item?.id === gp.id)[0];
     x.edit = state;
     if (state) {
-      x.entryStaredBy = user.tname;
+      x.entryStaredBy = teacherdetails.tname;
       x.entryDate = Date.now();
       x.closeDate = "";
       x.entryCloseddBy = "";
     } else {
-      x.entryCloseddBy = user.tname;
+      x.entryCloseddBy = teacherdetails.tname;
       x.closeDate = Date.now();
       x.entryStaredBy = "";
       x.entryDate = "";
@@ -577,12 +577,12 @@ const CircleStudentsNameEntry = () => {
     const otherGPLock = circleLockState.filter((el) => el?.gp !== gp);
     selectedGPLock.edit = state;
     if (state) {
-      selectedGPLock.entryStaredBy = user.tname;
+      selectedGPLock.entryStaredBy = teacherdetails.tname;
       selectedGPLock.entryDate = Date.now();
       selectedGPLock.entryCloseddBy = "";
       selectedGPLock.closeDate = "";
     } else {
-      selectedGPLock.entryCloseddBy = user.tname;
+      selectedGPLock.entryCloseddBy = teacherdetails.tname;
       selectedGPLock.closeDate = Date.now();
       selectedGPLock.entryStaredBy = "";
       selectedGPLock.entryDate = "";
@@ -662,12 +662,12 @@ const CircleStudentsNameEntry = () => {
       const otherGPLock = circleLockState.filter((el) => el?.gp !== item?.gp);
       selectedGPLock.edit = state;
       if (state) {
-        selectedGPLock.entryStaredBy = user.tname;
+        selectedGPLock.entryStaredBy = teacherdetails.tname;
         selectedGPLock.entryDate = Date.now();
         selectedGPLock.entryCloseddBy = "";
         selectedGPLock.closeDate = "";
       } else {
-        selectedGPLock.entryCloseddBy = user.tname;
+        selectedGPLock.entryCloseddBy = teacherdetails.tname;
         selectedGPLock.closeDate = Date.now();
         selectedGPLock.entryStaredBy = "";
         selectedGPLock.entryDate = "";
