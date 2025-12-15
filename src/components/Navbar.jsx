@@ -254,7 +254,10 @@ const Navbar = () => {
         to: "/CircleSportsDirectNameEntry",
         show: (ctx) =>
           isTeacher(ctx) &&
-          (hasAccess(ctx, "admin") || userHas(ctx, "circleAssistant", "admin")),
+          (hasAccess(ctx, "admin") ||
+            userHas(ctx, "convenor", "admin") ||
+            userHas(ctx, "gpAssistant", "admin") ||
+            userHas(ctx, "circleAssistant", "admin")),
       },
     ];
 
