@@ -604,8 +604,16 @@ const GPConvenorsPage = () => {
             className="btn btn-success m-1"
             style={{ width: "auto" }}
             onClick={() => {
+              const bDay = row.birthday;
+              if (bDay.split("-")[0].length === 2) {
+                row.birthday =
+                  bDay.split("-")[2] +
+                  "-" +
+                  bDay.split("-")[1] +
+                  "-" +
+                  bDay.split("-")[0];
+              }
               setEditClicked(true);
-              setInputField(row);
               setInputField(row);
               setInpGrSelected(true);
               setFirstEventSelected(true);
@@ -1579,6 +1587,23 @@ const GPConvenorsPage = () => {
             Edit Details of {inputField.name} of {inputField.school}
           </h4>
           <div className="row align-items-end my-4">
+            <div className="mb-3 col-md-3">
+              <label className="form-label">
+                Chest No. (Leave if Not Alloted to All)
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Chest No."
+                value={inputField.chestNo}
+                onChange={(e) => {
+                  setInputField({
+                    ...inputField,
+                    chestNo: e.target.value,
+                  });
+                }}
+              />
+            </div>
             <div className="mb-3 col-md-3">
               <label className="form-label">Participant Name *</label>
               <input
