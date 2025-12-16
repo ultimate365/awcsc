@@ -1139,7 +1139,7 @@ const CircleStudentsNameEntry = () => {
             document={
               <CircleGPList studentData={filteredGPData} gp={btnClickedGP} />
             }
-            fileName={`Circle Sporst ${btnClickedGP} GP Sports Student List.pdf`}
+            fileName={`${btnClickedGP} GP Circle Sports Student List.pdf`}
             style={{
               textDecoration: "none",
               padding: "10px",
@@ -1229,7 +1229,7 @@ const CircleStudentsNameEntry = () => {
                         gp={selectedGP}
                       />
                     }
-                    fileName={`Circle Sporst ${selectedGP} GP Sports Student List.pdf`}
+                    fileName={`${selectedGP} GP Circle Sports Student List.pdf`}
                     style={{
                       textDecoration: "none",
                       padding: "10px",

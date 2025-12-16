@@ -44,7 +44,7 @@ export default function CircleGPList({ studentData, gp }) {
     // <PDFViewer width={width / 3.5} height={height / 3}>
     <Document
       style={{ margin: 5, padding: 5 }}
-      title={`Circle Sporst ${gp} GP Sports Student List`}
+      title={`${gp} GP Circle Sports Student List`}
     >
       <Page size="A4" orientation="landscape" style={styles.page}>
         <View style={styles.pageMainView}>
