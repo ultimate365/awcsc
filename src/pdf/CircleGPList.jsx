@@ -22,6 +22,8 @@ const height = 3508;
 export default function CircleGPList({ studentData, gp }) {
   const { gpSportsDateState } = useGlobalContext();
   const data = studentData?.sort((a, b) => {
+    if (a.group < b.group) return -1;
+    if (a.group > b.group) return 1;
     if (a.event1rank < b.event1rank) return -1;
     if (a.event1rank > b.event1rank) return 1;
     return 0;
@@ -287,7 +289,9 @@ export default function CircleGPList({ studentData, gp }) {
                 >
                   <Text style={styles.text}>
                     {el?.event1}
-                    {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                    {el?.event2
+                      ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                      : ""}
                   </Text>
                 </View>
               </View>
@@ -561,7 +565,9 @@ export default function CircleGPList({ studentData, gp }) {
                 >
                   <Text style={styles.text}>
                     {el?.event1}
-                    {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                    {el?.event2
+                      ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                      : ""}
                   </Text>
                 </View>
               </View>

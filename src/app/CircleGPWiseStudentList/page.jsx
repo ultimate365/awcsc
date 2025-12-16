@@ -164,7 +164,9 @@ const CircleGPWiseStudentList = () => {
                       <td>{el?.school}</td>
                       <td>
                         {el?.event1}
-                        {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                        {el?.event2
+                          ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                          : ""}
                       </td>
                     </tr>
                   ))}
@@ -187,7 +189,9 @@ const CircleGPWiseStudentList = () => {
                       <td>{el?.school}</td>
                       <td>
                         {el?.event1}
-                        {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                        {el?.event2
+                          ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                          : ""}
                       </td>
                     </tr>
                   ))}
@@ -214,7 +218,9 @@ const CircleGPWiseStudentList = () => {
                       <td>{el?.school}</td>
                       <td>
                         {el?.event1}
-                        {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                        {el?.event2
+                          ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                          : ""}
                       </td>
                     </tr>
                   ))}
@@ -324,7 +330,9 @@ const CircleGPWiseStudentList = () => {
                     <td>{el?.school}</td>
                     <td>
                       {el?.event1}
-                      {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                      {el?.event2
+                        ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                        : ""}
                     </td>
                   </tr>
                 ))}
@@ -347,7 +355,9 @@ const CircleGPWiseStudentList = () => {
                     <td>{el?.school}</td>
                     <td>
                       {el?.event1}
-                      {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                      {el?.event2
+                        ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                        : ""}
                     </td>
                   </tr>
                 ))}
@@ -374,7 +384,9 @@ const CircleGPWiseStudentList = () => {
                     <td>{el?.school}</td>
                     <td>
                       {el?.event1}
-                      {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                      {el?.event2
+                        ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                        : ""}
                     </td>
                   </tr>
                 ))}

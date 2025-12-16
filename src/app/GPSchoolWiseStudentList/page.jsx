@@ -161,7 +161,9 @@ const GPSchoolWiseStudentList = () => {
                       <td>{el?.studentId}</td>
                       <td>
                         {el?.event1}
-                        {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                        {el?.event2
+                          ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                          : ""}
                       </td>
                     </tr>
                   ))}
@@ -184,7 +186,9 @@ const GPSchoolWiseStudentList = () => {
                       <td>{el?.studentId}</td>
                       <td>
                         {el?.event1}
-                        {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                        {el?.event2
+                          ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                          : ""}
                       </td>
                     </tr>
                   ))}
@@ -211,7 +215,9 @@ const GPSchoolWiseStudentList = () => {
                       <td>{el?.studentId}</td>
                       <td>
                         {el?.event1}
-                        {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                        {el?.event2
+                          ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                          : ""}
                       </td>
                     </tr>
                   ))}
@@ -314,7 +320,9 @@ const GPSchoolWiseStudentList = () => {
                     <td>{el?.studentId}</td>
                     <td>
                       {el?.event1}
-                      {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                      {el?.event2
+                        ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                        : ""}
                     </td>
                   </tr>
                 ))}
@@ -337,7 +345,9 @@ const GPSchoolWiseStudentList = () => {
                     <td>{el?.studentId}</td>
                     <td>
                       {el?.event1}
-                      {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                      {el?.event2
+                        ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                        : ""}
                     </td>
                   </tr>
                 ))}
@@ -364,7 +374,9 @@ const GPSchoolWiseStudentList = () => {
                     <td>{el?.studentId}</td>
                     <td>
                       {el?.event1}
-                      {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                      {el?.event2
+                        ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                        : ""}
                     </td>
                   </tr>
                 ))}
