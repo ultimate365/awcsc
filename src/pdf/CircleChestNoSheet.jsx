@@ -89,36 +89,31 @@ export default function CircleChestNoSheet({ BoysData, GirlsData }) {
                       >
                         <Text style={styles.text4}>{e}</Text>
                       </View>
-                      {BoysData?.filter(
-                        (el) =>
-                          `${el?.gender} ${el?.group} ${el?.event1}` === e ||
-                          `${el?.gender} ${el?.group} ${el?.event2}` === e
-                      )?.map((b, index) => (
-                        <View
-                          style={{
-                            width: "10%",
-                            borderRightWidth:
-                              index ===
-                              BoysData?.filter(
-                                (el) =>
-                                  `${el?.gender} ${el?.group} ${el?.event1}` ===
-                                    e ||
-                                  `${el?.gender} ${el?.group} ${el?.event2}` ===
-                                    e
-                              )?.length -
-                                1
-                                ? 0
-                                : 1,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            height: 30,
-                          }}
-                        >
-                          <Text style={styles.title} key={index}>
-                            {b?.chestNo ? b?.chestNo : "-"}
-                          </Text>
-                        </View>
-                      ))}
+                      {gpEngNames.map((gp, gpIndex) => {
+                        const participant = BoysData?.find(
+                          (el) =>
+                            (el.gp === gp || el.school?.gp === gp) &&
+                            (`${el?.gender} ${el?.group} ${el?.event1}` === e ||
+                              `${el?.gender} ${el?.group} ${el?.event2}` === e)
+                        );
+                        return (
+                          <View
+                            key={gpIndex}
+                            style={{
+                              width: "10%",
+                              borderRightWidth:
+                                gpEngNames.length - 1 === gpIndex ? 0 : 1,
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: 30,
+                            }}
+                          >
+                            <Text style={styles.title}>
+                              {participant ? participant.chestNo : "-"}
+                            </Text>
+                          </View>
+                        );
+                      })}
                     </View>
                   ))}
                 </View>
@@ -192,36 +187,31 @@ export default function CircleChestNoSheet({ BoysData, GirlsData }) {
                       >
                         <Text style={styles.text4}>{e}</Text>
                       </View>
-                      {GirlsData?.filter(
-                        (el) =>
-                          `${el?.gender} ${el?.group} ${el?.event1}` === e ||
-                          `${el?.gender} ${el?.group} ${el?.event2}` === e
-                      )?.map((b, index) => (
-                        <View
-                          style={{
-                            width: "10%",
-                            borderRightWidth:
-                              index ===
-                              GirlsData?.filter(
-                                (el) =>
-                                  `${el?.gender} ${el?.group} ${el?.event1}` ===
-                                    e ||
-                                  `${el?.gender} ${el?.group} ${el?.event2}` ===
-                                    e
-                              )?.length -
-                                1
-                                ? 0
-                                : 1,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            height: 30,
-                          }}
-                        >
-                          <Text style={styles.title} key={index}>
-                            {b?.chestNo ? b?.chestNo : "-"}
-                          </Text>
-                        </View>
-                      ))}
+                      {gpEngNames.map((gp, gpIndex) => {
+                        const participant = GirlsData?.find(
+                          (el) =>
+                            (el.gp === gp || el.school?.gp === gp) &&
+                            (`${el?.gender} ${el?.group} ${el?.event1}` === e ||
+                              `${el?.gender} ${el?.group} ${el?.event2}` === e)
+                        );
+                        return (
+                          <View
+                            key={gpIndex}
+                            style={{
+                              width: "10%",
+                              borderRightWidth:
+                                gpEngNames.length - 1 === gpIndex ? 0 : 1,
+                              justifyContent: "center",
+                              alignItems: "center",
+                              height: 30,
+                            }}
+                          >
+                            <Text style={styles.title}>
+                              {participant ? participant.chestNo : "-"}
+                            </Text>
+                          </View>
+                        );
+                      })}
                     </View>
                   ))}
                 </View>

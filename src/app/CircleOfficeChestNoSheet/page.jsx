@@ -118,13 +118,19 @@ export default function CircleOfficeChestNoSheet() {
               {BOYS_ALL_EVENTS.map((e, i) => (
                 <tr key={i}>
                   <td style={{ fontSize: 13 }}>{e}</td>
-                  {BoysData?.filter(
-                    (el) =>
-                      `${el?.gender} ${el?.group} ${el?.event1}` === e ||
-                      `${el?.gender} ${el?.group} ${el?.event2}` === e
-                  )?.map((b, index) => (
-                    <td key={index}>{b?.chestNo}</td>
-                  ))}
+                  {gpEngNames.map((gp, gpIndex) => {
+                    const participant = BoysData?.find(
+                      (el) =>
+                        (el.gp === gp || el.school?.gp === gp) &&
+                        (`${el?.gender} ${el?.group} ${el?.event1}` === e ||
+                          `${el?.gender} ${el?.group} ${el?.event2}` === e)
+                    );
+                    return (
+                      <td key={gpIndex}>
+                        {participant ? participant.chestNo : "-"}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
@@ -154,13 +160,19 @@ export default function CircleOfficeChestNoSheet() {
               {GIRLS_ALL_EVENTS.map((e, i) => (
                 <tr key={i}>
                   <td style={{ fontSize: 13 }}>{e}</td>
-                  {GirlsData?.filter(
-                    (el) =>
-                      `${el?.gender} ${el?.group} ${el?.event1}` === e ||
-                      `${el?.gender} ${el?.group} ${el?.event2}` === e
-                  )?.map((b, index) => (
-                    <td key={index}>{b?.chestNo}</td>
-                  ))}
+                  {gpEngNames.map((gp, gpIndex) => {
+                    const participant = GirlsData?.find(
+                      (el) =>
+                        (el.gp === gp || el.school?.gp === gp) &&
+                        (`${el?.gender} ${el?.group} ${el?.event1}` === e ||
+                          `${el?.gender} ${el?.group} ${el?.event2}` === e)
+                    );
+                    return (
+                      <td key={gpIndex}>
+                        {participant ? participant.chestNo : "-"}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>

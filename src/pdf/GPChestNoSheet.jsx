@@ -97,38 +97,26 @@ export default function GPChestNoSheet({ BoysData, GirlsData, GPSchools, gp }) {
                         </Text>
                       </View>
                       {GPSchools?.map((b, index) => {
+                        const participant = BoysData?.find(
+                          (el) =>
+                            el.udise === b.udise &&
+                            (`${el?.gender} ${el?.group} ${el?.event1}` === e ||
+                              `${el?.gender} ${el?.group} ${el?.event2}` === e)
+                        );
                         return (
                           <View
                             key={index}
                             style={{
                               width: "10%",
                               borderRightWidth:
-                                index === GPSchools?.length - 1 ? 0 : 1,
+                                GPSchools.length - 1 === index ? 0 : 1,
                               justifyContent: "center",
                               alignItems: "center",
                               height: 30,
                             }}
                           >
                             <Text>
-                              {BoysData?.filter(
-                                (el) =>
-                                  (`${el?.gender} ${el?.group} ${el?.event1}` ===
-                                    e &&
-                                    el?.udise === b?.udise) ||
-                                  (`${el?.gender} ${el?.group} ${el?.event2}` ===
-                                    e &&
-                                    el?.udise === b?.udise)
-                              )[0]?.chestNo
-                                ? BoysData?.filter(
-                                    (el) =>
-                                      (`${el?.gender} ${el?.group} ${el?.event1}` ===
-                                        e &&
-                                        el?.udise === b?.udise) ||
-                                      (`${el?.gender} ${el?.group} ${el?.event2}` ===
-                                        e &&
-                                        el?.udise === b?.udise)
-                                  )[0]?.chestNo
-                                : "-"}
+                              {participant ? participant.chestNo : "-"}
                             </Text>
                           </View>
                         );
@@ -211,38 +199,26 @@ export default function GPChestNoSheet({ BoysData, GirlsData, GPSchools, gp }) {
                         </Text>
                       </View>
                       {GPSchools?.map((b, index) => {
+                        const participant = GirlsData?.find(
+                          (el) =>
+                            el.udise === b.udise &&
+                            (`${el?.gender} ${el?.group} ${el?.event1}` === e ||
+                              `${el?.gender} ${el?.group} ${el?.event2}` === e)
+                        );
                         return (
                           <View
                             key={index}
                             style={{
                               width: "10%",
                               borderRightWidth:
-                                index === GPSchools?.length - 1 ? 0 : 1,
+                                GPSchools.length - 1 === index ? 0 : 1,
                               justifyContent: "center",
                               alignItems: "center",
                               height: 30,
                             }}
                           >
                             <Text>
-                              {GirlsData?.filter(
-                                (el) =>
-                                  (`${el?.gender} ${el?.group} ${el?.event1}` ===
-                                    e &&
-                                    el?.udise === b?.udise) ||
-                                  (`${el?.gender} ${el?.group} ${el?.event2}` ===
-                                    e &&
-                                    el?.udise === b?.udise)
-                              )[0]?.chestNo
-                                ? GirlsData?.filter(
-                                    (el) =>
-                                      (`${el?.gender} ${el?.group} ${el?.event1}` ===
-                                        e &&
-                                        el?.udise === b?.udise) ||
-                                      (`${el?.gender} ${el?.group} ${el?.event2}` ===
-                                        e &&
-                                        el?.udise === b?.udise)
-                                  )[0]?.chestNo
-                                : "-"}
+                              {participant ? participant.chestNo : "-"}
                             </Text>
                           </View>
                         );
