@@ -923,10 +923,7 @@ export default function CircleEventList({ myData }) {
               >
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "30%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -936,45 +933,19 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "70%",
                     justifyContent: "center",
                     alignItems: "center",
-                    borderRightWidth:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? 0
-                        : 1,
+                    borderRightWidth: 0,
                   }}
                 >
-                  <Text style={styles.text}>Chest No.</Text>
+                  <Text style={styles.text}>Name with Chest No.</Text>
                 </View>
-                {(engEventName === "LONG JUMP" ||
-                  engEventName === "FOOTBALL THROWING" ||
-                  engEventName === "HIGH JUMP" ||
-                  engEventName === "75 METER RUN" ||
-                  engEventName === "100 METER RUN" ||
-                  engEventName === "200 METER RUN" ||
-                  engEventName === "SHUTTLE RACE") && (
-                  <View
-                    style={{
-                      width: "33%",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text style={styles.text}>Time / Distance</Text>
-                  </View>
-                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "30%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -985,42 +956,18 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "70%",
                     justifyContent: "center",
                     alignItems: "center",
-                    borderRightWidth:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? 0
-                        : 1,
+                    borderRightWidth: 0,
                     height: 35,
                   }}
                 ></View>
-                {(engEventName === "LONG JUMP" ||
-                  engEventName === "FOOTBALL THROWING" ||
-                  engEventName === "HIGH JUMP" ||
-                  engEventName === "75 METER RUN" ||
-                  engEventName === "100 METER RUN" ||
-                  engEventName === "200 METER RUN" ||
-                  engEventName === "SHUTTLE RACE") && (
-                  <View
-                    style={{
-                      width: "33%",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  ></View>
-                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "30%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -1031,126 +978,61 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "70%",
                     justifyContent: "center",
                     alignItems: "center",
-                    borderRightWidth:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? 0
-                        : 1,
+                    borderRightWidth: 0,
                     height: 35,
                   }}
                 ></View>
-                {(engEventName === "LONG JUMP" ||
-                  engEventName === "FOOTBALL THROWING" ||
-                  engEventName === "HIGH JUMP" ||
-                  engEventName === "75 METER RUN" ||
-                  engEventName === "100 METER RUN" ||
-                  engEventName === "200 METER RUN" ||
-                  engEventName === "SHUTTLE RACE") && (
-                  <View
-                    style={{
-                      width: "33%",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  ></View>
-                )}
               </View>
               <View style={styles.rowStartView}>
-                <View
-                  style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
-                    borderRightWidth: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 35,
-                  }}
-                >
-                  <Text style={styles.titleMain}>3RD</Text>
-                </View>
-                <View
-                  style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRightWidth:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? 0
-                        : 1,
-                    height: 35,
-                  }}
-                ></View>
-                {(engEventName === "LONG JUMP" ||
-                  engEventName === "FOOTBALL THROWING" ||
-                  engEventName === "HIGH JUMP" ||
-                  engEventName === "75 METER RUN" ||
-                  engEventName === "100 METER RUN" ||
-                  engEventName === "200 METER RUN" ||
-                  engEventName === "SHUTTLE RACE") && (
+                <View style={styles.rowStartView}>
                   <View
                     style={{
-                      width: "33%",
+                      width: "30%",
+                      borderRightWidth: 1,
                       justifyContent: "center",
                       alignItems: "center",
+                      height: 35,
+                    }}
+                  >
+                    <Text style={styles.titleMain}>3RD</Text>
+                  </View>
+                  <View
+                    style={{
+                      width: "70%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRightWidth: 0,
+                      height: 35,
                     }}
                   ></View>
-                )}
+                </View>
               </View>
               <View style={styles.rowStartView}>
-                <View
-                  style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
-                    borderRightWidth: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 35,
-                  }}
-                >
-                  <Text style={styles.titleMain}>4TH</Text>
-                </View>
-                <View
-                  style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRightWidth:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? 0
-                        : 1,
-                    height: 35,
-                  }}
-                ></View>
-                {(engEventName === "LONG JUMP" ||
-                  engEventName === "FOOTBALL THROWING" ||
-                  engEventName === "HIGH JUMP" ||
-                  engEventName === "75 METER RUN" ||
-                  engEventName === "100 METER RUN" ||
-                  engEventName === "200 METER RUN" ||
-                  engEventName === "SHUTTLE RACE") && (
+                <View style={styles.rowStartView}>
                   <View
                     style={{
-                      width: "33%",
+                      width: "30%",
+                      borderRightWidth: 1,
                       justifyContent: "center",
                       alignItems: "center",
+                      height: 35,
+                    }}
+                  >
+                    <Text style={styles.titleMain}>4th</Text>
+                  </View>
+                  <View
+                    style={{
+                      width: "70%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRightWidth: 0,
+                      height: 35,
                     }}
                   ></View>
-                )}
+                </View>
               </View>
               <View style={[styles.rowStartView, { borderBottomWidth: 0 }]}>
                 <View
@@ -1825,10 +1707,7 @@ export default function CircleEventList({ myData }) {
               >
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "30%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -1838,45 +1717,19 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "70%",
                     justifyContent: "center",
                     alignItems: "center",
-                    borderRightWidth:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? 0
-                        : 1,
+                    borderRightWidth: 0,
                   }}
                 >
-                  <Text style={styles.text}>Chest No.</Text>
+                  <Text style={styles.text}>Name with Chest No.</Text>
                 </View>
-                {(engEventName === "LONG JUMP" ||
-                  engEventName === "FOOTBALL THROWING" ||
-                  engEventName === "HIGH JUMP" ||
-                  engEventName === "75 METER RUN" ||
-                  engEventName === "100 METER RUN" ||
-                  engEventName === "200 METER RUN" ||
-                  engEventName === "SHUTTLE RACE") && (
-                  <View
-                    style={{
-                      width: "33%",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text style={styles.text}>Time / Distance</Text>
-                  </View>
-                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "30%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -1887,42 +1740,18 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "70%",
                     justifyContent: "center",
                     alignItems: "center",
-                    borderRightWidth:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? 0
-                        : 1,
+                    borderRightWidth: 0,
                     height: 35,
                   }}
                 ></View>
-                {(engEventName === "LONG JUMP" ||
-                  engEventName === "FOOTBALL THROWING" ||
-                  engEventName === "HIGH JUMP" ||
-                  engEventName === "75 METER RUN" ||
-                  engEventName === "100 METER RUN" ||
-                  engEventName === "200 METER RUN" ||
-                  engEventName === "SHUTTLE RACE") && (
-                  <View
-                    style={{
-                      width: "33%",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  ></View>
-                )}
               </View>
               <View style={styles.rowStartView}>
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "30%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -1933,126 +1762,61 @@ export default function CircleEventList({ myData }) {
                 </View>
                 <View
                   style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
+                    width: "70%",
                     justifyContent: "center",
                     alignItems: "center",
-                    borderRightWidth:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? 0
-                        : 1,
+                    borderRightWidth: 0,
                     height: 35,
                   }}
                 ></View>
-                {(engEventName === "LONG JUMP" ||
-                  engEventName === "FOOTBALL THROWING" ||
-                  engEventName === "HIGH JUMP" ||
-                  engEventName === "75 METER RUN" ||
-                  engEventName === "100 METER RUN" ||
-                  engEventName === "200 METER RUN" ||
-                  engEventName === "SHUTTLE RACE") && (
-                  <View
-                    style={{
-                      width: "33%",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  ></View>
-                )}
               </View>
               <View style={styles.rowStartView}>
-                <View
-                  style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
-                    borderRightWidth: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 35,
-                  }}
-                >
-                  <Text style={styles.titleMain}>3RD</Text>
-                </View>
-                <View
-                  style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRightWidth:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? 0
-                        : 1,
-                    height: 35,
-                  }}
-                ></View>
-                {(engEventName === "LONG JUMP" ||
-                  engEventName === "FOOTBALL THROWING" ||
-                  engEventName === "HIGH JUMP" ||
-                  engEventName === "75 METER RUN" ||
-                  engEventName === "100 METER RUN" ||
-                  engEventName === "200 METER RUN" ||
-                  engEventName === "SHUTTLE RACE") && (
+                <View style={styles.rowStartView}>
                   <View
                     style={{
-                      width: "33%",
+                      width: "30%",
+                      borderRightWidth: 1,
                       justifyContent: "center",
                       alignItems: "center",
+                      height: 35,
+                    }}
+                  >
+                    <Text style={styles.titleMain}>3RD</Text>
+                  </View>
+                  <View
+                    style={{
+                      width: "70%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRightWidth: 0,
+                      height: 35,
                     }}
                   ></View>
-                )}
+                </View>
               </View>
               <View style={styles.rowStartView}>
-                <View
-                  style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
-                    borderRightWidth: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 35,
-                  }}
-                >
-                  <Text style={styles.titleMain}>4TH</Text>
-                </View>
-                <View
-                  style={{
-                    width:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? "50%"
-                        : "33%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRightWidth:
-                      engEventName === "YOGA" || engEventName === "GYMNASTICS"
-                        ? 0
-                        : 1,
-                    height: 35,
-                  }}
-                ></View>
-                {(engEventName === "LONG JUMP" ||
-                  engEventName === "FOOTBALL THROWING" ||
-                  engEventName === "HIGH JUMP" ||
-                  engEventName === "75 METER RUN" ||
-                  engEventName === "100 METER RUN" ||
-                  engEventName === "200 METER RUN" ||
-                  engEventName === "SHUTTLE RACE") && (
+                <View style={styles.rowStartView}>
                   <View
                     style={{
-                      width: "33%",
+                      width: "30%",
+                      borderRightWidth: 1,
                       justifyContent: "center",
                       alignItems: "center",
+                      height: 35,
+                    }}
+                  >
+                    <Text style={styles.titleMain}>4th</Text>
+                  </View>
+                  <View
+                    style={{
+                      width: "70%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRightWidth: 0,
+                      height: 35,
                     }}
                   ></View>
-                )}
+                </View>
               </View>
               <View style={[styles.rowStartView, { borderBottomWidth: 0 }]}>
                 <View
