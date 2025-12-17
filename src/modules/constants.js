@@ -429,7 +429,7 @@ export const GP_LOCK_DATA = [
   },
 ];
 
-export const CIRCLE_SPORTS_DATE = "24-01-2025";
+export const CIRCLE_SPORTS_DATE = "19-12-2025";
 export const myAPIKey =
   "U2FsdGVkX192tMrUblJFYmARmkfmipxyZd3IAdvolsAsh/pepZ/5I59HJpTXr6nrMINLrhH+pzFDG3BDEJhla1IxCLi5w5RxJ0zcq05Vf8RM8yLtB8b7BZfD+4SHbQ4iRNY/VrJq7qK92WidEjxfRQ==";
 export const githubUsername = "awcsc";
