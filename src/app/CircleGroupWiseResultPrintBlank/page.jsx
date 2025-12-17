@@ -123,6 +123,7 @@ const CircleGroupWiseResultPrint = () => {
               <th>CHEST NO.</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
+              <th>GP</th>
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
@@ -131,8 +132,9 @@ const CircleGroupWiseResultPrint = () => {
                 </th>
                 <th style={{ width: "30%" }}></th>
                 <th style={{ width: "10%" }}></th>
-                <th style={{ width: "30%" }}></th>
                 <th style={{ width: "20%" }}></th>
+                <th style={{ width: "20%" }}></th>
+                <th style={{ width: "10%" }}></th>
               </tr>
             ))}
 
@@ -147,6 +149,7 @@ const CircleGroupWiseResultPrint = () => {
               <th>CHEST NO.</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
+              <th>GP</th>
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
@@ -155,8 +158,9 @@ const CircleGroupWiseResultPrint = () => {
                 </th>
                 <th style={{ width: "30%" }}></th>
                 <th style={{ width: "10%" }}></th>
-                <th style={{ width: "30%" }}></th>
                 <th style={{ width: "20%" }}></th>
+                <th style={{ width: "20%" }}></th>
+                <th style={{ width: "10%" }}></th>
               </tr>
             ))}
             <tr>
@@ -170,6 +174,7 @@ const CircleGroupWiseResultPrint = () => {
               <th>CHEST NO.</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
+              <th>GP</th>
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
@@ -178,8 +183,9 @@ const CircleGroupWiseResultPrint = () => {
                 </th>
                 <th style={{ width: "30%" }}></th>
                 <th style={{ width: "10%" }}></th>
-                <th style={{ width: "30%" }}></th>
                 <th style={{ width: "20%" }}></th>
+                <th style={{ width: "20%" }}></th>
+                <th style={{ width: "10%" }}></th>
               </tr>
             ))}
             <tr>
@@ -193,6 +199,7 @@ const CircleGroupWiseResultPrint = () => {
               <th>CHEST NO.</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
+              <th>GP</th>
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
@@ -201,8 +208,9 @@ const CircleGroupWiseResultPrint = () => {
                 </th>
                 <th style={{ width: "30%" }}></th>
                 <th style={{ width: "10%" }}></th>
-                <th style={{ width: "30%" }}></th>
                 <th style={{ width: "20%" }}></th>
+                <th style={{ width: "20%" }}></th>
+                <th style={{ width: "10%" }}></th>
               </tr>
             ))}
           </tbody>
@@ -227,6 +235,7 @@ const CircleGroupWiseResultPrint = () => {
               <th>CHEST NO.</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
+              <th>GP</th>
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
@@ -235,8 +244,9 @@ const CircleGroupWiseResultPrint = () => {
                 </th>
                 <th style={{ width: "30%" }}></th>
                 <th style={{ width: "10%" }}></th>
-                <th style={{ width: "30%" }}></th>
                 <th style={{ width: "20%" }}></th>
+                <th style={{ width: "20%" }}></th>
+                <th style={{ width: "10%" }}></th>
               </tr>
             ))}
             <tr>
@@ -250,6 +260,7 @@ const CircleGroupWiseResultPrint = () => {
               <th>CHEST NO.</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
+              <th>GP</th>
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
@@ -258,8 +269,9 @@ const CircleGroupWiseResultPrint = () => {
                 </th>
                 <th style={{ width: "30%" }}></th>
                 <th style={{ width: "10%" }}></th>
-                <th style={{ width: "30%" }}></th>
                 <th style={{ width: "20%" }}></th>
+                <th style={{ width: "20%" }}></th>
+                <th style={{ width: "10%" }}></th>
               </tr>
             ))}
             <tr>
@@ -273,6 +285,7 @@ const CircleGroupWiseResultPrint = () => {
               <th>CHEST NO.</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
+              <th>GP</th>
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
@@ -281,8 +294,9 @@ const CircleGroupWiseResultPrint = () => {
                 </th>
                 <th style={{ width: "30%" }}></th>
                 <th style={{ width: "10%" }}></th>
-                <th style={{ width: "30%" }}></th>
                 <th style={{ width: "20%" }}></th>
+                <th style={{ width: "20%" }}></th>
+                <th style={{ width: "10%" }}></th>
               </tr>
             ))}
             <tr>
@@ -296,6 +310,7 @@ const CircleGroupWiseResultPrint = () => {
               <th>CHEST NO.</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
+              <th>GP</th>
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
@@ -304,8 +319,9 @@ const CircleGroupWiseResultPrint = () => {
                 </th>
                 <th style={{ width: "30%" }}></th>
                 <th style={{ width: "10%" }}></th>
-                <th style={{ width: "30%" }}></th>
                 <th style={{ width: "20%" }}></th>
+                <th style={{ width: "20%" }}></th>
+                <th style={{ width: "10%" }}></th>
               </tr>
             ))}
 
@@ -320,6 +336,7 @@ const CircleGroupWiseResultPrint = () => {
               <th>CHEST NO.</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
+              <th>GP</th>
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
@@ -330,6 +347,8 @@ const CircleGroupWiseResultPrint = () => {
                 <th style={{ width: "10%" }}></th>
                 <th style={{ width: "30%" }}></th>
                 <th style={{ width: "20%" }}></th>
+                <th style={{ width: "20%" }}></th>
+                <th style={{ width: "10%" }}></th>
               </tr>
             ))}
             <tr>
@@ -343,6 +362,7 @@ const CircleGroupWiseResultPrint = () => {
               <th>CHEST NO.</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
+              <th>GP</th>
             </tr>
             {[1, 1, 1].map((el, i) => (
               <tr style={{ height: 40 }} key={i}>
@@ -353,6 +373,8 @@ const CircleGroupWiseResultPrint = () => {
                 <th style={{ width: "10%" }}></th>
                 <th style={{ width: "30%" }}></th>
                 <th style={{ width: "20%" }}></th>
+                <th style={{ width: "20%" }}></th>
+                <th style={{ width: "10%" }}></th>
               </tr>
             ))}
             {group === "GROUP-C" && (
@@ -368,6 +390,7 @@ const CircleGroupWiseResultPrint = () => {
                   <th>CHEST NO.</th>
                   <th>GURDIAN'S NAME</th>
                   <th>SCHOOL</th>
+                  <th>GP</th>
                 </tr>
                 {[1, 1, 1].map((el, i) => (
                   <tr style={{ height: 40 }} key={i}>
@@ -376,8 +399,9 @@ const CircleGroupWiseResultPrint = () => {
                     </th>
                     <th style={{ width: "30%" }}></th>
                     <th style={{ width: "10%" }}></th>
-                    <th style={{ width: "30%" }}></th>
                     <th style={{ width: "20%" }}></th>
+                    <th style={{ width: "20%" }}></th>
+                    <th style={{ width: "10%" }}></th>
                   </tr>
                 ))}
               </>
