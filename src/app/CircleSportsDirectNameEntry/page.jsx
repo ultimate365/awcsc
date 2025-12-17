@@ -401,6 +401,7 @@ export default function CircleSportsDirectNameEntry() {
           setAllGPFirstsState(x);
           setFilteredGPData(x);
           setAllParticipants(x);
+          setGpConvenorsData(x.filter((el) => el?.gp === teacherdetails.gp));
           toast.success("Participant Deleted Successfully");
         })
         .catch((e) => {
