@@ -281,10 +281,6 @@ export default function CircleSportsDirectNameEntry() {
 
   const updateData = async () => {
     setLoader(true);
-    const newData = allGPFirstsState.map((item) =>
-      item.id === inputField.id ? inputField : item
-    );
-    setAllGPFirstsState(newData);
     const docRef = doc(firestore, "allGPFirsts", inputField.id);
     await updateDoc(docRef, inputField)
       .then(async () => {
@@ -354,6 +350,9 @@ export default function CircleSportsDirectNameEntry() {
         setAllGPFirstsState(newData);
         setAllParticipants(newData);
         setFilteredGPData(newData);
+        setGpConvenorsData(
+          newData.filter((el) => el?.gp === teacherdetails.gp)
+        );
         setLoader(false);
         setInputField({
           id: docId,
