@@ -105,7 +105,7 @@ const CircleGroupWiseResultPrint = () => {
         {group === "GROUP-A" ? (
           <tbody>
             <tr>
-              <th colSpan={3} style={{ borderRight: 0 }}></th>
+              <th colSpan={4} style={{ borderRight: 0 }}></th>
               <th colSpan={2} style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-1 rounded-2">
                   {benGender}
@@ -113,7 +113,7 @@ const CircleGroupWiseResultPrint = () => {
               </th>
             </tr>
             <tr>
-              <th className="ben" colSpan={5}>
+              <th className="ben" colSpan={6}>
                 {bengGroupName} ৭৫ মিটার দৌড়
               </th>
             </tr>
@@ -139,7 +139,7 @@ const CircleGroupWiseResultPrint = () => {
             ))}
 
             <tr>
-              <th className="ben" colSpan={5}>
+              <th className="ben" colSpan={6}>
                 {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
@@ -164,7 +164,7 @@ const CircleGroupWiseResultPrint = () => {
               </tr>
             ))}
             <tr>
-              <th className="ben" colSpan={5}>
+              <th className="ben" colSpan={6}>
                 {bengGroupName} আলু দৌড় (SHUTTLE RACE)
               </th>
             </tr>
@@ -189,7 +189,7 @@ const CircleGroupWiseResultPrint = () => {
               </tr>
             ))}
             <tr>
-              <th className="ben" colSpan={5}>
+              <th className="ben" colSpan={6}>
                 {bengGroupName} যোগা
               </th>
             </tr>
@@ -217,7 +217,7 @@ const CircleGroupWiseResultPrint = () => {
         ) : (
           <tbody>
             <tr>
-              <th colSpan={3} style={{ borderRight: 0 }}></th>
+              <th colSpan={4} style={{ borderRight: 0 }}></th>
               <th colSpan={2} style={{ borderLeft: 0 }}>
                 <h4 className="text-center ben text-white bg-black p-1 rounded-2">
                   {bengGroupName}
@@ -225,7 +225,7 @@ const CircleGroupWiseResultPrint = () => {
               </th>
             </tr>
             <tr>
-              <th className="ben" colSpan={5}>
+              <th className="ben" colSpan={6}>
                 {bengGroupName} ১০০ মিটার দৌড়
               </th>
             </tr>
@@ -250,7 +250,7 @@ const CircleGroupWiseResultPrint = () => {
               </tr>
             ))}
             <tr>
-              <th className="ben" colSpan={5}>
+              <th className="ben" colSpan={6}>
                 {bengGroupName} ২০০ মিটার দৌড়
               </th>
             </tr>
@@ -275,7 +275,7 @@ const CircleGroupWiseResultPrint = () => {
               </tr>
             ))}
             <tr>
-              <th className="ben" colSpan={5}>
+              <th className="ben" colSpan={6}>
                 {bengGroupName} দীর্ঘ লম্ফন
               </th>
             </tr>
@@ -300,7 +300,7 @@ const CircleGroupWiseResultPrint = () => {
               </tr>
             ))}
             <tr>
-              <th className="ben" colSpan={5}>
+              <th className="ben" colSpan={6}>
                 {bengGroupName} উচ্চ লম্ফন
               </th>
             </tr>
@@ -326,7 +326,7 @@ const CircleGroupWiseResultPrint = () => {
             ))}
 
             <tr>
-              <th className="ben" colSpan={5}>
+              <th className="ben" colSpan={6}>
                 {bengGroupName} যোগা
               </th>
             </tr>
@@ -352,7 +352,7 @@ const CircleGroupWiseResultPrint = () => {
               </tr>
             ))}
             <tr>
-              <th className="ben" colSpan={5}>
+              <th className="ben" colSpan={6}>
                 {bengGroupName} জিম্‌নাস্টিক্‌স
               </th>
             </tr>
@@ -380,7 +380,7 @@ const CircleGroupWiseResultPrint = () => {
             {group === "GROUP-C" && (
               <>
                 <tr>
-                  <th className="ben" colSpan={5}>
+                  <th className="ben" colSpan={6}>
                     {bengGroupName} ফুটবল ছোঁড়া
                   </th>
                 </tr>
