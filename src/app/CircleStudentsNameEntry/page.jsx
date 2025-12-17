@@ -1133,7 +1133,7 @@ const CircleStudentsNameEntry = () => {
           fixedHeader
         />
       )}
-      {selectGPsParticipants.length === 0 && btnClickedGP !== "" && (
+      {filteredGPData.length > 0 && btnClickedGP !== "" && (
         <div className="my-4">
           <PDFDownloadLink
             document={
@@ -1166,6 +1166,7 @@ const CircleStudentsNameEntry = () => {
           >
             Print List
           </button>
+          {/* <CircleGPList studentData={filteredGPData} gp={btnClickedGP} /> */}
         </div>
       )}
       {allParticipants.length > 0 && (

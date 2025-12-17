@@ -63,6 +63,26 @@ export default function CircleGPList({ studentData, gp }) {
               marginVertical: 10,
             }}
           >
+            <Text style={styles.textBold}>
+              TOTAL BOYS- {BoysData?.length},{" "}
+            </Text>
+            <Text style={styles.textBold}>
+              TOTAL GIRLS- {GirlsData?.length},
+            </Text>
+            <Text style={styles.textBold}>
+              TOTAL PARTICIPANTS- {data?.length}
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              alignSelf: "center",
+              width: "90%",
+              marginVertical: 5,
+            }}
+          >
             <View>
               <Text style={styles.textBold}>গ্রাম পঞ্চায়েতের নামঃ {gp} </Text>
             </View>
@@ -102,7 +122,7 @@ export default function CircleGPList({ studentData, gp }) {
               </View>
               <View
                 style={{
-                  width: "20%",
+                  width: "18%",
                   borderRightWidth: 1,
                   justifyContent: "center",
                   alignItems: "center",
@@ -113,7 +133,7 @@ export default function CircleGPList({ studentData, gp }) {
               </View>
               <View
                 style={{
-                  width: "20%",
+                  width: "18%",
                   borderRightWidth: 1,
                   justifyContent: "center",
                   alignItems: "center",
@@ -124,14 +144,14 @@ export default function CircleGPList({ studentData, gp }) {
               </View>
               <View
                 style={{
-                  width: "10%",
+                  width: "14%",
                   borderRightWidth: 1,
                   justifyContent: "center",
                   alignItems: "center",
                   height: 30,
                 }}
               >
-                <Text style={styles.text}>BSP STUDENT ID</Text>
+                <Text style={styles.text}>School</Text>
               </View>
               <View
                 style={{
@@ -212,7 +232,7 @@ export default function CircleGPList({ studentData, gp }) {
                 </View>
                 <View
                   style={{
-                    width: "20%",
+                    width: "18%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -223,7 +243,7 @@ export default function CircleGPList({ studentData, gp }) {
                 </View>
                 <View
                   style={{
-                    width: "20%",
+                    width: "18%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -234,14 +254,16 @@ export default function CircleGPList({ studentData, gp }) {
                 </View>
                 <View
                   style={{
-                    width: "10%",
+                    width: "14%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
                     height: 30,
                   }}
                 >
-                  <Text style={styles.text}>{el?.studentId}</Text>
+                  <Text style={[styles.text, { fontSize: 9 }]}>
+                    {el?.school}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -316,9 +338,6 @@ export default function CircleGPList({ studentData, gp }) {
                 }-${new Date().getFullYear()}`}
               </Text>
             </View>
-            <View style={{ marginLeft: "70%" }}>
-              <Text style={styles.textBold}>কনভেনরের স্বাক্ষর</Text>
-            </View>
           </View>
         </View>
       </Page>
@@ -328,7 +347,6 @@ export default function CircleGPList({ studentData, gp }) {
             {circleBenName} বার্ষিক ক্রীড়া প্রতিযোগিতা,{" "}
             {enToBnNumber(new Date().getFullYear())}
           </Text>
-
           <View
             style={{
               flexDirection: "row",
@@ -337,6 +355,26 @@ export default function CircleGPList({ studentData, gp }) {
               alignSelf: "center",
               width: "90%",
               marginVertical: 10,
+            }}
+          >
+            <Text style={styles.textBold}>
+              TOTAL BOYS- {BoysData?.length},{" "}
+            </Text>
+            <Text style={styles.textBold}>
+              TOTAL GIRLS- {GirlsData?.length},
+            </Text>
+            <Text style={styles.textBold}>
+              TOTAL PARTICIPANTS- {data?.length}
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              alignSelf: "center",
+              width: "90%",
+              marginVertical: 5,
             }}
           >
             <View>
@@ -378,7 +416,7 @@ export default function CircleGPList({ studentData, gp }) {
               </View>
               <View
                 style={{
-                  width: "20%",
+                  width: "18%",
                   borderRightWidth: 1,
                   justifyContent: "center",
                   alignItems: "center",
@@ -389,7 +427,7 @@ export default function CircleGPList({ studentData, gp }) {
               </View>
               <View
                 style={{
-                  width: "20%",
+                  width: "18%",
                   borderRightWidth: 1,
                   justifyContent: "center",
                   alignItems: "center",
@@ -400,14 +438,14 @@ export default function CircleGPList({ studentData, gp }) {
               </View>
               <View
                 style={{
-                  width: "10%",
+                  width: "14%",
                   borderRightWidth: 1,
                   justifyContent: "center",
                   alignItems: "center",
                   height: 30,
                 }}
               >
-                <Text style={styles.text}>BSP STUDENT ID</Text>
+                <Text style={styles.text}>School</Text>
               </View>
               <View
                 style={{
@@ -488,7 +526,7 @@ export default function CircleGPList({ studentData, gp }) {
                 </View>
                 <View
                   style={{
-                    width: "20%",
+                    width: "18%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -499,7 +537,7 @@ export default function CircleGPList({ studentData, gp }) {
                 </View>
                 <View
                   style={{
-                    width: "20%",
+                    width: "18%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
@@ -510,14 +548,16 @@ export default function CircleGPList({ studentData, gp }) {
                 </View>
                 <View
                   style={{
-                    width: "10%",
+                    width: "14%",
                     borderRightWidth: 1,
                     justifyContent: "center",
                     alignItems: "center",
                     height: 30,
                   }}
                 >
-                  <Text style={styles.text}>{el?.studentId}</Text>
+                  <Text style={[styles.text, { fontSize: 9 }]}>
+                    {el?.school}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -591,11 +631,6 @@ export default function CircleGPList({ studentData, gp }) {
                   new Date().getMonth() + 1
                 }-${new Date().getFullYear()}`}
               </Text>
-            </View>
-            <View style={{ marginLeft: "70%" }}>
-              <View style={{ marginLeft: "70%" }}>
-                <Text style={styles.textBold}>কনভেনরের স্বাক্ষর</Text>
-              </View>
             </View>
           </View>
         </View>
