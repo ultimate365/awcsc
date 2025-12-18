@@ -537,47 +537,54 @@ const CircleStudentsNameEntry = () => {
     },
   ];
   const changeGPLockEntry = async (gp, state) => {
-    setLoader(true);
-    let x = gpLockState.filter((item) => item?.id === gp.id)[0];
-    x.edit = state;
-    if (state) {
-      x.entryStaredBy = teacherdetails.tname;
-      x.entryDate = Date.now();
-      x.closeDate = "";
-      x.entryCloseddBy = "";
-    } else {
-      x.entryCloseddBy = teacherdetails.tname;
-      x.closeDate = Date.now();
-      x.entryStaredBy = "";
-      x.entryDate = "";
+    try {
+      setLoader(true);
+      let x = gpLockState.filter((item) => item?.id === gp.id)[0];
+      x.edit = state;
+      if (state) {
+        x.entryStaredBy = teacherdetails.tname;
+        x.entryDate = Date.now();
+        x.closeDate = "";
+        x.entryCloseddBy = "";
+      } else {
+        x.entryCloseddBy = teacherdetails.tname;
+        x.closeDate = Date.now();
+        x.entryStaredBy = "";
+        x.entryDate = "";
+      }
+      const docRef = doc(firestore, "gpLockData", gp.id);
+      await updateDoc(docRef, x)
+        .then(() => {
+          let y = gpLockState.filter((item) => item?.id !== gp.id);
+          y = [...y, x];
+          y = y.sort((a, b) => a?.gp?.localeCompare(b?.gp));
+          setGpLockState(y);
+          setLoader(false);
+          // getLockData();
+          toast.success(
+            `congratulation! Student Entry Closed For ${gp.gp} GP Sports Data`,
+            {
+              position: "top-right",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            }
+          );
+        })
+        .catch((e) => {
+          toast.error("Unable To Update Data");
+          console.log(e);
+          setLoader(false);
+        });
+    } catch (error) {
+      toast.error("Unable To Update Data");
+      console.log(error);
+      setLoader(false);
     }
-    let y = gpLockState.filter((item) => item?.id !== gp.id);
-    y = [...y, x];
-    y = y.sort((a, b) => a?.gp?.localeCompare(b?.gp));
-    setGpLockState(y);
-    const docRef = doc(firestore, "gpLockData", gp.id);
-    await updateDoc(docRef, entry)
-      .then(async () => {
-        setLoader(false);
-        // getLockData();
-        toast.success(
-          `congratulation! Student Entry Closed For ${gp.gp} GP Sports Data`,
-          {
-            position: "top-right",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
-        );
-      })
-      .catch((e) => {
-        console.log(e);
-        setLoader(false);
-      });
   };
   const lockGP = async (gp, state) => {
     setLoader(true);
