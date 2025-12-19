@@ -11,6 +11,7 @@ import {
   query,
   setDoc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import Loader from "../../components/Loader";
 import { decryptObjData, getCookie } from "../../modules/encryption";
@@ -342,6 +343,41 @@ const CircleResultSection = () => {
         setLoader(false);
       });
   };
+
+  const deleteStudent = async (id) => {
+    setLoader(true);
+    const docRef = doc(firestore, "AmtaWestCircleAllResult", id);
+    await deleteDoc(docRef)
+      .then(async () => {
+        const newData = AmtaWestCircleAllResultState.filter(
+          (item) => item.id !== id
+        );
+        setAllResult(newData);
+        setAmtaWestCircleAllResultState(newData);
+
+        const checkFirst = circleFirstResultState.filter((el) => el.id === id);
+        if (checkFirst.length > 0) {
+          const studentSelected = checkFirst[0];
+          const docRef3 = doc(
+            firestore,
+            "AmtaWestCircleFirstResult",
+            studentSelected.id
+          );
+          await deleteDoc(docRef3);
+          const newData = circleFirstResultState.filter(
+            (item) => item.id !== id
+          );
+          setCircleFirstResultState(newData);
+        }
+        setLoader(false);
+        toast.s;
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoader(false);
+      });
+  };
+
   const getAllResult = async () => {
     setLoader(true);
     const querySnapshot = await getDocs(
@@ -402,7 +438,7 @@ const CircleResultSection = () => {
     {
       name: "Sl",
       selector: (row, index) =>
-        allResult.findIndex((i) => i.id === row?.id) + 1,
+        AmtaWestCircleAllResultState.findIndex((i) => i.id === row?.id) + 1,
       sortable: +true,
       center: +true,
     },
@@ -486,6 +522,18 @@ const CircleResultSection = () => {
             }}
           >
             Edit
+          </button>
+          <button
+            className="btn btn-danger m-1 btn-sm"
+            onClick={() => {
+              if (
+                window.confirm(`Are you sure you want to Delete ${row?.name}?`)
+              ) {
+                deleteStudent(row?.id);
+              }
+            }}
+          >
+            Delete
           </button>
         </div>
       ),
@@ -579,7 +627,7 @@ const CircleResultSection = () => {
               value={search}
               onChange={(e) => {
                 setFilteredData(
-                  allResult.filter((el) => {
+                  AmtaWestCircleAllResultState.filter((el) => {
                     return el.name
                       .toLowerCase()
                       .match(e.target.value.toLowerCase());
