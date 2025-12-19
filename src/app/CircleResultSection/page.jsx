@@ -28,7 +28,6 @@ import {
 } from "../../modules/constants";
 import { events } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
-import axios from "axios";
 const CircleResultSection = () => {
   const {
     myStateObject,
@@ -132,6 +131,46 @@ const CircleResultSection = () => {
     schdetails = decryptObjData("schid");
   }
 
+  const resetForm = () => {
+    setEngGenderName("");
+    setEngGroupName("");
+    setEngEvent1Name("");
+    setEngEvent2Name("");
+    setGenderSelected(false);
+    setInpGrSelected(false);
+    setEvent1Selected(false);
+    setEvent2Selected(false);
+    setParticipantSelected(false);
+    setPositionSelected(false);
+    setPosition2Selected(false);
+    setSelectedParticipant("");
+    setPosition("");
+    setE1Rank("");
+    setE2Rank("");
+    setPosition2("");
+    if (gender) {
+      gender.value = "";
+    }
+    if (group) {
+      group.value = "";
+    }
+    if (participant) {
+      participant.value = "";
+    }
+    if (event1Name) {
+      event1Name.value = "";
+    }
+    if (event2Name) {
+      event2Name.value = "";
+    }
+    if (positionInp) {
+      positionInp.value = "";
+    }
+    if (positionInp2) {
+      positionInp2.value = "";
+    }
+  };
+
   const uploadResult = async () => {
     let student = JSON.parse(selectedParticipant);
     setLoader(true);
@@ -206,23 +245,18 @@ const CircleResultSection = () => {
           });
           setCircleFirstResultState(sortedFirstResult);
           setLoader(false);
-          setTimeout(() => {
-            navigate.back();
-          }, 500);
           toast.success(
             `Student Sucessfully Registerd in the Circle Sports First & All Result Database`
           );
         });
       } else {
         setLoader(false);
-        setTimeout(() => {
-          navigate.back();
-        }, 500);
         toast.success(
           `Student Sucessfully Registed in the Circle All Result Database`
         );
       }
     });
+    resetForm();
   };
   const updateData = async () => {
     setLoader(true);
@@ -296,75 +330,32 @@ const CircleResultSection = () => {
   };
   const getAllResult = async () => {
     setLoader(true);
-    try {
-      const querySnapshot = await getDocs(
-        query(collection(firestore, "AmtaWestCircleAllResult"))
-      );
-      const data = querySnapshot.docs
-        .map((doc) => doc.data())
-        .sort((a, b) => {
-          if (a.gender < b.gender) return -1;
-          if (a.gender > b.gender) return 1;
-          if (a.event1rank < b.event1rank) return -1;
-          if (a.event1rank > b.event1rank) return 1;
-          return 0;
-        });
-      setLoader(false);
-      setAmtaWestCircleAllResultState(data);
-      setAllResult(data);
-      setFilteredData(data);
-    } catch (error) {
-      await axios
-        .post("/api/getAmtaWestCircleAllResult")
-        .then((response) => {
-          const data = response.data?.data?.sort((a, b) => {
-            if (a.gender < b.gender) return -1;
-            if (a.gender > b.gender) return 1;
-            if (a.event1rank < b.event1rank) return -1;
-            if (a.event1rank > b.event1rank) return 1;
-            return 0;
-          });
-          setLoader(false);
-          setAmtaWestCircleAllResultState(data);
-          setAllResult(data);
-          setFilteredData(data);
-        })
-        .catch((error) => {
-          setLoader(false);
-          console.error("Error fetching Result data: ", error);
-        });
-      console.log(error);
-    }
+    const querySnapshot = await getDocs(
+      query(collection(firestore, "AmtaWestCircleAllResult"))
+    );
+    const data = querySnapshot.docs
+      .map((doc) => doc.data())
+      .sort((a, b) => {
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
+        return 0;
+      });
+    setLoader(false);
+    setAmtaWestCircleAllResultState(data);
+    setAllResult(data);
+    setFilteredData(data);
   };
   const getAllCircleFirstResult = async () => {
-    try {
-      const querySnapshot = await getDocs(
-        query(collection(firestore, "AmtaWestCircleFirstResult"))
-      );
-      const data = querySnapshot.docs
-        .map((doc) => doc.data())
-        .sort((a, b) => a?.position1 - b?.position1);
-      setAllFirstResult(data);
-      setCircleFirstResultState(data);
-    } catch (error) {
-      await axios
-        .post("/api/getAmtaWestCircleFirstResult")
-        .then((response) => {
-          const data = response.data.data.sort((a, b) => {
-            if (a.gender < b.gender) return -1;
-            if (a.gender > b.gender) return 1;
-            if (a.event1rank < b.event1rank) return -1;
-            if (a.event1rank > b.event1rank) return 1;
-            return 0;
-          });
-          setAllFirstResult(data);
-          setCircleFirstResultState(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching lock data: ", error);
-        });
-      console.error("Error fetching lock data: ", error);
-    }
+    const querySnapshot = await getDocs(
+      query(collection(firestore, "AmtaWestCircleFirstResult"))
+    );
+    const data = querySnapshot.docs
+      .map((doc) => doc.data())
+      .sort((a, b) => a?.position1 - b?.position1);
+    setAllFirstResult(data);
+    setCircleFirstResultState(data);
   };
   const handleParticipantChange = (e) => {
     const value = e.target.value;
@@ -384,9 +375,14 @@ const CircleResultSection = () => {
     if (positionInp2) {
       positionInp2.value = "";
     }
+    setEvent1Selected(false);
+    setEvent2Selected(false);
     setParticipantSelected(true);
     setPositionSelected(false);
-    console.log(value);
+    setPosition("");
+    setE1Rank("");
+    setE2Rank("");
+    setPosition2("");
   };
   const columns = [
     {
@@ -1333,24 +1329,7 @@ const CircleResultSection = () => {
           <button
             type="button"
             className="btn btn-danger m-1 btn-sm"
-            onClick={async () => {
-              setEngGenderName("");
-              setEngGroupName("");
-              setEngEvent1Name("");
-              setGenderSelected(false);
-              setInpGrSelected(false);
-              setParticipantSelected(false);
-              setEvent1Selected(false);
-              setPositionSelected(false);
-              setEvent2Selected(false);
-              setPosition2Selected(false);
-              if (event1Name) {
-                event1Name.value = "";
-              }
-              if (gender) {
-                gender.value = "";
-              }
-            }}
+            onClick={resetForm}
           >
             Reset
           </button>

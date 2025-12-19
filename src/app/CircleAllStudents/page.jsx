@@ -71,104 +71,63 @@ const CircleAllStudents = () => {
     // eslint-disable-next-line
   }, []);
 
-  const allotChestNumber = async () => {
+  const updateChestNumbers = async (isRemoving = false) => {
     setLoader(true);
-    const alloted = await data
-      .sort((a, b) => {
-        if (a.gp < b.gp) return -1;
-        if (a.gp > b.gp) return 1;
-        if (a.gender < b.gender) return -1;
-        if (a.gender > b.gender) return 1;
-        if (a.event1rank < b.event1rank) return -1;
-        if (a.event1rank > b.event1rank) return 1;
-        return 0;
-      })
-      .map(async (el, ind) => {
-        const chestNo = parseInt(startingChestNo) + ind;
-        const docRef = doc(firestore, "allGPFirsts", el?.id);
-        // if (isDev) {
-        //   await axios.post("/api/updateallGPFirsts", { id: el?.id, chestNo });
-        // }
-        await updateDoc(docRef, {
-          chestNo,
-        })
-          .then(async () => {
-            const thisStudent = allGPFirstsState.filter(
-              (student) => student.id === el.id
-            )[0];
-            thisStudent.chestNo = chestNo;
-            const otherStudents = allGPFirstsState.filter(
-              (student) => student.id !== el.id
-            );
-            setAllGPFirstsState([...otherStudents, thisStudent]);
-            setFilteredData([...otherStudents, thisStudent]);
+    const sortedData = [...data].sort((a, b) => {
+      if (a.gp < b.gp) return -1;
+      if (a.gp > b.gp) return 1;
+      if (a.gender < b.gender) return -1;
+      if (a.gender > b.gender) return 1;
+      const rankA = Math.min(
+        a.event1rank || Infinity,
+        a.event2rank || Infinity
+      );
+      const rankB = Math.min(
+        b.event1rank || Infinity,
+        b.event2rank || Infinity
+      );
+      return rankA - rankB;
+    });
 
-            console.log(`Participant ${el?.name} Alloted Chest No ${chestNo}`);
-          })
-          .catch((e) => {
-            console.log(e);
-            setLoader(false);
-          });
-      });
-    await Promise.all(alloted)
-      .then(() => {
-        setLoader(false);
-        navigate.back();
-      })
-      .catch((e) => {
-        console.log(e);
-        setLoader(false);
-      });
-  };
-  const removeChestNumber = async () => {
-    setLoader(true);
-    const alloted = await data
-      .sort((a, b) => {
-        if (a.gp < b.gp) return -1;
-        if (a.gp > b.gp) return 1;
-        if (a.gender < b.gender) return -1;
-        if (a.gender > b.gender) return 1;
-        if (a.event1rank < b.event1rank) return -1;
-        if (a.event1rank > b.event1rank) return 1;
-        return 0;
-      })
-      .map(async (el, ind) => {
-        const chestNo = "";
-        const docRef = doc(firestore, "allGPFirsts", el?.id);
-        // if (isDev) {
-        //   await axios.post("/api/updateallGPFirsts", { id: el?.id, chestNo });
-        // }
-        await updateDoc(docRef, {
-          chestNo,
-        })
-          .then(async () => {
-            const thisStudent = allGPFirstsState.filter(
-              (student) => student.id === el.id
-            )[0];
-            thisStudent.chestNo = chestNo;
-            const otherStudents = allGPFirstsState.filter(
-              (student) => student.id !== el.id
-            );
-            setAllGPFirstsState([...otherStudents, thisStudent]);
-            setFilteredData([...otherStudents, thisStudent]);
+    const newAllGPFirstsState = allGPFirstsState.map((student) => ({
+      ...student,
+    }));
 
-            console.log(`Participant ${el?.name}'s Alloted Chest No Removed`);
-          })
-          .catch((e) => {
-            console.log(e);
-            setLoader(false);
-          });
-      });
-    await Promise.all(alloted)
-      .then(() => {
-        setLoader(false);
-        navigate.back();
-      })
-      .catch((e) => {
-        console.log(e);
-        setLoader(false);
-      });
+    const updatePromises = sortedData.map(async (el, ind) => {
+      const chestNo = isRemoving ? "" : parseInt(startingChestNo) + ind;
+      const docRef = doc(firestore, "allGPFirsts", el?.id);
+
+      const studentIndex = newAllGPFirstsState.findIndex(
+        (student) => student.id === el.id
+      );
+      if (studentIndex !== -1) {
+        newAllGPFirstsState[studentIndex].chestNo = chestNo;
+      }
+
+      await updateDoc(docRef, { chestNo });
+      console.log(
+        `Participant ${el?.name} ${
+          isRemoving
+            ? "'s Alloted Chest No Removed"
+            : `Alloted Chest No ${chestNo}`
+        }`
+      );
+    });
+
+    try {
+      await Promise.all(updatePromises);
+      setAllGPFirstsState(newAllGPFirstsState);
+      setFilteredData(newAllGPFirstsState);
+      setLoader(false);
+      navigate.back();
+    } catch (e) {
+      console.log(e);
+      setLoader(false);
+    }
   };
+
+  const allotChestNumber = () => updateChestNumbers(false);
+  const removeChestNumber = () => updateChestNumbers(true);
 
   const columns = [
     {

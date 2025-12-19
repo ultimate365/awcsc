@@ -144,23 +144,34 @@ const GPResultSection = () => {
           sclass: student.sclass,
           school: student.school,
           gp: student.gp,
-          event1: position === "FIRST" ? engEvent1Name : "",
-          event2: position2 === "FIRST" ? engEvent2Name : "",
-          event1rank: position === "FIRST" ? e1Rank : "",
-          event2rank: position2 === "FIRST" ? e2Rank : "",
+          event1: position === "FIRST" ? engEvent1Name : engEvent2Name,
+          event2:
+            position === "FIRST" && position2 === "FIRST" ? engEvent2Name : "",
+          event1rank: position === "FIRST" ? e1Rank : e2Rank,
+          event2rank:
+            position === "FIRST" && position2 === "FIRST" ? e2Rank : "",
           gender: student.gender,
           group: student.group,
           udise: student.udise,
         };
-        setAllGPFirstsState([...allGPFirstsState, entry2]);
-        await setDoc(doc(firestore, "allGPFirsts", student.id), entry2).then(
-          async () => {
-            setLoader(false);
-            toast.success(
-              `Student Sucessfully Registerd in the Circle Sports Name & ${teacherdetails.gp.toLowerCase()} GP Result Database`
-            );
-          }
+
+        const existingStudentIndex = allGPFirstsState.findIndex(
+          (s) => s.id === student.id
         );
+        if (existingStudentIndex > -1) {
+          allGPFirstsState[existingStudentIndex] = entry2;
+          setAllGPFirstsState([...allGPFirstsState]);
+        } else {
+          setAllGPFirstsState([...allGPFirstsState, entry2]);
+        }
+        await setDoc(doc(firestore, "allGPFirsts", student.id), entry2, {
+          merge: true,
+        }).then(async () => {
+          setLoader(false);
+          toast.success(
+            `Student Sucessfully Registerd in the Circle Sports Name & ${teacherdetails.gp.toLowerCase()} GP Result Database`
+          );
+        });
       } else {
         setLoader(false);
         toast.success(

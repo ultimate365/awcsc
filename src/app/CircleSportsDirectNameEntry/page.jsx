@@ -171,6 +171,26 @@ export default function CircleSportsDirectNameEntry() {
 
   const submitData = async () => {
     setLoader(true);
+
+    // Check for duplicate entries before submission
+    const isDuplicate = allGPFirstsState.some(
+      (existingStudent) =>
+        existingStudent.name === inputField.name &&
+        existingStudent.gurdiansName === inputField.gurdiansName &&
+        existingStudent.birthday === inputField.birthday
+    );
+
+    if (isDuplicate) {
+      setLoader(false);
+      toast.error(
+        `Duplicate entry found! A student with the same Name, Guardian's Name, and Birthday already exists. Please check the existing entries.`,
+        {
+          position: "top-right",
+          autoClose: 5000, // Longer autoClose for duplicate message
+        }
+      );
+      return; // Stop the submission
+    }
     const upLoadedResult = {
       id: inputField.id,
       name: inputField.name,
