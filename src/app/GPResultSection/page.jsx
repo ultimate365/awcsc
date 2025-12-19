@@ -99,6 +99,46 @@ const GPResultSection = () => {
     schdetails = decryptObjData("schid");
   }
 
+  const resetForm = () => {
+    setEngGenderName("");
+    setEngGroupName("");
+    setEngEvent1Name("");
+    setEngEvent2Name("");
+    setGenderSelected(false);
+    setInpGrSelected(false);
+    setEvent1Selected(false);
+    setEvent2Selected(false);
+    setParticipantSelected(false);
+    setPositionSelected(false);
+    setPosition2Selected(false);
+    setSelectedParticipant("");
+    setPosition("");
+    setE1Rank("");
+    setE2Rank("");
+    setPosition2("");
+    if (gender) {
+      gender.value = "";
+    }
+    if (group) {
+      group.value = "";
+    }
+    if (participant) {
+      participant.value = "";
+    }
+    if (event1Name) {
+      event1Name.value = "";
+    }
+    if (event2Name) {
+      event2Name.value = "";
+    }
+    if (positionInp) {
+      positionInp.value = "";
+    }
+    if (positionInp2) {
+      positionInp2.value = "";
+    }
+  };
+
   const uploadResult = async () => {
     let student = JSON.parse(selectedParticipant);
     setLoader(true);
@@ -179,43 +219,7 @@ const GPResultSection = () => {
         );
       }
     });
-    setEngGenderName("");
-    setEngGroupName("");
-    setEngEvent1Name("");
-    setEngEvent2Name("");
-    setGenderSelected(false);
-    setInpGrSelected(false);
-    setEvent1Selected(false);
-    setEvent2Selected(false);
-    setParticipantSelected(false);
-    setPositionSelected(false);
-    setPosition2Selected(false);
-    setSelectedParticipant("");
-    setPosition("");
-    setE1Rank("");
-    setE2Rank("");
-    setPosition2("");
-    if (document.getElementById("gender")) {
-      document.getElementById("gender").value = "";
-    }
-    if (document.getElementById("group")) {
-      document.getElementById("group").value = "";
-    }
-    if (document.getElementById("participant")) {
-      document.getElementById("participant").value = "";
-    }
-    if (document.getElementById("event1Name")) {
-      document.getElementById("event1Name").value = "";
-    }
-    if (document.getElementById("event2Name")) {
-      document.getElementById("event2Name").value = "";
-    }
-    if (document.getElementById("position")) {
-      document.getElementById("position").value = "";
-    }
-    if (document.getElementById("position2")) {
-      document.getElementById("position2").value = "";
-    }
+    resetForm();
   };
   const getAllResult = async () => {
     setLoader(true);
@@ -559,45 +563,7 @@ const GPResultSection = () => {
             <button
               type="button"
               className="btn btn-danger"
-              onClick={() => {
-                setEngGenderName("");
-                setEngGroupName("");
-                setEngEvent1Name("");
-                setEngEvent2Name("");
-                setGenderSelected(false);
-                setInpGrSelected(false);
-                setEvent1Selected(false);
-                setEvent2Selected(false);
-                setParticipantSelected(false);
-                setPositionSelected(false);
-                setPosition2Selected(false);
-                setSelectedParticipant("");
-                setPosition("");
-                setE1Rank("");
-                setE2Rank("");
-                setPosition2("");
-                if (document.getElementById("gender")) {
-                  document.getElementById("gender").value = "";
-                }
-                if (document.getElementById("group")) {
-                  document.getElementById("group").value = "";
-                }
-                if (document.getElementById("participant")) {
-                  document.getElementById("participant").value = "";
-                }
-                if (document.getElementById("event1Name")) {
-                  document.getElementById("event1Name").value = "";
-                }
-                if (document.getElementById("event2Name")) {
-                  document.getElementById("event2Name").value = "";
-                }
-                if (document.getElementById("position")) {
-                  document.getElementById("position").value = "";
-                }
-                if (document.getElementById("position2")) {
-                  document.getElementById("position2").value = "";
-                }
-              }}
+              onClick={resetForm}
             >
               Reset
             </button>
@@ -1085,46 +1051,7 @@ const GPResultSection = () => {
             <button
               type="button"
               className="btn btn-danger m-1 btn-sm"
-              onClick={async () => {
-                setEngGenderName("");
-                setEngGroupName("");
-                setEngEvent1Name("");
-                setEngEvent2Name("");
-                setEngEvent2Name("");
-                setGenderSelected(false);
-                setInpGrSelected(false);
-                setEvent1Selected(false);
-                setEvent2Selected(false);
-                setParticipantSelected(false);
-                setPositionSelected(false);
-                setPosition2Selected(false);
-                setSelectedParticipant("");
-                setPosition("");
-                setE1Rank("");
-                setE2Rank("");
-                setPosition2("");
-                if (document.getElementById("gender")) {
-                  document.getElementById("gender").value = "";
-                }
-                if (document.getElementById("group")) {
-                  document.getElementById("group").value = "";
-                }
-                if (document.getElementById("participant")) {
-                  document.getElementById("participant").value = "";
-                }
-                if (document.getElementById("event1Name")) {
-                  document.getElementById("event1Name").value = "";
-                }
-                if (document.getElementById("event2Name")) {
-                  document.getElementById("event2Name").value = "";
-                }
-                if (document.getElementById("position")) {
-                  document.getElementById("position").value = "";
-                }
-                if (document.getElementById("position2")) {
-                  document.getElementById("position2").value = "";
-                }
-              }}
+              onClick={resetForm}
             >
               Reset
             </button>

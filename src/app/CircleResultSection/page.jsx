@@ -148,27 +148,18 @@ const CircleResultSection = () => {
     setE1Rank("");
     setE2Rank("");
     setPosition2("");
-    if (gender) {
-      gender.value = "";
-    }
-    if (group) {
-      group.value = "";
-    }
-    if (participant) {
-      participant.value = "";
-    }
-    if (event1Name) {
-      event1Name.value = "";
-    }
-    if (event2Name) {
-      event2Name.value = "";
-    }
-    if (positionInp) {
-      positionInp.value = "";
-    }
-    if (positionInp2) {
-      positionInp2.value = "";
-    }
+    if (document.getElementById("gender"))
+      document.getElementById("gender").value = "";
+    if (document.getElementById("participant"))
+      document.getElementById("participant").value = "";
+    if (document.getElementById("event1Name"))
+      document.getElementById("event1Name").value = "";
+    if (document.getElementById("event2Name"))
+      document.getElementById("event2Name").value = "";
+    if (document.getElementById("position"))
+      document.getElementById("position").value = "";
+    if (document.getElementById("position2"))
+      document.getElementById("position2").value = "";
   };
 
   const uploadResult = async () => {
@@ -194,21 +185,24 @@ const CircleResultSection = () => {
       group: student.group,
       udise: student.udise,
     };
-    // await axios.post("/api/addAmtaWestCircleAllResult", entry);
-    const onlyFirstResult = [...AmtaWestCircleAllResultState, entry];
-    const sortedOnlyFirstResult = onlyFirstResult.sort((a, b) => {
-      if (a.gender < b.gender) return -1;
-      if (a.gender > b.gender) return 1;
-      if (a.event1rank < b.event1rank) return -1;
-      if (a.event1rank > b.event1rank) return 1;
-      return 0;
-    });
-    setAmtaWestCircleAllResultState(sortedOnlyFirstResult);
-    setFilteredData(sortedOnlyFirstResult);
-    await setDoc(
-      doc(firestore, `AmtaWestCircleAllResult`, student.id),
-      entry
-    ).then(async () => {
+
+    try {
+      await setDoc(
+        doc(firestore, `AmtaWestCircleAllResult`, student.id),
+        entry
+      );
+
+      const onlyFirstResult = [...AmtaWestCircleAllResultState, entry];
+      const sortedOnlyFirstResult = onlyFirstResult.sort((a, b) => {
+        if (a.gender < b.gender) return -1;
+        if (a.gender > b.gender) return 1;
+        if (a.event1rank < b.event1rank) return -1;
+        if (a.event1rank > b.event1rank) return 1;
+        return 0;
+      });
+      setAmtaWestCircleAllResultState(sortedOnlyFirstResult);
+      setFilteredData(sortedOnlyFirstResult);
+
       if (position === "FIRST" || position2 === "FIRST") {
         const entry2 = {
           id: student.id,
@@ -230,33 +224,35 @@ const CircleResultSection = () => {
           group: student.group,
           udise: student.udise,
         };
-        // await axios.post("/api/addAmtaWestCircleFirstResult", entry2);
         await setDoc(
           doc(firestore, "AmtaWestCircleFirstResult", student.id),
           entry2
-        ).then(async () => {
-          const firstResult = [...circleFirstResultState, entry2];
-          const sortedFirstResult = firstResult.sort((a, b) => {
-            if (a.gender < b.gender) return -1;
-            if (a.gender > b.gender) return 1;
-            if (a.event1rank < b.event1rank) return -1;
-            if (a.event1rank > b.event1rank) return 1;
-            return 0;
-          });
-          setCircleFirstResultState(sortedFirstResult);
-          setLoader(false);
-          toast.success(
-            `Student Sucessfully Registerd in the Circle Sports First & All Result Database`
-          );
+        );
+        const firstResult = [...circleFirstResultState, entry2];
+        const sortedFirstResult = firstResult.sort((a, b) => {
+          if (a.gender < b.gender) return -1;
+          if (a.gender > b.gender) return 1;
+          if (a.event1rank < b.event1rank) return -1;
+          if (a.event1rank > b.event1rank) return 1;
+          return 0;
         });
+        setCircleFirstResultState(sortedFirstResult);
+        toast.success(
+          `Student Sucessfully Registerd in the Circle Sports First & All Result Database`
+        );
       } else {
-        setLoader(false);
         toast.success(
           `Student Sucessfully Registed in the Circle All Result Database`
         );
       }
-    });
-    resetForm();
+    } catch (error) {
+      console.error("Error uploading result:", error);
+      toast.error("Failed to upload result. Please try again.");
+    } finally {
+      setLoader(false);
+      // ensure all related react state and DOM inputs are cleared after submit
+      resetForm();
+    }
   };
   const updateData = async () => {
     setLoader(true);
@@ -317,8 +313,26 @@ const CircleResultSection = () => {
         if (birthdayField) {
           birthdayField.value = birthday;
         }
+
         setEditClicked(false);
+        resetForm();
         setInpGrSelected(false);
+        // clear additional react state used for submission
+        setSelectedParticipant("");
+        setEngGenderName("");
+        setEngGroupName("");
+        setEngEvent1Name("");
+        setEngEvent2Name("");
+        setE1Rank(0);
+        setE2Rank(0);
+        // also clear print-selection controls
+        setGenderres("");
+        setGroupres("");
+        setGroupresSelected(false);
+        if (document.getElementById("genderres"))
+          document.getElementById("genderres").value = "";
+        if (document.getElementById("groupres"))
+          document.getElementById("groupres").value = "";
         toast.success(
           `congratulation! Your Data Has Heen Saved to Circle Sports Data`
         );
@@ -852,6 +866,15 @@ const CircleResultSection = () => {
       </div>
       <div className="my-4 row">
         <h3 className="text-center text-primary">Submit Result</h3>
+        <div>
+          <button
+            type="button"
+            className="btn btn-danger m-1 btn-sm"
+            onClick={resetForm}
+          >
+            Reset
+          </button>
+        </div>
         <div className="mb-3 col-md-3">
           <label className="form-label">Select Gender *</label>
           <select

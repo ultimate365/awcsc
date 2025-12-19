@@ -292,6 +292,8 @@ export default function CircleSportsDirectNameEntry() {
       document.getElementById("event1").value = "";
       document.getElementById("event2").value = "";
       document.getElementById("birthday").value = birthday;
+      document.getElementById("stdClass").value = "";
+      document.getElementById("school-select").value = "";
 
       toast.success(
         `congratulation! Your Data Has Heen Saved to Circle Sports Data`
@@ -397,6 +399,8 @@ export default function CircleSportsDirectNameEntry() {
         document.getElementById("event1").value = "";
         document.getElementById("event2").value = "";
         document.getElementById("birthday").value = birthday;
+        document.getElementById("stdClass").value = "";
+        document.getElementById("school-select").value = "";
         setEditClicked(false);
         setInpGrSelected(false);
         setFirstEventSelected(false);
@@ -1497,6 +1501,8 @@ export default function CircleSportsDirectNameEntry() {
                                   document.getElementById("event2").value = "";
                                   document.getElementById("birthday").value =
                                     birthday;
+                                  document.getElementById("stdClass").value =
+                                    "";
                                 }}
                               >
                                 Reset

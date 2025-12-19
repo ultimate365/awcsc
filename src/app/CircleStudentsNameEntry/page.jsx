@@ -183,15 +183,22 @@ const CircleStudentsNameEntry = () => {
           group: "",
           udise: "",
         });
-        document.getElementById("gender").value = "";
-        document.getElementById("stdClass").value = "";
-        document.getElementById("group").value = "";
-        document.getElementById("event1").value = "";
-        document.getElementById("event2").value = "";
-        document.getElementById("birthday").value = birthday;
         setEditClicked(false);
         setInpGrSelected(false);
         setFirstEventSelected(false);
+        // clear DOM inputs/selects used for editing
+        if (document.getElementById("gender"))
+          document.getElementById("gender").value = "";
+        if (document.getElementById("group"))
+          document.getElementById("group").value = "";
+        if (document.getElementById("event1"))
+          document.getElementById("event1").value = "";
+        if (document.getElementById("event2"))
+          document.getElementById("event2").value = "";
+        if (document.getElementById("stdClass"))
+          document.getElementById("stdClass").value = "";
+        if (document.getElementById("birthday"))
+          document.getElementById("birthday").value = birthday;
         toast.success(
           `congratulation! Your Data Has Heen Saved to Circle Sports Data`
         );
@@ -1845,11 +1852,6 @@ const CircleStudentsNameEntry = () => {
                     setEditClicked(false);
                     setInpGrSelected(false);
                     setFirstEventSelected(false);
-                    document.getElementById("gender").value = "";
-                    document.getElementById("group").value = "";
-                    document.getElementById("event1").value = "";
-                    document.getElementById("event2").value = "";
-                    document.getElementById("birthday").value = birthday;
                   }}
                 >
                   Reset
