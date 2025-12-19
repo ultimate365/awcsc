@@ -149,7 +149,11 @@ const GPSchoolWiseStudentList = () => {
                     </th>
                   </tr>
                   {boysGrAData
-                    ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                    ?.sort((b, a) => {
+                      if (a.event1rank < b.event1rank) return 1;
+                      if (a.event1rank > b.event1rank) return -1;
+                      return 0;
+                    })
                     .map((el, index) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
@@ -178,7 +182,11 @@ const GPSchoolWiseStudentList = () => {
                     </th>
                   </tr>
                   {boysGrBData
-                    ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                    ?.sort((b, a) => {
+                      if (a.event1rank < b.event1rank) return 1;
+                      if (a.event1rank > b.event1rank) return -1;
+                      return 0;
+                    })
                     .map((el, index) => (
                       <tr key={index}>
                         <td>{boysGrAData.length + index + 1}</td>
@@ -207,7 +215,11 @@ const GPSchoolWiseStudentList = () => {
                     </th>
                   </tr>
                   {boysGrCData
-                    ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                    ?.sort((b, a) => {
+                      if (a.event1rank < b.event1rank) return 1;
+                      if (a.event1rank > b.event1rank) return -1;
+                      return 0;
+                    })
                     .map((el, index) => (
                       <tr key={index}>
                         <td>
@@ -323,7 +335,11 @@ const GPSchoolWiseStudentList = () => {
                   </th>
                 </tr>
                 {girlsGrAData
-                  ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                  ?.sort((b, a) => {
+                    if (a.event1rank < b.event1rank) return 1;
+                    if (a.event1rank > b.event1rank) return -1;
+                    return 0;
+                  })
                   .map((el, index) => (
                     <tr key={index}>
                       <td>{index + 1}</td>
@@ -352,7 +368,11 @@ const GPSchoolWiseStudentList = () => {
                   </th>
                 </tr>
                 {girlsGrBData
-                  ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                  ?.sort((b, a) => {
+                    if (a.event1rank < b.event1rank) return 1;
+                    if (a.event1rank > b.event1rank) return -1;
+                    return 0;
+                  })
                   .map((el, index) => (
                     <tr key={index}>
                       <td>{girlsGrAData.length + index + 1}</td>
@@ -381,7 +401,11 @@ const GPSchoolWiseStudentList = () => {
                   </th>
                 </tr>
                 {girlsGrCData
-                  ?.sort((b, a) => b?.event1rank - a?.event1rank)
+                  ?.sort((b, a) => {
+                    if (a.event1rank < b.event1rank) return 1;
+                    if (a.event1rank > b.event1rank) return -1;
+                    return 0;
+                  })
                   .map((el, index) => (
                     <tr key={index}>
                       <td>

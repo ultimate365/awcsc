@@ -10,7 +10,7 @@ const CircleGroupWiseResultPrint = () => {
   const { yourStateObject } = useGlobalContext();
 
   const data = yourStateObject?.data;
-  const [img, setImg] = useState("");
+  const [img, setImg] = useState(null);
   const navigate = useRouter();
   const [allData, setAllData] = useState(data);
 
@@ -34,7 +34,7 @@ const CircleGroupWiseResultPrint = () => {
         navigate.push("/Login");
       }
     }
-    document.title = `${circleEngName} Annual Sports ${group} Result Sheet`;
+    document.title = `${circleEngName} Annual Sports ${gender} ${group} Result Sheet`;
     // eslint-disable-next-line
   }, []);
 
@@ -68,6 +68,7 @@ const CircleGroupWiseResultPrint = () => {
   }, [gender, group]);
   return (
     <div className="container-fluid my-4 bg-white">
+      {/* The 'my-1' class was present on the original div, but it might be better inside the div if you want margin. I'm keeping it on the parent for now. */}
       <div className="noprint my-1">
         <button
           type="button"
@@ -119,8 +120,8 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             <tr>
               <th>RANK</th>
-              <th>NAME</th>
               <th>CHEST NO.</th>
+              <th>NAME</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
               <th>GRAM PANCHAYET</th>
@@ -138,8 +139,8 @@ const CircleGroupWiseResultPrint = () => {
                       ? el?.position1
                       : el?.position2}
                   </td>
-                  <td>{el?.name}</td>
                   <td>{el?.chestNo}</td>
+                  <td>{el?.name}</td>
                   <td>{el?.gurdiansName}</td>
                   <td>{el?.school}</td>
                   <td>{el?.gp}</td>
@@ -152,8 +153,8 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             <tr>
               <th>RANK</th>
-              <th>NAME</th>
               <th>CHEST NO.</th>
+              <th>NAME</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
               <th>GRAM PANCHAYET</th>
@@ -168,8 +169,8 @@ const CircleGroupWiseResultPrint = () => {
                   <td>
                     {el?.event1 === "LONG JUMP" ? el?.position1 : el?.position2}
                   </td>
-                  <td>{el?.name}</td>
                   <td>{el?.chestNo}</td>
+                  <td>{el?.name}</td>
                   <td>{el?.gurdiansName}</td>
                   <td>{el?.school}</td>
                   <td>{el?.gp}</td>
@@ -182,8 +183,8 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             <tr>
               <th>RANK</th>
-              <th>NAME</th>
               <th>CHEST NO.</th>
+              <th>NAME</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
               <th>GRAM PANCHAYET</th>
@@ -201,8 +202,8 @@ const CircleGroupWiseResultPrint = () => {
                       ? el?.position1
                       : el?.position2}
                   </td>
-                  <td>{el?.name}</td>
                   <td>{el?.chestNo}</td>
+                  <td>{el?.name}</td>
                   <td>{el?.gurdiansName}</td>
                   <td>{el?.school}</td>
                   <td>{el?.gp}</td>
@@ -215,8 +216,8 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             <tr>
               <th>RANK</th>
-              <th>NAME</th>
               <th>CHEST NO.</th>
+              <th>NAME</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
               <th>GRAM PANCHAYET</th>
@@ -229,8 +230,8 @@ const CircleGroupWiseResultPrint = () => {
                   <td>
                     {el?.event1 === "YOGA" ? el?.position1 : el?.position2}
                   </td>
-                  <td>{el?.name}</td>
                   <td>{el?.chestNo}</td>
+                  <td>{el?.name}</td>
                   <td>{el?.gurdiansName}</td>
                   <td>{el?.school}</td>
                   <td>{el?.gp}</td>
@@ -256,8 +257,8 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             <tr>
               <th>RANK</th>
-              <th>NAME</th>
               <th>CHEST NO.</th>
+              <th>NAME</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
               <th>GRAM PANCHAYET</th>
@@ -276,8 +277,8 @@ const CircleGroupWiseResultPrint = () => {
                       ? el?.position1
                       : el?.position2}
                   </td>
-                  <td>{el?.name}</td>
                   <td>{el?.chestNo}</td>
+                  <td>{el?.name}</td>
                   <td>{el?.gurdiansName}</td>
                   <td>{el?.school}</td>
                   <td>{el?.gp}</td>
@@ -290,8 +291,8 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             <tr>
               <th>RANK</th>
-              <th>NAME</th>
               <th>CHEST NO.</th>
+              <th>NAME</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
               <th>GRAM PANCHAYET</th>
@@ -310,8 +311,8 @@ const CircleGroupWiseResultPrint = () => {
                       ? el?.position1
                       : el?.position2}
                   </td>
-                  <td>{el?.name}</td>
                   <td>{el?.chestNo}</td>
+                  <td>{el?.name}</td>
                   <td>{el?.gurdiansName}</td>
                   <td>{el?.school}</td>
                   <td>{el?.gp}</td>
@@ -324,8 +325,8 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             <tr>
               <th>RANK</th>
-              <th>NAME</th>
               <th>CHEST NO.</th>
+              <th>NAME</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
               <th>GRAM PANCHAYET</th>
@@ -340,8 +341,8 @@ const CircleGroupWiseResultPrint = () => {
                   <td>
                     {el?.event1 === "LONG JUMP" ? el?.position1 : el?.position2}
                   </td>
-                  <td>{el?.name}</td>
                   <td>{el?.chestNo}</td>
+                  <td>{el?.name}</td>
                   <td>{el?.gurdiansName}</td>
                   <td>{el?.school}</td>
                   <td>{el?.gp}</td>
@@ -354,8 +355,8 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             <tr>
               <th>RANK</th>
-              <th>NAME</th>
               <th>CHEST NO.</th>
+              <th>NAME</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
               <th>GRAM PANCHAYET</th>
@@ -370,8 +371,8 @@ const CircleGroupWiseResultPrint = () => {
                   <td>
                     {el?.event1 === "HIGH JUMP" ? el?.position1 : el?.position2}
                   </td>
-                  <td>{el?.name}</td>
                   <td>{el?.chestNo}</td>
+                  <td>{el?.name}</td>
                   <td>{el?.gurdiansName}</td>
                   <td>{el?.school}</td>
                   <td>{el?.gp}</td>
@@ -385,8 +386,8 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             <tr>
               <th>RANK</th>
-              <th>NAME</th>
               <th>CHEST NO.</th>
+              <th>NAME</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
               <th>GRAM PANCHAYET</th>
@@ -399,8 +400,8 @@ const CircleGroupWiseResultPrint = () => {
                   <td>
                     {el?.event1 === "YOGA" ? el?.position1 : el?.position2}
                   </td>
-                  <td>{el?.name}</td>
                   <td>{el?.chestNo}</td>
+                  <td>{el?.name}</td>
                   <td>{el?.gurdiansName}</td>
                   <td>{el?.school}</td>
                   <td>{el?.gp}</td>
@@ -413,8 +414,8 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             <tr>
               <th>RANK</th>
-              <th>NAME</th>
               <th>CHEST NO.</th>
+              <th>NAME</th>
               <th>GURDIAN'S NAME</th>
               <th>SCHOOL</th>
               <th>GRAM PANCHAYET</th>
@@ -432,8 +433,8 @@ const CircleGroupWiseResultPrint = () => {
                       ? el?.position1
                       : el?.position2}
                   </td>
-                  <td>{el?.name}</td>
                   <td>{el?.chestNo}</td>
+                  <td>{el?.name}</td>
                   <td>{el?.gurdiansName}</td>
                   <td>{el?.school}</td>
                   <td>{el?.gp}</td>
@@ -480,14 +481,16 @@ const CircleGroupWiseResultPrint = () => {
           </tbody>
         )}
       </table>
-      <Image
-        src={img}
-        alt="LOGO"
-        width={0}
-        height={0}
-        className="position-absolute top-50 start-50 translate-middle"
-        style={{ opacity: 0.4, width: 420, height: "auto" }}
-      />
+      {img && (
+        <Image
+          src={img}
+          alt="LOGO"
+          width={0}
+          height={0}
+          className="position-absolute top-50 start-50 translate-middle"
+          style={{ opacity: 0.4, width: 420, height: "auto" }}
+        />
+      )}
       <div className="noprint my-1">
         <button
           type="button"

@@ -14,6 +14,25 @@ export default function Page() {
     document.title = `${circleEngName} GP Wise All Result At a Glance`;
     // eslint-disable-next-line
   }, []);
+
+  const getWinnersByPosition = (gpName, position) => {
+    return stateArray?.filter(
+      (el) =>
+        el?.gp === gpName &&
+        (el?.position1 === position || el?.position2 === position)
+    );
+  };
+
+  const gpScores = gpEngNames
+    .map((gpName) => {
+      const firsts = getWinnersByPosition(gpName, "FIRST").length;
+      const seconds = getWinnersByPosition(gpName, "SECOND").length;
+      const thirds = getWinnersByPosition(gpName, "THIRD").length;
+      const score = firsts * 3 + seconds * 2 + thirds * 1;
+      return { gpName, score, firsts, seconds, thirds };
+    })
+    .sort((a, b) => b.score - a.score);
+
   return (
     <div className="container-fluid ben">
       <div className="noprint">
@@ -36,6 +55,34 @@ export default function Page() {
         {" "}
         একনজরে সমস্ত গ্রাম পঞ্চায়েতের অর্জিত পুরস্কার তালিকা
       </h3>
+      <h4 className="text-center mt-3">গ্রাম পঞ্চায়েত ভিত্তিক অবস্থান</h4>
+      <table
+        className="table table-bordered border-black"
+        style={{ verticalAlign: "middle", border: 2, borderColor: "black" }}
+      >
+        <thead>
+          <tr>
+            <th>অবস্থান</th>
+            <th>গ্রাম পঞ্চায়েত</th>
+            <th>প্রথম</th>
+            <th>দ্বিতীয়</th>
+            <th>তৃতীয়</th>
+            <th>মোট পয়েন্ট</th>
+          </tr>
+        </thead>
+        <tbody>
+          {gpScores.map((gp, i) => (
+            <tr key={i}>
+              <td>{i + 1}</td>
+              <td>{gp.gpName}</td>
+              <td>{gp.firsts}</td>
+              <td>{gp.seconds}</td>
+              <td>{gp.thirds}</td>
+              <td>{gp.score}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <table
         className="table table-bordered border-black"
         style={{ verticalAlign: "middle", border: 2, borderColor: "black" }}
@@ -85,93 +132,45 @@ export default function Page() {
                 <p style={{ transform: "rotate(-90deg)" }}>{gpEngName}</p>
               </th>
               <th>
-                {stateArray
-                  ?.filter((el) => el?.gp === gpEngName)
-                  ?.filter((el) => el?.position1 === "FIRST")?.length +
-                  stateArray
-                    ?.filter((el) => el?.gp === gpEngName)
-                    ?.filter((el) => el?.position2 === "FIRST")?.length +
-                  stateArray
-                    ?.filter((el) => el?.gp === gpEngName)
-                    ?.filter((el) => el?.position1 === "SECOND")?.length +
-                  stateArray
-                    ?.filter((el) => el?.gp === gpEngName)
-                    ?.filter((el) => el?.position2 === "SECOND")?.length +
-                  stateArray
-                    ?.filter((el) => el?.gp === gpEngName)
-                    ?.filter((el) => el?.position1 === "THIRD")?.length +
-                  stateArray
-                    ?.filter((el) => el?.gp === gpEngName)
-                    ?.filter((el) => el?.position2 === "THIRD")?.length}
+                {getWinnersByPosition(gpEngName, "FIRST").length +
+                  getWinnersByPosition(gpEngName, "SECOND").length +
+                  getWinnersByPosition(gpEngName, "THIRD").length}
               </th>
               <th>
-                {stateArray
-                  ?.filter((el) => el?.gp === gpEngName)
-                  ?.filter((el) => el?.position1 === "FIRST")?.length +
-                  stateArray
-                    ?.filter((el) => el?.gp === gpEngName)
-                    ?.filter((el) => el?.position2 === "FIRST")?.length}
-                {stateArray
-                  ?.filter((el) => el?.gp === gpEngName)
-                  ?.filter(
-                    (el) =>
-                      el?.position1 === "FIRST" || el?.position2 === "FIRST"
-                  )
-                  .map((s, r) => (
-                    <p key={r}>
-                      {`${r + 1}) ${s?.name}- ${s?.group}, ${s?.gender}, ${
-                        s?.event1
-                      }, ${s?.event2 ? `, ${s?.event2}` : ""}`}
-                      {", "}
-                      <br /> <p style={{ fontSize: 13 }}>{s?.school}</p>
-                    </p>
-                  ))}
+                {getWinnersByPosition(gpEngName, "FIRST").length}
+                {getWinnersByPosition(gpEngName, "FIRST").map((s, r) => (
+                  <p key={r}>
+                    {`${r + 1}) ${s?.name}- ${s?.group}, ${s?.gender}, ${
+                      s?.event1
+                    }${s?.event2 ? `, ${s?.event2}` : ""}`}
+                    {", "}
+                    <br /> <span style={{ fontSize: 13 }}>{s?.school}</span>
+                  </p>
+                ))}
               </th>
               <th>
-                {stateArray
-                  ?.filter((el) => el?.gp === gpEngName)
-                  ?.filter((el) => el?.position1 === "SECOND")?.length +
-                  stateArray
-                    ?.filter((el) => el?.gp === gpEngName)
-                    ?.filter((el) => el?.position2 === "SECOND")?.length}
-                {stateArray
-                  ?.filter((el) => el?.gp === gpEngName)
-                  ?.filter(
-                    (el) =>
-                      el?.position1 === "SECOND" || el?.position2 === "SECOND"
-                  )
-                  .map((s, r) => (
-                    <p key={r}>
-                      {`${r + 1}) ${s?.name}- ${s?.group}, ${s?.gender}, ${
-                        s?.event1
-                      } ${s?.event2 ? `, ${s?.event2}` : ""}`}
-                      {", "}
-                      <br /> <p style={{ fontSize: 13 }}>{s?.school}</p>
-                    </p>
-                  ))}
+                {getWinnersByPosition(gpEngName, "SECOND").length}
+                {getWinnersByPosition(gpEngName, "SECOND").map((s, r) => (
+                  <p key={r}>
+                    {`${r + 1}) ${s?.name}- ${s?.group}, ${s?.gender}, ${
+                      s?.event1
+                    }${s?.event2 ? `, ${s?.event2}` : ""}`}
+                    {", "}
+                    <br /> <span style={{ fontSize: 13 }}>{s?.school}</span>
+                  </p>
+                ))}
               </th>
               <th>
-                {stateArray
-                  ?.filter((el) => el?.gp === gpEngName)
-                  ?.filter((el) => el?.position1 === "THIRD")?.length +
-                  stateArray
-                    ?.filter((el) => el?.gp === gpEngName)
-                    ?.filter((el) => el?.position2 === "THIRD")?.length}
-                {stateArray
-                  ?.filter((el) => el?.gp === gpEngName)
-                  ?.filter(
-                    (el) =>
-                      el?.position1 === "THIRD" || el?.position2 === "THIRD"
-                  )
-                  .map((s, r) => (
-                    <p key={r}>
-                      {`${r + 1}) ${s?.name}- ${s?.group}, ${s?.gender}, ${
-                        s?.event1
-                      } ${s?.event2 ? `, ${s?.event2}` : ""}`}
-                      {", "}
-                      <br /> <p style={{ fontSize: 13 }}>{s?.school}</p>
-                    </p>
-                  ))}
+                {getWinnersByPosition(gpEngName, "THIRD").length}
+                {getWinnersByPosition(gpEngName, "THIRD").map((s, r) => (
+                  <p key={r}>
+                    {`${r + 1}) ${s?.name}- ${s?.group}, ${s?.gender}, ${
+                      s?.event1
+                    }${s?.event2 ? `, ${s?.event2}` : ""}`}
+                    {", "}
+                    <br /> <span style={{ fontSize: 13 }}>{s?.school}</span>
+                  </p>
+                ))}
               </th>
             </tr>
           ))}
