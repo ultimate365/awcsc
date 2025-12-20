@@ -648,7 +648,7 @@ export default function CircleSportsDirectNameEntry() {
               document={
                 <CircleGPList studentData={filteredGPData} gp={selectedGP} />
               }
-              fileName={`Circle Sporst ${selectedGP} GP Sports Student List.pdf`}
+              fileName={`Circle Sports ${selectedGP} GP Sports Student List.pdf`}
               style={{
                 textDecoration: "none",
                 padding: "10px",
@@ -673,7 +673,7 @@ export default function CircleSportsDirectNameEntry() {
             document={
               <CircleGPList studentData={gpConvenorsData} gp={selectedGP} />
             }
-            fileName={`Circle Sporst ${selectedGP} GP Sports Student List.pdf`}
+            fileName={`Circle Sports ${selectedGP} GP Sports Student List.pdf`}
             style={{
               textDecoration: "none",
               padding: "10px",

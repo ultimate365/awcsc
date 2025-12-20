@@ -8,8 +8,16 @@ import {
 } from "../../modules/calculatefunctions";
 import { BUTTONCOLORS, gpEngNames, gpNames } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
-
+import dynamic from "next/dynamic";
+import PrintPDFCircleTree from "../../pdf/PrintPDFCircleTree";
 export default function PrintTreeList() {
+  const PDFDownloadLink = dynamic(
+    () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+    {
+      ssr: false,
+      loading: () => <p>Loading...</p>,
+    }
+  );
   const { yourStateObject } = useGlobalContext();
   const { data } = yourStateObject;
   const [filteredData, setFilteredData] = useState(data);
@@ -94,6 +102,50 @@ export default function PrintTreeList() {
           GP: {filteredData[0]?.gp}
         </h5>
       )}
+      {filteredData?.length > 0 && (
+        <div className="my-4">
+          <PDFDownloadLink
+            document={
+              <PrintPDFCircleTree
+                data={filteredData}
+                title={`Amta West Circle Sports ${
+                  data?.length !== filteredData?.length
+                    ? `${filteredData[0]?.gp} GP`
+                    : `All`
+                } Student List`}
+              />
+            }
+            fileName={`Amta West Circle Sports ${
+              data?.length !== filteredData?.length
+                ? `${filteredData[0]?.gp} GP`
+                : `All`
+            } Student List.pdf`}
+            style={{
+              textDecoration: "none",
+              padding: "10px",
+              color: "#fff",
+              backgroundColor: "navy",
+              border: "1px solid #4a4a4a",
+              width: "40%",
+              borderRadius: 10,
+              margin: 20,
+              textAlign: "center",
+            }}
+          >
+            {({ blob, url, loading, error }) =>
+              loading ? "Loading..." : "Download Tree List"
+            }
+          </PDFDownloadLink>
+          {/* <PrintPDFCircleTree
+            data={filteredData}
+            title={`Amta West Circle Sports ${
+              data?.length !== filteredData?.length
+                ? `${filteredData[0]?.gp} GP`
+                : `All`
+            } Student List`}
+          /> */}
+        </div>
+      )}
       <table
         className="table table-bordered border-black mx-auto"
         style={{
@@ -120,11 +172,8 @@ export default function PrintTreeList() {
               <tr key={index} className="nobreak">
                 <td className="timesNewRoman">{index + 1}</td>
                 <td className="timesNewRoman">{el?.chestNo}</td>
-                <td className="timesNewRoman" style={{ fontSize: 12 }}>
-                  {el?.school}
-                </td>
+                <td className="timesNewRoman">{el?.school}</td>
                 <td className="timesNewRoman">{el?.gp}</td>
-                {/* <td>{el?.school?.split(" ").map((e, i) => `${e.slice(0, 1)}. `)}</td> */}
                 <td className="timesNewRoman">{el?.name}</td>
                 <td className="timesNewRoman">{el?.gurdiansName}</td>
                 <td className="timesNewRoman">
@@ -133,13 +182,15 @@ export default function PrintTreeList() {
                 <td className="timesNewRoman">{el?.sclass}</td>
                 <td
                   className="timesNewRoman"
-                  style={{ verticalAlign: "center", fontSize: 12 }}
+                  style={{ verticalAlign: "center" }}
                 >
                   {el?.group}, ({el?.gender})
                 </td>
                 <td className="timesNewRoman">
                   {el?.event1}
-                  {el?.event2 !== "" ? `, ${el?.event2}` : ""}
+                  {el?.event2 !== ""
+                    ? `${el?.event1 ? ", " : ""} ${el?.event2}`
+                    : ""}
                 </td>
               </tr>
             ))}

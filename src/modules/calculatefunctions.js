@@ -798,3 +798,33 @@ export function getFilenameWithoutExtension(filename) {
   }
   return filename.substring(0, lastDotIndex);
 }
+export const sliceArrayIntoChunks = (array, maxChunkSize) => {
+  // If array length is 24 or less, return it as a single chunk
+  if (array.length <= maxChunkSize) {
+    return [array];
+  }
+
+  const result = [];
+  const numberOfChunks = Math.ceil(array.length / maxChunkSize);
+
+  for (let i = 0; i < numberOfChunks; i++) {
+    const startIndex = i * maxChunkSize;
+    const endIndex = startIndex + maxChunkSize;
+    const chunk = array.slice(startIndex, endIndex);
+    result.push(chunk);
+  }
+
+  return result;
+};
+export const keysData = [
+  { id: "key1", keyName: "sl", displayName: "SL." },
+  { id: "key2", keyName: "chestNo", displayName: "Chest No." },
+  { id: "key3", keyName: "school", displayName: "School" },
+  { id: "key4", keyName: "gp", displayName: "GP" },
+  { id: "key5", keyName: "name", displayName: "Name" },
+  { id: "key6", keyName: "gurdiansName", displayName: "Gurdians Name" },
+  { id: "key7", keyName: "birthday", displayName: "Birthday" },
+  { id: "key8", keyName: "sclass", displayName: "Class" },
+  { id: "key9", keyName: "group", displayName: "Group" },
+  { id: "key10", keyName: "event", displayName: "Event" },
+];
