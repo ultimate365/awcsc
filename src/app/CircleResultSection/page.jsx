@@ -217,10 +217,12 @@ const CircleResultSection = () => {
           sclass: student.sclass,
           school: student.school,
           gp: student.gp,
-          event1: position === "FIRST" ? engEvent1Name : "",
-          event2: position2 === "FIRST" ? engEvent2Name : "",
-          event1rank: e1Rank,
-          event2rank: e2Rank,
+          event1: position === "FIRST" ? engEvent1Name : engEvent2Name,
+          event2:
+            position === "FIRST" && position2 === "FIRST" ? engEvent2Name : "",
+          event1rank: position === "FIRST" ? e1Rank : e2Rank,
+          event2rank:
+            position === "FIRST" && position2 === "FIRST" ? e2Rank : "",
           gender: student.gender,
           group: student.group,
           udise: student.udise,
