@@ -22,7 +22,17 @@ import {
 import { gpNames } from "../../modules/constants";
 import { events } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
+import dynamic from "next/dynamic";
+import GPResultSheet from "../../pdf/GPResultSheet";
+import GPResultSheetBlank from "../../pdf/GPResultSheetBlank";
 const GPResultSection = () => {
+  const PDFDownloadLink = dynamic(
+    () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+    {
+      ssr: false,
+      loading: () => <p>Loading...</p>,
+    }
+  );
   const {
     stateObject,
     setYourStateObject,
@@ -553,6 +563,52 @@ const GPResultSection = () => {
               </div>
             )}
           </div>
+        </div>
+        <div className="my-4">
+          <PDFDownloadLink
+            document={
+              <GPResultSheet studentData={allResult} gp={schoolData[0]?.gp} />
+            }
+            fileName={`${schoolData[0]?.gp} GP Sports All Result Sheet.pdf`}
+            style={{
+              textDecoration: "none",
+              padding: "10px",
+              color: "#fff",
+              backgroundColor: "navy",
+              border: "1px solid #4a4a4a",
+              width: "40%",
+              borderRadius: 10,
+              margin: 20,
+              textAlign: "center",
+            }}
+          >
+            {({ blob, url, loading, error }) =>
+              loading ? "Loading..." : "Download Result Sheet"
+            }
+          </PDFDownloadLink>
+          {/* <GPResultSheet studentData={allResult} /> */}
+        </div>
+        <div className="my-4">
+          <PDFDownloadLink
+            document={<GPResultSheetBlank gp={schoolData[0]?.gp} />}
+            fileName={`${schoolData[0]?.gp} GP Sports Blank Result Sheet.pdf`}
+            style={{
+              textDecoration: "none",
+              padding: "10px",
+              color: "#fff",
+              backgroundColor: "navy",
+              border: "1px solid #4a4a4a",
+              width: "40%",
+              borderRadius: 10,
+              margin: 20,
+              textAlign: "center",
+            }}
+          >
+            {({ blob, url, loading, error }) =>
+              loading ? "Loading..." : "Download Blank Result Sheet"
+            }
+          </PDFDownloadLink>
+          {/* <GPResultSheet studentData={allResult} /> */}
         </div>
       </div>
 

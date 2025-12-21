@@ -131,7 +131,16 @@ const CircleGroupWiseResultPrint = () => {
                 (el) =>
                   el?.event1 === "75 METER RUN" || el?.event2 === "75 METER RUN"
               )
-              .sort((a, b) => a?.position1.localeCompare(b?.position1))
+              .sort((a, b) => {
+                const eventName = "75 METER RUN";
+                const posA =
+                  a?.event1 === eventName ? a?.position1 : a?.position2;
+                const posB =
+                  b?.event1 === eventName ? b?.position1 : b?.position2;
+                if (!posA) return 1;
+                if (!posB) return -1;
+                return posA.localeCompare(posB);
+              })
               .map((el, ind) => (
                 <tr key={ind}>
                   <td>
@@ -163,7 +172,16 @@ const CircleGroupWiseResultPrint = () => {
               ?.filter(
                 (el) => el?.event1 === "LONG JUMP" || el?.event2 === "LONG JUMP"
               )
-              .sort((a, b) => a?.position1.localeCompare(b?.position1))
+              .sort((a, b) => {
+                const eventName = "LONG JUMP";
+                const posA =
+                  a?.event1 === eventName ? a?.position1 : a?.position2;
+                const posB =
+                  b?.event1 === eventName ? b?.position1 : b?.position2;
+                if (!posA) return 1;
+                if (!posB) return -1;
+                return posA.localeCompare(posB);
+              })
               .map((el, ind) => (
                 <tr key={ind}>
                   <td>
@@ -194,7 +212,16 @@ const CircleGroupWiseResultPrint = () => {
                 (el) =>
                   el?.event1 === "SHUTTLE RACE" || el?.event2 === "SHUTTLE RACE"
               )
-              .sort((a, b) => a?.position1.localeCompare(b?.position1))
+              .sort((a, b) => {
+                const eventName = "SHUTTLE RACE";
+                const posA =
+                  a?.event1 === eventName ? a?.position1 : a?.position2;
+                const posB =
+                  b?.event1 === eventName ? b?.position1 : b?.position2;
+                if (!posA) return 1;
+                if (!posB) return -1;
+                return posA.localeCompare(posB);
+              })
               .map((el, ind) => (
                 <tr key={ind}>
                   <td>
@@ -224,7 +251,16 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             {allData
               ?.filter((el) => el?.event1 === "YOGA" || el?.event2 === "YOGA")
-              .sort((a, b) => a?.position1.localeCompare(b?.position1))
+              .sort((a, b) => {
+                const eventName = "YOGA";
+                const posA =
+                  a?.event1 === eventName ? a?.position1 : a?.position2;
+                const posB =
+                  b?.event1 === eventName ? b?.position1 : b?.position2;
+                if (!posA) return 1;
+                if (!posB) return -1;
+                return posA.localeCompare(posB);
+              })
               .map((el, ind) => (
                 <tr key={ind}>
                   <td>
@@ -269,7 +305,16 @@ const CircleGroupWiseResultPrint = () => {
                   el?.event1 === "100 METER RUN" ||
                   el?.event2 === "100 METER RUN"
               )
-              .sort((a, b) => a?.position1.localeCompare(b?.position1))
+              .sort((a, b) => {
+                const eventName = "100 METER RUN";
+                const posA =
+                  a?.event1 === eventName ? a?.position1 : a?.position2;
+                const posB =
+                  b?.event1 === eventName ? b?.position1 : b?.position2;
+                if (!posA) return 1;
+                if (!posB) return -1;
+                return posA.localeCompare(posB);
+              })
               .map((el, ind) => (
                 <tr key={ind}>
                   <td>
@@ -303,7 +348,16 @@ const CircleGroupWiseResultPrint = () => {
                   el?.event1 === "200 METER RUN" ||
                   el?.event2 === "200 METER RUN"
               )
-              .sort((a, b) => a?.position1.localeCompare(b?.position1))
+              .sort((a, b) => {
+                const eventName = "200 METER RUN";
+                const posA =
+                  a?.event1 === eventName ? a?.position1 : a?.position2;
+                const posB =
+                  b?.event1 === eventName ? b?.position1 : b?.position2;
+                if (!posA) return 1;
+                if (!posB) return -1;
+                return posA.localeCompare(posB);
+              })
               .map((el, ind) => (
                 <tr key={ind}>
                   <td>
@@ -335,7 +389,16 @@ const CircleGroupWiseResultPrint = () => {
               ?.filter(
                 (el) => el?.event1 === "LONG JUMP" || el?.event2 === "LONG JUMP"
               )
-              .sort((a, b) => a?.position1.localeCompare(b?.position1))
+              .sort((a, b) => {
+                const eventName = "LONG JUMP";
+                const posA =
+                  a?.event1 === eventName ? a?.position1 : a?.position2;
+                const posB =
+                  b?.event1 === eventName ? b?.position1 : b?.position2;
+                if (!posA) return 1;
+                if (!posB) return -1;
+                return posA.localeCompare(posB);
+              })
               .map((el, ind) => (
                 <tr key={ind}>
                   <td>
@@ -365,7 +428,16 @@ const CircleGroupWiseResultPrint = () => {
               ?.filter(
                 (el) => el?.event1 === "HIGH JUMP" || el?.event2 === "HIGH JUMP"
               )
-              .sort((a, b) => a?.position1.localeCompare(b?.position1))
+              .sort((a, b) => {
+                const eventName = "HIGH JUMP";
+                const posA =
+                  a?.event1 === eventName ? a?.position1 : a?.position2;
+                const posB =
+                  b?.event1 === eventName ? b?.position1 : b?.position2;
+                if (!posA) return 1;
+                if (!posB) return -1;
+                return posA.localeCompare(posB);
+              })
               .map((el, ind) => (
                 <tr key={ind}>
                   <td>
@@ -394,7 +466,16 @@ const CircleGroupWiseResultPrint = () => {
             </tr>
             {allData
               ?.filter((el) => el?.event1 === "YOGA" || el?.event2 === "YOGA")
-              .sort((a, b) => a?.position1.localeCompare(b?.position1))
+              .sort((a, b) => {
+                const eventName = "YOGA";
+                const posA =
+                  a?.event1 === eventName ? a?.position1 : a?.position2;
+                const posB =
+                  b?.event1 === eventName ? b?.position1 : b?.position2;
+                if (!posA) return 1;
+                if (!posB) return -1;
+                return posA.localeCompare(posB);
+              })
               .map((el, ind) => (
                 <tr key={ind}>
                   <td>
@@ -425,7 +506,16 @@ const CircleGroupWiseResultPrint = () => {
                 (el) =>
                   el?.event1 === "GYMNASTICS" || el?.event2 === "GYMNASTICS"
               )
-              .sort((a, b) => a?.position1.localeCompare(b?.position1))
+              .sort((a, b) => {
+                const eventName = "GYMNASTICS";
+                const posA =
+                  a?.event1 === eventName ? a?.position1 : a?.position2;
+                const posB =
+                  b?.event1 === eventName ? b?.position1 : b?.position2;
+                if (!posA) return 1;
+                if (!posB) return -1;
+                return posA.localeCompare(posB);
+              })
               .map((el, ind) => (
                 <tr key={ind}>
                   <td>
@@ -461,7 +551,16 @@ const CircleGroupWiseResultPrint = () => {
                       el?.event1 === "FOOTBALL THROWING" ||
                       el?.event2 === "FOOTBALL THROWING"
                   )
-                  .sort((a, b) => a?.position1.localeCompare(b?.position1))
+                  .sort((a, b) => {
+                    const eventName = "FOOTBALL THROWING";
+                    const posA =
+                      a?.event1 === eventName ? a?.position1 : a?.position2;
+                    const posB =
+                      b?.event1 === eventName ? b?.position1 : b?.position2;
+                    if (!posA) return 1;
+                    if (!posB) return -1;
+                    return posA.localeCompare(posB);
+                  })
                   .map((el, ind) => (
                     <tr key={ind}>
                       <td>

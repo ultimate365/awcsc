@@ -15,12 +15,10 @@ import {
   enToBnNumber,
   getSubmitDateInput,
 } from "../modules/calculatefunctions";
-import { useGlobalContext } from "../context/Store";
 const width = 2480;
 const height = 3508;
 
 export default function GPSchoolStudentList({ studentData, gp, school }) {
-  const { gpSportsDateState } = useGlobalContext();
   const data = studentData?.sort((a, b) => {
     if (a.event1rank < b.event1rank) return -1;
     if (a.event1rank > b.event1rank) return 1;
@@ -29,13 +27,8 @@ export default function GPSchoolStudentList({ studentData, gp, school }) {
   const BoysData = data?.filter((el) => el?.gender === "BOYS");
   const GirlsData = data?.filter((el) => el?.gender === "GIRLS");
   const [thisGp, setThisGp] = useState("");
-  const [engGP, setEngGP] = useState("");
-  const [gpSportsDate, setGpSportsDate] = useState("");
   useEffect(() => {
     setThisGp(gpNames.filter((el) => el.englishName === gp)[0]?.bengaliName);
-    setEngGP(gpNames.filter((el) => el.englishName === gp)[0]?.englishName);
-    const spDate = gpSportsDateState.filter((item) => item.gp === gp)[0].date;
-    setGpSportsDate(spDate);
     // eslint-disable-next-line
   }, []);
   return (

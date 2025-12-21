@@ -29,7 +29,17 @@ import {
 } from "../../modules/constants";
 import { events } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
+import dynamic from "next/dynamic";
+import CircleResultSheet from "../../pdf/CircleResultSheet";
+import CircleResultSheetBlank from "../../pdf/CircleResultSheetBlank";
 const CircleResultSection = () => {
+  const PDFDownloadLink = dynamic(
+    () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+    {
+      ssr: false,
+      loading: () => <p>Loading...</p>,
+    }
+  );
   const {
     myStateObject,
     setYourStateObject,
@@ -913,6 +923,50 @@ const CircleResultSection = () => {
             </div>
           )}
         </div>
+      </div>
+      <div className="my-4">
+        <PDFDownloadLink
+          document={<CircleResultSheet studentData={allResult} />}
+          fileName={`Circle Sports All Result Sheet.pdf`}
+          style={{
+            textDecoration: "none",
+            padding: "10px",
+            color: "#fff",
+            backgroundColor: "navy",
+            border: "1px solid #4a4a4a",
+            width: "40%",
+            borderRadius: 10,
+            margin: 20,
+            textAlign: "center",
+          }}
+        >
+          {({ blob, url, loading, error }) =>
+            loading ? "Loading..." : "Download Result Sheet"
+          }
+        </PDFDownloadLink>
+        {/* <CircleResultSheet studentData={allResult} /> */}
+      </div>
+      <div className="my-4">
+        <PDFDownloadLink
+          document={<CircleResultSheetBlank />}
+          fileName={`Circle SportsBlank Sheet.pdf`}
+          style={{
+            textDecoration: "none",
+            padding: "10px",
+            color: "#fff",
+            backgroundColor: "navy",
+            border: "1px solid #4a4a4a",
+            width: "40%",
+            borderRadius: 10,
+            margin: 20,
+            textAlign: "center",
+          }}
+        >
+          {({ blob, url, loading, error }) =>
+            loading ? "Loading..." : "Download Blank Result Sheet"
+          }
+        </PDFDownloadLink>
+        {/* <CircleResultSheet studentData={allResult} /> */}
       </div>
       <div className="my-4 row">
         <h3 className="text-center text-primary">Submit Result</h3>
