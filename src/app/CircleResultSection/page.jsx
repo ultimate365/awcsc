@@ -44,18 +44,18 @@ const CircleResultSection = () => {
     if (a.gp > b.gp) return 1;
     if (a.gender < b.gender) return -1;
     if (a.gender > b.gender) return 1;
-    if (a.event1rank > b.event1rank) return 1;
-    if (a.event1rank < b.event1rank) return -1;
-    return 0;
+    const rankA = Math.min(a.event1rank || Infinity, a.event2rank || Infinity);
+    const rankB = Math.min(b.event1rank || Infinity, b.event2rank || Infinity);
+    return rankA - rankB;
   });
   const gpData = myStateObject?.gp?.sort((a, b) => {
     if (a.gp < b.gp) return -1;
     if (a.gp > b.gp) return 1;
     if (a.gender < b.gender) return -1;
     if (a.gender > b.gender) return 1;
-    if (a.event1rank > b.event1rank) return 1;
-    if (a.event1rank < b.event1rank) return -1;
-    return 0;
+    const rankA = Math.min(a.event1rank || Infinity, a.event2rank || Infinity);
+    const rankB = Math.min(b.event1rank || Infinity, b.event2rank || Infinity);
+    return rankA - rankB;
   });
   const navigate = useRouter();
 
