@@ -419,17 +419,17 @@ const GPResultSection = () => {
   }, []);
   useEffect(() => {
     setThisGPCircleLockState(
-      circleLockState.filter((el) => el.gp === schoolData[0]?.gp)[0].edit
+      circleLockState?.filter((el) => el.gp === schoolData?.[0]?.gp)?.[0]?.edit
     );
     setThisGPCircleLockData(
-      circleLockState.filter((el) => el.gp === schoolData[0]?.gp)[0]
+      circleLockState?.filter((el) => el.gp === schoolData?.[0]?.gp)?.[0]
     );
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     setThisGp(
-      gpNames?.filter((el) => el.englishName === schoolData[0]?.gp)[0]
+      gpNames?.filter((el) => el.englishName === schoolData?.[0]?.gp)?.[0]
         ?.bengaliName
     );
     // eslint-disable-next-line
@@ -567,9 +567,9 @@ const GPResultSection = () => {
         <div className="my-4">
           <PDFDownloadLink
             document={
-              <GPResultSheet studentData={allResult} gp={schoolData[0]?.gp} />
+              <GPResultSheet studentData={allResult} gp={schoolData?.[0]?.gp} />
             }
-            fileName={`${schoolData[0]?.gp} GP Sports All Result Sheet.pdf`}
+            fileName={`${schoolData?.[0]?.gp} GP Sports All Result Sheet.pdf`}
             style={{
               textDecoration: "none",
               padding: "10px",
@@ -590,8 +590,8 @@ const GPResultSection = () => {
         </div>
         <div className="my-4">
           <PDFDownloadLink
-            document={<GPResultSheetBlank gp={schoolData[0]?.gp} />}
-            fileName={`${schoolData[0]?.gp} GP Sports Blank Result Sheet.pdf`}
+            document={<GPResultSheetBlank gp={schoolData?.[0]?.gp} />}
+            fileName={`${schoolData?.[0]?.gp} GP Sports Blank Result Sheet.pdf`}
             style={{
               textDecoration: "none",
               padding: "10px",
