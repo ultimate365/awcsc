@@ -828,3 +828,14 @@ export const keysData = [
   { id: "key9", keyName: "group", displayName: "Group" },
   { id: "key10", keyName: "event", displayName: "Event" },
 ];
+export const GPkeysData = [
+  { id: "key1", keyName: "sl", displayName: "SL." },
+  { id: "key2", keyName: "chestNo", displayName: "Chest No." },
+  { id: "key3", keyName: "school", displayName: "School" },
+  { id: "key5", keyName: "name", displayName: "Name" },
+  { id: "key6", keyName: "gurdiansName", displayName: "Gurdians Name" },
+  { id: "key7", keyName: "birthday", displayName: "Birthday" },
+  { id: "key8", keyName: "sclass", displayName: "Class" },
+  { id: "key9", keyName: "group", displayName: "Group" },
+  { id: "key10", keyName: "event", displayName: "Event" },
+];

@@ -8,8 +8,17 @@ import {
 } from "../../modules/calculatefunctions";
 import { gpNames } from "../../modules/constants";
 import { useGlobalContext } from "../../context/Store";
+import dynamic from "next/dynamic";
+import PrintPDFGPTree from "../../pdf/PrintPDFGPTree";
 
 export default function PrintTreeList() {
+  const PDFDownloadLink = dynamic(
+    () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+    {
+      ssr: false,
+      loading: () => <p>Loading...</p>,
+    }
+  );
   const { stateObject } = useGlobalContext();
   const { data, gp } = stateObject;
   const navigate = useRouter();
@@ -50,6 +59,34 @@ export default function PrintTreeList() {
         >
           Print
         </button>
+        {data?.length > 0 && (
+          <div className="my-4">
+            <PDFDownloadLink
+              document={
+                <PrintPDFGPTree
+                  data={data}
+                  title={`${gp} GP Sports Student List`}
+                />
+              }
+              fileName={`${gp} GP Sports Student List.pdf`}
+              style={{
+                textDecoration: "none",
+                padding: "10px",
+                color: "#fff",
+                backgroundColor: "navy",
+                border: "1px solid #4a4a4a",
+                width: "40%",
+                borderRadius: 10,
+                margin: 20,
+                textAlign: "center",
+              }}
+            >
+              {({ blob, url, loading, error }) =>
+                loading ? "Loading..." : "Download Tree List"
+              }
+            </PDFDownloadLink>
+          </div>
+        )}
       </div>
       <h3 className="text-center m-2 text-black ben">
         {gpNames.filter((el) => el?.englishName === gp)[0]?.bengaliName}{" "}
