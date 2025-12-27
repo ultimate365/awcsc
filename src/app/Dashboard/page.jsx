@@ -33,6 +33,9 @@ const Dashboard = () => {
     circle: "",
     desig: "",
     type: "",
+    convenor: "",
+    circleAssistant: "",
+    gpAssistant: "",
   };
 
   if (schid) {
@@ -138,6 +141,38 @@ const Dashboard = () => {
           >
             Know Our Convenors
           </button>
+          {(teacher.circle === "admin" ||
+            teacher.circleAssistant === "admin" ||
+            teacher.convenor === "admin" ||
+            teacher.gpAssistant === "admin") && (
+            <div className="my-4">
+              <button
+                type="button"
+                className="btn btn-warning m-1 "
+                onClick={() => {
+                  navigate.push("/GpSportsDirectNameEntry");
+                }}
+              >
+                {`Go to Direct Student's Name Entry For ${teacher?.gp} GP Sports`}
+              </button>
+            </div>
+          )}
+          {(teacher.circle === "admin" ||
+            teacher.circleAssistant === "admin" ||
+            teacher.convenor === "admin" ||
+            teacher.gpAssistant === "admin") && (
+            <div className="my-4">
+              <button
+                type="button"
+                className="btn btn-primary m-1 "
+                onClick={() => {
+                  navigate.push("/CircleSportsDirectNameEntry");
+                }}
+              >
+                {`Go to Direct Student's Name Entry For Circle Sports`}
+              </button>
+            </div>
+          )}
         </div>
       ) : null}
       {schid ? (

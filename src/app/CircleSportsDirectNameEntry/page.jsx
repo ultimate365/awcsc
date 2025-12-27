@@ -582,8 +582,10 @@ export default function CircleSportsDirectNameEntry() {
     setTeacher(teacherdetails);
     if (teacherdetails.circle !== "admin") {
       if (teacherdetails.convenor !== "admin") {
-        if (teacherdetails.circleAssistant !== "admin") {
-          navigate.push("/");
+        if (teacherdetails.gpAssistant !== "admin") {
+          if (teacherdetails.circleAssistant !== "admin") {
+            navigate.push("/");
+          }
         }
       }
     }

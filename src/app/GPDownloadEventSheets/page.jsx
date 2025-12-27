@@ -55,11 +55,14 @@ export default function GPDownloadEventSheets() {
 
   useEffect(() => {
     if (!details) {
-      if (
-        teacherdetails.circle !== "admin" ||
-        teacherdetails.convenor !== "admin"
-      ) {
-        navigate.push("/Logout");
+      if (teacherdetails.circle !== "admin") {
+        if (teacherdetails.circleAssistant !== "admin") {
+          if (teacherdetails.convenor !== "admin") {
+            if (teacherdetails.gpAssistant !== "admin") {
+              navigate.push("/Login");
+            }
+          }
+        }
       }
     }
     // eslint-disable-next-line

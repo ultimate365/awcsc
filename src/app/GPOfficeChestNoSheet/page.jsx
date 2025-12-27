@@ -53,7 +53,11 @@ export default function CircleOfficeChestNoSheet() {
   useEffect(() => {
     if (teacherdetails.circle !== "admin") {
       if (teacherdetails.circleAssistant !== "admin") {
-        navigate.push("/Login");
+        if (teacherdetails.convenor !== "admin") {
+          if (teacherdetails.gpAssistant !== "admin") {
+            navigate.push("/Login");
+          }
+        }
       }
     }
     document.title = `Amta West Circle Sports ${new Date().getFullYear()} All Student List`;

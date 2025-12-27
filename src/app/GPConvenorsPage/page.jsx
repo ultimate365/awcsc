@@ -77,10 +77,11 @@ const GPConvenorsPage = () => {
   }
   useEffect(() => {
     if (teacherdetails.circle !== "admin") {
-      if (teacherdetails.convenor !== "admin") {
-        if (teacherdetails.gpAssistant !== "admin") {
-          console.log(teacherdetails.circle);
-          navigate.push("/Login");
+      if (teacherdetails.circleAssistant !== "admin") {
+        if (teacherdetails.convenor !== "admin") {
+          if (teacherdetails.gpAssistant !== "admin") {
+            navigate.push("/Login");
+          }
         }
       }
     }
@@ -123,6 +124,7 @@ const GPConvenorsPage = () => {
   const [resultSearch, setResultSearch] = useState("");
   const [showCircleResult, setShowCircleResult] = useState(false);
   const [allTeachers, setAllTeachers] = useState([]);
+  const [selectedGPTeachers, setSelectedGPTeachers] = useState([]);
   const [assistants, setAssistants] = useState([]);
   const [allGPAssistants, setAllGPAssistants] = useState([]);
   const [thisGpAssistance, setThisGpAssistance] = useState([]);
@@ -174,7 +176,9 @@ const GPConvenorsPage = () => {
   };
   const getTeachersData = async () => {
     setAllTeachers(teachersState);
-    setTeachersState(teachersState);
+    setSelectedGPTeachers(
+      teachersState.filter((el) => el?.gp === teacherdetails.gp)
+    );
   };
 
   const getAllGPAssistantsData = async () => {
@@ -987,6 +991,9 @@ const GPConvenorsPage = () => {
                 const GPSchools = schoolState.filter(
                   (student) => student.gp === el
                 );
+                setSelectedGPTeachers(
+                  allTeachers.filter((teacher) => teacher.gp === el)
+                );
                 setFilteredSchData(GPSchools);
                 const firstGPSchool = GPSchools[0];
                 document.getElementById("schNames").value =
@@ -1123,15 +1130,17 @@ const GPConvenorsPage = () => {
               aria-label="Default select example"
             >
               <option value="">Select Teacher Name</option>
-              {allTeachers
-                .filter((el) => el?.gp === teacherdetails.gp)
-                .map((el, ind) => {
-                  return (
-                    <option value={JSON.stringify(el)} key={ind}>
-                      {el?.tname}
-                    </option>
-                  );
-                })}
+              {(teacherdetails.circle === "admin" ||
+              teacherdetails.circleAssistant === "admin"
+                ? selectedGPTeachers
+                : allTeachers
+              ).map((el, ind) => {
+                return (
+                  <option value={JSON.stringify(el)} key={ind}>
+                    {el?.tname}
+                  </option>
+                );
+              })}
             </select>
           </div>
 
